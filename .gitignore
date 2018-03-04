@@ -1,1 +1,7 @@
-*.swp
+/pokemon-images/**
+!/pokemon-images/pokeball.png
+node_modules
+/node/public/**
+.vscode
+*.code-workspace
+.eslintignore

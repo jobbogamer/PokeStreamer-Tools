@@ -1,22 +1,28 @@
 # PokeStreamer-Tools
+
 A set of scripts and tools for Pokemon streamers
+
+**This is a modified version of [EverOddish's PokeStreamer-Tools](https://github.com/EverOddish/PokeStreamer-Tools).**
+An issue with the original script is that every time a pokemon changed slots, it rewrote data to the hard drive several 
+times.  This was a synchronous operation which caused the game to lag significantly.
+
+This code uses a [Node.JS](nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the
+server, and the server sends the updates to six webpages: http://localhost:8080/?slot=# where # is between 1 and 6.
+
+# EverOddish PokeStreamer-Tools README #
+
+Most of this is still relevant.  Some is not.  I'm too lazy to update it.  Any contradictions in the above section 
+supercede anything in this section.
 
 ## Automatic Layout Updating
 
 If you're streaming a Pokemon game and like to display your current party on your layout, it can be tedious to modify which image files are displayed, while you are live. I've modified several existing tools to detect when in-game party slots change, which can then copy sprite image files on your computer automatically. Your streaming software can be configured to watch these files for modification, and update the layout accordingly. There is now also a "Soul Link" version that will update paired sprites at the same time.
-
-## Dr. Fuji Twitch Extension
-
-If you would like to use the Dr. Fuji Twitch Extension to display your Pokemon real-time stats on your stream, you can use the appropriate script to send live data to the server that will be displayed to users. Currently, this is only supported for the Gen 4/5 script.
 
 ### Requirements
 
  * Windows operating system
  * An emulator with Lua scripting support
      * VBA-RR (for Gen 3 games)
-     * Desmume (for Gen 4/Gen 5 games)
- * A 3DS with custom firmware (CFW)
-     * BootNTR and PKMN-NTR (for Gen 6/Gen 7 games)
 
 ### VBA-RR Setup
 
