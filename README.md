@@ -35,6 +35,11 @@ Download and extract this to your newly cloned directory's `/pokemon-images/` fo
 
 **Note**: All images in the specified image directories are loaded into memory by the server.  This isn't a problem for the images in the suggested ZIP (~5MB depending on which generation), but if you use larger ones, you may run into some memory difficulties.
 
+#### Install requirements
+
+1.  Navigate to `/node/`.
+2.  Run `npm install`.
+
 #### Configure settings
 
 1.  Navigate to `/node/`.
