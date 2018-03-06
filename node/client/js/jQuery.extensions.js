@@ -19,7 +19,7 @@ function mergeRect(r1, r2) {
         bottom: Math.max(r1.bottom, r2.bottom),
         left: Math.min(r1.left, r2.left),
         right: Math.max(r1.right, r2.right),
-    }
+    };
 }
 
 $.fn.getContentBounds = function () {
@@ -70,19 +70,21 @@ $.fn.scaleToFit = function () {
             scale = !cBounds ? 1 : Math.min(1, pWidth / cBounds.width, pHeight / cBounds.height);
 
         if (scale !== 1) {
-            let $scaleWrapper = $('<span>').css('font-size', `${scale}em`);
+            let $scaleWrapper = $('<span>').addClass('scaled').css('font-size', `${scale}em`);
 
             let scaleText = function() {
                 if (this.nodeType === 3) {
-                    $(this).wrap($scaleWrapper);
+                    if (this.textContent.trim()) {
+                        $(this).wrap($scaleWrapper);
+                    }
                 } else {
                     $(this).contents().each(scaleText);
                 }
-            }
+            };
 
             $this.contents(scaleText).each(scaleText);
         }
     });
 
     return this;
-}
+};

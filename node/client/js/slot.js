@@ -57,11 +57,13 @@ export default class Slot {
             this.changeId = -1;
             this.lastValue = null;
             $allText.resetText();
+            $allText.find('.scaled').children().unwrap('.scaled');
             $img.removeAttr('src');
             $slot.removeClass('dead');
         } else if (this.changeId < parseInt(val.changeId) && this.slot === val.slot) {
             this.changeId = parseInt(val.changeId);
             $allText.resetText();
+            $allText.find('.scaled').children().unwrap('.scaled');
             $level.text(val.level === 0 ? '' : val.level);
             $species.text(val.species);
             $nickname.text(val.nickname || val.species);

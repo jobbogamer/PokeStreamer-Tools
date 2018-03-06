@@ -142,10 +142,14 @@
         "topElementHeight": "0",
         "bottomElementHeight": "30px",
 
-        // You almost certainly want this to be "transparent" so that it is rendered cleanly in your scene, but it may 
-        // be useful to change it when setting things up so that you can more easily see text if your text hard to see 
-        // against the browser's default white background.
-        "background": "transparent",
+        "%body": {
+            // You almost certainly want this to be "transparent" so that it is rendered cleanly in your scene, but it 
+            // may be useful to change it when setting things up so that you can more easily see text if your text hard 
+            // to see against the browser's default white background.
+            "background": "transparent",
+
+            "margin-top": "8px !important"
+        },
         
         // Default text styles.  These can be overridden below.
         // The default settings are what failstream (twitch.tv/failstream) uses, as I'm writing this tool for him.

@@ -2,7 +2,10 @@ html, body {
   margin: 0;
   padding: 0;
   overflow:hidden;
-  background: $background;
+}
+
+body {
+  @extend %body !optional;
 }
 
 @if $allInOne {
