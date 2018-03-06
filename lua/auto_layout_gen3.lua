@@ -1,6 +1,10 @@
 local http = require "socket.http"
 local ltn12 = require "ltn12"
 
+-- IMPORTANT: if you edit this value, you must also edit it in /node/config.json
+local serverPort = 8081
+local serverRoot = "http://localhost:" .. tostring(serverPort)
+
 -- Based on the gen 3 Lua script by FractalFusion
 -- Modified by EverOddish for automatic image updates
 local game=3 --see below
@@ -131,7 +135,7 @@ function update_slot_info(info)
         [[&shiny=]] .. tostring(info.shiny)
     http.request({
         method = "POST",
-        url = "http://localhost:8080/update/" .. tostring(info.slot),
+        url = serverRoot .. "/update/" .. tostring(info.slot),
         source = ltn12.source.string(request_body),
         headers = {
             ["Content-Type"] = "application/x-www-form-urlencoded",
@@ -142,7 +146,7 @@ end
 
 local slot_changes = {0, 0, 0, 0, 0, 0}
 
-http.request("http://localhost:8080/reset");
+http.request(serverRoot .. "/reset");
 
 --a press is when input is registered on one frame but not on the previous
 --that's why the previous input is used as well

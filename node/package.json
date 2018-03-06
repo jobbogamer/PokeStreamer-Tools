@@ -4,7 +4,7 @@
   "description": "node server that hosts pokemon images",
   "main": "app.js",
   "scripts": {
-    "build": "node_modules/.bin/webpack --progress --color",
+    "build": "node_modules/.bin/webpack --progress --color --mode production",
     "start": "node -r babel-register ./server/app.js"
   },
   "author": "Jordan Hitch",

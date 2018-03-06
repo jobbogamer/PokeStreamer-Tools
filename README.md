@@ -2,12 +2,82 @@
 
 A set of scripts and tools for Pokemon streamers
 
-**This is a modified version of [EverOddish's PokeStreamer-Tools](https://github.com/EverOddish/PokeStreamer-Tools).**
-An issue with the original script is that every time a pokemon changed slots, it rewrote data to the hard drive several 
-times.  This was a synchronous operation which caused the game to lag significantly.
+**README is a work in progress.  Most of the settings information can be found in `node/config.json`.**
 
-This code uses a [Node.JS](nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the
-server, and the server sends the updates to six webpages: http://localhost:8080/?slot=# where # is between 1 and 6.
+**This is a modified version of [EverOddish's PokeStreamer-Tools](https://github.com/EverOddish/PokeStreamer-Tools).**
+An issue with the original script is that every time a pokemon changes slots, it rewrites data to the hard drive several times.  This is a synchronous operation that causes the game (in particular, the audio) to lag significantly.
+
+This code uses a [Node.JS](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at `http://localhost:8081/`.  (Optionally, for more flexibility, you can disable all-on-one mode in the `node/config.json` file, and access six separate pages at `http://localhost:8081/?slot=slotNum` where `slotNum` is a number between 1 and 6.)
+
+**This project is still a work in progress.  Currently this only works with the `auto_layout_gen3.lua` script.  Gen 4+ support is forthcoming.**
+
+### Server Requirements
+
+The following are required *in addition* to the [requirements](#requirements) listed below.
+
+*   [Git for Windows](https://git-scm.com/download/win)
+*   [Node.js](http://nodejs.org) - version 8.9.4 or newer
+*   [Webpack](http://webpack.js.org) 4.1 or newer (this will be installed automatically later, but if you have an older version already installed, you may need to update)
+
+### Server Setup
+
+#### Download the GitHub repository
+
+1.  Open command prompt by pressing <kbd>Windows</kbd> + <kbd>r</kbd> and running `cmd`.
+2.  Navigate to the folder (using `cd`) you will want to install the server to.  (This is the *parent* directory; running the next command will create a folder named `PokemonStreamer-Tools` automatically.)
+3.  Run `git clone https://github.com/dfoverdx/PokeStreamer-Tools.git`
+
+#### Download Pokemon Images
+
+I *highly* recommend you use the zip located [here](http://pkmn.net/?action=content&page=viewpage&id=8644) as it includes all the required images named the way my script expects them to be named (i.e. numbered by PokeDex number).
+
+Download and extract this to your newly cloned directory's `/pokemon-images/` folder.  This is an optional location that you can change later in the config if you wish.  The edited versions of the lua scripts (currently just gen3) no longer require the images to be placed alongside them.  This directory may be anywhere you want.
+
+**Note**: All images in the specified image directories are loaded into memory by the server.  This isn't a problem for the images in the suggested ZIP (~5MB depending on which generation), but if you use larger ones, you may run into some memory difficulties.
+
+#### Configure settings
+
+1.  Navigate to `/node/`.
+2.  Open `/node/config.json` in your favorite text editor.  (If you don't have one, I suggest [VS Code](https://code.visualstudio.com).)
+3.  Change settings to your desire.  The file is pretty well commented, so hopefully it won't give you too much trouble.  If it does, you can reach me on [Discord](https://discord.gg/FKDntWR).
+4.  Save.  (Obviously.)
+
+The default settings are what [Failstream](https://twitch.tv/failstream) uses, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
+
+**Note**: Any time you update the `config.json` file, you will need to rebuild the project by running `build.cmd`.
+
+#### Build
+
+Run `build.cmd`.  This will generate a folder called `/node/public` with the files your streaming software will download.  Don't edit these, but if you want to tweak the settings and rebuild, this is where the output is for debugging purposes.
+
+#### Start the server
+
+You should start the server *before* running the Lua script within the emulator.  To do so, just run `startServer.cmd` within the `/node/` directory.
+
+Now you can run your emulator and load the (modified) lua script as before.
+
+## Roadmap
+
+No guarantees I will ever get around to these, but here are the features I plan/hope to implement soon.
+
+1.  Pokemon variation support (shiny, gender)
+2.  Gen4-5 support
+    *   Significant refactoring of Lua code
+3.  Additional Nuzlocke features
+    *   Fun-to-have animations and such
+4.  SoulLink functionality
+    *   Communication via IRC (e.g. Twitch Chat)
+    *   Automatic soul-linked deaths
+    *   Shared experience between soul-linked pokemon
+5.  Stream chat interactivity (*wayyy* down the line)
+    *   Use bits or stream currency to purchase in game effects
+        *   Heal the current pokemon
+        *   Heal the whole team
+        *   Restore PP to the current pokemon
+        *   Add item to inventory
+        *   etc
+    *   Vote to select next Pokemon encounter
+        *   May not be possible, or way too complicated for me to figure out, but it would be fun
 
 # EverOddish PokeStreamer-Tools README #
 
