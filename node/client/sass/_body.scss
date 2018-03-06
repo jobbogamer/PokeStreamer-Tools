@@ -1,0 +1,40 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow:hidden;
+  background: $background;
+}
+
+@if $allInOne {
+  html, body {
+    min-width: $totalWidth;
+    min-height: $totalHeight;
+  }
+
+  body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+@else {
+  html, body {
+    width: $totalWidth;
+    height: $totalHeight;
+  }
+
+  #slotBtns:empty {
+    display: none;
+  }
+}
+
+@if $debug {
+  html {
+    background: green;
+  }
+  
+  body {
+    transform: translate(300px, 300px);
+    overflow: visible;
+  }
+}

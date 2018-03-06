@@ -1,0 +1,19 @@
+.img-wrapper {
+  width: $imageSideLength;
+  max-width: $imageSideLength;
+  height: $imageSideLength;
+  max-height: $imageSideLength;
+  position: relative;
+  margin: 0;
+  padding: 0;
+
+  img {
+    display: block;
+    height: 100%;
+    margin: 0;
+  
+    &:not([src]) {
+      visibility: hidden;
+    }
+  }
+}

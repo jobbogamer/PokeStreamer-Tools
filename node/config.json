@@ -1,0 +1,191 @@
+{
+    /*
+        Pokemon Generation
+
+        Valid values: 1 through 5.
+
+        EverOddish has two Lua scripts: one for generations 1-3 and below, and one for generations 4 and 5.  As such,
+        values 1-3 do the same thing and values 4 and 5 do the same thing.
+    */
+    "generation": 3,
+
+    "server": {
+        // The port to use when accessing the page that you insert into your stream scene.
+        // 
+        // The url to that page will be http://localhost:<port>/.  Using the default 8081 means that url will be
+        // http://localhost:8081/.
+        //
+        // If you aren't running your own webserver, using port 80 means you don't need to include the :<port> part of 
+        // the url.  DON'T use port 443, as the browser will expect https rather than http, and this server doesn't 
+        // support SSL.
+        //
+        // NOTE: StreamLabs uses port 8080, so if you use StreamLabs or another app that listens to 8080, and set this 
+        //       value to 8080, you're gonna have a bad time.  (Port 8080 is pretty commonly used in local webserver
+        //       apps, and the value I initially used until I found out about StreamLabs.)
+        "port": "8081"
+    },
+    
+    /*
+    Paths to images folder relative to the /node/server directory.
+    I suggest using the zip found at http://pkmn.net/?action=content&page=viewpage&id=8644, extracting the
+    Pokémon folder, and then choosing one of the subdirectories (e.g. FRLG for Fire Red/Leaf Green).
+    
+    Example:
+
+        "base": "../pokemon-images/FRLG/FRLG"
+        "shiny": "../pokemon-images/FRLG/Shiny"
+
+    The "female", "unown", and "shiny" variants are optional.
+
+    For the record, I didn't organize the images to make the Male directory the one that includes all the for 
+    gender-androdginous images.  As a woman, I'm midly annoyed at the implication, but I'm also pragmatic enough not to
+    force you to change the directory structure of the zip.
+    */
+    "pokemonImagePaths": {
+        "base": "../../pokemon-images/HGSS/Male",
+
+        // Path to the image used when a slot is empty relative to /node/ directory.
+        "emptySlot": "../../pokemon-images/pokeball.png",
+
+        /* 
+        Optional paths -- if these are specified and the game supports female and shiny variants, the server will
+        attempt to find the proper variant, and if it is not found, will use the base image.
+        */
+        "female": "../../pokemon-images/HGSS/Female",
+        "shiny": "../../pokemon-images/HGSS/Male Shiny",
+        "shinyfemale": "../../pokemon-images/HGSS/Female Shiny",
+
+        // This directory expects image names to be in the following pattern: 201[-]{letter}[s].png.  The hypen is 
+        // optional.  The 's' is optional and indicates that the image is for a shiny Unown.
+        "unown": "../../pokemon-images/RSE/Unown",
+    },
+    
+    "layout": { 
+        // Whether you want the page to display all slots on one page, or have one slot per page so you can place them
+        // in your scene however you like.
+        "allInOne": true,
+        
+        /*  
+        Where to place the various elements relative to the pokemon image.
+        All elements are optional.  The order in which they appear in the array are the order they are stacked in the
+        page element.  For example, if you have "nickname" and "species" in the "bottomElements" list, the bottom 
+        element will have a line for the nickname followed by a line for the species.
+
+        NOTE: The death messages *replace* the other elements listed (aside from other death messages).
+
+        Available elements are:
+        • nickname
+        • species
+        • level
+        • deathMessage1 (see nuzlocke options below)
+        • deathMessage2
+        • deathMessage3
+        */
+        "topElements": [],
+        "bottomElements": [ 
+            "nickname" 
+        ],
+        "leftElements": [ 
+            "species", 
+            "deathMessage1" 
+        ],
+        "rightElements": [ 
+            "level", 
+            "deathMessage2"
+        ],
+    },
+    
+    /*
+    If you are doing a Nuzlocke challenge, these options add some silly effects when one of your Pokemon dies.
+    */
+    "nuzlocke": {
+        "enabled": true,
+        
+        // Make the pokemon spin slowly.
+        "applyDeathSpin": true,
+
+        // **EXPERIMENTAL**
+        // Play a depressing sound when a Pokemon dies.  This path is absolute or relative to the /node/public/ 
+        // directory.
+        "deathSound": {
+            "enabled": true,
+            "filePath": "the-price-is-right-losing-horn.mp3"
+        },
+        
+        // Places some content before the nickname element.  This should include a space after it and needs to be 
+        // wrapped in single-quotes (as the value is being placed in a CSS file).
+        "ripPrefix": "'RIP '",
+        
+        // These messages are displayed, replacing the text in whichever element they appear, when a Pokemon dies.
+        "deathMessage1": "You died too young",
+        "deathMessage2": "We hardly knew you",
+        "deathMessage3": null
+    },
+    
+    /*
+    These are the CSS styles applied to the various elements of the page.  They are imported into /node/client/sass/,
+    so if you want more granular control, edit the values there.
+
+    NOTE: If you want to use reference a value defined in the style section in another value, add a $ in front of it.
+        Any values not prefixed with a $, %, @, or . are added as SASS variables and may be used in any later-defined
+        values.  That is, you can define whatever new variables you'd like, though the ones already listed are required.
+        See https://sass-lang.com/ for more information on SASS variables and what you can do with them.
+    */
+    "style": {
+        // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
+        // image source.
+        "imageSideLength": "128px",
+
+        // Text will be centered both horizontally and vertically (by default) within each element.
+        "leftElementWidth": "50px",
+        "rightElementWidth": "50px",
+        "topElementHeight": "0",
+        "bottomElementHeight": "30px",
+
+        // You almost certainly want this to be "transparent" so that it is rendered cleanly in your scene, but it may 
+        // be useful to change it when setting things up so that you can more easily see text if your text hard to see 
+        // against the browser's default white background.
+        "background": "transparent",
+        
+        // Default text styles.  These can be overridden below.
+        // The default settings are what failstream (twitch.tv/failstream) uses, as I'm writing this tool for him.
+        // They produce yellow-orange text outlined in fading-transparent white.  When placed on top of a blue 
+        // background it is reminiscient of the official Pokemon logo.
+        "%baseText": {
+            "font-size": "24px",
+            "font-family": "Arial, sans-serif",
+            "background": "-webkit-linear-gradient(#ff8c00, #ffd700)",
+            "background-clip": "text",
+            "-webkit-background-clip": "text",
+            "-webkit-text-fill-color": "transparent",
+            "text-shadow": "0 0 8px white",
+            "text-align": "center"
+        },
+        
+        "%levelText": {
+            "width": "$rightElementWidth !important",
+            "font-size": "36px",
+
+            // By default, texts on the left and right of the image are rotated.  Setting transform to "unset" prevents
+            // this.
+            "transform": "unset !important"
+        },
+
+        // This should include a space after it and needs to be wrapped in single-quotes (as the value is being placed 
+        // in a CSS file).
+        // "levelPrefix": "'Lvl '",
+        
+        // "%speciesText": {},
+        // "%nicknameText": {},
+
+        // these styles are applied to both death messages, and can be overridden below
+        "%deathMessageText": {
+            "font-size": "20px",
+        },
+
+        "%deathMessage1Text": {},
+        "%deathMessage2Text": {},
+        "%deathMessage3Text": {},
+    }
+    
+}

@@ -1,3 +1,6 @@
+local http = require "socket.http"
+local ltn12 = require "ltn12"
+
 -- Based on the gen 3 Lua script by FractalFusion
 -- Modified by EverOddish for automatic image updates
 local game=3 --see below
@@ -35,7 +38,9 @@ local new_party = ""
  
 local last_check = 0
 local last_party = {0, 0, 0, 0, 0, 0}
+local last_nicknames = {"", "", "", "", "", "", ""}
 local last_levels = {-1, -1, -1, -1, -1, -1}
+local last_living_states = {true, true, true, true, true, true}
 local print_ivs = 0
 
 --for different game versions
@@ -50,10 +55,10 @@ local gamename={"Ruby/Sapphire U", "Emerald U", "FireRed/LeafGreen U", "Ruby/Sap
 
 --game dependent
 
-local pstats={0x3004360, 0x20244EC, 0x2024284, 0x3004290, 0x2024190, 0x20241E4}
-local estats={0x30045C0, 0x2024744, 0x202402C, 0x30044F0, 0x0000000, 0x2023F8C}
-local rng   ={0x3004818, 0x3005D80, 0x3005000, 0x3004748, 0x0000000, 0x3005040} --0X3004FA0
-local rng2  ={0x0000000, 0x0000000, 0x20386D0, 0x0000000, 0x0000000, 0x203861C}
+local pstats={0x03004360, 0x020244EC, 0x02024284, 0x03004290, 0x02024190, 0x020241E4}
+local estats={0x030045C0, 0x02024744, 0x0202402C, 0x030044F0, 0x00000000, 0x02023F8C}
+local rng   ={0x03004818, 0x03005D80, 0x03005000, 0x03004748, 0x00000000, 0x03005040} --0X03004FA0
+local rng2  ={0x00000000, 0x00000000, 0x020386D0, 0x00000000, 0x00000000, 0x0203861C}
 
 
 --HP, Atk, Def, Spd, SpAtk, SpDef
@@ -120,9 +125,24 @@ function ah(a)
  return b+c
 end
 
+function update_slot_info(info)
+    local request_body = [[species=]] .. info.species .. [[&level=]] .. tostring(info.level) .. [[&changeId=]] .. 
+        tostring(info.change_id) .. [[&dead=]] .. tostring(info.dead) .. [[&nickname=]] .. tostring(info.nickname) ..
+        [[&shiny=]] .. tostring(info.shiny)
+    http.request({
+        method = "POST",
+        url = "http://localhost:8080/update/" .. tostring(info.slot),
+        source = ltn12.source.string(request_body),
+        headers = {
+            ["Content-Type"] = "application/x-www-form-urlencoded",
+            ["content-length"] = #request_body
+        }
+    })
+end
 
+local slot_changes = {0, 0, 0, 0, 0, 0}
 
-
+http.request("http://localhost:8080/reset");
 
 --a press is when input is registered on one frame but not on the previous
 --that's why the previous input is used as well
@@ -159,12 +179,21 @@ if current_time - last_check > 1 then
     magicword=bxr(personality, trainerid)
 	
     i=personality%24
-	
+
+    nicknameoffset=8
+    nicknamelength=10
 	growthoffset=(growthtbl[i+1]-1)*12
 	attackoffset=(attacktbl[i+1]-1)*12
 	effortoffset=(efforttbl[i+1]-1)*12
 	miscoffset=(misctbl[i+1]-1)*12
     
+    nicknamebytes=memory.readbyterange(start+nicknameoffset,nicknamelength)
+    nickname=""
+    for j=1,10 do
+        if nicknamebytes[j] ~= nil and characterTable[nicknamebytes[j]] ~= nil then
+            nickname = nickname .. characterTable[nicknamebytes[j]]
+        end
+    end
 	
 	growth1=bxr(mdword(start+32+growthoffset),magicword)
 	growth2=bxr(mdword(start+32+growthoffset+4),magicword)
@@ -264,31 +293,50 @@ if current_time - last_check > 1 then
     end
 
     current_hp=mword(start+86)
-    if 0 == current_hp then
-        speciesname = "none"
-    end
 
-    if last_party[slot] ~= species then
-        --print("Slot " .. slot .. " -> " .. speciesname)
+    local last_state = {
+        species = last_party[slot],
+        nickname = last_nicknames[slot],
+        level = last_levels[slot],
+        is_living = last_living_states[slot]
+    }
+
+    local current_state = {
+        species = species,
+        nickname = nickname,
+        level = level,
+        is_living = current_hp ~= nil and current_hp > 0
+    }
+
+    local change = false
+    local src
+
+    if last_state.species ~= current_state.species then
+        change = true
+        print("Slot " .. slot .. " -> " .. speciesname)
         last_party[slot] = species
 
         if speciesname == "none" then
-            src = "000.png"
+            src = -1
         else
-            src = string.lower(speciesname) .. ".png"
+            src = species
         end
-        dst = "p" .. slot .. ".png"
-
-        co = coroutine.create( function ( s, d )
-            print("Copy " .. s .. " to " .. d)
-            os.execute("del " .. d)
-            os.execute("copy /Y " .. s .. " " .. d)
-            os.execute("copy /b " .. d .. "+,, " .. d)
-        end)
-        coroutine.resume(co, src, dst)
     end
 
-    if last_levels[slot] ~= level then
+    if last_state.nickname ~= current_state.nickname then
+        change = true
+        if speciesname == "none" then
+            last_nicknames[slot] = ""
+            print("Removed nickname for slot " .. slot)
+        else
+            print("Slot " .. slot .. " nickname -> " .. nickname)
+        end
+
+        last_nicknames[slot] = nickname
+    end
+
+    if last_state.level ~= current_state.level then
+        change = true
         if speciesname == "none" then
             level_text = ""
             print("Removed level for slot " .. slot)
@@ -298,17 +346,57 @@ if current_time - last_check > 1 then
         end
 
         last_levels[slot] = level
+    end
 
-        level_file = io.open("level" .. slot .. ".txt", "w+")
-        io.output(level_file)
-        io.write(level_text)
-        io.close(level_file)
+    if last_state.is_living ~= current_state.is_living then
+        change = true
+        if speciesname == "none" then
+            print("Removed living state from slot " .. slot)
+        else
+            living_text = "dead" 
+            if current_state.is_living then
+                living_text = "living"
+            end
+            print("Slot " .. slot .. " is now " .. living_text)
+        end
+
+        last_living_states[slot] = current_state.is_living
+    end
+
+    if speciesname == "none" then
+        src = -1
+    else
+        if species >= 284 and species <= 411 then
+            -- gen 3 pokemon... for some reason there are 25 blank pokemon between 251 and 276
+            src = species - 25
+        elseif species > 411 then
+            -- unown variations
+            src = '200-' .. string.char(string.byte('a') + species - 411)
+        else
+            src = species
+        end
+    end
+
+    if change then
+        update_slot_info({
+            change_id = slot_changes[slot],
+            species = tostring(src),
+            nickname = nickname,
+            level = level,
+            slot = slot,
+            dead = not current_state.is_living,
+            shiny = false -- TODO: shiny detection
+        })
+
+        slot_changes[slot] = slot_changes[slot] + 1
     end
 
     if print_ivs == 1 then
         if speciesname ~= "none" then
             evsum = hpev + atkev + defev + spatkev + spdefev + spdev
-            print("Pokemon: " .. speciesname .. " IV(" .. hpiv .. "/" .. atkiv .. "/" .. defiv .. "/" .. spatkiv .. "/" .. spdefiv .. "/" .. spdiv .. ") EV(" .. hpev .. "/" .. atkev .. "/" .. defev .. "/" .. spatkev .. "/" .. spdefev .. "/" .. spdev .. ") " .. evsum .. "/508")
+            print("Pokemon: " .. speciesname .. " IV(" .. hpiv .. "/" .. atkiv .. "/" .. defiv .. "/" .. spatkiv .. "/" 
+                .. spdefiv .. "/" .. spdiv .. ") EV(" .. hpev .. "/" .. atkev .. "/" .. defev .. "/" .. spatkev .. "/" 
+                .. spdefev .. "/" .. spdev .. ") " .. evsum .. "/508")
         end
     end
 
