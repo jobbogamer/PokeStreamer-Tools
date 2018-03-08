@@ -14,7 +14,7 @@ class Slot {
 
 Slot.empty = function(slot, changeId) {
     changeId = changeId === undefined ? -1 : changeId;
-    return new Slot(slot, changeId, '', '', 0, pokemonImages['base']['-1'], false);
+    return new Slot(slot, changeId, '', '', 0, pokemonImages['-1'].base, false);
 };
 
 module.exports = Slot;

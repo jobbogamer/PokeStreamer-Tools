@@ -1,10 +1,3 @@
-local http = require "socket.http"
-local ltn12 = require "ltn12"
-
--- IMPORTANT: if you edit this value, you must also edit it in /node/config.json
-local serverPort = 8081
-local serverRoot = "http://localhost:" .. tostring(serverPort)
-
 -- Based on the gen 3 Lua script by FractalFusion
 -- Modified by EverOddish for automatic image updates
 local game=3 --see below
@@ -38,13 +31,16 @@ local yfix2=0 --y position of 2nd handle
 
 local k 
 
+dofile "send_data_to_server.lua"
+
+reset_server()
+
+dofile "slot.lua"
+
 local new_party = ""
  
 local last_check = 0
-local last_party = {0, 0, 0, 0, 0, 0}
-local last_nicknames = {"", "", "", "", "", "", ""}
-local last_levels = {-1, -1, -1, -1, -1, -1}
-local last_living_states = {true, true, true, true, true, true}
+local last_party = { Slot:new(), Slot:new(), Slot:new(), Slot:new(), Slot:new(), Slot:new() }
 local print_ivs = 0
 
 --for different game versions
@@ -104,7 +100,6 @@ function gettop(a)
  return(rshift(a,16))
 end
 
-
 --does 32-bit multiplication
 --necessary because Lua does not allow 32-bit integer definitions
 --so one cannot do 32-bit arithmetic
@@ -128,25 +123,6 @@ function ah(a)
  c=getbits(a,16,16)
  return b+c
 end
-
-function update_slot_info(info)
-    local request_body = [[species=]] .. info.species .. [[&level=]] .. tostring(info.level) .. [[&changeId=]] .. 
-        tostring(info.change_id) .. [[&dead=]] .. tostring(info.dead) .. [[&nickname=]] .. tostring(info.nickname) ..
-        [[&shiny=]] .. tostring(info.shiny)
-    http.request({
-        method = "POST",
-        url = serverRoot .. "/update/" .. tostring(info.slot),
-        source = ltn12.source.string(request_body),
-        headers = {
-            ["Content-Type"] = "application/x-www-form-urlencoded",
-            ["content-length"] = #request_body
-        }
-    })
-end
-
-local slot_changes = {0, 0, 0, 0, 0, 0}
-
-http.request(serverRoot .. "/reset");
 
 --a press is when input is registered on one frame but not on the previous
 --that's why the previous input is used as well
@@ -298,101 +274,38 @@ if current_time - last_check > 1 then
 
     current_hp=mword(start+86)
 
-    local last_state = {
-        species = last_party[slot],
-        nickname = last_nicknames[slot],
-        level = last_levels[slot],
-        is_living = last_living_states[slot]
-    }
+    local last_state = last_party[slot]
 
-    local current_state = {
-        species = species,
+    local current_state = Slot:new({
+        species = species ~= 0 and species or -1,
         nickname = nickname,
         level = level,
-        is_living = current_hp ~= nil and current_hp > 0
-    }
+        -- female = false, -- TODO
+        -- shiny = false,  -- TODO
+        living = current_hp ~= nil and current_hp > 0
+    })
 
-    local change = false
-    local src
-
-    if last_state.species ~= current_state.species then
-        change = true
-        print("Slot " .. slot .. " -> " .. speciesname)
-        last_party[slot] = species
-
-        if speciesname == "none" then
-            src = -1
-        else
-            src = species
-        end
-    end
-
-    if last_state.nickname ~= current_state.nickname then
-        change = true
-        if speciesname == "none" then
-            last_nicknames[slot] = ""
-            print("Removed nickname for slot " .. slot)
-        else
-            print("Slot " .. slot .. " nickname -> " .. nickname)
-        end
-
-        last_nicknames[slot] = nickname
-    end
-
-    if last_state.level ~= current_state.level then
-        change = true
-        if speciesname == "none" then
-            level_text = ""
-            print("Removed level for slot " .. slot)
-        else
-            level_text = "Lv. " .. level
-            print("Slot " .. slot .. " is now " .. level_text)
-        end
-
-        last_levels[slot] = level
-    end
-
-    if last_state.is_living ~= current_state.is_living then
-        change = true
-        if speciesname == "none" then
-            print("Removed living state from slot " .. slot)
-        else
-            living_text = "dead" 
-            if current_state.is_living then
-                living_text = "living"
-            end
-            print("Slot " .. slot .. " is now " .. living_text)
-        end
-
-        last_living_states[slot] = current_state.is_living
-    end
-
-    if speciesname == "none" then
-        src = -1
-    else
-        if species >= 284 and species <= 411 then
-            -- gen 3 pokemon... for some reason there are 25 blank pokemon between 251 and 276
-            src = species - 25
-        elseif species > 411 then
-            -- unown variations
-            src = '200-' .. string.char(string.byte('a') + species - 411)
-        else
-            src = species
-        end
-    end
+    local change = not current_state:equals(last_state)
 
     if change then
-        update_slot_info({
-            change_id = slot_changes[slot],
-            species = tostring(src),
-            nickname = nickname,
-            level = level,
-            slot = slot,
-            dead = not current_state.is_living,
-            shiny = false -- TODO: shiny detection
-        })
+        print("Slot " .. slot .. " -> " .. current_state:tostring())
 
-        slot_changes[slot] = slot_changes[slot] + 1
+        if speciesname ~= "none" then
+            if species >= 284 and species <= 411 then
+                -- gen 3 pokemon... for some reason there are 25 blank pokemon between 251 and 276
+                current_state.species = species - 25
+            elseif species > 411 then
+                -- unown variations
+                current_state.species = "200" .. string.char(string.byte("a") + species - 411)
+            else
+                current_state.species = species
+            end
+        else
+            current_state.species = -1
+        end
+
+        send_slot_info(slot, current_state)
+        last_party[slot] = current_state
     end
 
     if print_ivs == 1 then

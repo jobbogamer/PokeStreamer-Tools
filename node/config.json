@@ -17,7 +17,8 @@
         // The url to that page will be http://localhost:<port>/.  Using the default 8081 means that url will be
         // http://localhost:8081/.  
         //
-        // IMPORTANT: if you modify this value, you must also modify it in the Lau scripts.
+        // IMPORTANT: if you modify this value, you must also modify it in the Lau script at 
+        //            /lua/send_data_to_server.lua.
         //
         // If you aren't running your own webserver, using port 80 means you don't need to include the :<port> part of 
         // the url.  DON'T use port 443, as the browser will expect https rather than http, and this server doesn't 
@@ -57,9 +58,9 @@
         Optional paths -- if these are specified and the game supports female and shiny variants, the server will
         attempt to find the proper variant, and if it is not found, will use the base image.
         */
-        // "female": "../../pokemon-images/HGSS/Female",
-        // "shiny": "../../pokemon-images/HGSS/Male Shiny",
-        // "shinyfemale": "../../pokemon-images/HGSS/Female Shiny",
+        "female": "../../pokemon-images/HGSS/Female",
+        "shiny": "../../pokemon-images/HGSS/Male Shiny",
+        "shinyfemale": "../../pokemon-images/HGSS/Female Shiny",
 
         // This directory expects image names to be in the following pattern: 201[-]{letter}[s].png.  The hypen is 
         // optional.  The 's' is optional and indicates that the image is for a shiny Unown.

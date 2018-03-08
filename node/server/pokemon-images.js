@@ -6,6 +6,27 @@ import { ImageRegex, SupportedImageFormats } from './constants';
 let pokemonImages = {},
     totalImgMemory = 0;
 
+class PokemonImage {
+    constructor() {
+        this.base = null;
+        this.female = null;
+        this.shiny = null;
+        this.shinyFemale = null;
+    }
+
+    getImage(female, shiny) {
+        if (female && shiny) {
+            return this.shinyFemale || this.shiny || this.female || this.base;
+        } else if (female) {
+            return this.female || this.base;
+        } else if (shiny) {
+            return this.shiny || this.base;
+        } else {
+            return this.base;
+        }
+    }
+}
+
 function getImgSrcString(filePath, fileType) {
     let data = Buffer.from(fs.readFileSync(filePath)).toString('base64');
     return `data:image/${fileType};base64, ${data}`;
@@ -17,8 +38,9 @@ function loadImages(variant, dir) {
         return;
     }
 
-    pokemonImages[variant] = {};
-    let files = fs.readdirSync(dir);
+    let imagesFound = 0,
+        files = fs.readdirSync(dir);
+
     for (let file of files) {
         let m = ImageRegex.exec(file),
             id = m && m[1],
@@ -28,13 +50,30 @@ function loadImages(variant, dir) {
             if (parseInt(id) === 201) {
                 // remove optional hyphen
                 id = id.replace('-', '');
+                let shinyUnown = id.endsWith('s');
+                if (shinyUnown) {
+                    id = id.replace('s', '');
+                }
+
+                if (!pokemonImages[id]) {
+                    pokemonImages[id] = new PokemonImage();
+                }
+
+                imagesFound++;
+                pokemonImages[id][shinyUnown ? 'shiny' : 'base'] = getImgSrcString(path.resolve(dir, file), fileType);
+                continue;
             }
 
-            pokemonImages[variant][id] = getImgSrcString(path.resolve(dir, file), fileType);
+            if (!pokemonImages[id]) {
+                pokemonImages[id] = new PokemonImage();
+            }
+
+            imagesFound++;
+            pokemonImages[id][variant] = getImgSrcString(path.resolve(dir, file), fileType);
         }
     }
 
-    console.log(`Found ${Object.keys(pokemonImages[variant]).length} ${variant} images in ${fs.realpathSync(dir)}`);
+    console.log(`Found ${imagesFound} ${variant} images in ${fs.realpathSync(dir)}`);
 }
 
 function setEmptySlotImage(filePath) {
@@ -50,7 +89,9 @@ function setEmptySlotImage(filePath) {
         return;
     }
 
-    pokemonImages['base']['-1'] = getImgSrcString(filePath, m[1]);
+    pokemonImages['-1'] = {
+        base: getImgSrcString(filePath, m[1]) 
+    };
 }
 
 const validVariants = [

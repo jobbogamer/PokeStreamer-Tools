@@ -1,4 +1,4 @@
-import ImageFormat, { Img } from './image-format';
+import { Img } from './image-format';
 
 let SupportedImageFormats = [
     Img('jpg', 'jpeg', ['jpg', 'jpeg']),

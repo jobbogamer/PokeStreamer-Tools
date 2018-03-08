@@ -57,24 +57,25 @@ app.get(/^\/reset$/i, function (req, res, next) {
 });
 
 app.post(/^\/update\/([1-6])$/i, function (req, res, next) {
-    console.log(`Received update from Lua script: ${JSON.stringify(req.body)}`);
     let slot = parseInt(req.params[0]) - 1,
         data = req.body,
         species = data.species.toString(),
         isReal = species !== '-1',
-        prefix = data.shiny !== 'false' ? 'shiny' : 'base',
+        shiny = data.shiny === 'true',
+        female = data.female === 'true',
         sData;
+    console.log(`Received update on slot ${slot + 1} from Lua script: ${JSON.stringify(req.body)}`);
 
     if (!isReal) {
         sData = slots[slot] = Slot.empty(slot, data.changeId);
-    } else if (PokemonImages[prefix][species]) {
+    } else if (PokemonImages[species]) {
         sData = slots[slot] = new Slot(
             slot,
             JSON.parse(data.changeId),
             PokemonTable[parseInt(species)], 
             data.nickname,
             JSON.parse(data.level), 
-            PokemonImages[prefix][species], 
+            PokemonImages[species].getImage(female, shiny),
             JSON.parse(data.dead));
     }
 
