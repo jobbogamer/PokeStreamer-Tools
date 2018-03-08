@@ -4,7 +4,7 @@ import path from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import config from './server/parsed-config';
+import config from './server/config';
 
 const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
 

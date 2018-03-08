@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import config from './parsed-config';
+import config from './config';
 import { ImageRegex, SupportedImageFormats } from './constants';
 
 let pokemonImages = {},

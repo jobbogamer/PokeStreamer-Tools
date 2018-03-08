@@ -4,7 +4,7 @@ import jade from 'jade';
 import sse from './sse';
 
 import './extensions';
-import config from './parsed-config';
+import config from './config';
 import PokemonTable from './pokemon-table-gen1-3';
 import PokemonImages from './pokemon-images';
 import Slot from './slot';
