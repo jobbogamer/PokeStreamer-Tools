@@ -29,6 +29,10 @@
 .nickname {
   @extend %baseText;
   @extend %nicknameText !optional;
+
+  &.no-nickname {
+    font-variant: small-caps;
+  }
 }
 
 .deathMessage1 {

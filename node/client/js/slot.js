@@ -58,6 +58,7 @@ export default class Slot {
             this.lastValue = null;
             $allText.resetText();
             $allText.find('.scaled').children().unwrap('.scaled');
+            $nickname.removeClass('no-nickname');
             $img.removeAttr('src');
             $slot.removeClass('dead');
         } else if (this.changeId < parseInt(val.changeId) && this.slot === val.slot) {
@@ -67,6 +68,12 @@ export default class Slot {
             $level.text(val.level === 0 ? '' : val.level);
             $species.text(val.species);
             $nickname.text(val.nickname || val.species);
+            if (!val.nickname) {
+                $nickname.addClass('no-nickname');
+            } else {
+                $nickname.removeClass('no-nickname');
+            }
+
             $img.attr('src', val.img);
             
             if (val.dead) {
