@@ -18,7 +18,7 @@ export default class Slot {
         this.$deathMessages = $slot.find('.deathMessage1, .deathMessage2, .deathMessage3');
         this.$allText = $slot.find('.level, .species, .nickname, .deathMessage1, .deathMessage2, .deathMessage3');
         
-        this.eventSource = ALL_IN_ONE ? Slot.eventSource : new EventSource(`/slot/${slot}`);
+        this.eventSource = config.layout.allInOne ? Slot.eventSource : new EventSource(`/slot/${slot}`);
         this.eventSource.addEventListener('message', this.updateSlot.bind(this), false);
     }
 
@@ -54,7 +54,7 @@ export default class Slot {
         } = this;
 
         if (val === 'reset') {
-            this.changeId = -1;
+            this.changeId = -2;
             this.lastValue = null;
             $allText.resetText();
             $allText.find('.scaled').children().unwrap('.scaled');
@@ -115,6 +115,6 @@ export default class Slot {
     }
 }
 
-if (ALL_IN_ONE) {
+if (config.layout.allInOne) {
     Slot.eventSource = new EventSource('/slot/all');
 }

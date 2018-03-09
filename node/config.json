@@ -42,12 +42,16 @@
 
     The "female", "unown", and "shiny" variants are optional.
 
-    For the record, I didn't organize the images to make the Male directory the one that includes all the for 
+    For the record, I didn't organize the images to make the Male directory the one that includes all the 
     gender-androdginous images.  As a woman, I'm midly annoyed at the implication, but I'm also pragmatic enough not to
     force you to change the directory structure of the zip.
+
+    NOTE:  If you are doing a FR/LG randomizer, it may pull in gen 4+ Pokemon, in which case the HGSS default 
+        directories do not include all the required images.  It should be safe to just change these values to the BW
+        folders.
     */
     "pokemonImagePaths": {
-        "base": "../../pokemon-images/HGSS/Male",
+        "base": "../../pokemon-images/BW",
 
         // Path to the image used when a slot is empty relative to /node/ directory.
         "emptySlot": "../../pokemon-images/pokeball.png",
@@ -58,9 +62,9 @@
         Optional paths -- if these are specified and the game supports female and shiny variants, the server will
         attempt to find the proper variant, and if it is not found, will use the base image.
         */
-        "female": "../../pokemon-images/HGSS/Female",
-        "shiny": "../../pokemon-images/HGSS/Male Shiny",
-        "shinyfemale": "../../pokemon-images/HGSS/Female Shiny",
+        "female": "../../pokemon-images/BW/female",
+        "shiny": "../../pokemon-images/BW/shiny",
+        "shinyfemale": "../../pokemon-images/BW/shiny/female",
 
         // This directory expects image names to be in the following pattern: 201[-]{letter}[s].png.  The hypen is 
         // optional.  The 's' is optional and indicates that the image is for a shiny Unown.

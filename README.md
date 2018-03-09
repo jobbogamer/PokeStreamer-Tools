@@ -16,6 +16,7 @@ This code uses a [Node.JS](http://nodejs.org) webserver to host the images.  The
 The following are required *in addition* to the [requirements](#requirements) listed below.
 
 *   [Git for Windows](https://git-scm.com/download/win)
+*   [Python **v2.7**](http://https://www.python.org/downloads/) used for building some dependencies ([download link](https://www.python.org/ftp/python/2.7.14/python-2.7.14.msi))
 *   [Node.js](http://nodejs.org) - version 8.9.4 or newer
 *   [Webpack](http://webpack.js.org) 4.1 or newer (this will be installed automatically later, but if you have an older version already installed, you may need to update)
 
@@ -31,14 +32,14 @@ The following are required *in addition* to the [requirements](#requirements) li
 
 I *highly* recommend you use the zip located [here](http://pkmn.net/?action=content&page=viewpage&id=8644) as it includes all the required images named the way my script expects them to be named (i.e. numbered by PokeDex number).
 
-Download and extract this to your newly cloned directory's `/pokemon-images/` folder.  This is an optional location that you can change later in the config if you wish.  The edited versions of the lua scripts (currently just gen3) no longer require the images to be placed alongside them.  This directory may be anywhere you want.
+Download and extract this to your newly cloned directory's `/pokemon-images/` folder.  If you're using the zip above, you'll need to move all the sub directories from `/pokemon-images/PKMN.NET Sprite Resource 4/Pokémon/` to `/pokemon-images`, or change the values in config.  This is an optional location that you can change later in the config if you wish.  The edited versions of the lua scripts (currently just gen3) no longer require the images to be placed alongside them.  This directory may be anywhere you want.
 
 **Note**: All images in the specified image directories are loaded into memory by the server.  This isn't a problem for the images in the suggested ZIP (~5MB depending on which generation), but if you use larger ones, you may run into some memory difficulties.
 
 #### Install requirements
 
 1.  Navigate to `/node/`.
-2.  Run `npm install`.
+2.  Run `npm install --save`.
 
 #### Configure settings
 
@@ -49,7 +50,11 @@ Download and extract this to your newly cloned directory's `/pokemon-images/` fo
 
 The default settings are what [Failstream](https://twitch.tv/failstream) uses, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
 
-**Note**: Any time you update the `config.json` file, you will need to rebuild the project by running `build.cmd`.
+**Note**: Any time you update the `config.json` file, you will need to rebuild the project by running `build.cmd`.  Alternatively, from `/node/`, you can run 
+
+    node_modules/.bin/webpack --progress --color --watch --mode production
+
+This will automatically handle **most** changes to `config.json`, though changing some nuzlocke settings (e.g. enabling sound) won't update until you re-run webpack.
 
 #### Build
 

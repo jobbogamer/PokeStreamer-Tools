@@ -1,7 +1,7 @@
 import './sass/index.scss';
 import Nuzlocke from './js/nuzlocke';
 import Slot from './js/slot';
-import '../config.json';
+import config from '../config.json';
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -28,7 +28,7 @@ let slots = [];
         return;
     }
     
-    if (!ALL_IN_ONE) {
+    if (!config.layout.allInOne) {
         let slot = getParameterByName('slot');
         
         if (slot == null) { // using == rather than === allows it to handle the undefined case
@@ -54,9 +54,9 @@ let slots = [];
         }
     }
 
-    $(window).on('unload', function () { 
+    window.onbeforeunload = function () { 
         for (let s of slots) {
             s.close();
         }
-    });
+    };
 })();

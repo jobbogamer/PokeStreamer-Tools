@@ -4,8 +4,7 @@ import jade from 'jade';
 import sse from './sse';
 
 import './extensions';
-import config from './config';
-import PokemonTable from './pokemon-table-gen1-3';
+import Config from './config';
 import PokemonImages from './pokemon-images';
 import Slot from './slot';
 
@@ -18,11 +17,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 let connections = new Set(),
-    slots = [];
+    slots;
 
-for (let i = 0; i < 6; i++) {
-    slots.push(Slot.empty(i));
+function initSlots() {
+    slots = [];
+    for (let i = 0; i < 6; i++) {
+        slots.push(Slot.empty(i));
+    }
 }
+
+initSlots();
 
 app.get(/^\/slot\/([1-6]|all)$/i, function (req, res, next) {
     res.sseSetup();
@@ -49,20 +53,41 @@ app.get(/^\/slot\/([1-6]|all)$/i, function (req, res, next) {
 
 app.get(/^\/reset$/i, function (req, res, next) {
     console.log('Sending reset to all slot connections');
+    let sentTo = 0;
     for (let conn of connections) {
         conn.res.sseSend('reset');
+        sentTo++;
     }
 
+    console.log(`Sent reset to ${sentTo} connections`);
+
+    initSlots();
+
+    console.log('Sending empty slots to all connections');
+    sentTo = 0;
+    for (let conn of connections) {
+        if (conn.slot === 'all') {
+            conn.res.sseSend(slots);
+        } else {
+            // kind of silly to send the indexed slot when they are all identical, but meh... this is resilient to 
+            // possible future changes
+            conn.res.sseSend(slot[conn.slot]);
+        }
+
+        sentTo++;
+    }
+
+    console.log(`Sent empty slots to ${sentTo} connections`);    
     res.sendStatus(200);
 });
 
 app.post(/^\/update\/([1-6])$/i, function (req, res, next) {
     let slot = parseInt(req.params[0]) - 1,
         data = req.body,
-        species = data.species.toString(),
+        species = data.species,
         isReal = species !== '-1',
-        shiny = data.shiny === 'true',
-        female = data.female === 'true',
+        shiny = !!parseInt(data.shiny),
+        female = !!parseInt(data.female),
         sData;
     console.log(`Received update on slot ${slot + 1} from Lua script: ${JSON.stringify(req.body)}`);
 
@@ -72,7 +97,7 @@ app.post(/^\/update\/([1-6])$/i, function (req, res, next) {
         sData = slots[slot] = new Slot(
             slot,
             JSON.parse(data.changeId),
-            PokemonTable[parseInt(species)], 
+            species,
             data.nickname,
             JSON.parse(data.level), 
             PokemonImages[species].getImage(female, shiny),
@@ -113,6 +138,18 @@ setInterval(() => {
     }
 }, 5000);
 
-app.listen(config.server.port, function() {
-    console.log(`Listening on port ${config.server.port}`);
+let server = app.listen(Config.Current.server.port, function() {
+    console.log(`Listening on port ${Config.Current.server.port}`);
+});
+
+Config.on('update', e => {
+    if (e.prev.server.port !== e.next.server.port) {
+        server.close(() => {
+            console.log(`Closed server listening on port ${e.prev.server.port}`);
+        });
+
+        server = app.listen(e.next.server.port, function() {
+            console.log(`Listening on port ${e.next.server.port}`);
+        });
+    }
 });

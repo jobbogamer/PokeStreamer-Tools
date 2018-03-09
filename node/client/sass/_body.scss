@@ -26,18 +26,19 @@ body {
     height: $totalHeight;
   }
 
-  #slotBtns:empty {
-    display: none;
-  }
-}
+  #slotBtns {
+    &:empty {
+      display: none;
+    }
 
-@if $debug {
-  html {
-    background: green;
-  }
-  
-  body {
-    transform: translate(300px, 300px);
-    overflow: visible;
+    margin: 8px;
+
+    h3 {
+      margin: 0;
+    }
+    
+    a {
+      display: block;
+    }
   }
 }

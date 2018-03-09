@@ -191,6 +191,7 @@ for i = 213, 239 do
 	characterTable[i] = string.char(i - 213 + 97)
 end
 
+characterTable[0] = " "
 characterTable[171] = "!"
 characterTable[172] = "?"
 characterTable[173] = "."

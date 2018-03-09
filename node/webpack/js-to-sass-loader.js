@@ -1,9 +1,7 @@
 import _ from 'lodash';
 import path from 'path';
-import decache from 'decache';
 
-const relative = path.relative,
-    importRegex = /@import\s+'([^']+\.js)'\s*;/ig;
+const importRegex = /@import\s+'([^']+\.js)'\s*;/ig;
 
 function validateExportType(data) {
     if (!_.isObject(data)) {
@@ -63,14 +61,15 @@ function shouldWrapInStrings(input) {
     return inputWithoutFunctions.includes(',');
 }
 
-export default function (source) {
-    let context = this;
+export default function (content) {
+    let self = this;
+    this.cacheable();
 
-    return source.replace(importRegex, (match, relativePath) => {
+    return content.replace(importRegex, (match, relativePath) => {
         if (match) {
-            decache(relativePath);
-            let modulePath = path.join(context.context, relativePath),
-                data = require(modulePath);
+            let modulePath = path.join(self.context, relativePath);
+            self.addDependency(modulePath);
+            let data = require(modulePath).default;
             return transform(data);
         }
     });

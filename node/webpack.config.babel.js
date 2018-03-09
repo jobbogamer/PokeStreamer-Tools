@@ -4,7 +4,9 @@ import path from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import config from './server/config';
+import Config from './server/config';
+
+const config = Config.Current;
 
 const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
 
@@ -63,9 +65,7 @@ let webpackConfig = {
     plugins: [
         new webpack.DefinePlugin({
             NUM_SLOTS: 6,
-            ALL_IN_ONE: config.layout.allInOne,
             ENVIRONMENT: NODE_ENV,
-            config: JSON.stringify(config),
         }),
         new webpack.ProvidePlugin({
             _: 'lodash',
@@ -81,7 +81,6 @@ let webpackConfig = {
             test: /\.js$/,
             filename: '[file].map',
             publicPath: '/',
-            
         })
     ],
     

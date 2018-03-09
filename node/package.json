@@ -5,10 +5,15 @@
   "main": "app.js",
   "scripts": {
     "build": "node_modules/.bin/webpack --progress --color --mode production",
+    "watch": "node_modules/.bin/webpack --progress --color --watch --mode production",
     "start": "node -r babel-register ./server/app.js"
   },
   "author": "Jordan Hitch",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:dfoverdx/PokeStreamer-Tools.git"
+  },
   "dependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.3",

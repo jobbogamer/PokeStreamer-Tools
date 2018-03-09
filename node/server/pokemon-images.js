@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import config from './config';
+import Config from './config';
 import { ImageRegex, SupportedImageFormats } from './constants';
 
 let pokemonImages = {},
@@ -89,7 +89,7 @@ function setEmptySlotImage(filePath) {
         return;
     }
 
-    pokemonImages['-1'] = {
+    pokemonImages[-1] = {
         base: getImgSrcString(filePath, m[1]) 
     };
 }
@@ -103,23 +103,34 @@ const validVariants = [
     'emptySlot'
 ];
 
-let paths = config.pokemonImagePaths;
-if (!paths["base"]) {
-    throw new Error(`config.json is missing 'base' in 'pokemonImagePaths' object`);
-} else if (!fs.existsSync(path.resolve(__dirname, paths.base))) {
-    throw new Error(`Specified pokemonImagePaths.base '${path.resolve(__dirname, paths.base)}' in config.json does not exist.`);
-}
+function initPokemonImages() {
+    pokemonImages = {};
+    let paths = Config.Current.pokemonImagePaths;
+    if (!paths["base"]) {
+        throw new Error(`config.json is missing 'base' in 'pokemonImagePaths' object`);
+    } else if (!fs.existsSync(path.resolve(__dirname, paths.base))) {
+        throw new Error(`Specified pokemonImagePaths.base '${path.resolve(__dirname, paths.base)}' in config.json does not exist.`);
+    }
 
-for (let [variant, varientPath] of Object.entries(paths)) {
-    if (varientPath && validVariants.includes(variant)) {
-        if (variant === 'emptySlot') {
-            setEmptySlotImage(varientPath);
+    for (let [variant, varientPath] of Object.entries(paths)) {
+        if (varientPath && validVariants.includes(variant)) {
+            if (variant === 'emptySlot') {
+                setEmptySlotImage(varientPath);
+            } else {
+                loadImages(variant, path.resolve(__dirname, varientPath));
+            }
         } else {
-            loadImages(variant, path.resolve(__dirname, varientPath));
+            console.warn(`Invalid key 'pokemonImagePaths.${variant}' in config.json.  Valid keys are: ${validVariants.join(', ')}`);
         }
-    } else {
-        console.warn(`Invalid key 'pokemonImagePaths.${variant}' in config.json.  Valid keys are: ${validVariants.join(', ')}`);
     }
 }
 
-module.exports = pokemonImages;
+initPokemonImages();
+Config.on('update', e => {
+    if (JSON.stringify(e.prev.pokemonImagePaths) !== JSON.stringify(e.next.pokemonImagePaths)) {
+        console.log('Pokemon image paths in config changed.  Reloading all images.');
+        initPokemonImages();
+    }
+});
+
+export default pokemonImages;

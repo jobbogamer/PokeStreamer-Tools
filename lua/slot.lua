@@ -4,7 +4,9 @@ Slot = {
     level = -1,
     female = false,
     shiny = false,
-    living = false
+    living = false,
+    level_met = -1,
+    location_met = -1
 }
 
 function Slot:new(o)
@@ -20,7 +22,9 @@ function Slot:equals(other)
         self.level == other.level and
         self.female == other.female and
         self.shiny == other.shiny and
-        self.living == other.living
+        self.living == other.living and
+        self.level_met == other.level_met and
+        self.location_met == other.location_met
 end
 
 function Slot:tostring()

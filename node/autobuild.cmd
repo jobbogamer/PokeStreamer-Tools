@@ -26,7 +26,7 @@ IF "%install%"=="true" (
         EXIT /B 1
     )
 
-    CALL npm install --save
+    npm install --save
     IF %errorlevel% NEQ 0 (
         ECHO Installation failed.  May the force be with you in your troubleshooting!
         EXIT /B 1
@@ -35,7 +35,7 @@ IF "%install%"=="true" (
 
 REM Run webpack to build app
 ECHO Building...
-CALL npm run build
+npm run build
 IF %errorlevel% NEQ 0 (
     ECHO Build failed.  Run %~f0 --install if you have not already.  Otherwise, may the force be with you in your troubleshooting!
     EXIT /B 1
