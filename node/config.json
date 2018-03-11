@@ -2,14 +2,9 @@
     /*
         Pokemon Generation
 
-        Valid values: 1 through 5.
-
-        EverOddish has two Lua scripts: one for generations 1-3 and below, and one for generations 4 and 5.  As such,
-        values 1-3 do the same thing and values 4 and 5 do the same thing.
-
-        TODO: Generations 4+ are not yet implemented.
+        Valid values: 3 through 5.  (Values 4 and 5 do the same thing).
     */
-    "generation": 3,
+    "generation": 5,
 
     "server": {
         // The port to use when accessing the page that you insert into your stream scene.
@@ -46,9 +41,9 @@
     gender-androdginous images.  As a woman, I'm midly annoyed at the implication, but I'm also pragmatic enough not to
     force you to change the directory structure of the zip.
 
-    NOTE:  If you are doing a FR/LG randomizer, it may pull in gen 4+ Pokemon, in which case the HGSS default 
-        directories do not include all the required images.  It should be safe to just change these values to the BW
-        folders.
+    NOTE:  If you are doing a FR/LG randomizer, it may pull in gen 4+ Pokemon, in which case the HGSS directories do not
+           include all the required images.  It should be safe to just change these values to the BW
+           folders.
     */
     "pokemonImagePaths": {
         "base": "../../pokemon-images/BW",

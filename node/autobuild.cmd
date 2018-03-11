@@ -35,7 +35,7 @@ IF "%install%"=="true" (
 
 REM Run webpack to build app
 ECHO Building...
-npm run build
+npm run watch
 IF %errorlevel% NEQ 0 (
     ECHO Build failed.  Run %~f0 --install if you have not already.  Otherwise, may the force be with you in your troubleshooting!
     EXIT /B 1

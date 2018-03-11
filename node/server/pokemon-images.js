@@ -44,16 +44,13 @@ function loadImages(variant, dir) {
     for (let file of files) {
         let m = ImageRegex.exec(file),
             id = m && m[1],
-            fileType = m && m[2];
+            fileType = m && m[3];
 
         if (id) {
             if (parseInt(id) === 201) {
                 // remove optional hyphen
                 id = id.replace('-', '');
-                let shinyUnown = id.endsWith('s');
-                if (shinyUnown) {
-                    id = id.replace('s', '');
-                }
+                let shinyUnown = !!m[2];
 
                 if (!pokemonImages[id]) {
                     pokemonImages[id] = new PokemonImage();

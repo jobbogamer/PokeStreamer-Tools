@@ -20,6 +20,10 @@ The following are required *in addition* to the [requirements](#requirements) li
 *   [Node.js](http://nodejs.org) - version 8.9.4 or newer
 *   [Webpack](http://webpack.js.org) 4.1 or newer (this will be installed automatically later, but if you have an older version already installed, you may need to update)
 
+Optional:
+
+*   [LuaSocket 2.0.2 32-bit](http://files.luaforge.net/releases/luasocket/luasocket/luasocket-2.0.2) - The included LuaSocket binaries in `/lua/` are [64-bit versions](https://download.zerobrane.com/luasocket-win64.zip) (as they're harder to come by).  If you are using a 32-bit emulator, you will need to download the 32-bit version and replace the 64-bit versions.
+
 ### Server Setup
 
 #### Download the GitHub repository
@@ -50,11 +54,7 @@ Download and extract this to your newly cloned directory's `/pokemon-images/` fo
 
 The default settings are what [Failstream](https://twitch.tv/failstream) uses, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
 
-**Note**: Any time you update the `config.json` file, you will need to rebuild the project by running `build.cmd`.  Alternatively, from `/node/`, you can run 
-
-    node_modules/.bin/webpack --progress --color --watch --mode production
-
-This will automatically handle **most** changes to `config.json`, though changing some nuzlocke settings (e.g. enabling sound) won't update until you re-run webpack.
+**Note**: Any time you update the `config.json` file, you will need to rebuild the project by running `build.cmd`.  Alternatively, from `/node/`, you can run `autobuild.cmd`.  This will automatically handle **most** changes to `config.json`, though changing some nuzlocke settings (e.g. enabling sound) won't update until you re-run webpack.  If a change doesn't seem to be taking effect, your best bet is just to restart webpack/rerun build.cmd.  (There's an open issue about the styles, which unfortunately aren't being updated properly.)
 
 #### Build
 
