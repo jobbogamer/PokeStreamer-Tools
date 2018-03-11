@@ -27,6 +27,7 @@
     "copy-webpack-plugin": "^4.5.0",
     "css-loader": "^0.28.10",
     "decache": "^4.4.0",
+    "discord.js": "^11.3.2",
     "ejs-compiled-loader": "^1.1.0",
     "ejs-loader": "^0.3.1",
     "ejs-render-loader": "^1.0.0",

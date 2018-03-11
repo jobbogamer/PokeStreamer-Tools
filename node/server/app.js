@@ -7,6 +7,7 @@ import './extensions';
 import Config from './config';
 import PokemonImages from './pokemon-images';
 import Slot from './slot';
+import SoulLink from './soul-link';
 
 let app = express();
 app.engine('jade', jade.__express);
@@ -153,3 +154,7 @@ Config.on('update', e => {
         });
     }
 });
+
+if (SoulLink.Enabled) {
+    SoulLink.init();
+}

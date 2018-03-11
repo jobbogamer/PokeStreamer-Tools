@@ -125,7 +125,16 @@
         // These messages are displayed, replacing the text in whichever element they appear, when a Pokemon dies.
         "deathMessage1": "You died too young",
         "deathMessage2": "We hardly knew you",
-        "deathMessage3": null
+        "deathMessage3": null,
+
+        "soulLink": {
+            "enabled": true,
+
+            // Discord server
+            "guild": "dxdt",
+            "channelName": "private-test",
+            "userToken": "NDIyMjg4OTU4OTcwNTI3NzQ0.DYaHyw.PLI1tXxO1UvgoroXynwz73HwQbI"
+        },
     },
     
     /*
