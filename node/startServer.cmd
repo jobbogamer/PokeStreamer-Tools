@@ -1,5 +1,7 @@
 @ECHO off
-CALL node --version
+SETLOCAL EnableDelayedExpansion
+
+CALL node --version > NUL
 IF %errorlevel% NEQ 0 (
     ECHO Node is not installed.  Get it and install it from https://nodejs.org/en/download.
     CHOICE /n /m "Open in browser? [Y] or [N]"
@@ -8,4 +10,19 @@ IF %errorlevel% NEQ 0 (
     EXIT /B 1
 )
 
-node -r babel-register server/app.js
+FOR /F "tokens=1-3 delims=v. USEBACKQ" %%F IN (`node --version`) DO (
+    IF %%F LSS 8 (
+        SET warn=v%%F.%%G.%%H
+    ) ELSE IF %%G LSS 9 (
+        SET warn=v%%F.%%G.%%H
+    ) ELSE IF %%H LSS 4 (
+        SET warn=v%%F.%%G.%%H
+    )
+)
+
+IF "%warn%" NEQ "" (
+    ECHO WARNING:  It appears that node version 8.9.4 or higher is not installed.
+    ECHO Current version: %warn%
+)
+
+npm start
