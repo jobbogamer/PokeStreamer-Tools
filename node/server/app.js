@@ -48,6 +48,10 @@ app.get(/^\/slot\/([1-6]|all)$/i, function (req, res, next) {
     let conn = { slot: slot, res: res };
     connections.add(conn);
 
+    req.on('close', (function () { 
+        connections.delete(this);
+    }).bind(conn));
+
     console.log(`Number of open connections: ${connections.size}`);
     next();
 });
