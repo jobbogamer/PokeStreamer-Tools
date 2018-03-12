@@ -109,6 +109,10 @@ function initPokemonImages() {
         throw new Error(`Specified pokemonImagePaths.base '${path.resolve(__dirname, paths.base)}' in config.json does not exist.`);
     }
 
+    if (!paths['emptySlot']) {
+        console.warn('No specified emptySlot image.  Skipping.');
+    }
+
     for (let [variant, varientPath] of Object.entries(paths)) {
         if (varientPath && validVariants.includes(variant)) {
             if (variant === 'emptySlot') {
@@ -126,6 +130,7 @@ initPokemonImages();
 Config.on('update', e => {
     if (JSON.stringify(e.prev.pokemonImagePaths) !== JSON.stringify(e.next.pokemonImagePaths)) {
         console.log('Pokemon image paths in config changed.  Reloading all images.');
+        pokemonImages = {};
         initPokemonImages();
     }
 });

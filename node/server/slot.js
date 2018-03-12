@@ -48,7 +48,12 @@ Slot.empty = function(slot, changeId) {
     let cid = changeId === undefined ? -1 : changeId;
     changeId = VA.int(cid, 'changeId', `Argument 'changeId' must be a valid integer or undefined.  Found ${changeId}.`);
 
-    return new Slot(slot, changeId, '', '', 0, pokemonImages[-1].base, false);
+    let img = null;
+    if (pokemonImages[-1] && pokemonImages[-1].base) {
+        img = pokemonImages[-1].base;
+    }
+
+    return new Slot(slot, changeId, '', '', 0, img, false);
 };
 
 export default Slot;

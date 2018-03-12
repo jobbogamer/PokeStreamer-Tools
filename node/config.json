@@ -47,15 +47,16 @@
     */
     "pokemonImagePaths": {
         "base": "../../pokemon-images/BW",
-        
-        // Path to the image used when a slot is empty relative to /node/ directory.
-        "emptySlot": "../../pokemon-images/pokeball.png",
-        
+
         /* 
-        TODO -- These are not yet implemented.  You can include the settings, but they won't do anything.
-        
         Optional paths -- if these are specified and the game supports female and shiny variants, the server will
         attempt to find the proper variant, and if it is not found, will use the base image.
+        */
+        // Path to the image used when a slot is empty relative to /node/ directory.
+        "emptySlot": "../../pokemon-images/pokeball.png",
+
+        /*
+        TODO -- These are not yet implemented.  You can include the settings, but they won't do anything.
         */
         "female": "../../pokemon-images/BW/female",
         "shiny": "../../pokemon-images/BW/shiny",
