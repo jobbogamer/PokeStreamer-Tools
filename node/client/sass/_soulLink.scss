@@ -1,0 +1,188 @@
+@mixin img-trans($transforms) {
+  img {
+    transform: $transforms;
+  }
+}
+
+@mixin flip-img($transforms) {
+  @include img-trans(scale(-1, 1) $transforms);
+}
+
+@mixin overlay($v, $h) {
+  .img-overlay {
+    position: absolute;
+    display: block;
+
+    @if $h {
+      @if $h == left {
+        left: 0;
+      } @else if $h == right {
+        right: 0;
+      } @else {
+        @warn "Invalid overlay horizontal value `#{$h}`";
+      }
+    } @else {
+      // center horizontally
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    @if $v {
+      @if $v == top {
+        top: 0;
+      } @else if $v == bottom {
+        bottom: 0;
+      } @else {
+        @warn "Invalid overlay vertical value `#{$v}`";
+      }
+    } @else {
+      // vertically center
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+}
+
+%sl-diagonal-forward {
+  &:first-child {
+    @include overlay(top, left);
+    @include img-trans(translate(-$imageShift, -$imageShift) $imageScale);
+  }
+
+  &:last-child {
+    @include overlay(bottom, right);
+    @include flip-img(translate(-$imageShift, $imageShift) $imageScale);
+  }
+}
+
+%sl-diagonal-backward {
+  &:first-child {
+    @include overlay(top, right);
+    @include flip-img(translate(-$imageShift, -$imageShift) $imageScale);
+  }
+
+  &:last-child {
+    @include overlay(bottom, left);
+    @include img-trans(translate(-$imageShift, $imageShift) $imageScale);
+  }
+}
+
+%sl-horizontal {
+  &:first-child {
+    .img-overlay {
+      position: absolute;
+      right: 0;
+      top: 25%;
+      transform: translate(0, -50%);
+    }
+    
+    @include img-trans(translate(-$imageShift, -$imageShift) translate(0, -$soulLinkGap) $imageScale);
+  }
+
+  &:last-child {
+    .img-overlay {
+      position: absolute;
+      left: 0;
+      top: 75%;
+      transform: translate(0, -50%);
+    }
+
+    @include flip-img(translate(-$imageShift, $imageShift) translate(0, 25%) $imageScale);
+  }
+}
+
+%sl-vertical {
+  &:first-child {
+    .img-overlay {
+      position: absolute;
+      left: 25%;
+      transform: translate(-50%, 0);
+      bottom: 0;
+    }
+
+    @include img-trans(translate(-$imageShift, -$imageShift) translate(-$soulLinkGap, 0) $imageScale);
+  }
+
+  &:last-child {
+    .img-overlay {
+      position: absolute;
+      left: 75%;
+      transform: translate(-50%, 0);
+      top: 0;
+    }
+
+    top: -$imageWrapperHeight !important;
+    left: $soulLinkGap;
+    @include flip-img(translate($imageShift, $imageShift) translate(-25%, 0) $imageScale);
+  }
+}
+
+%thumbnail-base {
+  .image-wrapper {
+    &:last-child {
+      transform: scale(.5 .5);
+      transform-origin: 100% 100%;
+      top: $soulLinkGap;
+      left: $soulLinkGap;
+
+      @include overlay(bottom, left);
+    }
+  }
+}
+
+@mixin soul-link-styles($direction) {
+  .img-wrapper {
+    position: relative;
+    
+    @extend %sl-#{$direction} !optional;
+    
+    &:first-child {
+      clip-path: url(#soulLinkClipTop);
+    }
+    
+    &:last-child {
+      clip-path: url(#soulLinkClipBottom);
+      top: $soulLinkGap - $imageWrapperHeight;
+    }
+  }
+}
+
+@if $soulLinkEnabled {
+  #soulLinkClipTop, #soulLinkClipBottom {
+    transform: scale(strip-unit($imageWrapperWidth) / 100, strip-unit($imageWrapperHeight) / 100);
+  }
+  
+  svg {
+    position: absolute;
+  }
+
+  .soul-link {
+    @if $soulLinkOrientation != "custom" && $soulLinkOrientation != "thumbnail" {
+      @include soul-link-styles($soulLinkOrientation);
+    } @else if $soulLinkOrientation == "thumbnail" {
+      @extend %thumbnail-base;
+      @extend %thumbnail !optional;
+    }
+  }
+
+  .img-wrapper {
+    width: $imageWrapperWidth;
+    max-width: $imageWrapperWidth;
+    height: $imageWrapperHeight;
+    max-height: $imageWrapperHeight;
+
+    &:not(.soul-linked) {
+      &.invalid {
+        @extend %invalidPokemonStyle !optional;
+      }
+    }
+
+    &.soul-linked {
+      @extend %soulLinkedStyle !optional;
+
+      &.boxed {
+        @extend %boxedStyle !optional;
+      }
+    }
+  }
+}

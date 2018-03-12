@@ -1,13 +1,15 @@
 @import './configSass.js';
+@import './helpers';
 
-$totalWidth: $imageSideLength + $leftElementWidth + $rightElementWidth;
-$totalHeight: $imageSideLength + $topElementHeight + $bottomElementHeight;
+$totalSlotWidth: $imageSideLength + $leftElementWidth + $rightElementWidth !default;
+$totalSlotHeight: $imageSideLength + $topElementHeight + $bottomElementHeight !default;
 
 @import './body';
 @import './slot';
 @import './image';
 @import './text';
 @import './nuzlocke';
+@import "./soulLink";
 
 #err {
   color: red;

@@ -10,8 +10,8 @@ body {
 
 @if $allInOne {
   html, body {
-    min-width: $totalWidth;
-    min-height: $totalHeight;
+    min-width: $totalSlotWidth;
+    min-height: $totalSlotHeight;
   }
 
   body {
@@ -22,8 +22,8 @@ body {
 }
 @else {
   html, body {
-    width: $totalWidth;
-    height: $totalHeight;
+    width: $totalSlotWidth;
+    height: $totalSlotHeight;
   }
 
   #slotBtns {

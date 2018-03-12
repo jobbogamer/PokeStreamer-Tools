@@ -89,29 +89,47 @@ let webpackConfig = {
     ]
 };
 
-if (config.nuzlocke.deathSound && config.nuzlocke.deathSound.enabled) {
-    let soundFileName = config.nuzlocke.deathSound.filePath,
-    possiblePaths = [
-        path.resolve(__dirname, 'resources', soundFileName),
-        path.resolve(__dirname, soundFileName),
-        path.resolve(soundFileName)
-    ],
-    soundPath = null;
-    
-    for (let p of possiblePaths) {
-        if (fs.existsSync(p)) {
-            soundPath = p;
-            break;
+let nuzlocke = config.nuzlocke,
+    soulLink = nuzlocke.soulLink;
+if (nuzlocke.deathSound && nuzlocke.deathSound.enabled) {
+    const getSoundPath = function(soundFileName) {
+        let possiblePaths = [
+            path.resolve(__dirname, 'resources', soundFileName),
+            path.resolve(__dirname, soundFileName),
+            path.resolve(soundFileName)
+        ];
+
+        for (let p of possiblePaths) {
+            if (fs.existsSync(p)) {
+                return p;
+            }
         }
-    }
+
+        return null;
+    };
     
+    let soundPath = getSoundPath(nuzlocke.deathSound.filePath);
     if (soundPath) {
         webpackConfig.plugins.push(
             new CopyWebpackPlugin([{ 
                 from: soundPath,
-                to: `${config.nuzlocke.deathSound.filePath}`
+                to: `${path.parse(nuzlocke.deathSound.filePath).base}`
             }])
         );
+    }
+
+    if (soulLink.deathSound && 
+        soulLink.deathSound.enabled &&
+        soulLink.deathSound.filePath) {
+        soundPath = getSoundPath(soulLink.deathSound.filePath);
+        if (soundPath) {
+            webpackConfig.plugins.push(
+                new CopyWebpackPlugin([{ 
+                    from: soundPath,
+                    to: `${path.parse(soulLink.deathSound.filePath).base}`
+                }])
+            );
+        }
     }
 }
 

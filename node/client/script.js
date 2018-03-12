@@ -1,5 +1,6 @@
 import './sass/index.scss';
 import Nuzlocke from './js/nuzlocke';
+import SoulLink from './js/soulLink';
 import Slot from './js/slot';
 import config from '../config.json';
 
@@ -19,8 +20,12 @@ let slots = [];
     let $err = $('#err'),
         $body = $('body');
     
-    if (Nuzlocke) {
+    if (Nuzlocke.enabled) {
         $body.addClass('nuzlocke');
+
+        if (SoulLink.enabled) {
+            $body.addClass('soul-link');
+        }
     }
     
     if (!window.EventSource) {
@@ -58,5 +63,7 @@ let slots = [];
         for (let s of slots) {
             s.close();
         }
+
+        return null;
     };
 })();

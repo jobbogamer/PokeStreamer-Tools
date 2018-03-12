@@ -5,11 +5,13 @@ const config = json5.parse(fs.readFileSync('config.json'));
 
 console.log('Generating SASS variables.');
 let sass = {
+        allInOne: config.layout.allInOne,
+
         nuzlockeEnabled: config.nuzlocke.enabled,
         applyDeathSpin: config.nuzlocke && config.nuzlocke.applyDeathSpin,
         ripPrefix: config.nuzlocke && config.nuzlocke.ripPrefix || '',
 
-        allInOne: config.layout.allInOne,
+        soulLinkEnabled: config.nuzlocke.enabled && config.nuzlocke.soulLink.enabled,
     };
 
 for (let key of Object.keys(config.style)) {
