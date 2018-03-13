@@ -26,46 +26,34 @@
     },
     
     /*
-    Paths to images folder relative to the /node/server directory.
+    Path to images folder relative to the /node/server directory.
     I suggest using the zip found at http://pkmn.net/?action=content&page=viewpage&id=8644, extracting the
-    Pokémon folder, and then choosing one of the subdirectories (e.g. FRLG for Fire Red/Leaf Green).
-    
-    Example:
-    
-    "base": "../pokemon-images/FRLG/FRLG"
-    "shiny": "../pokemon-images/FRLG/Shiny"
-    
-    The "female", "unown", and "shiny" variants are optional.
-    
-    For the record, I didn't organize the images to make the Male directory the one that includes all the 
-    gender-androdginous images.  As a woman, I'm midly annoyed at the implication, but I'm also pragmatic enough not to
-    force you to change the directory structure of the zip.
-    
-    NOTE:  If you are doing a FR/LG randomizer, it may pull in gen 4+ Pokemon, in which case the HGSS directories do not
-    include all the required images.  It should be safe to just change these values to the BW
-    folders.
-    */
-    "pokemonImagePaths": {
-        "base": "../../pokemon-images/BW",
+    Pokémon folder, and then choosing BW since the directory structure is what the script expects it to be.
 
-        /* 
-        Optional paths -- if these are specified and the game supports female and shiny variants, the server will
-        attempt to find the proper variant, and if it is not found, will use the base image.
-        */
-        // Path to the image used when a slot is empty relative to /node/ directory.
-        "emptySlot": "../../pokemon-images/pokeball.png",
-
-        /*
-        TODO -- These are not yet implemented.  You can include the settings, but they won't do anything.
-        */
-        "female": "../../pokemon-images/BW/female",
-        "shiny": "../../pokemon-images/BW/shiny",
-        "shinyfemale": "../../pokemon-images/BW/shiny/female",
+    The server will search the following paths for images:
+        pokemonImagesPath/
+        pokemonImagesPath/female
+        pokemonImagesPath/shiny
+        pokemonImagesPath/shiny/female
+        pokemonImagesPath/forms/...
+    
+    NOTE: Giratina's and Arceus' alternate forms aren't available by default.  If you want to use them:
+        Run setupPokemonImages.cmd 
         
-        // This directory expects image names to be in the following pattern: 201[-]{letter}[s].png.  The hypen is 
-        // optional.  The 's' is optional and indicates that the image is for a shiny Unown.
-        "unown": "../../pokemon-images/RSE/Unown",
-    },
+        OR:
+        For Giratina, open /BW/forms/giratina directory, and rename the two "another" files (the one in the root and the
+            one in Shiny) to "altered".
+        For Arceus, find the various images you want to use (/DPPt/Arceus has them, and if you use them, you should use 
+            the <type>2.pngs as they have transparent backgrounds), copy them into /BW/forms/arceus, and rename them all
+            to be of the form "492<kind>.png" for non-shiny and "492s<kind>.png" for shiny.  *IMPORTANT*: <kind> is 
+            from the list at https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV#Alternate_forms,
+            not the <type> already in the filename.  (Leave "mystery" as-is, since Windows doesn't support filenames 
+            with question marks in them.)
+    */
+    "pokemonImagesPath": "../../pokemon-images/BW",
+
+    // Path to the image used when a slot is empty relative to /node/ directory.
+    "emptySlotImagePath": "../../pokemon-images/pokeball.png",
     
     "layout": { 
         // Whether you want the page to display all slots on one page, or have one slot per page so you can place them

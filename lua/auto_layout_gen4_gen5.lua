@@ -52,8 +52,10 @@ local movepp = {}
 local hpiv, atkiv, defiv, speiv, spaiv, spdiv
 local ivspart = {}, ivs
 local isegg
-local nat
+local byte0x40
 local is_female
+local alternate_form
+local nat
 local isnicknamed, nickname
 
 local bnd,br,bxr=bit.band,bit.bor,bit.bxor
@@ -570,18 +572,20 @@ function fn()
 			prng = mult32(prng,0x41C64E6D) + 0x6073
 			prng = mult32(prng,0x41C64E6D) + 0x6073
 			
+			byte0x40 = bxr(memory.readword(pidAddr + BlockBoff + 24 + 8), gettop(prng));
+			
 			-- not sure which method is correct... 
 			-- https://bulbapedia.bulbagarden.net/wiki/Personality_value#Gender uses the personality value...
 			--
 			-- https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV states this one
 			--
-			gender = bxr(memory.readword(pidAddr + BlockBoff + 24 + 8), gettop(prng));
-			is_female = getbits(gender, 1, 1) == 1
+			is_female = getbits(byte0x40, 1, 1) == 1
+
+			alternate_form = getbits(byte0x40, 3, 5)
 			
 			-- Nature for gen 5, for gen 4, it's calculated from the PID.
 			if gen == 5 then
-				nat = bxr(memory.readword(pidAddr + BlockBoff + 24 + 8), gettop(prng))
-				nat = getbits(nat,8,8)
+				nat = getbits(byte0x40,8,8)
 				if nat > 24 then
 					pokemonID = -1
 				end
@@ -624,11 +628,17 @@ function fn()
 			
 			prng = mult32(prng,0xCFDDDF21) + 0x67DBB608 -- 8 cycles
 			prng = mult32(prng,0xEE067F11) + 0x31B0DDE4 -- 4 cycles
+
 			prng = mult32(prng,0x41C64E6D) + 0x6073
+			location_met = bxr(memory.readword(pidAddr + BlockDoff + 0x18 + 8), gettop(prng))
 			prng = mult32(prng,0x41C64E6D) + 0x6073
 			pkrs = bxr(memory.readword(pidAddr + BlockDoff + 0x1A + 8), gettop(prng))
 			pkrs = getbits(pkrs,0,8)
-			
+
+			prng = mult32(prng,0x41C64E6D) + 0x6073
+			level_met = bxr(memory.readword(pidAddr + BlockDoff + 0x1A + 8), gettop(prng))
+			level_met = getbits(level_met, 0, 7)
+
 			-- Current stats
 			prng = pid
 			prng = mult32(prng,0x41C64E6D) + 0x6073
@@ -651,6 +661,10 @@ function fn()
 						level_met = -1,
 						location_met = -1
 					})
+
+					if alternate_forms[pokemonID] ~= nil then
+						party[q]["species"] = pokemonID .. alternate_forms[pokemonID][alternate_form + 1]
+					end
 				else
 					party[q] = Slot:new()
 				end

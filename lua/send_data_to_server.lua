@@ -23,7 +23,7 @@ function send_slot_info(slot_id, slot)
     nickname = string.gsub(slot.nickname, "&", "%26")
     
     local request_body = string.format(
-        "species=%d&level=%d&changeId=%d&dead=%s&nickname=%s&shiny=%s&female=%s&levelMet=%d&locationMet=%d", 
+        "species=%s&level=%d&changeId=%d&dead=%s&nickname=%s&shiny=%s&female=%s&levelMet=%d&locationMet=%d", 
         slot.species, slot.level, change_id, bool_to_int(not slot.living), slot.nickname, bool_to_int(slot.shiny), 
         bool_to_int(slot.female), slot.level_met, slot.location_met)
     http.request({

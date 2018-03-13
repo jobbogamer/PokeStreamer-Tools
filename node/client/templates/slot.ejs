@@ -1,5 +1,5 @@
 <% let soulLinkEnabled = config.nuzlocke && config.nuzlocke.enabled && config.nuzlocke.soulLink && config.nuzlocke.soulLink.enabled; %>
-<% let swap = config.style.soulLinkSwap; %>
+<% let swap = soulLinkEnabled && config.style.soulLinkSwap; %>
 <div class="slot <%- typeof slot !== 'undefined' ? `slot-${slot}` : '' %>">
     <div class="top">
         <div class="text-wrapper">
@@ -17,23 +17,9 @@
             </div>
         </div>
         <div>
-            <div class="img-wrapper <%- soulLinkEnabled && swap ? 'soul-linked' : '' %>">
-                <img />
-                <div class="img-overlay">
-                    <% for (let element of config.layout.imageOverlayElements) { %>
-                        <div class="<%- element %>"></div>
-                    <% } %>
-                </div>
-            </div>
-            <% if (config.nuzlocke.enabled && config.nuzlocke.soulLink.enabled) { %>
-                <div class="img-wrapper <%- !swap ? 'soul-linked' : '' %>">
-                    <img />
-                    <div class="img-overlay">
-                        <% for (let element of config.layout.imageOverlayElements) { %>
-                            <div class="<%- element %>"></div>
-                        <% } %>
-                    </div>
-                </div>
+            <%= require('./slotImageWrapper.ejs')({ type: swap ? 'soul-linked' : 'main', config }) %>
+            <% if (config.nuzlocke.soulLink.enabled) { %>
+                <%= require('./slotImageWrapper.ejs')({ type: swap ? 'main' : 'soul-linked', config }) %>
             <% } %>
         </div>
         <div class="side-wrapper right">

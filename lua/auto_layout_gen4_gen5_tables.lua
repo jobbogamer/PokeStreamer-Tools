@@ -99,6 +99,19 @@ pokemon =  {"none", "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleo
 "Pokémon Egg", "Manaphy Egg"
 }
 
+alternate_forms = {}
+alternate_forms[201] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" }
+alternate_forms[385] = { "normal", "attack", "defense", "speed" }
+alternate_forms[412] = { "plant", "sandy", "trash" }
+alternate_forms[413] = { "plant", "sandy", "trash" }
+alternate_forms[422] = { "west", "east" }
+alternate_forms[423] = { "west", "east" }
+alternate_forms[478] = { "normal", "heat", "wash", "frost", "fan", "mow" }
+alternate_forms[487] = { "altered", "origin" }
+alternate_forms[492] = { "land", "sky" }
+alternate_forms[493] = { "normal", "fist", "sky", "toxic", "earth", "stone", "insect", "spooky", "iron", "dummyValue", "flame", "splash", "meadow", "zap", "mind", "icicle", "draco", "dread", "mystery" }
+
+
 abilities = {"none", "Stench", "Drizzle", "Speed Boost", "Battle Armor", "Sturdy", "Damp", "Limber", "Sand Veil", "Static", "Volt Absorb", "Water Absorb", "Oblivious", "Cloud Nine",
 "Compound Eyes", "Insomnia", "Color Change", "Immunity", "Flash Fire", "Shield Dust", "Own Tempo", "Suction Cups", "Intimidate", "Shadow Tag", "Rough Skin", "Wonder Guard", "Levitate",
 "Effect Spore", "Synchronize", "Clear Body", "Natural Cure", "Lightning Rod", "Serene Grace", "Swift Swim", "Chlorophyll", "Illuminate", "Trace", "Huge Power", "Poison Point",

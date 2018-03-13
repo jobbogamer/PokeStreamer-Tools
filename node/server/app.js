@@ -92,10 +92,13 @@ app.get(/^\/reset$/i, function (req, res, next) {
 });
 
 app.post(/^\/update\/([1-6])$/i, function (req, res, next) {
+    const speciesRegex = /^(-?\d{1,3})(\w*)$/;
     let slot = parseInt(req.params[0]) - 1,
         data = req.body,
-        species = data.species,
-        isReal = species !== '-1',
+        match = speciesRegex.exec(data.species),
+        species = match ? parseInt(match[1]) : -1,
+        alternateForm = match ? match[2] : null,
+        isReal = species !== -1,
         shiny = !!parseInt(data.shiny),
         female = !!parseInt(data.female),
         sData;
@@ -110,7 +113,7 @@ app.post(/^\/update\/([1-6])$/i, function (req, res, next) {
             species,
             data.nickname,
             JSON.parse(data.level), 
-            PokemonImages[species].getImage(female, shiny),
+            PokemonImages[species].getImage(female, shiny, alternateForm),
             JSON.parse(data.dead));
     }
 

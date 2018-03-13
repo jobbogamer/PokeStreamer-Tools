@@ -8,7 +8,7 @@ export default class Slot {
         this.lastValue = null;
         this.$slot = $(`.slot.slot-${slot}`);
         this.changeId = -2;
-        this.$img = $slot.find(':not(.soul-link) > img');
+        this.$img = $slot.find('.main > img');
         this.$level = $slot.find('.level');
         this.$species = $slot.find('.species');
         this.$nickname = $slot.find('.nickname');

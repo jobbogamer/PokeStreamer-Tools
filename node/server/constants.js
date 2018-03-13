@@ -13,9 +13,8 @@ let SupportedImageFormats = [
 
 SupportedImageFormats.validExtensions = SupportedImageFormats.map(f => f.searchStrings).flatten();
 
-// 201 is Unown who has 26 forms: 201a - 201z
-// s post-fix denotes shiny
-const ImageRegex = new RegExp(`(201-?[a-z]|\\d+)(s?)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
+const ImageRegex = new RegExp(`(\\d+)(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
+const ShinyImageRegex = new RegExp(`(\\d+)s(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 
 const ConfigFile = process.env.CONFIG_JSON || 'config.json';
-export { SupportedImageFormats, ImageRegex, ConfigFile };
+export { SupportedImageFormats, ImageRegex, ShinyImageRegex, ConfigFile };

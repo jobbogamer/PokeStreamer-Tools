@@ -30,47 +30,35 @@
     },
     
     /*
-    Paths to images folder relative to the /node/server directory.
+    Path to images folder relative to the /node/server directory.
     I suggest using the zip found at http://pkmn.net/?action=content&page=viewpage&id=8644, extracting the
-    Pokémon folder, and then choosing one of the subdirectories (e.g. FRLG for Fire Red/Leaf Green).
-    
-    Example:
-    
-    "base": "../pokemon-images/FRLG/FRLG"
-    "shiny": "../pokemon-images/FRLG/Shiny"
-    
-    The "female", "unown", and "shiny" variants are optional.
-    
-    For the record, I didn't organize the images to make the Male directory the one that includes all the 
-    gender-androdginous images.  As a woman, I'm midly annoyed at the implication, but I'm also pragmatic enough not to
-    force you to change the directory structure of the zip.
-    
-    NOTE:  If you are doing a FR/LG randomizer, it may pull in gen 4+ Pokemon, in which case the HGSS directories do not
-    include all the required images.  It should be safe to just change these values to the BW
-    folders.
-    */
-    "pokemonImagePaths": {
-        "base": "../../pokemon-images/BW",
+    Pokémon folder, and then choosing BW since the directory structure is what the script expects it to be.
 
-        /* 
-        Optional paths -- if these are specified and the game supports female and shiny variants, the server will
-        attempt to find the proper variant, and if it is not found, will use the base image.
-        */
-        // Path to the image used when a slot is empty relative to /node/ directory.
-        // "emptySlot": "../../pokemon-images/pokeball.png",
-
-        /*
-        TODO -- These are not yet implemented.  You can include the settings, but they won't do anything.
-        */
-        "female": "../../pokemon-images/BW/female",
-        "shiny": "../../pokemon-images/BW/shiny",
-        "shinyfemale": "../../pokemon-images/BW/shiny/female",
+    The server will search the following paths for images:
+        pokemonImagesPath/
+        pokemonImagesPath/female
+        pokemonImagesPath/shiny
+        pokemonImagesPath/shiny/female
+        pokemonImagesPath/forms/...
+    
+    NOTE: Giratina's and Arceus' alternate forms aren't available by default.  If you want to use them:
+        Run setupPokemonImages.cmd 
         
-        // This directory expects image names to be in the following pattern: 201[-]{letter}[s].png.  The hypen is 
-        // optional.  The 's' is optional and indicates that the image is for a shiny Unown.
-        "unown": "../../pokemon-images/RSE/Unown",
-    },
-    
+        OR:
+        For Giratina, open /BW/forms/giratina directory, and rename the two "another" files (the one in the root and the
+            one in Shiny) to "altered".
+        For Arceus, find the various images you want to use (/DPPt/Arceus has them, and if you use them, you should use 
+            the <type>2.pngs as they have transparent backgrounds), copy them into /BW/forms/arceus, and rename them all
+            to be of the form "492<type>.png" for non-shiny and "492s<type>.png" for shiny.  *IMPORTANT*: <type> is 
+            from the list at https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV#Alternate_forms,
+            not the type already in the filename.  (Leave "mystery" as-is, since Windows doesn't support filenames with 
+            question marks in them.)
+    */
+    "pokemonImagesPath": "../../pokemon-images/BW",
+
+    // Path to the image used when a slot is empty relative to /node/ directory.
+    // "emptySlotImagePath": "../../pokemon-images/pokeball.png",
+
     "layout": { 
         // Whether you want the page to display all slots on one page, or have one slot per page so you can place them
         // in your scene however you like.
@@ -98,20 +86,10 @@
         • sl-level
         */
         "topElements": [],
-        "bottomElements": [ 
-            // "nickname" 
-        ],
-        "leftElements": [ 
-            // "species", 
-            // "deathMessage1" 
-        ],
-        "rightElements": [ 
-            // "level", 
-            // "deathMessage2"
-        ],
-        "imageOverlayElements": [
-            "level"
-        ],
+        "bottomElements": [ "species" ],
+        "leftElements": [],
+        "rightElements": [],
+        "imageOverlayElements": ["level"],
         "soulLinkOverlayElements": [
             "sl-level"
         ],
@@ -173,14 +151,17 @@
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
         // "imageSideLength": "128px",
-        "imageSideLength": "300px",
+        "imageSideLength": "220px",
 
         // Optional sizes if you want the image wrapper to be a different size than the image
+        //
+        // Note to Failstream: these values are required to be set the way they are to make the divide be at the correct
+        //                     angle.
         "imageWrapperWidth": "220px",
         "imageWrapperHeight": "204px",
 
         // if you want to override the size of a slot, you can here... your milage may vary
-        // "totalSlotHeight": 
+        // "totalSlotHeight": undefined,
         "totalSlotWidth": "230px",
         
         // Text will be centered both horizontally and vertically (by default) within each element.
@@ -191,7 +172,7 @@
         "leftElementWidth": "0",
         "rightElementWidth": "0",
         "topElementHeight": "0",
-        "bottomElementHeight": "0",
+        "bottomElementHeight": "20px",
         
         "%body": {
             // You almost certainly want this to be "transparent" so that it is rendered cleanly in your scene, but it 
@@ -207,7 +188,7 @@
         // They produce yellow-orange text outlined in fading-transparent white.  When placed on top of a blue 
         // background it is reminiscient of the official Pokemon logo.
         "%baseText": {
-            "font-size": "24px",
+            "font-size": "30px",
             "font-family": "Arial, sans-serif",
             "background": "-webkit-linear-gradient(#ff8c00, #ffd700)",
             "background-clip": "text",
@@ -231,8 +212,23 @@
         // This should include a space after it and needs to be wrapped in single-quotes (as the value is being placed 
         // in a CSS file).
         // "levelPrefix": "'Lvl '",
+
+        "speciesBg": "silver",
         
-        // "%speciesText": {},
+        "%speciesText": {
+            "background": "$speciesBg",
+            "padding": "0 16px",
+            "margin-top": "4px",
+            "font-weight": "bold",
+            "font-variant": "small-caps",
+            "color": "black",
+            "border": "2px solid darken($speciesBg, 20%)",
+            "border-radius": "16px",
+            "-webkit-background-clip": "unset",
+            "background-clip": "unset",
+            "-webkit-text-fill-color": "unset",
+            "text-shadow": "unset",
+        },
         // "%nicknameText": {},
         
         // these styles are applied to both death messages, and can be overridden below
@@ -257,8 +253,8 @@
         // • veritical: a vertical division with pokemon to the left and right
         // • thumbnail: your pokemon is displayed normally, and its soul-linked pokemon is overlayed in the bottom right
         //              corner
-        // • custom: no style is applied except for the clipping SVGs you specify below; you must provide your own 
-        //           styles by editing /node/client/sass/* files
+        // • custom: (TODO) no style is applied except for the clipping SVGs you specify below; you must provide your 
+        //           own styles by editing /node/client/sass/* files
         //
         // NOTE: your pokemon will always be on the top (or the left in the vertical case unless you set 
         //       soulLinkSwap below)
@@ -276,10 +272,12 @@
         "soulLinkGap": "12px",
         
         // styles for the soulLinked image wrapper
-        "%soulLinkedStyle": {},
+        "%soulLinkedStyle": {
+            "padding-top": "30px",
+        },
 
         // how far to shift the image away from the divide so that you can see more of the pokemon
-        "imageShift": "10%",
+        "imageShift": "5%",
 
         // the style to give your pokemon when a suitable counterpart has not been found
         "%invalidPokemonStyle": {
