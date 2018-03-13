@@ -63,14 +63,15 @@ function shouldWrapInStrings(input) {
 
 export default function (content) {
     let self = this;
-    this.cacheable();
 
     return content.replace(importRegex, (match, relativePath) => {
         if (match) {
-            let modulePath = path.join(self.context, relativePath);
-            self.addDependency(modulePath);
-            let data = require(modulePath).default;
-            return transform(data);
+            let filePath = path.join(self.context, relativePath);
+            self.addDependency(filePath);
+
+            // prevent cacheing of the module
+            delete require.cache[require.resolve(filePath)];
+            return transform(require(filePath).default);
         }
     });
 }

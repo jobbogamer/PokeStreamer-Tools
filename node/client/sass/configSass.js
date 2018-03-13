@@ -1,7 +1,6 @@
 import json5 from 'json5';
 import fs from 'fs';
 const config = json5.parse(fs.readFileSync('config.json'));
-// import config from '../../config.json';
 
 console.log('Generating SASS variables.');
 let sass = {
