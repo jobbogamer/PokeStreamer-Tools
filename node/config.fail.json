@@ -49,7 +49,7 @@
             one in Shiny) to "altered".
         For Arceus, find the various images you want to use (/DPPt/Arceus has them, and if you use them, you should use 
             the <type>2.pngs as they have transparent backgrounds), copy them into /BW/forms/arceus, and rename them all
-            to be of the form "492<type>.png" for non-shiny and "492s<type>.png" for shiny.  *IMPORTANT*: <type> is 
+            to be of the form "493<type>.png" for non-shiny and "493s<type>.png" for shiny.  *IMPORTANT*: <type> is 
             from the list at https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV#Alternate_forms,
             not the type already in the filename.  (Leave "mystery" as-is, since Windows doesn't support filenames with 
             question marks in them.)
