@@ -74,6 +74,7 @@ class SoulLink extends EventEmitter {
             }
 
             this._channelId = channel.id;
+            console.log(`Listening to ${this.Config.guild} #${this.Config.channelName} (id: ${channel.id})`);
         });
     }
 

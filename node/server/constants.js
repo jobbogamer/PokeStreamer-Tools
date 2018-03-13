@@ -1,3 +1,4 @@
+import './extensions';
 import { Img } from './image-format';
 
 let SupportedImageFormats = [
@@ -16,4 +17,5 @@ SupportedImageFormats.validExtensions = SupportedImageFormats.map(f => f.searchS
 // s post-fix denotes shiny
 const ImageRegex = new RegExp(`(201-?[a-z]|\\d+)(s?)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 
-export { SupportedImageFormats, ImageRegex };
+const ConfigFile = process.env.CONFIG_JSON || 'config.json';
+export { SupportedImageFormats, ImageRegex, ConfigFile };

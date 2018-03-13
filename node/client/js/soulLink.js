@@ -1,4 +1,4 @@
-import config from '../../config.json';
+import config from 'config';
 import Nuzlocke from './nuzlocke';
 const soulLink = config.nuzlocke.soulLink;
 

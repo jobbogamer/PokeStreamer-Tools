@@ -8,6 +8,9 @@ import Config from './config';
 import PokemonImages from './pokemon-images';
 import Slot from './slot';
 import SoulLink from './soul-link';
+import { ConfigFile } from './constants';
+
+console.log(`Using config file: ${ConfigFile}`);
 
 let app = express();
 app.engine('jade', jade.__express);
@@ -48,11 +51,13 @@ app.get(/^\/slot\/([1-6]|all)$/i, function (req, res, next) {
     let conn = { slot: slot, res: res };
     connections.add(conn);
 
-    req.on('close', (function () { 
+    req.on('close', (function () {
+        console.log('Connection closed.  Removing from open connections.');
         connections.delete(this);
+        console.log(`Remaining open connections: ${connections.size}`);
     }).bind(conn));
 
-    console.log(`Number of open connections: ${connections.size}`);
+    console.log(`Open connections: ${connections.size}`);
     next();
 });
 

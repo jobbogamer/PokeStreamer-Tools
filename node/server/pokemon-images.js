@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import Config from './config';
-import { ImageRegex, SupportedImageFormats } from './constants';
+import { ImageRegex, SupportedImageFormats, ConfigFile } from './constants';
 
 let pokemonImages = {},
     totalImgMemory = 0;
@@ -104,9 +104,9 @@ function initPokemonImages() {
     pokemonImages = {};
     let paths = Config.Current.pokemonImagePaths;
     if (!paths["base"]) {
-        throw new Error(`config.json is missing 'base' in 'pokemonImagePaths' object`);
+        throw new Error(`${ConfigFile} is missing 'base' in 'pokemonImagePaths' object`);
     } else if (!fs.existsSync(path.resolve(__dirname, paths.base))) {
-        throw new Error(`Specified pokemonImagePaths.base '${path.resolve(__dirname, paths.base)}' in config.json does not exist.`);
+        throw new Error(`Specified pokemonImagePaths.base '${path.resolve(__dirname, paths.base)}' in  does not exist.`);
     }
 
     if (!paths['emptySlot']) {
@@ -121,7 +121,7 @@ function initPokemonImages() {
                 loadImages(variant, path.resolve(__dirname, varientPath));
             }
         } else {
-            console.warn(`Invalid key 'pokemonImagePaths.${variant}' in config.json.  Valid keys are: ${validVariants.join(', ')}`);
+            console.warn(`Invalid key 'pokemonImagePaths.${variant}' in ${ConfigFile}.  Valid keys are: ${validVariants.join(', ')}`);
         }
     }
 }

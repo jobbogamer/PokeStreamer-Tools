@@ -4,8 +4,11 @@ import path from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import Config from './server/config';
 
+process.env.CONFIG_JSON = path.resolve(process.env.CONFIG_JSON || './config.json');
+console.log(`Using config file: ${process.env.CONFIG_JSON}`);
+
+const Config = require('./server/config').default;
 const config = Config.Current;
 
 const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
@@ -22,6 +25,12 @@ let webpackConfig = {
 
     optimization: {
         minimize: false,
+    },
+
+    resolve: {
+        alias: {
+            'config$': process.env.CONFIG_JSON,
+        }
     },
     
     resolveLoader: {
@@ -133,4 +142,4 @@ if (nuzlocke.deathSound && nuzlocke.deathSound.enabled) {
     }
 }
 
-module.exports = webpackConfig;
+export default webpackConfig;

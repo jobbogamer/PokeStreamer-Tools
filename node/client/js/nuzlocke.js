@@ -1,4 +1,4 @@
-import { nuzlocke } from '../../config.json';
+import { nuzlocke } from 'config';
 
 let deathSound;
 

@@ -2,7 +2,7 @@ import './sass/index.scss';
 import Nuzlocke from './js/nuzlocke';
 import SoulLink from './js/soulLink';
 import Slot from './js/slot';
-import config from '../config.json';
+import config from 'config';
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;

@@ -1,10 +1,14 @@
+/*
+    This is the config generated specifically for Failstream to use during his SoulLink run.  It may be a useful 
+    example.
+*/
 {
     /*
     Pokemon Generation
     
     Valid values: 3 through 5.  (Values 4 and 5 do the same thing).
     */
-    "generation": 3,
+    "generation": 5,
     
     "server": {
         // The port to use when accessing the page that you insert into your stream scene.
@@ -53,7 +57,7 @@
         attempt to find the proper variant, and if it is not found, will use the base image.
         */
         // Path to the image used when a slot is empty relative to /node/ directory.
-        "emptySlot": "../../pokemon-images/pokeball.png",
+        // "emptySlot": "../../pokemon-images/pokeball.png",
 
         /*
         TODO -- These are not yet implemented.  You can include the settings, but they won't do anything.
@@ -95,18 +99,21 @@
         */
         "topElements": [],
         "bottomElements": [ 
-            "nickname" 
+            // "nickname" 
         ],
         "leftElements": [ 
-            "species", 
-            "deathMessage1" 
+            // "species", 
+            // "deathMessage1" 
         ],
         "rightElements": [ 
-            "level", 
-            "deathMessage2"
+            // "level", 
+            // "deathMessage2"
         ],
         "imageOverlayElements": [
             "level"
+        ],
+        "soulLinkOverlayElements": [
+            "sl-level"
         ],
     },
     
@@ -138,7 +145,7 @@
         "deathMessage3": null,
         
         "soulLink": {
-            "enabled": false,
+            "enabled": true,
             
             "guild": "dxdt", // Discord server (they're called Guilds in the Discord API)
             "channelName": "private-test",
@@ -165,21 +172,26 @@
     "style": {
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
-        "imageSideLength": "128px",
+        // "imageSideLength": "128px",
+        "imageSideLength": "300px",
 
         // Optional sizes if you want the image wrapper to be a different size than the image
-        // "imageWrapperWidth": "220px",
-        // "imageWrapperHeight": "204px",
+        "imageWrapperWidth": "220px",
+        "imageWrapperHeight": "204px",
 
         // if you want to override the size of a slot, you can here... your milage may vary
-        // "totalSlotHeight": undefined,
-        // "totalSlotWidth": "230px",
+        // "totalSlotHeight": 
+        "totalSlotWidth": "230px",
         
         // Text will be centered both horizontally and vertically (by default) within each element.
-        "leftElementWidth": "50px",
-        "rightElementWidth": "50px",
+        // "leftElementWidth": "50px",
+        // "rightElementWidth": "50px",
+        // "topElementHeight": "0",
+        // "bottomElementHeight": "30px",
+        "leftElementWidth": "0",
+        "rightElementWidth": "0",
         "topElementHeight": "0",
-        "bottomElementHeight": "30px",
+        "bottomElementHeight": "0",
         
         "%body": {
             // You almost certainly want this to be "transparent" so that it is rendered cleanly in your scene, but it 
@@ -206,17 +218,19 @@
         },
         
         "%levelText": {
-            "width": "$rightElementWidth !important",
-            // "font-size": "36px",
+            // "width": "$rightElementWidth !important",
+            "font-size": "36px",
             
             // By default, texts on the left and right of the image are rotated.  Setting transform to "unset" prevents
             // this.
-            "transform": "unset !important",
+            // "transform": "unset !important"
+
+            "margin": "8px",
         },
         
         // This should include a space after it and needs to be wrapped in single-quotes (as the value is being placed 
         // in a CSS file).
-        "levelPrefix": "'Lvl '",
+        // "levelPrefix": "'Lvl '",
         
         // "%speciesText": {},
         // "%nicknameText": {},
@@ -248,9 +262,9 @@
         //
         // NOTE: your pokemon will always be on the top (or the left in the vertical case unless you set 
         //       soulLinkSwap below)
-        // "soulLinkOrientation": "diagonal-backward",
+        "soulLinkOrientation": "diagonal-backward",
         
-        // TODO: these don't do anything yet
+        // TODO!
         // if you want to use an SVG file to determine the clipping, specify the paths relative to /node/public
         // "customClipSvgTop": "path/to/svg",
         // "customClipSvgBottom": "path/to/svg",
