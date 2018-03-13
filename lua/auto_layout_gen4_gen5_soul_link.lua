@@ -5,6 +5,8 @@
 local game = 2 
 -----------
 
+print("WARNING:  Do not use this script for SoulLink if you are using the NodeJS server. Use auto_layout_gen4_gen5.lua.")
+
 local gen
 
 local pointer

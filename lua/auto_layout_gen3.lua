@@ -1,5 +1,6 @@
 -- Based on the gen 3 Lua script by FractalFusion
 -- Modified by EverOddish for automatic image updates
+-- Modified by dfoverdx for using a NodeJS server for automatic image updates
 
 --for different game versions
 --1: Ruby/Sapphire U
@@ -27,6 +28,9 @@ local startvalue=0x83ED --insert the first value of RNG
 -- Key names must be in quotes.
 -- Key names are case sensitive.
 local key={"9", "8", "7"}
+
+-- NOTE: if pokemon genders are not being correctly determined, search this file for "local baseStats" and follow the 
+--       directions in the comment there.
 
 -- It is not necessary to change anything beyond this point.
 
@@ -68,19 +72,25 @@ local rng2  ={0x00000000, 0x00000000, 0x020386D0, 0x00000000, 0x00000000, 0x0203
 
 -- IMPORTANT: These values may be wrong.  I pulled them from 
 --            https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_base_stats_data_structure_in_Generation_III but
---            found that at least the US FireRed version had the wrong value, so I manually searched for the correct 
---            address, but I don't know about the rest of the versions, and am uninspired to search for the ROMs and 
---            correct them. FR(U) is correct.  If gender of Pokemon is not being calculated properly, run 
+--            found that at least the US FireRed version had the wrong value.  I manually searched for the correct 
+--            address, but I don't know about the rest of the versions, and am uninspired to search for the ROMs to 
+--            correct them. FR(U) is correct.  If the gender of Pokemon is not being calculated properly, run 
 --            find_bulbasaur_gen3.lua after loading the ROM and update these values manually.
+--
+--            If you do this and want to help out future streamers, send me the value you discovered and the version
+--            of the game you are running in the dxdt#pokemon-streamer-tools Discord channel 
+--            (https://discord.gg/FKDntWR), and I will add it to the github repo
+--
+-- baseStats={Ruby U, Emerald U, FireRed U, Ruby J, Emerald J, FireRed J}
 local baseStats={0x081FEC34, 0x083203E8, 0x08254810, 0x081FEC34, 0x082F0D70, 0x082111A8}
 if subgame == 1 then
-    -- ruby to sapphire
-    baseStats[1] = 0x081FEBC4
-    baseStats[4] = 0x081FEBC4
+    -- Ruby to Sapphire
+    baseStats[1] = 0x081FEBC4 -- Saphire U
+    baseStats[4] = 0x081FEBC4 -- Saphire J
     
-    -- firered to leafgreen
-    baseStats[3] = 0x0825477C
-    baseStats[6] = 0x08211184
+    -- FireRed to LeafGreen
+    baseStats[3] = 0x0825477C -- LeafGreen U
+    baseStats[6] = 0x08211184 -- LeafGreen J
 end
 
 --HP, Atk, Def, Spd, SpAtk, SpDef
