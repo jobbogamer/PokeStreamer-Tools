@@ -2,7 +2,6 @@ import json5 from 'json5';
 import fs from 'fs';
 const config = json5.parse(fs.readFileSync('config.json'));
 
-console.log('Generating SASS variables.');
 let sass = {
         nuzlockeEnabled: config.nuzlocke.enabled,
         applyDeathSpin: config.nuzlocke && config.nuzlocke.applyDeathSpin,

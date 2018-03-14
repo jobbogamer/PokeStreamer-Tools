@@ -123,5 +123,5 @@ export default class Slot {
 }
 
 if (config.layout.allInOne) {
-    Slot.eventSource = new EventSource('/slot/all');
+    Slot.eventSource = new EventSource('/api/slot/all');
 }

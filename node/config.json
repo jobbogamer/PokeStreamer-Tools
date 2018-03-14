@@ -22,7 +22,12 @@
         // NOTE: StreamLabs uses port 8080, so if you use StreamLabs or another app that listens to 8080, and set this 
         //       value to 8080, you're gonna have a bad time.  (Port 8080 is pretty commonly used in local webserver
         //       apps, and the value I initially used until I found out about StreamLabs.)
-        "port": "8081"
+        "port": "8081",
+
+        // You can ignore this value.  It is only used behind the scenes when you run the dev server for testing 
+        // purposes.  Its only requirements are that it is not the same as "port", and that you are not already using 
+        // the port for another service.
+        "devServerPort": "8082",
     },
     
     /*

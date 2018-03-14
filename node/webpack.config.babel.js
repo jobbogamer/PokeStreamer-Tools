@@ -6,7 +6,8 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import Config from './server/config';
 
-const config = Config.Current;
+const config = Config.Current,
+    isHot = path.basename(require.main.filename) === 'webpack-dev-server.js';
 
 const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
 
@@ -17,7 +18,7 @@ let webpackConfig = {
     
     output: {
         filename: 'script.js',
-        path: path.resolve(__dirname, 'public')
+        path: path.resolve(__dirname, 'public'),
     },
 
     optimization: {
@@ -75,18 +76,31 @@ let webpackConfig = {
             template: '!!ejs-loader!./client/index.ejs',
             filename: 'index.html',
             inject: 'body',
-            cache: true,
+            cache: true
         }),
         new webpack.SourceMapDevToolPlugin({
-            test: /\.js$/,
+            test: /\.js$|\.css$/,
             filename: '[file].map',
             publicPath: '/',
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin(),
     ],
     
     externals: [
         { jquery: '$' },
-    ]
+    ],
+
+    devServer: {
+        hot: true,
+        overlay: true,
+        index: 'index.html',
+        contentBase: path.join(__dirname, 'public'),
+        host: 'localhost',
+        port: config.server.port,
+        proxy: {
+            '/api': `http://localhost:${config.server.devServerPort}/`,
+        },
+    }
 };
 
 if (config.nuzlocke.deathSound && config.nuzlocke.deathSound.enabled) {

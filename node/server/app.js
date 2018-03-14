@@ -1,12 +1,38 @@
 import express from 'express';
+import path from 'path';
 import bodyParser from 'body-parser';
 import jade from 'jade';
 import sse from './sse';
+import useragent from 'useragent';
+import { spawn } from 'child_process';
 
+import { getLocaleString } from './helpers';
 import './extensions';
 import Config from './config';
 import PokemonImages from './pokemon-images';
 import Slot from './slot';
+
+let port, webpack;
+if (process.env.NODE_ENV === 'development' || process.argv.includes('-d') || process.argv.includes('--debug')) {
+    port = 'devServerPort';
+
+    console.log('Spinning up webpack-dev-server...');
+    webpack = spawn('node_modules\\.bin\\webpack-dev-server', [],
+        { 
+            shell: true,
+            env: process.env,
+            cwd: path.resolve(__dirname, '..'),
+            detached: false,
+            windowsHide: false,
+            stdio: 'pipe',
+        });
+    webpack.stdout.on('data', data => console.log(data.toString()));
+    webpack.stderr.on('data', data => console.log(data.toString()));
+    webpack.on('close', code => console.log(`Webpack exited with error code ${code}`));
+    console.log(`Webpack running on process ${webpack.pid}`);
+} else {
+    port = 'port';
+}
 
 let app = express();
 app.engine('jade', jade.__express);
@@ -28,26 +54,33 @@ function initSlots() {
 
 initSlots();
 
-app.get(/^\/slot\/([1-6]|all)$/i, function (req, res, next) {
+app.get(/^\/api\/slot\/([1-6]|all)$/i, function (req, res, next) {
     res.sseSetup();
 
-    let slot;
+    let locale = getLocaleString(req),
+        slot, 
+        conn = {
+            userAgent: useragent.parse(req.headers['user-agent']).toAgent(),
+            time: new Date().toLocaleTimeString(locale),
+            res: res,
+        };
     if (req.params[0] === 'all') {
         slot = 'all';
-        console.log(`Acquired connection for all slots`);
+        console.log(`Acquired connection for all slots at ${conn.time}.  User-agent: ${conn.userAgent}.`);
 
         res.sseSend(slots);
     } else {
         slot = parseInt(req.params[0]) - 1;
-        console.log(`Acquired connection for slot ${slot}`);
+        console.log(`Acquired connection for slot ${slot} at ${conn.time}.  User-agent: ${conn.userAgent}.`);
         
         res.sseSend(slots[slot]);
     }
 
-    let conn = { slot: slot, res: res };
+    conn[slot] = slot;
     connections.add(conn);
 
-    req.on('close', (function () { 
+    req.on('close', (function () {
+        console.log(`Connection initialized at ${conn.time} closed.`);
         connections.delete(this);
     }).bind(conn));
 
@@ -55,7 +88,7 @@ app.get(/^\/slot\/([1-6]|all)$/i, function (req, res, next) {
     next();
 });
 
-app.get(/^\/reset$/i, function (req, res, next) {
+app.get(/^\/api\/reset$/i, function (req, res, next) {
     console.log('Sending reset to all slot connections');
     let sentTo = 0;
     for (let conn of connections) {
@@ -85,7 +118,7 @@ app.get(/^\/reset$/i, function (req, res, next) {
     res.sendStatus(200);
 });
 
-app.post(/^\/update\/([1-6])$/i, function (req, res, next) {
+app.post(/^\/api\/update\/([1-6])$/i, function (req, res, next) {
     let slot = parseInt(req.params[0]) - 1,
         data = req.body,
         species = data.species,
@@ -142,18 +175,18 @@ setInterval(() => {
     }
 }, 5000);
 
-let server = app.listen(Config.Current.server.port, function() {
-    console.log(`Listening on port ${Config.Current.server.port}`);
+let server = app.listen(Config.Current.server[port], function() {
+    console.log(`Listening on port ${Config.Current.server[port]}`);
 });
 
 Config.on('update', e => {
-    if (e.prev.server.port !== e.next.server.port) {
+    if (e.prev.server[port] !== e.next.server[port]) {
         server.close(() => {
-            console.log(`Closed server listening on port ${e.prev.server.port}`);
+            console.log(`Closed server listening on port ${e.prev.server[port]}`);
         });
 
-        server = app.listen(e.next.server.port, function() {
-            console.log(`Listening on port ${e.next.server.port}`);
+        server = app.listen(e.next.server[port], function() {
+            console.log(`Listening on port ${e.next.server[port]}`);
         });
     }
 });
