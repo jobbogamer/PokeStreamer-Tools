@@ -45,7 +45,7 @@ class SoulLink extends EventEmitter {
         c.on('message', this._handleMessage.bind(this));
         c.on('reconnecting', () => console.warn('Bot lost connection to Discord.  Reconnectiong...'));
         c.on('disconnect', () => {
-            console.warn('Bot disconnected from Discord.');
+            console.error('Bot disconnected from Discord.');
             if (this._client) {
                 this._client.destroy();
                 this._client = null;

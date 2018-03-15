@@ -1,11 +1,10 @@
 Slot = {}
 local _defaultSlotValues = {
     -- these four fields form the SoulLink id as they don't change
-    -- technically we could probably just use date_met, but I'm not confident I'll be able to find it
     otid = -1,              -- original trainer id
+    otsid = -1,             -- original trainer secret id
     location_met = -1,      -- game id of location met
     shiny = false,          -- whether the pokemon is shiny or not
-    date_met = -1,          -- game value of when the pokemon was caught
     
     species = -1,           -- pokedex number
     alternate_form = "",
@@ -27,16 +26,18 @@ function Slot:__call(init)
 	return init
 end
 
-function Slot:__eq(other)
-	return self.species == other.species and
-        self.alternate_form == other.alternate_form and
-        self.nickname == other.nickname and
-        self.level == other.level and
-        self.female == other.female and
-        self.shiny == other.shiny and
-        self.living == other.living and
-        self.level_met == other.level_met and
-        self.location_met == other.location_met
+function Slot.__eq(left, right)
+    return left.otid == right.otid and
+        left.otsid == right.otsid and
+        left.species == right.species and
+        left.alternate_form == right.alternate_form and
+        left.nickname == right.nickname and
+        left.level == right.level and
+        left.female == right.female and
+        left.shiny == right.shiny and
+        left.living == right.living and
+        left.level_met == right.level_met and
+        left.location_met == right.location_met
 end
 
 function Slot:__tostring()
@@ -48,6 +49,22 @@ function Slot:__tostring()
 	end
     
 	return string.format("{ %s }", table.concat(strs, ", "))
+end
+
+function Slot:clone()
+    return Slot({
+        otid = self.otid,
+        otsid = self.otsid,
+        species = self.species,
+        alternate_form = self.alternate_form,
+        nickname = self.nickname,
+        level = self.level,
+        female = self.female,
+        shiny = self.shiny,
+        living = self.living,
+        level_met = self.level_met,
+        location_met = self.location_met
+    })
 end
 
 setmetatable(Slot, {

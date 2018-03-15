@@ -96,7 +96,9 @@ local mword=memory.readwordunsigned
 local mbyte=memory.readbyteunsigned
 
 --BlockD
+local location_met
 local pkrs
+local level_met
 
 --currentStats
 local level, hpstat, maxhpstat, atkstat, defstat, spestat, spastat, spdstat
@@ -580,15 +582,16 @@ function readPokemon(pidAddr)
 	
 	prng = mult32(prng,0xCFDDDF21) + 0x67DBB608 -- 8 cycles
 	prng = mult32(prng,0xEE067F11) + 0x31B0DDE4 -- 4 cycles
-	
+
 	prng = mult32(prng,0x41C64E6D) + 0x6073
 	location_met = bxr(memory.readword(pidAddr + BlockDoff + 0x18 + 8), gettop(prng))
+
 	prng = mult32(prng,0x41C64E6D) + 0x6073
 	pkrs = bxr(memory.readword(pidAddr + BlockDoff + 0x1A + 8), gettop(prng))
 	pkrs = getbits(pkrs,0,8)
 	
 	prng = mult32(prng,0x41C64E6D) + 0x6073
-	level_met = bxr(memory.readword(pidAddr + BlockDoff + 0x1A + 8), gettop(prng))
+	level_met = bxr(memory.readword(pidAddr + BlockDoff + 0x1C + 8), gettop(prng))
 	level_met = getbits(level_met, 0, 7)
 	
 	-- Current stats
@@ -599,7 +602,7 @@ function readPokemon(pidAddr)
 	level = getbits(bxr(memory.readword(pidAddr + 0x8C), gettop(prng)),0,8)
 	if level > 100 then
 		-- TODO: figure out why this happens
-		pokemonID = -1
+		level = -2 -- a dummy value recognized by the server to mean the pokemon is real, but the level is not
 	end
 
 	prng = mult32(prng,0x41C64E6D) + 0x6073
@@ -611,12 +614,15 @@ function readPokemon(pidAddr)
 		if pokemon[pokemonID + 1] ~= "none" then
 			slot = Slot{
 				otid = OTID,
+				otsid = OTSID,
 				species = pokemonID,
 				--nickname = isnicknamed and nickname or "",
 				level = level,
 				female = is_female,
 				shiny = is_shiny,
 				living = hpstat > 0,
+				location_met = location_met,
+				level_met = level_met
 			}
 			
 			if alternate_forms[pokemonID] ~= nil then
@@ -678,8 +684,24 @@ function fn()
 				lp = last_party[q]
 				if p ~= nil and lp ~= nil then
 					if p ~= lp then
-						print("Slot " .. q .. ": " .. tostring(lp) .. " -> " .. tostring(p))
-						send_data[#send_data + 1] = { slot_id = q, slot = p }
+						local do_add = true 
+						if p.level == -2 and lp.level ~= -2 then
+							-- make sure we're not updating an identical, but correctly-leveled slot with a bad level one
+							local tmpLp = lp:clone()
+							tmpLp.level = -2
+
+							if p ~= tmpLp then
+								do_add = true
+							else
+								party[q] = lp
+								do_add = false
+							end
+						end
+
+						if do_add then
+							print("Slot " .. q .. ": " .. tostring(lp) .. " -> " .. tostring(p))
+							send_data[#send_data + 1] = { slot_id = q, slot = p }
+						end
 					end
 				end
 			end

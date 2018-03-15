@@ -29,7 +29,9 @@ class Slot {
         }
 
         this.nickname = nickname;
-        this.level = VA.boundedInt(level, 'level', 0, 100);
+        // temporary fix to handle pokemon with invalid levels (> 100)... it's an issue in the script that I haven't
+        // quite figured out yet
+        this.level = level === -2 ? '' : VA.boundedInt(level, 'level', 0, 100);
         this.dead = VA.bool(dead, 'dead');
         this.female = VA.boolOrUndefinedFalse(female, 'female');
         this.shiny = VA.boolOrUndefinedFalse(shiny, 'shiny');

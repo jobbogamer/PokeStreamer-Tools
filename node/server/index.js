@@ -6,20 +6,21 @@ import sse from './sse';
 import useragent from 'useragent';
 import { spawn } from 'child_process';
 
-import { getLocaleString } from './helpers';
 import './extensions';
+import { getLocaleString } from './helpers';
+import args from './args';
 import Config from './config';
 import PokemonImages from './pokemon-images';
 import Slot from './slot';
 import SoulLink from './soul-link';
 
 let port, webpack;
-if (process.env.NODE_ENV === 'development' || process.argv.includes('-d') || process.argv.includes('--debug')) {
+if (args.isDebug) {
     port = 'devServerPort';
 
-    console.log('Spinning up webpack-dev-server...');
+    console.info('Spinning up webpack-dev-server...');
     // for reasons surpassing understanding, hot swapping styles with my current code only works when mode is production
-    webpack = spawn('node_modules\\.bin\\webpack-dev-server', [ '--mode', 'production' ],
+    webpack = spawn(path.normalize('node_modules/.bin/webpack-dev-server'), [ '--mode', 'production' ],
         { 
             shell: true,
             env: process.env,
@@ -31,11 +32,11 @@ if (process.env.NODE_ENV === 'development' || process.argv.includes('-d') || pro
     webpack.stdout.on('data', data => console.log(data.toString()));
     webpack.stderr.on('data', data => console.log(data.toString()));
     webpack.on('close', code => {
-        console.log(`Webpack exited with error code ${code}.  Closing server.`);
+        console.error(`Webpack exited with error code ${code}.  Closing server.`);
         process.exit(code);
     });
     
-    console.log(`Webpack running on process ${webpack.pid}`);
+    console.info(`Webpack running on process ${webpack.pid}`);
 } else {
     port = 'port';
 }
@@ -134,7 +135,7 @@ app.get(/^\/api\/reset$/i, function (req, res, next) {
 });
 
 app.post(/^\/api\/update$/i, function (req, res, next) {
-    console.log(`Received update on from Lua script:\n${JSON.stringify(req.body, null, 2)}`);
+    console.info(`Received update on from Lua script:\n${JSON.stringify(req.body, null, 2)}`);
     let hadError = false;
     assertGeneration(req.header('Pokemon-Generation'));
 
@@ -206,7 +207,7 @@ setInterval(() => {
 }, 2000);
 
 let server = app.listen(Config.Current.server[port], function() {
-    console.log(`Listening on port ${Config.Current.server[port]}`);
+    console.info(`Listening on port ${Config.Current.server[port]}`);
 });
 
 Config.on('update', e => {

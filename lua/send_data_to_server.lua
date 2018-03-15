@@ -30,9 +30,10 @@ function send_slots(slots_info, generation)
     local request_body = string.format("[\n    %s\n]", table.concat(slot_messages, ",\n    "))
     
     print("Sending server request:")
-    print(request_body)
+    local pretty_print = string.gsub(request_body, "\n", "\r\n"); 
+    print(pretty_print)
 
-    http.request({
+    local res, status, headers = http.request{
         method = "POST",
         url = api_root .. "/update",
         source = ltn12.source.string(request_body),
@@ -41,7 +42,11 @@ function send_slots(slots_info, generation)
             ["content-length"] = #request_body,
             ["Pokemon-Generation"] = generation
         }
-    })
+    }
+
+    if status ~= 200 then
+        print(string.format("HTTP Request failed: %s", status))
+    end
 end
 
 -- assumes info.slot is a flat table
