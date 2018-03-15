@@ -2,11 +2,11 @@
   "name": "pokemon-server",
   "version": "1.0.0",
   "description": "node server that hosts pokemon images",
-  "main": "app.js",
+  "main": "server/index.js",
   "scripts": {
     "build": "node_modules/.bin/webpack --progress --color --mode production",
-    "debug": "node -r babel-register ./server/app.js -d",
-    "start": "node -r babel-register ./server/app.js"
+    "debug": "node -r babel-register server -d",
+    "start": "node -r babel-register server"
   },
   "author": "Jordan Hitch",
   "license": "ISC",
