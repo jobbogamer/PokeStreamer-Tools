@@ -4,12 +4,9 @@ import path from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import compileConfig from './common/configCompiler';
 
-process.env.CONFIG_JSON = path.resolve(process.env.CONFIG_JSON || './config.json');
-console.log(`Using config file: ${process.env.CONFIG_JSON}`);
-
-const Config = require('./server/config').default;
-const config = Config.Current,
+const config = compileConfig(),
     isHot = path.basename(require.main.filename) === 'webpack-dev-server.js';
 
 const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
@@ -22,6 +19,8 @@ let webpackConfig = {
     output: {
         filename: 'script.js',
         path: path.resolve(__dirname, 'public'),
+        hotUpdateChunkFilename: 'hot/hot-update.js',
+        hotUpdateMainFilename: 'hot/hot-update.json',
     },
 
     optimization: {
@@ -37,7 +36,7 @@ let webpackConfig = {
     resolveLoader: {
         alias: {
             'js-to-sass-loader': path.resolve(__dirname, 'webpack/js-to-sass-loader'),
-            'remove-json-comments-loader': path.resolve(__dirname, 'webpack/remove-json-comments-loader')
+            'config-compiler-loader': path.resolve(__dirname, 'webpack/config-compiler-loader')
         }
     },
     
@@ -51,7 +50,7 @@ let webpackConfig = {
             {
                 test: /\.json$/,
                 exclude: /node_modules/,
-                loader: 'remove-json-comments-loader',
+                loader: 'config-compiler-loader',
             },
             {
                 test: /\.s[ca]ss$/,
@@ -80,7 +79,9 @@ let webpackConfig = {
         new webpack.ProvidePlugin({
             _: 'lodash',
         }),
-        new ExtractTextPlugin({ filename: 'style.css' }),
+        new ExtractTextPlugin({ 
+            filename: 'style.css',
+        }),
         new HtmlWebpackPlugin({
             template: '!!ejs-loader!./client/index.ejs',
             filename: 'index.html',

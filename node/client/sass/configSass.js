@@ -1,10 +1,7 @@
-import json5 from 'json5';
-import fs from 'fs';
-const config = json5.parse(fs.readFileSync(process.env.CONFIG_JSON));
+import compileConfig from '../../common/configCompiler';
 
-let sass = {
-        allInOne: config.layout.allInOne,
-
+let config = compileConfig(),
+    sass = {
         nuzlockeEnabled: config.nuzlocke.enabled,
         applyDeathSpin: config.nuzlocke && config.nuzlocke.applyDeathSpin,
         ripPrefix: config.nuzlocke && config.nuzlocke.ripPrefix || '',

@@ -5,3 +5,4 @@ node/public/**
 .vscode
 *.code-workspace
 .eslint*
+node/hot/
