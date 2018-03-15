@@ -60,6 +60,12 @@ function initSlots() {
 
 initSlots();
 
+function assertGeneration(luaGen) {
+    if (parseInt(luaGen) !== Config.Current.generation) {
+        console.error(`Generation mismatch: Lua is running gen ${luaGen}.  Node is running gen ${Config.Current.generation}.`);
+    }
+}
+
 app.get(/^\/api\/slot\/([1-6]|all)$/i, function (req, res, next) {
     res.sseSetup();
 
@@ -96,6 +102,8 @@ app.get(/^\/api\/slot\/([1-6]|all)$/i, function (req, res, next) {
 });
 
 app.get(/^\/api\/reset$/i, function (req, res, next) {
+    assertGeneration(req.header('Pokemon-Generation'));
+
     console.log('Sending reset to all slot connections');
     let sentTo = 0;
     for (let conn of connections) {
@@ -128,6 +136,8 @@ app.get(/^\/api\/reset$/i, function (req, res, next) {
 app.post(/^\/api\/update$/i, function (req, res, next) {
     console.log(`Received update on from Lua script:\n${JSON.stringify(req.body, null, 2)}`);
     let hadError = false;
+    assertGeneration(req.header('Pokemon-Generation'));
+
     for (let data of req.body) {
         let { slot, box, changeId, pokemon } = data,
             { species, alternateForm, shiny, female } = pokemon,

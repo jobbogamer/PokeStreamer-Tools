@@ -9,7 +9,7 @@ local ltn12 = require "ltn12"
 local change_ids = { 0, 0, 0, 0, 0, 0 }
 local box_change_ids = {}
 
-for box = 1, 20 do
+for box = 1, 18 do
     box_change_ids[box] = {}
     for box_slot = 1, 30 do
         box_change_ids[box][box_slot] = 0
@@ -21,11 +21,7 @@ function reset_server()
     http.request(api_root .. "/reset");
 end
 
--- function bool_to_int(b)
---     return b and 1 or 0
--- end
-
-function send_slots(slots_info)
+function send_slots(slots_info, generation)
     local slot_messages = {}
     for i, slot_info in ipairs(slots_info) do
         slot_messages[i] = get_slot_json(slot_info)
@@ -42,7 +38,8 @@ function send_slots(slots_info)
         source = ltn12.source.string(request_body),
         headers = {
             ["Content-Type"] = "application/json",
-            ["content-length"] = #request_body
+            ["content-length"] = #request_body,
+            ["Pokemon-Generation"] = generation
         }
     })
 end

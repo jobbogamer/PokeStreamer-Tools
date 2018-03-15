@@ -691,7 +691,7 @@ function fn()
 		end
 
 		if (#send_data > 0) then
-			send_slots(send_data)
+			send_slots(send_data, gen)
 		end
 
 		last_check = current_time
