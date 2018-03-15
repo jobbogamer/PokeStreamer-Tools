@@ -29,6 +29,14 @@
         // the port for another service.
         "devServerPort": "8082",
     },
+
+    // If you want override the settings in this file, specify a file or an array of files whose values will take
+    // precedence.  Files at the beginning of the list have higher priority than those later.
+    //
+    // Objects within the config files are merged, but arrays are simply overwritten. 
+    //
+    // NOTE: this value is ignored in the override files themselves.
+    // "configOverride": "./config.custom.json",
     
     /*
     Paths to images folder relative to the /node/server directory.

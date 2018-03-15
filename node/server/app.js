@@ -28,7 +28,11 @@ if (process.env.NODE_ENV === 'development' || process.argv.includes('-d') || pro
         });
     webpack.stdout.on('data', data => console.log(data.toString()));
     webpack.stderr.on('data', data => console.log(data.toString()));
-    webpack.on('close', code => console.log(`Webpack exited with error code ${code}`));
+    webpack.on('close', code => {
+        console.log(`Webpack exited with error code ${code}.  Closing server.`);
+        process.exit(code);
+    });
+    
     console.log(`Webpack running on process ${webpack.pid}`);
 } else {
     port = 'port';
