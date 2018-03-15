@@ -12,16 +12,14 @@ import Config from './config';
 import PokemonImages from './pokemon-images';
 import Slot from './slot';
 import SoulLink from './soul-link';
-import { ConfigFile } from './constants';
-
-console.log(`Using config file: ${ConfigFile}`);
 
 let port, webpack;
 if (process.env.NODE_ENV === 'development' || process.argv.includes('-d') || process.argv.includes('--debug')) {
     port = 'devServerPort';
 
     console.log('Spinning up webpack-dev-server...');
-    webpack = spawn('node_modules\\.bin\\webpack-dev-server', [],
+    // for reasons surpassing understanding, hot swapping styles with my current code only works when mode is production
+    webpack = spawn('node_modules\\.bin\\webpack-dev-server', [ '--mode', 'production' ],
         { 
             shell: true,
             env: process.env,
@@ -84,7 +82,7 @@ app.get(/^\/api\/slot\/([1-6]|all)$/i, function (req, res, next) {
         res.sseSend(slots[slot]);
     }
 
-    conn[slot] = slot;
+    conn.slot = slot;
     connections.add(conn);
 
     req.on('close', (function () {
@@ -117,7 +115,7 @@ app.get(/^\/api\/reset$/i, function (req, res, next) {
         } else {
             // kind of silly to send the indexed slot when they are all identical, but meh... this is resilient to 
             // possible future changes
-            conn.res.sseSend(slot[conn.slot]);
+            conn.res.sseSend(slots[conn.slot]);
         }
 
         sentTo++;
@@ -127,42 +125,52 @@ app.get(/^\/api\/reset$/i, function (req, res, next) {
     res.sendStatus(200);
 });
 
-app.post(/^\/api\/update\/([1-6])$/i, function (req, res, next) {
-    const speciesRegex = /^(-?\d{1,3})(\w*)$/;
-    let slot = parseInt(req.params[0]) - 1,
-        data = req.body,
-        match = speciesRegex.exec(data.species),
-        species = match ? parseInt(match[1]) : -1,
-        alternateForm = match ? match[2] : null,
-        isReal = species !== -1,
-        shiny = !!parseInt(data.shiny),
-        female = !!parseInt(data.female),
-        sData;
-    console.log(`Received update on slot ${slot + 1} from Lua script: ${JSON.stringify(req.body)}`);
+app.post(/^\/api\/update$/i, function (req, res, next) {
+    console.log(`Received update on from Lua script:\n${JSON.stringify(req.body, null, 2)}`);
+    let hadError = false;
+    for (let data of req.body) {
+        let { slot, box, changeId, pokemon } = data,
+            { species, alternateForm, shiny, female } = pokemon,
+            isReal = species > 0,
+            slotData;
+        slot--;
+        box && box--;
 
-    if (!isReal) {
-        sData = slots[slot] = Slot.empty(slot, data.changeId);
-    } else if (PokemonImages[species]) {
-        sData = slots[slot] = new Slot(
-            slot,
-            JSON.parse(data.changeId),
-            species,
-            data.nickname,
-            JSON.parse(data.level), 
-            PokemonImages[species].getImage(female, shiny, alternateForm),
-            JSON.parse(data.dead));
+        if (!isReal) {
+            slotData = slots[slot] = Slot.empty(slot, changeId);
+        } else if (PokemonImages.get(species)) {
+            slotData = slots[slot] = new Slot(
+                slot,
+                changeId,
+                species,
+                pokemon.nickname,
+                pokemon.level,
+                !pokemon.living,
+                female,
+                shiny,
+                alternateForm,
+                pokemon.levelMet,
+                pokemon.locationMet);
+        }
+
+        hadError = hadError || !slotData;
     }
 
-    if (sData) {
+    if (!hadError) {
         res.sendStatus(200);
         next();
 
-        let sentTo = 0,
-            deadConnections = 0;
+        let sentTo = 0;
         for (let conn of connections) {
-            if (conn.slot === slot || conn.slot === 'all') {
-                sentTo++;
-                conn.res.sseSend(slots[slot]);
+            if (conn.res.connection.destroyed) {
+                continue;
+            }
+
+            sentTo++;
+            if (conn.slot === 'all') {
+                conn.res.sseSend(slots);
+            } else if (slots[conn.slot]) {
+                conn.res.sseSend(slots[conn.slot]);
             }
         }
 
@@ -185,7 +193,7 @@ setInterval(() => {
     if (deadConnections) {
         console.log(`Removed ${deadConnections} dead connections.`);
     }
-}, 5000);
+}, 2000);
 
 let server = app.listen(Config.Current.server[port], function() {
     console.log(`Listening on port ${Config.Current.server[port]}`);

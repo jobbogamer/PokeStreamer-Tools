@@ -19,18 +19,11 @@ let webpackConfig = {
     output: {
         filename: 'script.js',
         path: path.resolve(__dirname, 'public'),
-        hotUpdateChunkFilename: 'hot/hot-update.js',
-        hotUpdateMainFilename: 'hot/hot-update.json',
+        publicPath: '/',
     },
 
     optimization: {
         minimize: false,
-    },
-
-    resolve: {
-        alias: {
-            'config$': process.env.CONFIG_JSON,
-        }
     },
     
     resolveLoader: {

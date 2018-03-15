@@ -1,3 +1,7 @@
+$imageWrapperRatio: strip-unit($imageWrapperWidth) / strip-unit($imageWrapperHeight);
+$hShift: $imageShift * $imageWrapperRatio;
+$vShift: $imageShift / $imageWrapperRatio;
+
 @mixin img-trans($transforms) {
   img {
     transform: $transforms;
@@ -46,24 +50,24 @@
 %sl-diagonal-forward {
   &:first-child {
     @include overlay(top, left);
-    @include img-trans(translate(-$imageShift, -$imageShift) $imageScale);
+    @include img-trans(translate(-$hShift, -$vShift) $imageScale);
   }
 
   &:last-child {
     @include overlay(bottom, right);
-    @include flip-img(translate(-$imageShift, $imageShift) $imageScale);
+    @include flip-img(translate(-$hShift, $vShift) $imageScale);
   }
 }
 
 %sl-diagonal-backward {
   &:first-child {
     @include overlay(top, right);
-    @include flip-img(translate(-$imageShift, -$imageShift) $imageScale);
+    @include flip-img(translate(-$hShift, -$vShift) $imageScale);
   }
 
   &:last-child {
     @include overlay(bottom, left);
-    @include img-trans(translate(-$imageShift, $imageShift) $imageScale);
+    @include img-trans(translate(-$hShift, $vShift) $imageScale);
   }
 }
 
@@ -76,7 +80,7 @@
       transform: translate(0, -50%);
     }
     
-    @include img-trans(translate(-$imageShift, -$imageShift) translate(0, -$soulLinkGap) $imageScale);
+    @include img-trans(translate(-$hShift, -$vShift) $imageScale);
   }
 
   &:last-child {
@@ -87,7 +91,7 @@
       transform: translate(0, -50%);
     }
 
-    @include flip-img(translate(-$imageShift, $imageShift) translate(0, 25%) $imageScale);
+    @include flip-img(translate(-$hShift, $vShift) translate(0, 25%) $imageScale);
   }
 }
 
@@ -100,7 +104,7 @@
       bottom: 0;
     }
 
-    @include img-trans(translate(-$imageShift, -$imageShift) translate(-$soulLinkGap, 0) $imageScale);
+    // @include img-trans(translate(-$hShift, -$vShift) translate(-$soulLinkGap, 0) $imageScale);
   }
 
   &:last-child {
@@ -112,8 +116,7 @@
     }
 
     top: -$imageWrapperHeight !important;
-    left: $soulLinkGap;
-    @include flip-img(translate($imageShift, $imageShift) translate(-25%, 0) $imageScale);
+    @include flip-img(translate($hShift, $vShift) translate(-25%, 0) $imageScale);
   }
 }
 
@@ -122,8 +125,6 @@
     &:last-child {
       transform: scale(.5 .5);
       transform-origin: 100% 100%;
-      top: $soulLinkGap;
-      left: $soulLinkGap;
 
       @include overlay(bottom, left);
     }
@@ -142,13 +143,17 @@
     
     &:last-child {
       clip-path: url(#soulLinkClipBottom);
-      top: $soulLinkGap - $imageWrapperHeight;
+      top: -$imageWrapperHeight;
     }
   }
 }
 
 @if $soulLinkEnabled {
-  #soulLinkClipTop, #soulLinkClipBottom {
+  #soulLinkClipTop {
+    transform: scale(strip-unit($imageWrapperWidth) / 100, strip-unit($imageWrapperHeight) / 100);
+  }
+  
+  #soulLinkClipBottom {
     transform: scale(strip-unit($imageWrapperWidth) / 100, strip-unit($imageWrapperHeight) / 100);
   }
   
@@ -171,6 +176,14 @@
     height: $imageWrapperHeight;
     max-height: $imageWrapperHeight;
 
+    &:first-child {
+      transform: translate(map-get($imageWrapperShifts, "topLeft"), map-get($imageWrapperShifts, "topTop"));      
+    }
+
+    &:last-child {
+      transform: translate(map-get($imageWrapperShifts, "bottomLeft"), map-get($imageWrapperShifts, "bottomTop"));      
+    }
+
     &:not(.soul-linked) {
       &.invalid {
         @extend %invalidPokemonStyle !optional;
@@ -178,7 +191,7 @@
     }
 
     &.soul-linked {
-      @extend %soulLinkedStyle !optional;
+      @extend %soulLinkedWrapperStyle !optional;
 
       &.boxed {
         @extend %boxedStyle !optional;

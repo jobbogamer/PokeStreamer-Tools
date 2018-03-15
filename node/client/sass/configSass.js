@@ -2,6 +2,7 @@ import compileConfig from '../../common/configCompiler';
 
 let config = compileConfig(),
     sass = {
+        allInOne: config.layout.allInOne,
         nuzlockeEnabled: config.nuzlocke.enabled,
         applyDeathSpin: config.nuzlocke && config.nuzlocke.applyDeathSpin,
         ripPrefix: config.nuzlocke && config.nuzlocke.ripPrefix || '',

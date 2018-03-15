@@ -34,7 +34,7 @@ ValidateArgument.boundedIntOrEmpty = function(arg, argName, min, max, msg) {
     }
 
     return ValidateArgument.boundedInt.apply(arguments);
-}
+};
 
 ValidateArgument.hasValue = function(arg, argName, msg) {
     msg = msg || `Argument '${argName}' must be defined and not null.  Found '${arg}'.`;
@@ -68,7 +68,7 @@ ValidateArgument.bool = function(arg, argName, msg) {
 };
 
 ValidateArgument.boolOrUndefinedFalse = function(arg, argName, msg) {
-    arg = arg === undefined ? false : ValidateArgument.bool.apply(arguments);
+    return arg === undefined ? false : ValidateArgument.bool.apply(null, arguments);
 };
 
 export default ValidateArgument;

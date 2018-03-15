@@ -16,5 +16,4 @@ SupportedImageFormats.validExtensions = SupportedImageFormats.map(f => f.searchS
 const ImageRegex = new RegExp(`(\\d+)(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 const ShinyImageRegex = new RegExp(`(\\d+)s(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 
-const ConfigFile = process.env.CONFIG_JSON || 'config.json';
-export { SupportedImageFormats, ImageRegex, ShinyImageRegex, ConfigFile };
+export { SupportedImageFormats, ImageRegex, ShinyImageRegex };

@@ -6,10 +6,12 @@ $imageScale: scale(strip-unit($imageSideLength) / min(strip-unit($imageWrapperWi
 
 .img-wrapper {
   position: relative;
+  display: flex;
+  justify-content: space-around;
   margin: 0;
   padding: 0;
   
-  :not(.soul-linked) {
+  &:not(.soul-linked) {
     @extend %imageWrapperStyle !optional;  
   }
   

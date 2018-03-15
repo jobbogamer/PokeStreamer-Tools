@@ -6,6 +6,11 @@
   height: $totalSlotHeight;
   position: relative;
   margin: 0;
+
+  padding: max((- map-get($imageWrapperShifts, "topTop")), (- map-get($imageWrapperShifts, "bottomTop")))
+           max(map-get($imageWrapperShifts, "topLeft"), map-get($imageWrapperShifts, "bottomLeft"))
+           max(map-get($imageWrapperShifts, "topTop"), map-get($imageWrapperShifts, "bottomTop"))
+           max((- map-get($imageWrapperShifts, "topLeft")), (- map-get($imageWrapperShifts, "bottomLeft")));
 }
 
 .img-row {

@@ -80,6 +80,8 @@
         element will have a line for the nickname followed by a line for the species.
         
         NOTE: The death messages *replace* the other elements listed (aside from other death messages).
+        NOTE: Currently SoulLink, and thus, sl-* values, are not available for gen3.
+        NOTE: Currently nickname and sl-nickname are not available for gen4/gen5.
         
         Available elements are:
         • nickname
@@ -259,11 +261,17 @@
         // set this to true if you want your pokemon to be on bottom (or on the right side in the vertical case)
         "soulLinkSwap": false,
         
-        // the space between the two images
-        "soulLinkGap": "12px",
+        // these values determine how large the gap between the images is
+        // NOTE: these values are unaffected by the soulLinkSwap value
+        "imageWrapperShifts": {
+            "topTop": "-8px",
+            "topLeft": "-2px",
+            "bottomTop": "8px",
+            "bottomLeft": "2px",
+        },
         
         // styles for the soulLinked image wrapper
-        "%soulLinkedStyle": {},
+        "%soulLinkedWrapperStyle": {},
 
         // how far to shift the image away from the divide so that you can see more of the pokemon
         "imageShift": "10%",

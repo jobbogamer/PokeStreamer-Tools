@@ -58,7 +58,7 @@ dofile "slot.lua"
 local new_party = ""
 
 local last_check = 0
-local last_party = { Slot:new(), Slot:new(), Slot:new(), Slot:new(), Slot:new(), Slot:new() }
+local last_party = { Slot(), Slot(), Slot(), Slot(), Slot(), Slot() }
 local print_ivs = 0
 
 local gamename={"Ruby/Sapphire U", "Emerald U", "FireRed/LeafGreen U", "Ruby/Sapphire J", "Emerald J", "FireRed/LeafGreen J (1360)"}
@@ -195,6 +195,8 @@ function fn()
     current_time = os.time()
     if current_time - last_check > 1 then
         
+        local slot_changes = {}
+
         -- now for display
         if status==1 or status==2 then --status 1 or 2
             
@@ -345,7 +347,7 @@ function fn()
                 
                 local last_state = last_party[slot]
                 
-                local current_state = Slot:new({
+                local current_state = Slot{
                     species = species ~= 0 and pokedex_ids[speciesname] or -1,
                     nickname = nickname,
                     level = level,
@@ -353,9 +355,9 @@ function fn()
                     living = current_hp ~= nil and current_hp > 0,
                     location_met = location_met,
                     level_met = level_met
-                })
+                }
                 
-                local change = not current_state:equals(last_state)
+                local change = current_state ~= last_state
                 
                 if change then
                     print("Slot " .. slot .. " -> " .. tostring(current_state))
@@ -371,7 +373,7 @@ function fn()
                         current_state.species = -1
                     end
                     
-                    send_slot_info(slot, current_state)
+                    slot_changes[#slot_changes + 1] = { slot_id = slot, slot = current_state }
                     last_party[slot] = current_state
                 end
                 
@@ -387,6 +389,10 @@ function fn()
                 --print("slot " .. slot .. " " .. speciesname)
             end -- for loop slots
             
+            if #slot_changes > 0 then
+                send_slots(slot_changes)
+            end
+
             last_check = current_time
             if print_ivs == 1 then
                 print("")

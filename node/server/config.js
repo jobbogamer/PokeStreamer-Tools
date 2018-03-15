@@ -63,6 +63,7 @@ class Config extends EventEmitter {
         }
 
         this.configWatcher = new ConfigWatcher(next);
+        this.configWatcher.on('change', this._readConfig.bind(this));
         this.emit('update', { prev: prev, next: this._current });
     }
 

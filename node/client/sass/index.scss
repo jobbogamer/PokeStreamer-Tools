@@ -1,8 +1,10 @@
 @import './configSass.js';
 @import './helpers';
 
-$totalSlotWidth: $imageSideLength + $leftElementWidth + $rightElementWidth !default;
-$totalSlotHeight: $imageSideLength + $topElementHeight + $bottomElementHeight !default;
+$imageWrapperWidth: $imageSideLength !default;
+$imageWrapperHeight: $imageSideLength !default;
+$totalSlotWidth: $imageWrapperWidth + $leftElementWidth + $rightElementWidth !default;
+$totalSlotHeight: $imageWrapperHeight + $topElementHeight + $bottomElementHeight !default;
 
 @import './body';
 @import './slot';
