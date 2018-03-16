@@ -2,12 +2,12 @@
 
 A set of scripts and tools for Pokemon streamers
 
-**README is a work in progress.  Most of the settings information can be found in `node/config.json`.**
+**README is a work in progress.  Most of the settings information can be found in `node/config.json`.**  Any comments in the config files that contradict the readme are more accurate than the readme.
 
 **This is a modified version of [EverOddish's PokeStreamer-Tools](https://github.com/EverOddish/PokeStreamer-Tools).**
 An issue with the original script is that every time a pokemon changes slots, it rewrites data to the hard drive several times.  This is a synchronous operation that causes the game (in particular, the audio) to lag significantly.
 
-This code uses a [Node.JS](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at `http://localhost:8081/`.  (Optionally, for more flexibility, you can disable all-on-one mode in the `node/config.json` file, and access six separate pages at `http://localhost:8081/?slot=slotNum` where `slotNum` is a number between 1 and 6.)
+This code uses a [Node.JS](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at `http://stream.pokemon-soul.link:8081/`.  (Optionally, for more flexibility, you can disable all-on-one mode in the `node/config.json` file, and access six separate pages at `http://stream.pokemon-soul.link:8081/?slot=slotNum` where `slotNum` is a number between 1 and 6.)
 
 **This project is still a work in progress.  Currently this only works with the `auto_layout_gen3.lua` script.  Gen 4+ support is forthcoming.**
 
@@ -23,6 +23,7 @@ The following are required *in addition* to the [requirements](#requirements) li
 Optional:
 
 *   [LuaSocket 2.0.2 32-bit](http://files.luaforge.net/releases/luasocket/luasocket/luasocket-2.0.2) - The included LuaSocket binaries in `/lua/` are [64-bit versions](https://download.zerobrane.com/luasocket-win64.zip) (as they're harder to come by).  If you are using a 32-bit emulator, you will need to download the 32-bit version and replace the 64-bit versions.
+*   [Discord](https://discordapp.com/) - Required for SoulLink functionality (forthcoming).
 
 ### Server Setup
 
@@ -36,7 +37,7 @@ Optional:
 
 I *highly* recommend you use the zip located [here](http://pkmn.net/?action=content&page=viewpage&id=8644) as it includes all the required images named the way my script expects them to be named (i.e. numbered by PokeDex number).
 
-Download and extract this to your newly cloned directory's `/pokemon-images/` folder.  If you're using the zip above, you'll need to move all the sub directories from `/pokemon-images/PKMN.NET Sprite Resource 4/Pokémon/` to `/pokemon-images`, or change the values in config.  This is an optional location that you can change later in the config if you wish.  The edited versions of the lua scripts (currently just gen3) no longer require the images to be placed alongside them.  This directory may be anywhere you want.
+Download and extract this to your newly cloned directory's `/pokemon-images/` folder.  If you're using the zip above, you'll need to move all the sub directories from `/pokemon-images/PKMN.NET Sprite Resource 4/Pokémon/` to `/pokemon-images` (such that the `BW` folder is at `/pokemon-images/BW`), or if you're a masochist, you can change the values in config.  The edited versions of the lua scripts no longer require the images to be placed alongside them.  The `/pokemon-images/` directory may be anywhere you want as long as you update the config.
 
 **Note**: All images in the specified image directories are loaded into memory by the server.  This isn't a problem for the images in the suggested ZIP (~5MB depending on which generation), but if you use larger ones, you may run into some memory difficulties.
 
@@ -52,9 +53,9 @@ Download and extract this to your newly cloned directory's `/pokemon-images/` fo
 3.  Change settings to your desire.  The file is pretty well commented, so hopefully it won't give you too much trouble.  If it does, you can reach me on [Discord](https://discord.gg/FKDntWR).
 4.  Save.  (Obviously.)
 
-The default settings are what [Failstream](https://twitch.tv/failstream) uses, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
+The default settings are what [Failstream](https://twitch.tv/failstream) used in his first Pokémon Randomizer run, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
 
-**Note**: Any time you update the `config.json` file, you will need to rebuild the project by running `build.cmd`.  Alternatively, from `/node/`, you can run `autobuild.cmd`.  This will automatically handle **most** changes to `config.json`, though changing some nuzlocke settings (e.g. enabling sound) won't update until you re-run webpack.  If a change doesn't seem to be taking effect, your best bet is just to restart webpack/rerun build.cmd.  (There's an open issue about the styles, which unfortunately aren't being updated properly.)
+**Note**: Any time you update the `config.json` file, you will need to rebuild the project by running `build.cmd`.  Alternatively, from `/node/`, you can run `autobuild.cmd`.  This will automatically handle **most** changes to `config.json` (and any other config files referenced), though changing some nuzlocke settings (e.g. enabling sound) won't update until you re-run webpack.  If a change doesn't seem to be taking effect, your best bet is just to restart webpack/rerun build.cmd.
 
 #### Build
 
@@ -70,17 +71,18 @@ Now you can run your emulator and load the (modified) lua script as before.
 
 No guarantees I will ever get around to these, but here are the features I plan/hope to implement soon.
 
-1.  Pokemon variation support (shiny, gender)
-2.  Gen4-5 support
-    *   Significant refactoring of Lua code
-3.  Additional Nuzlocke features
-    *   Fun-to-have animations and such
-4.  SoulLink functionality
-    *   Communication via IRC (e.g. Twitch Chat)
-    *   Automatic soul-linked deaths
-    *   Shared experience between soul-linked pokemon
-5.  Stream chat interactivity (*wayyy* down the line)
-    *   Use bits or stream currency to purchase in game effects
+- [x] Pokemon variation support (shiny, gender)
+- [x] Gen4-5 support
+    - [x] Significant refactoring of Lua code
+- [ ] Additional Nuzlocke features
+    - [ ] Fun-to-have animations and such
+- [ ] SoulLink functionality
+    - [ ] Communication via Discord
+    - Low priority items
+      - [ ] Automatic soul-linked deaths
+      - [ ] Shared experience between soul-linked pokemon
+- [ ] Stream chat interactivity (*wayyy* down the line--aka realistically, never)
+    *   Use bits or stream currency to purchase in game effects (*Hunger Games Sponsor mode*)
         *   Heal the current pokemon
         *   Heal the whole team
         *   Restore PP to the current pokemon
@@ -88,6 +90,8 @@ No guarantees I will ever get around to these, but here are the features I plan/
         *   etc
     *   Vote to select next Pokemon encounter
         *   May not be possible, or way too complicated for me to figure out, but it would be fun
+
+(Personal note just so I remember where it is.  Look into https://github.com/wojons/lua-resty-sse for communicating from Node server to Lua.)
 
 # EverOddish PokeStreamer-Tools README #
 
