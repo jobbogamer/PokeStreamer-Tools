@@ -98,10 +98,10 @@ let webpackConfig = {
         overlay: true,
         index: 'index.html',
         contentBase: path.join(__dirname, 'public'),
-        host: 'localhost',
+        host: config.server.host,
         port: config.server.port,
         proxy: {
-            '/api': `http://localhost:${config.server.devServerPort}/`,
+            '/api': `http://${config.server.host}:${config.server.devServerPort}/`,
         },
     }
 };

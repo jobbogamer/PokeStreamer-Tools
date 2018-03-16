@@ -40,6 +40,23 @@ const Validations = {
         nonTransparentBackground: new Assertion(c => 
                 args.isDebug || !c.style['%body'].background || c.style['%body'].background === 'transparent',
             `%body background is not 'transparent'`),
+    },
+    layout: {
+        gen45nickname: new Assertion(c => {
+            if (c.generation === 3) {
+                return true;
+            }
+
+            for (let [k, v] of Object.entries(c.layout)) {
+                if (k.find('Elements') !== -1) {
+                    if (v.contains('nickname') || v.contains('sl-nickname')) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }, `Currently only gen 3 supports nicknames.`, ERROR),
     }
 };
 
@@ -51,7 +68,7 @@ function validateConfig(validationSet, validationSetName) {
     validationSet = validationSet || Validations;
     validationSetName = validationSetName ? validationSetName + '-' : '';
     
-    for (let [name, validation] of Object.entries()) {
+    for (let [name, validation] of Object.entries(validationSet)) {
         name = validationSetName + name;
         if (validation instanceof Assertion) {
             let result = validation.result;

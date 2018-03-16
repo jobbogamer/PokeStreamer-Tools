@@ -65,24 +65,26 @@ export default class Slot {
             this.changeId = parseInt(val.changeId);
             $allText.resetText();
             $allText.find('.scaled').children().unwrap('.scaled');
-            $level.text(val.level === 0 ? '' : val.level);
-            $species.text(val.species);
-            $nickname.text(val.nickname || val.species);
-            if (!val.nickname) {
+
+            let pkmn = val.pokemon;
+            $level.text(pkmn.level === 0 ? '' : pkmn.level);
+            $species.text(pkmn.speciesName);
+            $nickname.text(pkmn.nickname || pkmn.speciesName);
+            if (!pkmn.nickname) {
                 $nickname.addClass('no-nickname');
             } else {
                 $nickname.removeClass('no-nickname');
             }
 
-            $img.attr('src', val.img);
+            $img.attr('src', pkmn.img);
             
-            if (val.dead) {
+            if (pkmn.dead) {
                 $slot.addClass('dead');
                 
                 if (Nuzlocke.enabled) {
                     this.setDeathMessages();
 
-                    if (this.pokemonJustDied(val)) {
+                    if (this.pokemonJustDied(pkmn)) {
                         Nuzlocke.playDeathSound();
                     }
                 }

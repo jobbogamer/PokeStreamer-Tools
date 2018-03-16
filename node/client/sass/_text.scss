@@ -1,10 +1,19 @@
-.level, .species, .nickname, .deathMessage1, .deathMessage2, .deathMessage3 {
-  display: block;
+$showWhenEmpty: null !default;
 
-  &:empty {
-    display: none;
+$elements: 'level', 'species', 'nickname', 'deathMessage1', 'deathMessage2', 'deathMessage3',
+  'sl-level', 'sl-species', 'sl-nickname';
+
+@each $element in $elements {
+  .#{$element} {
+    display: block;
+
+    @if $showWhenEmpty != null and index($showWhenEmpty, $element) == null {
+      &:empty {
+        display: none;
+      }
+    }
   }
-}
+} 
 
 .level {
   @extend %baseText;

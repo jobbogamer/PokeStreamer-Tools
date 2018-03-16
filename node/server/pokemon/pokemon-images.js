@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import EventEmitter from 'events';
-import Config from './config';
-import { ImageRegex, ShinyImageRegex, SupportedImageFormats } from './constants';
+import Config from '../config';
+import { ImageRegex, ShinyImageRegex, SupportedImageFormats } from '../constants';
 
 const basicImageDirs = {
     base: '.',
@@ -41,10 +41,10 @@ class PokemonImages extends EventEmitter {
             console.warn('No specified empty slot image.  Skipping.');
             this._images[-1] = new PokemonImage();
         } else {
-            this._setEmptySlotImage(Config.Current.emptySlotImagePath);
+            this._setEmptySlotImage(path.resolve(__dirname, '..', Config.Current.emptySlotImagePath));
         }
         
-        let basePath = path.resolve(__dirname, Config.Current.pokemonImagesPath),
+        let basePath = path.resolve(__dirname, '..', Config.Current.pokemonImagesPath),
             formsPath = path.resolve(basePath, 'forms');
         
         if (!fs.existsSync(basePath)) {

@@ -10,6 +10,7 @@ import './extensions';
 import { getLocaleString } from './helpers';
 import args from './args';
 import Config from './config';
+import Pokemon from './pokemon/pokemon';
 import PokemonImages from './pokemon/pokemon-images';
 import Slot from './slot';
 import SoulLink from './soul-link';
@@ -150,18 +151,24 @@ app.post(/^\/api\/update$/i, function (req, res, next) {
         if (!isReal) {
             slotData = slots[slot] = Slot.empty(slot, changeId);
         } else if (PokemonImages.get(species)) {
-            slotData = slots[slot] = new Slot(
-                slot,
-                changeId,
-                species,
+            let pkmn = new Pokemon(
+                pokemon.otid,
+                pokemon.otsid,
+                '',
+                pokemon.locationMet,
+                species, 
+                alternateForm,
                 pokemon.nickname,
                 pokemon.level,
                 !pokemon.living,
                 female,
                 shiny,
-                alternateForm,
-                pokemon.levelMet,
-                pokemon.locationMet);
+                pokemon.levelMet
+            );
+            slotData = slots[slot] = new Slot(
+                slot,
+                changeId,
+                pkmn);
         }
 
         hadError = hadError || !slotData;
@@ -206,18 +213,20 @@ setInterval(() => {
     }
 }, 2000);
 
-let server = app.listen(Config.Current.server[port], function() {
-    console.info(`Listening on port ${Config.Current.server[port]}`);
+let server = app.listen(Config.Current.server[port], Config.Current.server.host, function() {
+    console.info(`Listening on ${Config.Current.server.host}:${Config.Current.server[port]}`);
 });
 
 Config.on('update', e => {
-    if (e.prev.server[port] !== e.next.server[port]) {
+    if (e.prev.server[port] !== e.next.server[port] ||
+        e.prev.server.host !== e.next.server.host ||
+        e.prev.server.controlPanelHost !== e.next.server.controlPanelHost) {
         server.close(() => {
-            console.log(`Closed server listening on port ${e.prev.server[port]}`);
+            console.log(`Closed server listening on ${Config.Current.server.host}:${Config.Current.server[port]}`);
         });
 
         server = app.listen(e.next.server[port], function() {
-            console.log(`Listening on port ${e.next.server[port]}`);
+            console.log(`Listening on ${Config.Current.server.host}:${Config.Current.server[port]}`);
         });
     }
 });

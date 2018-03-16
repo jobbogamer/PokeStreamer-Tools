@@ -1,5 +1,5 @@
 import './extensions';
-import { Img } from './image-format';
+import { Img } from './pokemon/image-format';
 
 let SupportedImageFormats = [
     Img('jpg', 'jpeg', ['jpg', 'jpeg']),
