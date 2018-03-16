@@ -5,7 +5,7 @@
 local game = 2
 -----------
 
-dofile "slot.lua"
+dofile "pokemon.lua"
 dofile "send_data_to_server.lua"
 dofile "pokemon_name_to_pokedex_id.lua"
 
