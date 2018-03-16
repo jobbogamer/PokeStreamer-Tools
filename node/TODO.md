@@ -58,7 +58,7 @@ High priority
     -   Use Control Panel to manually specify a new game
 </details>
 
-- [ ] Refactor pokémon data out of `Slot` class and into `Pokemon` class.  
+- [x] Refactor pokémon data out of `Slot` class and into `Pokemon` class.  
     -   A `Slot` contains a `Pokemon` as well as slot information (slot id, box id)
 
 Pokémon
@@ -73,7 +73,7 @@ High priority
         
     Use a key {OTID/OTSID, Location Met, Level Met, Shininess} to determine a pokémon is unique  
     Create an internally used Pokemon id -- probably the same value we use for linking  
-    Use this ID for communications
+    Use this ID for communications  
     When the key is somehow ambiguous:
     -   Use nickname if possible (don't know how to parse it yet in Lua script, though I could just use the encrypted bytes.  Come to think of it, this might be best.  "Official" Nuzlocke rules require to you nickname every pokémon.  I could require every pokémon to have a unique nickname.)
     -   Attempt to check by species
