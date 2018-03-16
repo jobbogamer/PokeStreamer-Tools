@@ -58,7 +58,7 @@ High priority
     -   Use Control Panel to manually specify a new game
 </details>
 
-- [ ] Refactor pokémon data out of `Slot` class and into `Pokemon` class.  
+- [x] Refactor pokémon data out of `Slot` class and into `Pokemon` class.  
     -   A `Slot` contains a `Pokemon` as well as slot information (slot id, box id)
 
 Pokémon
