@@ -53,7 +53,7 @@ dofile "send_data_to_server.lua"
 
 reset_server()
 
-dofile "slot.lua"
+dofile "pokemon.lua"
 
 local new_party = ""
 

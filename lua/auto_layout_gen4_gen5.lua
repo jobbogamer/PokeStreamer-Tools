@@ -36,7 +36,7 @@ local run_soul_link = true
 local print_first_pokemon_bytes = false
 -----------
 
-dofile "slot.lua"
+dofile "pokemon.lua"
 dofile "send_data_to_server.lua"
 dofile "pokemon_name_to_pokedex_id.lua"
 
