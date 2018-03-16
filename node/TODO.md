@@ -75,7 +75,7 @@ High priority
     Create an internally used Pokemon id -- probably the same value we use for linking  
     Use this ID for communications  
     When the key is somehow ambiguous:
-    -   Use nickname if possible (don't know how to parse it yet in Lua script, though I could just use the encrypted bytes.  Come to think of it, this might be best.  "Official" Nuzlocke rules require to you nickname every pokémon.  I could require every pokémon to have a unique nickname.)
+    -   Use nickname if possible (don't know how to parse it yet in Lua script, though I could just use the encrypted bytes.  ~~Come to think of it, this might be best.  "Official" Nuzlocke rules require to you nickname every pokémon.  I could require every pokémon to have a unique nickname.~~)
     -   Attempt to check by species
     -   Use TBD disambiguation strategy (like Control Panel)
 </details>
