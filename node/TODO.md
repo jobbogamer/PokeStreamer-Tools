@@ -135,7 +135,7 @@ High priority
 Mid priority
 ------------
 
-- [ ] Gen 4/5 parse nickname
+- [x] Gen 4/5 parse nickname
 
 Mid-low priority
 ------------
