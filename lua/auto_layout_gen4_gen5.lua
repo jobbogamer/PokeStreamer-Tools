@@ -36,7 +36,7 @@ local run_soul_link = true
 local print_first_pokemon_bytes = false
 -----------
 
-dofile "pokemon.lua"
+local Pokemon = require("pokemon")
 dofile "send_data_to_server.lua"
 dofile "pokemon_name_to_pokedex_id.lua"
 
@@ -573,6 +573,27 @@ function readPokemon(pidAddr)
 	for i = 1, BlockC[shiftvalue + 1] - 1 do
 		prng = mult32(prng,0x5F748241) + 0xCBA72510 -- 16 cycles
 	end
+
+	nickname = ""
+	for i = 0, 10 do
+		prng = mult32(prng,0x41C64E6D) + 0x6073
+		local c = bxr(memory.readword(pidAddr + BlockCoff + 2 * i + 8), gettop(prng)) - 1
+		
+		-- apparently gen 5 uses legit UTF-16 (untested)
+		if gen == 4 then
+			c = characterTable[c]
+		end
+
+		if c == nil then
+			break
+		elseif c <= 0xFF then
+			nickname = nickname .. string.char(c)
+		else
+			-- hopefully never happens
+			-- even though lua only supports 3-character octects, write as a 4-char javascript character
+			nickname = nickname .. string.format("%04d", c) 
+		end
+	end
 	
 	-- Block D
 	prng = checksum
@@ -612,11 +633,11 @@ function readPokemon(pidAddr)
 	local slot
 	if pokemonID ~= -1 then
 		if pokemon[pokemonID + 1] ~= "none" then
-			slot = Slot{
+			slot = Pokemon{
 				otid = OTID,
 				otsid = OTSID,
 				species = pokemonID,
-				--nickname = isnicknamed and nickname or "",
+				nickname = isnicknamed and nickname or "",
 				level = level,
 				female = is_female,
 				shiny = is_shiny,
@@ -629,7 +650,7 @@ function readPokemon(pidAddr)
 				slot["alternate_form"] = alternate_forms[pokemonID][alternate_form + 1]
 			end
 		else
-			slot = Slot()
+			slot = Pokemon()
 		end
 
 		return slot

@@ -154,7 +154,6 @@ app.post(/^\/api\/update$/i, function (req, res, next) {
             let pkmn = new Pokemon(
                 pokemon.otid,
                 pokemon.otsid,
-                '',
                 pokemon.locationMet,
                 species, 
                 alternateForm,

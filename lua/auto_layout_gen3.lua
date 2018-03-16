@@ -53,12 +53,12 @@ dofile "send_data_to_server.lua"
 
 reset_server()
 
-dofile "pokemon.lua"
+local Pokemon = require("pokemon")
 
 local new_party = ""
 
 local last_check = 0
-local last_party = { Slot(), Slot(), Slot(), Slot(), Slot(), Slot() }
+local last_party = { Pokemon(), Pokemon(), Pokemon(), Pokemon(), Pokemon(), Pokemon() }
 local print_ivs = 0
 
 local gamename={"Ruby/Sapphire U", "Emerald U", "FireRed/LeafGreen U", "Ruby/Sapphire J", "Emerald J", "FireRed/LeafGreen J (1360)"}
@@ -347,7 +347,7 @@ function fn()
                 
                 local last_state = last_party[slot]
                 
-                local current_state = Slot{
+                local current_state = Pokemon{
                     species = species ~= 0 and pokedex_ids[speciesname] or -1,
                     nickname = nickname,
                     level = level,

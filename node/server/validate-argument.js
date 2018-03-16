@@ -71,4 +71,13 @@ ValidateArgument.boolOrUndefinedFalse = function(arg, argName, msg) {
     return arg === undefined ? false : ValidateArgument.bool.apply(null, arguments);
 };
 
+ValidateArgument.stringHasValue = function(arg, argName, msg) {
+    msg = msg || `Argument '${argName}' must be a non-empty string.  Found '${arg}'.`;
+    if (ValidateArgument.hasValue(arg, argName, msg) && arg.constructor === String && arg.length) {
+        return arg;
+    }
+
+    throw new Error(msg);
+}
+
 export default ValidateArgument;

@@ -1,5 +1,5 @@
-Slot = {}
-local _defaultSlotValues = {
+local Pokemon = {}
+local _defaultPokemonValues = {
     -- these four fields form the SoulLink id as they don't change
     otid = -1,              -- original trainer id
     otsid = -1,             -- original trainer secret id
@@ -15,9 +15,9 @@ local _defaultSlotValues = {
     level_met = -1
 }
 
-function Slot:__call(init)
+function Pokemon:__call(init)
 	init = init or {}
-	for k,v in pairs(_defaultSlotValues) do
+	for k,v in pairs(_defaultPokemonValues) do
         init[k] = init[k] or v
     end
 	
@@ -26,7 +26,7 @@ function Slot:__call(init)
 	return init
 end
 
-function Slot.__eq(left, right)
+function Pokemon.__eq(left, right)
     return left.otid == right.otid and
         left.otsid == right.otsid and
         left.species == right.species and
@@ -40,7 +40,7 @@ function Slot.__eq(left, right)
         left.location_met == right.location_met
 end
 
-function Slot:__tostring()
+function Pokemon:__tostring()
 	local strs = {}
 	for k, v in pairs(self) do
 		if type(v) ~= "function" and type(v) ~= "table" then
@@ -51,11 +51,12 @@ function Slot:__tostring()
 	return string.format("{ %s }", table.concat(strs, ", "))
 end
 
-function Slot:clone()
-    return Slot({
+function Pokemon:clone()
+    return Pokemon({
         otid = self.otid,
         otsid = self.otsid,
         species = self.species,
+        encryptedNicknameBytes = self.encryptedNicknameBytes,
         alternate_form = self.alternate_form,
         nickname = self.nickname,
         level = self.level,
@@ -67,7 +68,9 @@ function Slot:clone()
     })
 end
 
-setmetatable(Slot, {
-	__index = Slot,
-	__call = Slot.__call
+setmetatable(Pokemon, {
+	__index = Pokemon,
+	__call = Pokemon.__call
 })
+
+return Pokemon

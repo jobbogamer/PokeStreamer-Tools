@@ -2,6 +2,8 @@ import EventEmitter from 'events';
 import Discord from 'discord.js';
 import config from '../config';
 
+let shinyId = 0;
+
 class SoulLink extends EventEmitter {
     constructor() {
         super();
@@ -84,6 +86,12 @@ class SoulLink extends EventEmitter {
         if (this._client) {
             return this._client.destroy().then(() => this._client = null);
         }
+    }
+
+    getNextShinyId() {
+        shinyId++;
+        // TODO: update this in database
+        return shinyId;
     }
 
     _handleMessage(msg) {

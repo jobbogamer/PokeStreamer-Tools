@@ -195,6 +195,23 @@
         "topElementHeight": "0",
         "bottomElementHeight": "30px",
 
+        "%leftElement": {
+            // don't set width here... set it above
+        },
+
+        "%rightElement": {
+            // don't set width here... set it above
+        },
+
+        "%topElement": {
+            // don't set height here... set it above
+        },
+
+        
+        "%bottomElement": {
+            // don't set height here... set it above
+        },
+
         // list of elements to show even when they have no value
         // for example, can be useful if you want to display an empty nameplate even if there is no pokemon in the slot
         "showWhenEmpty": [

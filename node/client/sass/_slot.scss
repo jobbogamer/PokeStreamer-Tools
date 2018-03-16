@@ -25,11 +25,13 @@
 .top {
   width: 100%;
   height: $topElementHeight;
+  @extend %topElement !optional;
 }
 
 .bottom {
   width: 100%;
   height: $bottomElementHeight;
+  @extend %bottomElement !optional;
 }
 
 // .text-wrapper {
@@ -51,6 +53,7 @@
 
   &.left {
     width: $leftElementWidth;
+    @extend %leftElement !optional;
 
     > .text-wrapper > div {
       transform: translate(-50%, 0) rotate(-90deg) translate(0, $leftElementWidth / 2);
@@ -61,6 +64,7 @@
 
   &.right {
     width: $rightElementWidth;
+    @extend %rightElement !optional;
 
     > .text-wrapper > div {
       transform: translate(-50%, 0) rotate(90deg) translate(0, -$rightElementWidth / 2);
