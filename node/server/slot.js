@@ -1,7 +1,7 @@
-import PokemonImages from './pokemon-images';
+import PokemonImages from './pokemon/pokemon-images';
 import VA from './validate-argument';
 import Config from './config';
-import Pokedex from './pokedex';
+import Pokedex from './pokemon/pokedex';
 
 function getMaxPokemonId(generation) {
     return generation <= 3 ? 386 : 649; // values pulled from wikipedia

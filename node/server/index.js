@@ -10,7 +10,7 @@ import './extensions';
 import { getLocaleString } from './helpers';
 import args from './args';
 import Config from './config';
-import PokemonImages from './pokemon-images';
+import PokemonImages from './pokemon/pokemon-images';
 import Slot from './slot';
 import SoulLink from './soul-link';
 
