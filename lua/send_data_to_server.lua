@@ -1,8 +1,7 @@
 -- IMPORTANT: if you edit this value, you must also edit it in /node/config.json
 local server_port = 8081
-local server_host = "http://pokemon.dxdt.life:"
-local server_root = server_host .. tostring(server_port)
-local api_root = server_root .. "/api"
+local api_host = 'api.pokemon-soul.link'
+local api_root = "http://" .. api_host .. ":" .. tostring(server_port) .. "/api"
 
 local http = require "socket.http"
 local ltn12 = require "ltn12"

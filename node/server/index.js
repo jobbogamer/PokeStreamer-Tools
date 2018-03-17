@@ -4,40 +4,21 @@ import bodyParser from 'body-parser';
 import jade from 'jade';
 import sse from './sse';
 import useragent from 'useragent';
-import { spawn } from 'child_process';
 
 import './extensions';
 import { getLocaleString } from './helpers';
 import args from './args';
+import { NodeRoot } from './constants';
 import Config from './config';
 import Pokemon from './pokemon/pokemon';
 import PokemonImages from './pokemon/pokemon-images';
 import Slot from './slot';
 import SoulLink from './soul-link';
 
-let port, webpack;
-if (args.isDebug) {
+let port;
+if (process.argv.includes('-d') || process.argv.includes('--debug')) {
     port = 'devServerPort';
-
-    console.info('Spinning up webpack-dev-server...');
-    // for reasons surpassing understanding, hot swapping styles with my current code only works when mode is production
-    webpack = spawn(path.normalize('node_modules/.bin/webpack-dev-server'), [ '--mode', 'production' ],
-        { 
-            shell: true,
-            env: process.env,
-            cwd: path.resolve(__dirname, '..'),
-            detached: false,
-            windowsHide: false,
-            stdio: 'pipe',
-        });
-    webpack.stdout.on('data', data => console.log(data.toString()));
-    webpack.stderr.on('data', data => console.log(data.toString()));
-    webpack.on('close', code => {
-        console.error(`Webpack exited with error code ${code}.  Closing server.`);
-        process.exit(code);
-    });
-    
-    console.info(`Webpack running on process ${webpack.pid}`);
+    require('./webpack-spawner').default();
 } else {
     port = 'port';
 }
@@ -219,7 +200,7 @@ let server = app.listen(Config.Current.server[port], Config.Current.server.host,
 Config.on('update', e => {
     if (e.prev.server[port] !== e.next.server[port] ||
         e.prev.server.host !== e.next.server.host ||
-        e.prev.server.controlPanelHost !== e.next.server.controlPanelHost) {
+        e.prev.server.apiHost !== e.next.server.apiHost) {
         server.close(() => {
             console.log(`Closed server listening on ${Config.Current.server.host}:${Config.Current.server[port]}`);
         });

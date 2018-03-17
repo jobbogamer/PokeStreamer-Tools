@@ -68,6 +68,9 @@ let webpackConfig = {
         new webpack.DefinePlugin({
             NUM_SLOTS: 6,
             ENVIRONMENT: NODE_ENV,
+            IS_HOT: isHot,
+            ALL_IN_ONE: config.layout.allInOne,
+            API_BASE_URL: `'${config.server.apiHost}:${config.server.port}/api'`,
         }),
         new webpack.ProvidePlugin({
             _: 'lodash',
@@ -100,8 +103,11 @@ let webpackConfig = {
         contentBase: path.join(__dirname, 'public'),
         host: config.server.host,
         port: config.server.port,
+        allowedHosts: [
+            config.server.apiHost,
+        ],
         proxy: {
-            '/api': `http://${config.server.host}:${config.server.devServerPort}/`,
+            '/api': `http://${config.server.apiHost}:${config.server.devServerPort}/`,
         },
     }
 };

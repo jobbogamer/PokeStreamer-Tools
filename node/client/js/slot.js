@@ -18,7 +18,13 @@ export default class Slot {
         this.$deathMessages = $slot.find('.deathMessage1, .deathMessage2, .deathMessage3');
         this.$allText = $slot.find('.level, .species, .nickname, .deathMessage1, .deathMessage2, .deathMessage3');
         
-        this.eventSource = config.layout.allInOne ? Slot.eventSource : new EventSource(`/slot/${slot}`);
+        if (ALL_IN_ONE) {
+            this.eventSource = Slot.eventSource;
+        } else {
+            this.eventSource = 
+                new EventSource(`http://slot${slot}.${API_BASE_URL}/slot/${slot}`);
+        }
+
         this.eventSource.addEventListener('message', this.updateSlot.bind(this), false);
     }
 
@@ -126,6 +132,6 @@ export default class Slot {
     }
 }
 
-if (config.layout.allInOne) {
-    Slot.eventSource = new EventSource('/api/slot/all');
+if (ALL_IN_ONE) {
+    Slot.eventSource = new EventSource(`http://${API_BASE_URL}/slot/all`);
 }

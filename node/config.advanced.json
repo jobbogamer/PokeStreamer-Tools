@@ -1,0 +1,69 @@
+{
+    "layout": {
+        // Whether you want the page to display all slots on one page, or have one slot per page so you can place them
+        // in your scene however you like.
+        "allInOne": true,
+    },
+
+    "server": {
+        // The port to use when accessing the page that you insert into your stream scene.
+        // 
+        // The url to that page will be http://stream.pokemon-soul.link:<port>/.  Using the default 8081 means that url 
+        // will be http://stream.pokemon-soul.link:8081/.  
+        //
+        // IMPORTANT: if you modify this value, you must also modify it in the Lau script at 
+        //            /lua/send_data_to_server.lua.
+        //
+        // If you aren't running your own webserver, using port 80 means you don't need to include the :<port> part of 
+        // the url.  DON'T use port 443, as the browser will expect https rather than http, and this server doesn't 
+        // support SSL.
+        //
+        // NOTE: StreamLabs uses port 8080, so if you use StreamLabs or another app that listens to 8080, and set this 
+        //       value to 8080, you're gonna have a bad time.  (Port 8080 is pretty commonly used in local webserver
+        //       apps, and the value I initially used until I found out about StreamLabs.)
+        "port": 8081,
+
+        // Change this if you want to bind to a different url or IP address.  stream.pokemon-soul.link for the 
+        // foreseeable future simply points back to localhost (127.0.0.1).
+        //
+        // If you modify this value, make sure to update it in /lua/send_data_to_server.lua.
+        //
+        // You should not set the host value to an IP address as host and api host need to have different values that 
+        // point to the same IP address.  If you are running the server on a different machine than your streaming 
+        // software, I recommend adding records to your hosts file rather than changing these DNS values.
+        // You will need to add records for the following DNS names:
+        //  •   stream.pokemon-soul.link
+        //  •   api.pokemon-soul.link
+        //
+        // If you are not running in all-in-one-mode (see layout.allInOne above), you will also need to add records for
+        //  •   slot<n>.api.pokemon-soul.link
+        // where <n> is each value between 1 and 6.  This is to avoid the browser's limitation on the number of open
+        // connections to the same host allowed.  (In Chrome, this value is 6.)
+        //
+        // See https://www.siteground.com/kb/how_to_use_the_hosts_file/ for information on how to edit your hosts file.
+        "host": "stream.pokemon-soul.link",
+
+        // You almost certainly should not change this, but if you REALLY want to, make sure it is not the same as 
+        // "host" and that it points to the same IP address (127.0.0.1 by default).
+        "apiHost": "api.pokemon-soul.link",
+
+        // You can ignore this value.  I *implore* you to leave this one alone unless for some reason you have a service
+        // already running on 8082 (unlikely).  
+        //
+        // No, seriously, if I could make a .json file throw up a couple "Are you really sure about this?" confirmation 
+        // dialogs, I would.
+        //
+        // It's like, hey, you see this big red button with the number 8082 on it?  You should leave this alone.  Like,
+        // why bother it?  It's not bothering you is it?  Did it insult you in a past life or something?
+        // 
+        // Okay, I *may* be exaggerating a *little*.  Odds are if you change this to, well, really almost anything, it
+        // won't make a noticable difference.  It won't break anything, probably.  The last three paragraphs may have 
+        // been because I was a little bored.
+        //
+        // The devServerPort is only used behind the scenes when you run the dev server (autobuild.cmd) for testing 
+        // purposes.  Its only requirements are that it is not the same as "port", that it's not port 443, and that you
+        // are not already using the port for another service.  Beyond that, go wild.  Live a little.  We're super
+        // heroes; what could happen?
+        "devServerPort": 8082
+    },
+}

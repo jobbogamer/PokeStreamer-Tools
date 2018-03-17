@@ -4,50 +4,17 @@
     
     Valid values: 3 through 5.  (Values 4 and 5 do the same thing).
     */
-    "generation": 3,
-    
-    "server": {
-        // The port to use when accessing the page that you insert into your stream scene.
-        // 
-        // The url to that page will be http://pokemon.dxdt.life:<port>/.  Using the default 8081 means that url will be
-        // http://pokemon.dxdt.life:8081/.  
-        //
-        // IMPORTANT: if you modify this value, you must also modify it in the Lau script at 
-        //            /lua/send_data_to_server.lua.
-        //
-        // If you aren't running your own webserver, using port 80 means you don't need to include the :<port> part of 
-        // the url.  DON'T use port 443, as the browser will expect https rather than http, and this server doesn't 
-        // support SSL.
-        //
-        // NOTE: StreamLabs uses port 8080, so if you use StreamLabs or another app that listens to 8080, and set this 
-        //       value to 8080, you're gonna have a bad time.  (Port 8080 is pretty commonly used in local webserver
-        //       apps, and the value I initially used until I found out about StreamLabs.)
-        "port": "8081",
-
-        // You can ignore this value.  It is only used behind the scenes when you run the dev server for testing 
-        // purposes.  Its only requirements are that it is not the same as "port", and that you are not already using 
-        // the port for another service.
-        "devServerPort": "8082",
-
-        // Change this if you want to bind to a different url or IP address.  pokemon.dxdt.life for the foreseeable 
-        // future simply points back to localhost (127.0.0.1).
-        //
-        // If you modify this value, make sure to update it in /lua/send_data_to_server.lua.
-        "host": "pokemon.dxdt.life",
-
-        // TODO: if I have time to make a control panel, the server will bind to this host on the same specified port.
-        // The reason for binding to two separate urls is that browser have a limit to the number of connections you can
-        // have open to the same host at once.
-        // "controlPanelHost": "controlpanel.dxdt.life",
-    },
+    "generation": 5,
 
     // If you want override the settings in this file, specify a file or an array of files whose values will take
     // precedence.  Files at the beginning of the list have higher priority than those later.
     //
-    // Objects within the config files are merged, but arrays are simply overwritten. 
+    // Objects within the config files are merged, but arrays are simply overwritten.
     //
-    // NOTE: this value is ignored in the override files themselves.
-    //"configOverride": "./config.custom.json",
+    // Paths are absolute or relative to /node
+    //
+    // NOTE: this value is ignored in the override files themselves.  No infinite loops for you!
+    // "configOverride": "./config.custom.json",
     
     /*
     Path to images folder relative to the /node/server directory.
@@ -318,5 +285,7 @@
         "%boxedStyle": {
             "filter": "sepia(100%)",
         }
-    }
+    },
+
+    "advancedConfig": "config.advanced.json",
 }

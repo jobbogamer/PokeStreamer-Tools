@@ -1,5 +1,6 @@
+import path from 'path';
 import './extensions';
-import { Img } from './pokemon/image-format';
+import { Img } from './image-format';
 
 let SupportedImageFormats = [
     Img('jpg', 'jpeg', ['jpg', 'jpeg']),
@@ -16,4 +17,6 @@ SupportedImageFormats.validExtensions = SupportedImageFormats.map(f => f.searchS
 const ImageRegex = new RegExp(`(\\d+)(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 const ShinyImageRegex = new RegExp(`(\\d+)s(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 
-export { SupportedImageFormats, ImageRegex, ShinyImageRegex };
+const NodeRoot = path.resolve(__dirname, '..');
+
+export { SupportedImageFormats, ImageRegex, NodeRoot, ShinyImageRegex };

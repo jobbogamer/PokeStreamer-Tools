@@ -1,21 +1,33 @@
 import fs from 'fs';
+import path from 'path';
 import EventEmitter from 'events';
 import compileConfig from '../common/configCompiler';
+import { NodeRoot } from './constants';
 
 class ConfigWatcher extends EventEmitter {
     constructor(config) {
         super();
 
         let self = this;
-        let createWatcher = file => fs.watch(file, function(e, fn) { self.emit(e, fn); }.bind(this));
+        let createWatcher = file => 
+            fs.watch(path.resolve(NodeRoot, file), function(e, fn) { self.emit(e, fn); }.bind(this));
+
         let watchers = this.watchers = [];
         watchers.push(createWatcher('config.json'));
+        if (config.advancedConfig) {
+            // don't need to warn here if config.advancedConfig does not exist, as compileConfig() will handle that
+            watchers.push(createWatcher(config.advancedConfig));
+        }
+
         if (config.configOverride) {
             if (config.configOverride.constructor === String) {
                 watchers.push(createWatcher(config.configOverride));
-            } else {
-                // assume at this point that configOverride is an Array, or it would have failed earlier
+            } else if (config.configOverride.constructor === Array) {
                 config.configOverride.forEach(file => watchers.push(createWatcher(file)));
+            } else {
+                throw new Error([
+                    'config.configOverride is neither a string nor an array.  How in the world did you get to this ',
+                    'error?  No seriously, something is terribly wrong.'].join(''));
             }
         }
 
@@ -34,15 +46,22 @@ class Config extends EventEmitter {
         super();
 
         this._readConfig();
+        this._configMissingTimeout = null;
     }
 
     _readConfig(e, filename) {
         let next;
+        clearTimeout(this._configMissingTimeout);
+
         try
         {
             next = compileConfig();
         } catch (e) {
             // an error is thrown if config.json is empty, which happens immediately after saving the file
+            // set a timeout to make sure the config file becomes available and has not merely been deleted or renamed
+            this._configMissingTimeout = setTimeout(() => { 
+                throw new Error(`Config file '${filename}' is not found.`); 
+            }, 500);
             return;
         }
 
