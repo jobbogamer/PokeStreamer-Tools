@@ -1,3 +1,5 @@
+import path from 'path';
+import './extensions';
 import { Img } from './image-format';
 
 let SupportedImageFormats = [
@@ -16,4 +18,6 @@ SupportedImageFormats.validExtensions = SupportedImageFormats.map(f => f.searchS
 // s post-fix denotes shiny
 const ImageRegex = new RegExp(`(201-?[a-z]|\\d+)(s?)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 
-export { SupportedImageFormats, ImageRegex };
+const NodeRoot = path.resolve(__dirname, '..');
+
+export { SupportedImageFormats, ImageRegex, NodeRoot };

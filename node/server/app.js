@@ -4,36 +4,18 @@ import bodyParser from 'body-parser';
 import jade from 'jade';
 import sse from './sse';
 import useragent from 'useragent';
-import { spawn } from 'child_process';
 
 import { getLocaleString } from './helpers';
 import './extensions';
+import { NodeRoot } from './constants';
 import Config from './config';
 import PokemonImages from './pokemon-images';
 import Slot from './slot';
 
-let port, webpack;
-if (process.env.NODE_ENV === 'development' || process.argv.includes('-d') || process.argv.includes('--debug')) {
+let port;
+if (process.argv.includes('-d') || process.argv.includes('--debug')) {
     port = 'devServerPort';
-
-    console.log('Spinning up webpack-dev-server...');
-    webpack = spawn('node_modules\\.bin\\webpack-dev-server', [],
-        { 
-            shell: true,
-            env: process.env,
-            cwd: path.resolve(__dirname, '..'),
-            detached: false,
-            windowsHide: false,
-            stdio: 'pipe',
-        });
-    webpack.stdout.on('data', data => console.log(data.toString()));
-    webpack.stderr.on('data', data => console.log(data.toString()));
-    webpack.on('close', code => {
-        console.log(`Webpack exited with error code ${code}.  Closing server.`);
-        process.exit(code);
-    });
-    
-    console.log(`Webpack running on process ${webpack.pid}`);
+    require('./webpack-spawner').default();
 } else {
     port = 'port';
 }
@@ -80,7 +62,7 @@ app.get(/^\/api\/slot\/([1-6]|all)$/i, function (req, res, next) {
         res.sseSend(slots[slot]);
     }
 
-    conn[slot] = slot;
+    conn.slot = slot;
     connections.add(conn);
 
     req.on('close', (function () {
@@ -112,7 +94,7 @@ app.get(/^\/api\/reset$/i, function (req, res, next) {
         } else {
             // kind of silly to send the indexed slot when they are all identical, but meh... this is resilient to 
             // possible future changes
-            conn.res.sseSend(slot[conn.slot]);
+            conn.res.sseSend(slots[conn.slot]);
         }
 
         sentTo++;
@@ -179,18 +161,19 @@ setInterval(() => {
     }
 }, 5000);
 
-let server = app.listen(Config.Current.server[port], function() {
-    console.log(`Listening on port ${Config.Current.server[port]}`);
+let server = app.listen(Config.Current.server[port], Config.Current.server.host, function() {
+    console.log(`Listening at ${Config.Current.server.host}:${Config.Current.server[port]}`);
 });
 
 Config.on('update', e => {
-    if (e.prev.server[port] !== e.next.server[port]) {
+    if (e.prev.server[port] !== e.next.server[port] ||
+        e.prev.server.apiHost !== e.next.server.apiHost) {
         server.close(() => {
-            console.log(`Closed server listening on port ${e.prev.server[port]}`);
+            console.log(`Closed server listening at ${e.prev.server.host}:${e.prev.server[port]}`);
         });
 
         server = app.listen(e.next.server[port], function() {
-            console.log(`Listening on port ${e.next.server[port]}`);
+            console.log(`Listening at ${e.prev.server.host}:${e.next.server[port]}`);
         });
     }
 });
