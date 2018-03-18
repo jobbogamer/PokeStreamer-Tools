@@ -1,3 +1,19 @@
+# Note to Fail and IPK #
+When you get to the [Download the GitHub repository](#download-the-github-repository) step:
+*   If you don't already have the scripts downloaded, run
+
+    ```
+    git clone -b temp git@github.com:dfoverdx/PokeStreamer-Tools.git
+    ```
+
+*   If you do already have them downloaded, run
+
+    ```
+    git fetch
+    git checkout temp
+    git pull
+    ```
+
 # PokeStreamer-Tools
 
 A set of scripts and tools for Pokemon streamers
@@ -28,6 +44,8 @@ Optional:
 ### Server Setup
 
 #### Download the GitHub repository
+
+>   Reminder to IPK and Fail, for this step use the [commands at the top of this readme](#note-to-fail-and-ipk)
 
 1.  Open command prompt by pressing <kbd>Windows</kbd> + <kbd>r</kbd> and running `cmd`.
 2.  Navigate to the folder (using `cd`) you will want to install the server to.  (This is the *parent* directory; running the next command will create a folder named `PokemonStreamer-Tools` automatically.)
