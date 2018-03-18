@@ -1,8 +1,13 @@
--- IMPORTANT: if you edit this value, you must also edit it in /node/config.json
+-- IMPORTANT: if you edit this value, you must also edit it in /node/config.advanced.json
 local server_port = 8081
 local api_host = 'api.pokemon-soul.link'
 local api_root = "http://" .. api_host .. ":" .. tostring(server_port) .. "/api"
 
+local print_debug_messages = false
+local print_debug = require("print_debug")
+print_debug = print_debug(print_debug_messages)
+
+local json = require("dkjson")
 local http = require "socket.http"
 local ltn12 = require "ltn12"
 
@@ -17,21 +22,15 @@ for box = 1, 18 do
 end
 
 function reset_server()
-    print("Resetting server")
+    print_debug("Resetting server")
     http.request(api_root .. "/reset");
 end
 
-function send_slots(slots_info, generation)
-    local slot_messages = {}
-    for i, slot_info in ipairs(slots_info) do
-        slot_messages[i] = get_slot_json(slot_info)
-    end
-
-    local request_body = string.format("[\n    %s\n]", table.concat(slot_messages, ",\n    "))
-    
-    print("Sending server request:")
+function send_request(request_body, generation)
+    print_debug("Generation" .. tostring(generation))
+    print_debug("Sending server request")
     local pretty_print = string.gsub(request_body, "\n", "\r\n"); 
-    print(pretty_print)
+    print_debug(pretty_print)
 
     local res, status, headers = http.request{
         method = "POST",
@@ -49,46 +48,54 @@ function send_slots(slots_info, generation)
     end
 end
 
--- assumes info.slot is a flat table
-function get_slot_json(info)
-    setmetatable(info, { __index = { box_id = nil } })
-    local slot = info.slot
-    local slot_id = info.slot_id
-    local box_id = info.box_id
-
-    local change_id
-    if box_id ~= nil then
-        change_id = box_change_ids[box_id][slot_id]
-        box_change_ids[box_id][slot_id] = box_change_ids[box_id][slot_id] + 1
-    else
-        change_id = change_ids[slot_id]
-        change_ids[slot_id] = change_id + 1
+function send_slots(slots_info, generation)
+    local tmp_info = {}
+    for i, v in ipairs(slots_info) do
+        tmp_info[#tmp_info + 1] = get_slot_data(v)
     end
 
-    local box_string = box_id ~= nil and string.format("        \"box\": %i,\n", box_id) or ""
-    
-    val_table = {}
-    for key, val in pairs(slot) do
-        if val ~= nil then
-            key = string.gsub(string.gsub(key, "_(%l)", string.upper), [["]], [[\"]])
-
-            if type(val) ~= "number" and type(val) ~= "boolean" then
-                val = [["]] .. string.gsub(tostring(val), [["]], [[\"]]) .. [["]]
+    if #tmp_info <= 20 then
+        local request_body = json.encode(tmp_info, { indent = print_debug_messages })
+        send_request(request_body, generation)
+    else
+        local idx = 1
+        while idx < #tmp_info do
+            local batch = {}
+            for i = 1, 20 do
+                batch[i] = tmp_info[idx]
+                idx = idx + 1
+                if idx > #tmp_info then
+                    break
+                end
             end
 
-            if val ~= nil then
-                val_table[#val_table + 1] = string.format([["%s": %s]], key, tostring(val))
-            end
-        else
-            print(key)
+            local request_body = json.encode(batch, { indent = print_debug_messages })
+            send_request(request_body, generation)
         end
     end
+end
 
-    return string.format([[{
-        %s"slot": %d,
-        "changeId": %d,
-        "pokemon": {
-            %s
+function get_slot_data(info)
+    local box_id = info.box_id
+    local slot_id = info.slot_id
+    local pokemon = info.pokemon
+
+    if info.box_id ~= nil then
+        local change_id = box_change_ids[box_id][slot_id]
+        box_change_ids[box_id][slot_id] = box_change_ids[box_id][slot_id] + 1
+        return {
+            box = box_id,
+            slot = slot_id,
+            changeId = change_id,
+            pokemon = pokemon:toJsonSerializableTable()
         }
-    }]], box_string, slot_id, change_id, table.concat(val_table, ",\n            "))
+    else
+        local change_id = change_ids[slot_id]
+        change_ids[slot_id] = change_ids[slot_id] + 1
+        return {
+            slot = slot_id,
+            changeId = change_id,
+            pokemon = pokemon:toJsonSerializableTable()
+        }
+    end
 end

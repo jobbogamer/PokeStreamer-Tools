@@ -6,3 +6,6 @@ node/public/**
 *.code-workspace
 .eslint*
 node/hot/
+/lua/lua*5*.dll
+/lua/lua*5*.exe
+/lua/mobdebug.lua

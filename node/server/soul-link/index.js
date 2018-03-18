@@ -16,7 +16,7 @@ class SoulLink extends EventEmitter {
     }
 
     get Config() {
-        return config.Current.nuzlocke.soulLink;
+        return config.Current.soulLink;
     }
 
     get Enabled() {

@@ -7,7 +7,7 @@ A set of scripts and tools for Pokemon streamers
 **This is a modified version of [EverOddish's PokeStreamer-Tools](https://github.com/EverOddish/PokeStreamer-Tools).**
 An issue with the original script is that every time a pokemon changes slots, it rewrites data to the hard drive several times.  This is a synchronous operation that causes the game (in particular, the audio) to lag significantly.
 
-This code uses a [Node.JS](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at `http://stream.pokemon-soul.link:8081/`.  (Optionally, for more flexibility, you can disable all-on-one mode in the `node/config.json` file, and access six separate pages at `http://stream.pokemon-soul.link:8081/?slot=slotNum` where `slotNum` is a number between 1 and 6.)
+This code uses a [Node.JS](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at `http://stream.pokemon-soul.link:8081/`.  (Optionally, for more flexibility, you can disable all-on-one mode in the `node/config.json` file, and access six separate pages at `http://stream.pokemon-soul.link:8081/?slot=slotNum` where `slotNum` is a number between 1 and 6.  That said, I might soon be deprecating this feature--yes, before v1.0 is released--and just make you use [CSS transformations](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) to move and scale your slots as desired.)
 
 **This project is still a work in progress.  Currently this only works with the `auto_layout_gen3.lua` script.  Gen 4+ support is forthcoming.**
 
@@ -39,7 +39,9 @@ I *highly* recommend you use the zip located [here](http://pkmn.net/?action=cont
 
 Download and extract this to your newly cloned directory's `/pokemon-images/` folder.  If you're using the zip above, you'll need to move all the sub directories from `/pokemon-images/PKMN.NET Sprite Resource 4/Pokémon/` to `/pokemon-images` (such that the `BW` folder is at `/pokemon-images/BW`), or if you're a masochist, you can change the values in config.  The edited versions of the lua scripts no longer require the images to be placed alongside them.  The `/pokemon-images/` directory may be anywhere you want as long as you update the config.
 
-**Note**: All images in the specified image directories are loaded into memory by the server.  This isn't a problem for the images in the suggested ZIP (~5MB depending on which generation), but if you use larger ones, you may run into some memory difficulties.
+Navigate to `/node` and run `setupPokemonImages.cmd`.  This script copies over the Arceus forms (haha, good luck getting him without cheating), and renames some misnamed Giritina images.  You should only have to do this once unless you reset/overwrite your images folder.
+
+**Note**: All images in the specified image directories (`config.advanced.json` has a list of which directories these are) are loaded into memory by the server.  This isn't a problem for the images in the suggested ZIP (~5MB depending on which generation), but if you use larger ones, you may run into some memory difficulties.
 
 #### Install requirements
 
@@ -53,13 +55,15 @@ Download and extract this to your newly cloned directory's `/pokemon-images/` fo
 3.  Change settings to your desire.  The file is pretty well commented, so hopefully it won't give you too much trouble.  If it does, you can reach me on [Discord](https://discord.gg/FKDntWR).
 4.  Save.  (Obviously.)
 
-The default settings are what [Failstream](https://twitch.tv/failstream) used in his first Pokémon Randomizer run, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
+If you want to have multiple setups (for example, one set up for solo-play and one for SoulLink), you can overwrite settings by creating additional `config.*.json` files, and specifying them in `config.json`.
 
-**Note**: Any time you update the `config.json` file, you will need to rebuild the project by running `build.cmd`.  Alternatively, from `/node/`, you can run `autobuild.cmd`.  This will automatically handle **most** changes to `config.json` (and any other config files referenced), though changing some nuzlocke settings (e.g. enabling sound) won't update until you re-run webpack.  If a change doesn't seem to be taking effect, your best bet is just to restart webpack/rerun build.cmd.
+The default settings are what [Failstream](https://twitch.tv/failstream) used in his first Pokémon Randomizer run, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
 
 #### Build
 
 Run `build.cmd`.  This will generate a folder called `/node/public` with the files your streaming software will download.  Don't edit these, but if you want to tweak the settings and rebuild, this is where the output is for debugging purposes.
+
+**Note**:  For debugging/setup, you can run `autobuild.cmd` (do **not** use this during streams--things can go... poorly).  *Most* changes to config will automatically be updated both in your output `/node/public/` directory, and live updating of `stream.pokemon-soul.link:8081` if you have it loaded (in your browser or in your streaming software).  Some changes won't automatically update such as enabling the Nuzlocke death sound, so if something doesn't seem to be updating, try resetting `autobuild.cmd`.
 
 #### Start the server
 

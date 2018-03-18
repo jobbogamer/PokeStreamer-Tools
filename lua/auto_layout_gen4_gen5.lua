@@ -1,3 +1,5 @@
+-- local mdbg = require("mobdebug")
+-- mdbg.start()
 -- Based on the Pokemon gen 4 lua script by MKDasher
 -- Modified by EverOddish for automatic image updates
 -- Modified by dfoverdx for using a NodeJS server for automatic image updates and SoulLink
@@ -7,11 +9,13 @@ local game = 2
 
 -- 1 = Diamond, HeartGold, Platinum, Black, white, Black 2, White 2
 -- 2 = Pearl, SoulSilver
-local subgame = 1
+local subgame = 2
 
 -- Set this to true if you and a partner are doing a SoulLink run (this will additionally access information in Bill's 
 -- 	  PC).  If you are using a version other than HeartGold/SoulSilver, see the note below.
 local run_soul_link = true
+
+local print_debug_messages = false
 
 -- Currently the memory address of Bill's PC are unknown for all versions but HeartGold/SoulSilver
 -- This value is required for playing SoulLinked
@@ -36,6 +40,12 @@ local run_soul_link = true
 local print_first_pokemon_bytes = false
 -----------
 
+local print_debug = require("print_debug")
+print_debug = print_debug(print_debug_messages)
+local debug_current_slot
+local first_pokemon_bytes_by_level = {}
+local num_loops = 0
+
 local Pokemon = require("pokemon")
 dofile "send_data_to_server.lua"
 dofile "pokemon_name_to_pokedex_id.lua"
@@ -59,7 +69,16 @@ local prev = {}
 
 local leftarrow1color, rightarrow1color, leftarrow2color, rightarrow2color
 
-local last_parties = {}
+local delta_boxes = {}
+local last_boxes = {}
+for i = 1, 18 do
+	last_boxes[i] = nil
+end
+
+local need_to_read_boxes = false
+local last_box_check = 0
+local check_box_frequency = 5 -- seconds
+
 local last_party = {}
 local first_run = true
 local last_check = 0
@@ -232,20 +251,20 @@ function getGen()
 end
 
 function getGameName()
-	if game == 1 then
-		return "Pearl"
-	elseif game == 2 then
-		return "HeartGold"
-	elseif game == 3 then
-		return "Platinum"
-	elseif game == 4 then
-		return "Black"
-	elseif game == 5 then
-		return "White"
-	elseif game == 6 then
-		return "Black 2"
-	else--if game == 7 then
-		return "White 2"
+	local gameNames = {
+		{ "Diamond", "Pearl" },
+		{ "HeartGold", "SoulSilver" },
+		"Platinum",
+		"Black",
+		"White",
+		"Black 2",
+		"white 2"
+	}
+
+	if game < 3 then
+		return gameNames[game][subgame]
+	else
+		return gameNames[game]
 	end
 end
 
@@ -417,320 +436,148 @@ function getNatClr(a)
 	return color
 end
 
-function readPokemon(pidAddr)
-	pid = memory.readdword(pidAddr)
-	checksum = memory.readword(pidAddr + 6)
-	shiftvalue = (rshift((bnd(pid,0x3E000)),0xD)) % 24
-	
-	BlockAoff = (BlockA[shiftvalue + 1] - 1) * 32
-	BlockBoff = (BlockB[shiftvalue + 1] - 1) * 32
-	BlockCoff = (BlockC[shiftvalue + 1] - 1) * 32
-	BlockDoff = (BlockD[shiftvalue + 1] - 1) * 32
-	
-	-- Block A
-	prng = checksum
-	for i = 1, BlockA[shiftvalue + 1] - 1 do
-		prng = mult32(prng,0x5F748241) + 0xCBA72510 -- 16 cycles
-	end
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	pokemonID = bxr(memory.readword(pidAddr + BlockAoff + 8), gettop(prng))
-	if gen == 4 and pokemonID > 494 then --just to make sure pokemonID is right (gen 4)
-		pokemonID = -1 -- (pokemonID = -1 indicates invalid data)
-	elseif gen == 5 and pokemonID > 651 then -- gen5
-		pokemonID = -1 -- (pokemonID = -1 indicates invalid data)
-	end
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	heldItem = bxr(memory.readword(pidAddr + BlockAoff + 2 + 8), gettop(prng))
-	if gen == 4 and heldItem > 537 then -- Gen 4
-		pokemonID = -1 -- (pokemonID = -1 indicates invalid data)
-	elseif gen == 5 and heldItem > 639 then -- Gen 5
-		pokemonID = -1 -- (pokemonID = -1 indicates invalid data)
-	end
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	OTID = bxr(memory.readword(pidAddr + BlockAoff + 4 + 8), gettop(prng))
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	OTSID = bxr(memory.readword(pidAddr + BlockAoff + 6 + 8), gettop(prng))
-	
-	is_shiny = bxr(OTID, OTSID, getbits(pid, 0, 16), getbits(pid, 16, 16)) < 8
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	ability = bxr(memory.readword(pidAddr + BlockAoff + 12 + 8), gettop(prng))
-	friendship_or_steps_to_hatch = getbits(ability, 0, 8)
-	ability = getbits(ability, 8, 8)
-	if gen == 4 and ability > 123 then
-		pokemonID = -1 -- (pokemonID = -1 indicates invalid data)
-	elseif gen == 5 and ability > 164 then
-		pokemonID = -1
-	end
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	evs[1] = bxr(memory.readword(pidAddr + BlockAoff + 16 + 8), gettop(prng))
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	evs[2] = bxr(memory.readword(pidAddr + BlockAoff + 18 + 8), gettop(prng))
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	evs[3] = bxr(memory.readword(pidAddr + BlockAoff + 20 + 8), gettop(prng))
-	
-	hpev =  getbits(evs[1], 0, 8)
-	atkev = getbits(evs[1], 8, 8)
-	defev = getbits(evs[2], 0, 8)
-	speev = getbits(evs[2], 8, 8)
-	spaev = getbits(evs[3], 0, 8)
-	spdev = getbits(evs[3], 8, 8)
-	
-	-- Block B
-	prng = checksum
-	for i = 1, BlockB[shiftvalue + 1] - 1 do
-		prng = mult32(prng,0x5F748241) + 0xCBA72510 -- 16 cycles
-	end
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	move[1] = bxr(memory.readword(pidAddr + BlockBoff + 8), gettop(prng))
-	if gen == 4 and move[1] > 467 then
-		pokemonID = -1
-	elseif gen == 5 and move[1] > 559 then
-		pokemonID = -1
-	end
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	move[2] = bxr(memory.readword(pidAddr + BlockBoff + 2 + 8), gettop(prng))
-	if gen == 4 and move[2] > 467 then
-		pokemonID = -1
-	elseif gen == 5 and move[2] > 559 then
-		pokemonID = -1
-	end
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	move[3] = bxr(memory.readword(pidAddr + BlockBoff + 4 + 8), gettop(prng))
-	if gen == 4 and move[3] > 467 then
-		pokemonID = -1
-	elseif gen == 5 and move[3] > 559 then
-		pokemonID = -1
-	end
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	move[4] = bxr(memory.readword(pidAddr + BlockBoff + 6 + 8), gettop(prng))
-	if gen == 4 and move[4] > 467 then
-		pokemonID = -1
-	elseif gen == 5 and move[4] > 559 then
-		pokemonID = -1
-	end
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	moveppaux = bxr(memory.readword(pidAddr + BlockBoff + 8 + 8), gettop(prng))
-	movepp[1] = getbits(moveppaux,0,8)
-	movepp[2] = getbits(moveppaux,8,8)
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	moveppaux = bxr(memory.readword(pidAddr + BlockBoff + 10 + 8), gettop(prng))
-	movepp[3] = getbits(moveppaux,0,8)
-	movepp[4] = getbits(moveppaux,8,8)
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	ivspart[1] = bxr(memory.readword(pidAddr + BlockBoff + 16 + 8), gettop(prng))
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	ivspart[2] = bxr(memory.readword(pidAddr + BlockBoff + 18 + 8), gettop(prng))
-	ivs = ivspart[1]  + lshift(ivspart[2],16)
-	
-	hpiv  = getbits(ivs,0,5)
-	atkiv = getbits(ivs,5,5)
-	defiv = getbits(ivs,10,5)
-	speiv = getbits(ivs,15,5)
-	spaiv = getbits(ivs,20,5)
-	spdiv = getbits(ivs,25,5)
-	isegg = getbits(ivs,30,1)
-	isnicknamed = getbits(ivs,31,1) == 1
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	
-	byte0x40 = bxr(memory.readword(pidAddr + BlockBoff + 24 + 8), gettop(prng));
-	
-	-- not sure which method is correct... 
-	-- https://bulbapedia.bulbagarden.net/wiki/Personality_value#Gender uses the personality value...
-	--
-	-- https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV states this one
-	--
-	is_female = getbits(byte0x40, 1, 1) == 1
-	
-	alternate_form = getbits(byte0x40, 3, 5)
-	
-	-- Nature for gen 5, for gen 4, it's calculated from the PID.
-	if gen == 5 then
-		nat = getbits(byte0x40,8,8)
-		if nat > 24 then
-			pokemonID = -1
-		end
-	else -- gen == 4
-		nat = pid % 25
-	end
-	
-	-- Block C
-	prng = checksum
-	for i = 1, BlockC[shiftvalue + 1] - 1 do
-		prng = mult32(prng,0x5F748241) + 0xCBA72510 -- 16 cycles
-	end
+function read_pokemon_words(addr, num_words)
+	local words = {}
+	-- PID is taken as a whole, and we're in little endian hell, so reverse words
+	local dword = memory.readdword(addr)
+	words[1] = getbits(dword, 16, 16)
+	words[2] = getbits(dword, 0, 16)
 
-	nickname = ""
-	for i = 0, 10 do
-		prng = mult32(prng,0x41C64E6D) + 0x6073
-		local c = bxr(memory.readword(pidAddr + BlockCoff + 2 * i + 8), gettop(prng)) - 1
-		
-		-- apparently gen 5 uses legit UTF-16 (untested)
-		if gen == 4 then
-			c = characterTable[c]
-		end
+	-- -- unused variable and checksum are sparate words
+	dword = memory.readdword(addr + 4)
+	words[3] = getbits(dword, 0, 16)
+	words[4] = getbits(dword, 16, 16)
 
-		if c == nil then
-			break
-		elseif c <= 0xFF then
-			nickname = nickname .. string.char(c)
-		else
-			-- hopefully never happens
-			-- even though lua only supports 3-character octects, write as a 4-char javascript character
-			nickname = nickname .. string.format("%04d", c) 
-		end
+	for i = 8, (num_words - 1) * 2, 4 do
+		dword = memory.readdword(addr + i)
+		words[#words + 1] = getbits(dword, 0, 16)
+		words[#words + 1] = getbits(dword, 16, 16)
 	end
-	
-	-- Block D
-	prng = checksum
-	for i = 1, BlockD[shiftvalue + 1] - 1 do
-		prng = mult32(prng,0x5F748241) + 0xCBA72510 -- 16 cycles
-	end
-	
-	prng = mult32(prng,0xCFDDDF21) + 0x67DBB608 -- 8 cycles
-	prng = mult32(prng,0xEE067F11) + 0x31B0DDE4 -- 4 cycles
-
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	location_met = bxr(memory.readword(pidAddr + BlockDoff + 0x18 + 8), gettop(prng))
-
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	pkrs = bxr(memory.readword(pidAddr + BlockDoff + 0x1A + 8), gettop(prng))
-	pkrs = getbits(pkrs,0,8)
-	
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	level_met = bxr(memory.readword(pidAddr + BlockDoff + 0x1C + 8), gettop(prng))
-	level_met = getbits(level_met, 0, 7)
-	
-	-- Current stats
-	prng = pid
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	level = getbits(bxr(memory.readword(pidAddr + 0x8C), gettop(prng)),0,8)
-	if level > 100 then
-		-- TODO: figure out why this happens
-		level = -2 -- a dummy value recognized by the server to mean the pokemon is real, but the level is not
-	end
-
-	prng = mult32(prng,0x41C64E6D) + 0x6073
-	hpstat = bxr(memory.readword(pidAddr + 0x8E), gettop(prng))
-	--print("Current HP of pokemon in slot " .. q .. ": " .. hpstat)
-	
-	local slot
-	if pokemonID ~= -1 then
-		if pokemon[pokemonID + 1] ~= "none" then
-			slot = Pokemon{
-				otid = OTID,
-				otsid = OTSID,
-				species = pokemonID,
-				nickname = isnicknamed and nickname or "",
-				level = level,
-				female = is_female,
-				shiny = is_shiny,
-				living = hpstat > 0,
-				location_met = location_met,
-				level_met = level_met
-			}
-			
-			if alternate_forms[pokemonID] ~= nil then
-				slot["alternate_form"] = alternate_forms[pokemonID][alternate_form + 1]
-			end
-		else
-			slot = Pokemon()
-		end
-
-		return slot
-	end
-
-	return nil
+	return words
 end
 
 function do_print_first_pokemon_bytes(pidAddr)
-	first_pokemon_bytes = string.format("{ %s }", table.concat(memory.readbyterange(pidAddr, 0x27), ", "))
+	local byte_str = ""
+	for i, b in ipairs(memory.readbyterange(pidAddr, 0x88)) do
+		byte_str = byte_str .. string.format(" 0x%02x,", b)
+	end
+
+	-- first_pokemon_bytes = string.format("{ %s }", table.concat(memory.readbyterange(pidAddr, 0x27), ", "))
 				
 	print("---------------------------")
-	print(first_pokemon_bytes)
+	print("{" ..byte_str .. " }")
 	print("---------------------------")	
+end
+
+function inspect_and_send_boxes()
+	need_to_read_boxes = false
+	local cur_boxes = {}
+	local box_offset = bills_pc_address[game][subgame]
+	local last_pkmn, cur_pkmn, should_update, words
+
+	for box = 1, 18 do
+		cur_boxes[box] = {}
+		for box_slot = 1, 30 do
+			words = read_pokemon_words(box_offset + (box - 1) * box_size + (box_slot - 1) * box_slot_size, 136)
+			if last_boxes[box] == nil or Pokemon.get_words_string(words) ~= last_boxes[box].data_str then	
+				cur_pkmn = Pokemon.parse_gen4_gen5(words, true, gen)
+				
+				if last_boxes[box] == nil then
+					cur_boxes[box][box_slot] = cur_pkmn
+					if cur_pkmn ~= nil then
+						delta_boxes[#delta_boxes + 1] = {
+							box_id = box,
+							slot_id = box_slot,
+							pokemon = cur_pkmn
+						}
+					end
+				else
+					last_pkmn = last_boxes[box][box_slot]
+					if cur_pkmn ~= nil and cur_pkmn ~= last_pkmn then
+						cur_boxes[box][box_slot] = cur_pkmn
+						delta_boxes[#delta_boxes + 1] = {
+							box_id = box,
+							slot_id = box_slot,
+							pokemon = cur_pkmn
+						}
+					else
+						cur_boxes[box][box_slot] = last_pkmn
+					end
+				end
+
+				need_to_read_boxes = need_to_read_boxes or cur_pkmn == nil				
+			end
+		end
+	end
+
+	last_boxes = cur_boxes
+	if #delta_boxes > 0 and not_need_to_read_boxes then
+		send_slots(delta_boxes, gen)
+		delta_boxes = {}
+	end
+end
+
+function should_update_bad_level(cur_pkmn, last_pkmn)
+	-- make sure we're not updating an identical, but correctly-leveled slot with a bad level one
+	local tmpLp = last_pkmn:clone()
+	tmpLp.level = -2
+
+	if cur_pkmn ~= tmpLp then
+		return true, cur_pkmn
+	else
+		return false, last_pkmn
+	end
 end
 
 function fn()
 	--menu()
 	current_time = os.time()
-	if current_time - last_check > 1 then
+	if need_to_read_boxes or run_soul_link and current_time - last_box_check > check_box_frequency then
+		gen = getGen()
+		inspect_and_send_boxes()
+		last_box_check = current_time
+	end
+
+	if current_time - last_check > .1 then
+		gen = getGen()
 		party = {}
 		for q = 1, 6 do
+			-- debug_current_slot = q
 			submode = q
-			gen = getGen()
 			pointer = getPointer()
 			pidAddr = getPidAddr()
 
-			if print_first_pokemon_bytes and first_run and q == 1 then
-				do_print_first_pokemon_bytes(pidAddr)
-			end
-			
-			party[q] = readPokemon(pidAddr)
+			if print_first_pokemon_bytes then do_print_first_pokemon_bytes(pidAddr) end
+
+			local words = read_pokemon_words(pidAddr, Pokemon.word_size_in_party)
+			party[q] = Pokemon.parse_gen4_gen5(words, false, gen)
 		end
 		
-		local send_data = {}		
+		local send_data = {}
 		if first_run then
 			reset_server()
 			last_party = {}
-			for k, slot in pairs(party) do
-				last_party[k] = slot
+			for k, pkmn in pairs(party) do
+				last_party[k] = pkmn or Pokemon() -- invalid pokemon are returned as nil from parse_gen4_gen5
 				
-				print("Slot " .. k .. ": " .. tostring(slot))
-				send_data[#send_data + 1] = { slot_id = k, slot = slot }
+				print("Slot " .. k .. ": " .. tostring(pkmn))
+				send_data[#send_data + 1] = { slot_id = k, pokemon = pkmn }
 			end
 			first_run = false
 		else
-			-- For each party slot
-			-- print(party)
-			-- print(last_party)
 			for q = 1, 6 do
 				p = party[q]
 				lp = last_party[q]
-				if p ~= nil and lp ~= nil then
-					if p ~= lp then
-						local do_add = true 
-						if p.level == -2 and lp.level ~= -2 then
-							-- make sure we're not updating an identical, but correctly-leveled slot with a bad level one
-							local tmpLp = lp:clone()
-							tmpLp.level = -2
-
-							if p ~= tmpLp then
-								do_add = true
-							else
-								party[q] = lp
-								do_add = false
-							end
-						end
-
-						if do_add then
-							print("Slot " .. q .. ": " .. tostring(lp) .. " -> " .. tostring(p))
-							send_data[#send_data + 1] = { slot_id = q, slot = p }
-						end
+				if p ~= nil then
+					if lp == nil or p ~= lp then
+						print("Slot " .. q .. ": " .. tostring(lp) .. " -> " .. tostring(p))
+						send_data[#send_data + 1] = { slot_id = q, pokemon = p }
 					end
 				end
 			end
 			
-			last_party = {}
-			for k, v in pairs(party) do
-				last_party[k] = v
-			end
+			last_party = party
+			party = {}
 		end
 
 		if (#send_data > 0) then

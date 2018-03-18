@@ -34,7 +34,7 @@ export default function compileConfig(initialConfig) {
         
         case Array:
             let configs = co.map(f => parse(f));
-            return configs.reduce((prev, next) => mergeDeep(next, prev), initialConfig);
+            return configs.reduce(mergeDeep, initialConfig);
         
         default:
             throw new Error(`Invalid value for configOverride in config.json.  Must be an array or a string.  Found ${co}.`);

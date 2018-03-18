@@ -1,4 +1,4 @@
-<% let soulLinkEnabled = config.nuzlocke && config.nuzlocke.enabled && config.nuzlocke.soulLink && config.nuzlocke.soulLink.enabled; %>
+<% let soulLinkEnabled = config.nuzlocke && config.nuzlocke.enabled && config.soulLink && config.soulLink.enabled; %>
 <% let swap = soulLinkEnabled && config.style.soulLinkSwap; %>
 <div class="slot <%- typeof slot !== 'undefined' ? `slot-${slot}` : '' %>">
     <div class="top">
@@ -18,7 +18,7 @@
         </div>
         <div>
             <%= require('./slotImageWrapper.ejs')({ type: swap ? 'soul-linked' : 'main', config }) %>
-            <% if (config.nuzlocke.soulLink.enabled) { %>
+            <% if (config.soulLink.enabled) { %>
                 <%= require('./slotImageWrapper.ejs')({ type: swap ? 'main' : 'soul-linked', config }) %>
             <% } %>
         </div>

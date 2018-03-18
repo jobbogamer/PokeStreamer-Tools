@@ -18,7 +18,7 @@ import SoulLink from './soul-link';
 let port;
 if (process.argv.includes('-d') || process.argv.includes('--debug')) {
     port = 'devServerPort';
-    require('./webpack-spawner').default();
+    require('./webpack-spawner').default(50000);
 } else {
     port = 'port';
 }
@@ -32,12 +32,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 let connections = new Set(),
-    slots;
+    slots,
+    boxes;
 
 function initSlots() {
     slots = [];
     for (let i = 0; i < 6; i++) {
         slots.push(Slot.empty(i));
+    }
+
+    boxes = [];
+    for (let i = 0; i < 18; i++) {
+        boxes.push([]);
+        for (let j = 0; j < 30; j++) {
+            boxes[i].push(Slot.emptyBox(i, j));
+        }
     }
 }
 
@@ -85,8 +94,6 @@ app.get(/^\/api\/slot\/([1-6]|all)$/i, function (req, res, next) {
 });
 
 app.get(/^\/api\/reset$/i, function (req, res, next) {
-    assertGeneration(req.header('Pokemon-Generation'));
-
     console.log('Sending reset to all slot connections');
     let sentTo = 0;
     for (let conn of connections) {
@@ -117,20 +124,27 @@ app.get(/^\/api\/reset$/i, function (req, res, next) {
 });
 
 app.post(/^\/api\/update$/i, function (req, res, next) {
-    console.info(`Received update on from Lua script:\n${JSON.stringify(req.body, null, 2)}`);
-    let hadError = false;
+    // console.info(`Received update on from Lua script:\n${JSON.stringify(req.body, null, 2)}`);
+    let hadError = false, needToSendUpdate = false;
     assertGeneration(req.header('Pokemon-Generation'));
 
     for (let data of req.body) {
         let { slot, box, changeId, pokemon } = data,
             { species, alternateForm, shiny, female } = pokemon,
+            isBox = !!box,
             isReal = species > 0,
             slotData;
         slot--;
         box && box--;
 
+        needToSendUpdate = needToSendUpdate || !isBox;
+
         if (!isReal) {
-            slotData = slots[slot] = Slot.empty(slot, changeId);
+            if (isBox) {
+                boxes[box][slot] = Slot.emptyBox(box, slot, changeId);
+            } else {
+                slotData = slots[slot] = Slot.empty(slot, changeId);
+            }
         } else if (PokemonImages.get(species)) {
             let pkmn = new Pokemon(
                 pokemon.otid,
@@ -145,18 +159,23 @@ app.post(/^\/api\/update$/i, function (req, res, next) {
                 shiny,
                 pokemon.levelMet
             );
-            slotData = slots[slot] = new Slot(
-                slot,
-                changeId,
-                pkmn);
+            if (isBox) {
+                boxes[slot][box] = new Slot(slot, changeId, pkmn, box);
+            } else {
+                slotData = slots[slot] = new Slot(slot, changeId, pkmn);
+            }
         }
 
-        hadError = hadError || !slotData;
+        hadError = hadError || !isBox && !slotData;
     }
 
     if (!hadError) {
         res.sendStatus(200);
         next();
+
+        if (!needToSendUpdate) {
+            console.log('Received box info.');
+        }
 
         let sentTo = 0;
         for (let conn of connections) {
@@ -210,6 +229,8 @@ Config.on('update', e => {
         });
     }
 });
+
+console.debug(`Running generation ${Config.Current.generation}`);
 
 if (SoulLink.Enabled) {
     SoulLink.init();

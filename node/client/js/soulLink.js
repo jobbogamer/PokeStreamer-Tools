@@ -1,10 +1,10 @@
 import config from '../../config.json';
 import Nuzlocke from './nuzlocke';
-const soulLink = config.nuzlocke.soulLink;
+const soulLink = config.soulLink;
 
 let soulLinkDeathSound;
 
-if (Nuzlocke.enabled && soulLink.enabled && soulLink.deathSound.eanbled && 
+if (Nuzlocke.enabled && soulLink.enabled && soulLink.deathSound.enabled && 
     soulLink.deathSound.filePath) {
     soulLinkDeathSound = new Audio(soulLink.deathSound.filePath.replace(/^.*[\\\/]/, ''));
 }

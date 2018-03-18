@@ -8,7 +8,7 @@ export default class Slot {
         this.lastValue = null;
         this.$slot = $(`.slot.slot-${slot}`);
         this.changeId = -2;
-        this.$img = $slot.find('.main > img');
+        this.$img = $slot.find('img');
         this.$level = $slot.find('.level');
         this.$species = $slot.find('.species');
         this.$nickname = $slot.find('.nickname');
@@ -115,7 +115,7 @@ export default class Slot {
     }
 
     setDeathMessages() {
-        if (!Nuzlocke.soulLink.enabled) {
+        if (!config.soulLink.enabled) {
             for (let i = 0; i < 3; i++) {
                 let msg = Nuzlocke.deathMessages[i];
                 if (msg) {

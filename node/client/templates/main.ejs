@@ -12,7 +12,7 @@
             <% } %>
         <% } %>
 
-        <% if (config.nuzlocke.enabled && config.nuzlocke.soulLink.enabled && 
+        <% if (config.nuzlocke.enabled && config.soulLink.enabled && 
                config.style.soulLinkOrientation !== 'custom') { %>
             <%= require('./soulLinkSvg.ejs')({ config: config }) %>
         <% } %>

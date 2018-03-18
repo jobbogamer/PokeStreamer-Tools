@@ -107,13 +107,16 @@ let webpackConfig = {
             config.server.apiHost,
         ],
         proxy: {
-            '/api': `http://${config.server.apiHost}:${config.server.devServerPort}/`,
+            '/api': {
+                target: `http://${config.server.apiHost}:${config.server.devServerPort}/`,
+                secure: false
+            }
         },
     }
 };
 
 let nuzlocke = config.nuzlocke,
-    soulLink = nuzlocke.soulLink;
+    soulLink = config.soulLink;
 if (nuzlocke.deathSound && nuzlocke.deathSound.enabled) {
     const getSoundPath = function(soundFileName) {
         let possiblePaths = [

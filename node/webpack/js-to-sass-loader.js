@@ -1,5 +1,8 @@
 import _ from 'lodash';
 import path from 'path';
+import { DepGraph } from 'dependency-graph';
+
+import { findSassVariableReferences } from './sass-helper';
 
 const importRegex = /@import\s+'([^']+\.js)'\s*;/ig;
 
@@ -11,20 +14,46 @@ function validateExportType(data) {
 
 function transform(data) {
     validateExportType(data);
-    let sass = [];
-    for (let key of Object.keys(data)) {
-        let val = data[key];
+    let dg = new DepGraph();
+    
+    for (let [key, val] of Object.entries(data)) {
         if (key.startsWith('%')) {
+            dg.addNode(key);
+            for (let [prop, propVal] of Object.entries(val)) {
+                findSassVariableReferences(propVal).forEach(v => {
+                    v = v.slice(1);
+                    if (!dg.hasNode(v)) {
+                        dg.addNode(v);
+                    }
+
+                    dg.addDependency(key, v);
+                });
+            }
+            
             let css = Object.keys(val).map(k => `    ${k}: ${val[k]};`).join('\n');
-            sass.push(`${key} {\n${css}\n}`);
+            dg.setNodeData(key, `${key} {\n${css}\n}`);
         } else if (isValidKey(key)) {
-            sass.push(`$${key}: ${parseValue(data[key])};`);
+            dg.addNode(key);
+            let varVal = parseValue(data[key]);
+            findSassVariableReferences(varVal).forEach(v => {
+                    v = v.slice(1);
+                if (!dg.hasNode(v)) {
+                    dg.addNode(v);
+                }
+                dg.addDependency(key, v);
+            });
+            
+            dg.setNodeData(key, `$${key}: ${varVal};`);
         } else {
             console.warn(`Invalid key '${key}'.  Skipping.`);
         }
     }
-
-    return sass.join('\n');
+    
+    let scss = dg.overallOrder().map(k => dg.getNodeData(k)).join('\n');
+    // console.info(scss);
+    return scss;
+    
+    // return sass.join('\n');
 }
 
 function isValidKey(key) {
@@ -54,24 +83,24 @@ function parseMap(map) {
         .filter(key => isValidKey(key))
         .map(key => `${key}: ${parseValue(map[key])}`)
         .join(',')})`;
-}
-
-function shouldWrapInStrings(input) {
-    const inputWithoutFunctions = input.replace(/[a-zA-Z]+\([^)]*\)/, ""); // Remove functions
-    return inputWithoutFunctions.includes(',');
-}
-
-export default function (content) {
-    let self = this;
-
-    return content.replace(importRegex, (match, relativePath) => {
-        if (match) {
-            let filePath = path.join(self.context, relativePath);
-            self.addDependency(filePath);
-
-            // prevent cacheing of the module
-            delete require.cache[require.resolve(filePath)];
-            return transform(require(filePath).default);
-        }
-    });
-}
+    }
+    
+    function shouldWrapInStrings(input) {
+        const inputWithoutFunctions = input.replace(/[a-zA-Z]+\([^)]*\)/, ""); // Remove functions
+        return inputWithoutFunctions.includes(',');
+    }
+    
+    export default function (content) {
+        let self = this;
+        
+        return content.replace(importRegex, (match, relativePath) => {
+            if (match) {
+                let filePath = path.join(self.context, relativePath);
+                self.addDependency(filePath);
+                
+                // prevent cacheing of the module
+                delete require.cache[require.resolve(filePath)];
+                return transform(require(filePath).default);
+            }
+        });
+    }

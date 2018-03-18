@@ -2,55 +2,26 @@
     /*
     Pokemon Generation
     
-    Valid values: 3 through 5.  (Values 4 and 5 do the same thing).
+    Valid values: 3 and 4 (eventually 5?).  This value must match the generation and selected game of the Lua script
+    you are running, or Pokémon may not display properly.
     */
-    "generation": 5,
+    "generation": 3,
 
     // If you want override the settings in this file, specify a file or an array of files whose values will take
     // precedence.  Files at the beginning of the list have higher priority than those later.
     //
     // Objects within the config files are merged, but arrays are simply overwritten.
     //
-    // Paths are absolute or relative to /node
-    //
     // NOTE: this value is ignored in the override files themselves.  No infinite loops for you!
-    // "configOverride": "./config.custom.json",
-    
-    /*
-    Path to images folder relative to the /node/server directory.
-    I suggest using the zip found at http://pkmn.net/?action=content&page=viewpage&id=8644, extracting the
-    Pokémon folder, and then choosing BW since the directory structure is what the script expects it to be.
-
-    The server will search the following paths for images:
-        pokemonImagesPath/
-        pokemonImagesPath/female
-        pokemonImagesPath/shiny
-        pokemonImagesPath/shiny/female
-        pokemonImagesPath/forms/...
-    
-    NOTE: Giratina's and Arceus' alternate forms aren't available by default.  If you want to use them:
-        Run setupPokemonImages.cmd 
-        
-        OR:
-        For Giratina, open /BW/forms/giratina directory, and rename the two "another" files (the one in the root and the
-            one in Shiny) to "altered".
-        For Arceus, find the various images you want to use (/DPPt/Arceus has them, and if you use them, you should use 
-            the <type>2.pngs as they have transparent backgrounds), copy them into /BW/forms/arceus, and rename them all
-            to be of the form "493<kind>.png" for non-shiny and "493s<kind>.png" for shiny.  *IMPORTANT*: <kind> is 
-            from the list at https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV#Alternate_forms,
-            not the <type> already in the filename.  (Leave "mystery" as-is, since Windows doesn't support filenames 
-            with question marks in them.)
-    */
-    "pokemonImagesPath": "../../pokemon-images/BW",
+    "configOverride": [ 
+        // "./config.fail.json",
+        // "./config.iipk.json"
+    ],
 
     // Path to the image used when a slot is empty relative to /node/ directory.
-    "emptySlotImagePath": "../../pokemon-images/pokeball.png",
+    "emptySlotImagePath": "../pokemon-images/pokeball.png",
     
     "layout": { 
-        // Whether you want the page to display all slots on one page, or have one slot per page so you can place them
-        // in your scene however you like.
-        "allInOne": true,
-        
         /*  
         Where to place the various elements relative to the pokemon image.
         All elements are optional.  The order in which they appear in the array are the order they are stacked in the
@@ -117,21 +88,28 @@
         "deathMessage1": "You died too young",
         "deathMessage2": "We hardly knew you",
         "deathMessage3": null,
+    },
+
+    /*
+        If you are doing a Soul Link run with someone who is also using this software, enable it here.
+        Your partner is not required to actually use the Pokémon display page to pair with you.  They must only be 
+        running the server with Nuzlocke/SoulLink settings set.
+
+        Note: For SoulLink to be enabled, Nuzlocke must also be enabled.
+    */
+    "soulLink": {
+        "enabled": false,
         
-        "soulLink": {
-            "enabled": false,
+        "guild": "dxdt", // Discord server (they're called Guilds in the Discord API)
+        "channelName": "private-test",
+        "userToken": "NDIyMjg4OTU4OTcwNTI3NzQ0.DYaHyw.PLI1tXxO1UvgoroXynwz73HwQbI",
+        
+        "deathSound": {
+            "enabled": true,
             
-            "guild": "dxdt", // Discord server (they're called Guilds in the Discord API)
-            "channelName": "private-test",
-            "userToken": "NDIyMjg4OTU4OTcwNTI3NzQ0.DYaHyw.PLI1tXxO1UvgoroXynwz73HwQbI",
-            
-            "deathSound": {
-                "enabled": true,
-                
-                // if enabled but not specified, defaults to nuzlocke.deathSound.filePath
-                "filePath": "you-lose-good-day-sir.mp3"
-            }
-        },
+            // if enabled but not specified, defaults to nuzlocke.deathSound.filePath
+            "filePath": "you-lose-good-day-sir.mp3"
+        }
     },
     
     /*
@@ -287,5 +265,8 @@
         }
     },
 
-    "advancedConfig": "config.advanced.json",
+    // Many of the less-commonly-changed settings have been moved into ./config.advanced.json for the sake of
+    // simplicity.  Values in the advanced config take lowest priority.  Feel free to change those values however you
+    // like, but don't change the value of "advancedConfig", here, unless you know what you are doing.
+    "advancedConfig": "./config.advanced.json"
 }

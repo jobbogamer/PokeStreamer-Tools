@@ -23,13 +23,11 @@
 }
 
 .top {
-  width: 100%;
   height: $topElementHeight;
   @extend %topElement !optional;
 }
 
 .bottom {
-  width: 100%;
   height: $bottomElementHeight;
   @extend %bottomElement !optional;
 }

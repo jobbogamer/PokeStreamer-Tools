@@ -34,7 +34,7 @@ Mid priority
     - [ ] Specify links manually
     - [ ] Specify validity or invalidity of pokémon
         -   Special cases (see below)
-    - [ ] Pokémon disambiguation when data from Lua looks suspect
+    - [ ] ~~Pokémon disambiguation when data from Lua looks suspect~~
 
 Client
 ======
@@ -67,17 +67,19 @@ Pokémon
 High priority
 -------------
 
-- [ ] Determine how to identify pokémon uniquely
+- [x] Determine how to identify pokémon uniquely
 
     <details><summary>Current strategy</summary>
+    
+    Use personality id
         
-    Use a key {OTID/OTSID, Location Met, Level Met, Shininess} to determine a pokémon is unique  
+    ~~Use a key {OTID/OTSID, Location Met, Level Met, Shininess} to determine a pokémon is unique  
     Create an internally used Pokemon id -- probably the same value we use for linking  
     Use this ID for communications  
-    When the key is somehow ambiguous:
-    -   Use nickname if possible (don't know how to parse it yet in Lua script, though I could just use the encrypted bytes.  ~~Come to think of it, this might be best.  "Official" Nuzlocke rules require to you nickname every pokémon.  I could require every pokémon to have a unique nickname.~~)
-    -   Attempt to check by species
-    -   Use TBD disambiguation strategy (like Control Panel)
+    When the key is somehow ambiguous:~~
+    -   ~~Use nickname if possible (don't know how to parse it yet in Lua script, though I could just use the encrypted bytes.  Come to think of it, this might be best.  "Official" Nuzlocke rules require to you nickname every pokémon.  I could require every pokémon to have a unique nickname.)~~
+    -   ~~Attempt to check by species~~
+    -   ~~Use TBD disambiguation strategy (like Control Panel)~~
 </details>
 
 - [ ] Handle special cases
@@ -124,13 +126,13 @@ Lua
 High priority
 -------------
 
-- [ ] Blit boxed pokémon to server  
+- [x] Blit boxed pokémon to server  
     <details>
     Detect how many pokémon are in a box to ensure that we collect all the data before blitting(?)
     
     The issue is the script sometimes gets invalid data, and simply ignores that data.  If we're using this blit as an authority, we need to make sure none of these blips have occurred.
     </details>
-- [ ] Retrieve encrypted nickname bytes
+- [x] Retrieve encrypted nickname bytes
 
 Mid priority
 ------------
@@ -140,7 +142,7 @@ Mid priority
 Mid-low priority
 ------------
 
-- [ ] Debug invalid level issue (sometimes the level captured is greater than 100... non idea why)
+- [x] Debug invalid level issue (sometimes the level captured is greater than 100... non idea why)
 
 Config
 ======

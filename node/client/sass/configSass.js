@@ -7,7 +7,7 @@ let config = compileConfig(),
         applyDeathSpin: config.nuzlocke && config.nuzlocke.applyDeathSpin,
         ripPrefix: config.nuzlocke && config.nuzlocke.ripPrefix || '',
 
-        soulLinkEnabled: config.nuzlocke.enabled && config.nuzlocke.soulLink.enabled,
+        soulLinkEnabled: config.nuzlocke.enabled && config.soulLink.enabled,
     };
 
 for (let key of Object.keys(config.style)) {

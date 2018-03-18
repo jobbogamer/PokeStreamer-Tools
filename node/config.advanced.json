@@ -5,6 +5,33 @@
         "allInOne": true,
     },
 
+    /*
+    Absolute path or path relative to the /node directory to images folder.
+    I suggest using the zip found at http://pkmn.net/?action=content&page=viewpage&id=8644, extracting the
+    Pokémon folder, and then specifying the BW directory since its structure is what the script expects it to be.
+
+    The server will search the following paths for images:
+        pokemonImagesPath/
+        pokemonImagesPath/female
+        pokemonImagesPath/shiny
+        pokemonImagesPath/shiny/female
+        pokemonImagesPath/forms/...
+    
+    NOTE: Giratina's and Arceus' alternate forms aren't available by default.  If you want to use them:
+        Run setupPokemonImages.cmd 
+        
+        OR:
+        For Giratina, open /BW/forms/giratina directory, and rename the two "another" files (the one in the root and the
+            one in Shiny) to "altered".
+        For Arceus, find the various images you want to use (/DPPt/Arceus has them, and if you use them, you should use 
+            the <type>2.pngs as they have transparent backgrounds), copy them into /BW/forms/arceus, and rename them all
+            to be of the form "493<type>.png" for non-shiny and "493s<type>.png" for shiny.  *IMPORTANT*: <type> is 
+            from the list at https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV#Alternate_forms,
+            not the type already in the filename.  (Leave "mystery" as-is, since Windows doesn't support filenames with 
+            question marks in them.)
+    */
+    "pokemonImagesPath": "../../pokemon-images/BW",
+
     "server": {
         // The port to use when accessing the page that you insert into your stream scene.
         // 

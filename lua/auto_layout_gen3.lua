@@ -373,7 +373,7 @@ function fn()
                         current_state.species = -1
                     end
                     
-                    slot_changes[#slot_changes + 1] = { slot_id = slot, slot = current_state }
+                    slot_changes[#slot_changes + 1] = { slot_id = slot, pokemon = current_state }
                     last_party[slot] = current_state
                 end
                 

@@ -26,8 +26,8 @@ class Pokemon {
         this.locationMet = VA.int(locationMet, 'locationMet');
         this.species = species === -1 ? -1 : VA.boundedInt(species, 'species', 1, maxPokemonId);
         this.alternateForm = alternateForm || '';
-        this.nickname = SoulLink.Enabled ? 
-            VA.stringHasValue(nickname, `When SoulLink is enabled, all Pokemon must have a nickname.  Found '${nickname}'`) 
+        this.nickname = SoulLink.Enabled && level !== 0 ? 
+            VA.stringHasValue(nickname, 'nickname', `When SoulLink is enabled, all Pokemon must have a nickname.  Found '${nickname}'`) 
             : nickname;
 
         // temporary fix to handle pokemon with invalid levels (> 100)... it's an issue in the script that I haven't

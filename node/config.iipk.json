@@ -5,45 +5,15 @@
     /*
     Pokemon Generation
     
-    Valid values: 3 through 5.
+    Valid values: 3 and 4 (eventually 5?).  This value must match the generation and selected game of the Lua script
+    you are running, or Pokémon may not display properly.
     */
     "generation": 4,
-    
-    /*
-    Path to images folder relative to the /node/server directory.
-    I suggest using the zip found at http://pkmn.net/?action=content&page=viewpage&id=8644, extracting the
-    Pokémon folder, and then choosing BW since the directory structure is what the script expects it to be.
-
-    The server will search the following paths for images:
-        pokemonImagesPath/
-        pokemonImagesPath/female
-        pokemonImagesPath/shiny
-        pokemonImagesPath/shiny/female
-        pokemonImagesPath/forms/...
-    
-    NOTE: Giratina's and Arceus' alternate forms aren't available by default.  If you want to use them:
-        Run setupPokemonImages.cmd 
-        
-        OR:
-        For Giratina, open /BW/forms/giratina directory, and rename the two "another" files (the one in the root and the
-            one in Shiny) to "altered".
-        For Arceus, find the various images you want to use (/DPPt/Arceus has them, and if you use them, you should use 
-            the <type>2.pngs as they have transparent backgrounds), copy them into /BW/forms/arceus, and rename them all
-            to be of the form "493<type>.png" for non-shiny and "493s<type>.png" for shiny.  *IMPORTANT*: <type> is 
-            from the list at https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_in_Generation_IV#Alternate_forms,
-            not the type already in the filename.  (Leave "mystery" as-is, since Windows doesn't support filenames with 
-            question marks in them.)
-    */
-    "pokemonImagesPath": "../../pokemon-images/BW",
 
     // Path to the image used when a slot is empty relative to /node/ directory.
     // "emptySlotImagePath": null,
 
-    "layout": { 
-        // Whether you want the page to display all slots on one page, or have one slot per page so you can place them
-        // in your scene however you like.
-        "allInOne": true,
-        
+    "layout": {         
         /*  
         Where to place the various elements relative to the pokemon image.
         All elements are optional.  The order in which they appear in the array are the order they are stacked in the
@@ -68,7 +38,7 @@
         • sl-level
         */
         "topElements": [],
-        "bottomElements": [ "species" ],
+        "bottomElements": [ "nickname" ],
         "leftElements": [],
         "rightElements": [],
         "imageOverlayElements": ["level"],
@@ -77,49 +47,14 @@
         ],
     },
     
-    /*
-    If you are doing a Nuzlocke challenge, these options add some silly effects when one of your Pokemon dies.
-    */
     "nuzlocke": {
         "enabled": true,
-        
-        // Make the pokemon spin slowly.
-        "applyDeathSpin": true,
-        
-        // **EXPERIMENTAL**
-        // Play a depressing sound when a Pokemon dies.  This path is absolute or relative to the /node/public/ 
-        // directory.
-        "deathSound": {
-            "enabled": true,
-            "filePath": "the-price-is-right-losing-horn.mp3"
-        },
-        
-        // Places some content before the nickname element.  This should include a space after it and needs to be 
-        // wrapped in single-quotes (as the value is being placed in a CSS file).
-        "ripPrefix": "'RIP '",
-        
-        // These messages are displayed, replacing the text in whichever element they appear, when a Pokemon dies.
-        // NOTE: currently these are not supported in Soul Link mode
-        "deathMessage1": "You died too young",
-        "deathMessage2": "We hardly knew you",
-        "deathMessage3": null,
-        
-        "soulLink": {
-            "enabled": true,
-            
-            "guild": "dxdt", // Discord server (they're called Guilds in the Discord API)
-            "channelName": "private-test",
-            "userToken": "NDIyMjg4OTU4OTcwNTI3NzQ0.DYaHyw.PLI1tXxO1UvgoroXynwz73HwQbI",
-            
-            "deathSound": {
-                "enabled": true,
-                
-                // if enabled but not specified, defaults to nuzlocke.deathSound.filePath
-                "filePath": "you-lose-good-day-sir.mp3"
-            }
-        },
     },
-    
+
+    "soulLink": {
+        "enabled": true,
+    },
+
     /*
     These are the CSS styles applied to the various elements of the page.  They are imported into /node/client/sass/,
     so if you want more granular control, edit the values there.
@@ -130,14 +65,20 @@
     See https://sass-lang.com/ for more information on SASS variables and what you can do with them.
     */
     "style": {
+        // set this value to a color (e.g. "red") in order to see how it lines up with your streaming background
+        // set it to "transparent" to hide that color
+        "imageWrapperBackgroundForSettingUpLayout": "red",
+
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
         "imageSideLength": "180px",
 
         // Optional sizes if you want the image wrapper to be a different size than the image
         //
-        // Note to Failstream: these values are required to be set the way they are to make the divide be at the correct
-        //                     angle.
+        // Note to iIPK: these values are required to be set the way they are to make the divide be at the correct
+        //               angle.
+        // The "* 1.5" is to make the images the right size against a 720p background assuming your stream software
+        // is set up to use a 1080p display
         "imageWrapperWidth": "152px * 1.5",
         "imageWrapperHeight": "123px * 1.5",
 
@@ -148,7 +89,25 @@
         "rightElementWidth": "0",
         "topElementHeight": "0",
         "bottomElementHeight": "20px * 1.5",
+
+        "%leftElement": {
+            // don't set width here... set it above
+        },
+
+        "%rightElement": {
+            // don't set width here... set it above
+        },
+
+        "%topElement": {
+            // don't set height here... set it above
+        },
+
+        "bottomBg": "silver",
         
+        "showWhenEmpty": [
+            // "nickname",
+        ],
+
         "%body": {
             // You almost certainly want this to be "transparent" so that it is rendered cleanly in your scene, but it 
             // may be useful to change it when setting things up so that you can more easily see text if your text hard 
@@ -210,6 +169,8 @@
         "%imageWrapperStyle": {
             "border-radius": "16px 0 0 0",
             "border": "1px solid transparent",
+
+            "background": "$imageWrapperBackgroundForSettingUpLayout",            
         },
         
         // Soul Link styles
@@ -238,6 +199,8 @@
         "soulLinkSwap": false,
         
         // these values determine how large the gap between the images is
+        // you probably want topTop = -bottomTop and topLeft = -bottomLeft to keep things even comparped to the rest of
+        // the slot's elements
         // NOTE: these values are unaffected by the soulLinkSwap value
         "imageWrapperShifts": {
             "topTop": "-8px",
@@ -250,6 +213,8 @@
         "%soulLinkedWrapperStyle": {
             "border": "0px solid transparent",
             "border-radius": "0 0 16px 0",
+
+            "background": "$imageWrapperBackgroundForSettingUpLayout",            
         },
 
         // how far to shift the image away from the divide so that you can see more of the pokemon

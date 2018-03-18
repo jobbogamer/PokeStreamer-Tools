@@ -41,7 +41,7 @@ class PokemonImages extends EventEmitter {
             console.warn('No specified empty slot image.  Skipping.');
             this._images[-1] = new PokemonImage();
         } else {
-            this._setEmptySlotImage(path.resolve(__dirname, '..', Config.Current.emptySlotImagePath));
+            this._setEmptySlotImage(path.resolve(__dirname, '../..', Config.Current.emptySlotImagePath));
         }
         
         let basePath = path.resolve(__dirname, '..', Config.Current.pokemonImagesPath),
