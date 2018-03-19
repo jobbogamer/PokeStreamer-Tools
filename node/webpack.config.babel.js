@@ -13,11 +13,11 @@ const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
 
 let webpackConfig = {
     entry: {
-        app: './client/script.js',
+        index: './client/index.js',
     },
     
     output: {
-        filename: 'script.js',
+        filename: 'index.js',
         path: path.resolve(__dirname, 'public'),
         hotUpdateChunkFilename: 'hot/hot-update.js',
         hotUpdateMainFilename: 'hot/hot-update.json',
