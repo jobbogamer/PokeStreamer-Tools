@@ -1,0 +1,18 @@
+<% config = require('../config.json') %>
+<html>
+<body>
+<% if (!config.soulLink.enabled) { %>
+    <p class="error">
+        SoulLink is not enabled in config.
+    </p>
+<% } else if (config.soulLink.method !== 'manual') { %>
+    <p class='error'>
+        SoulLink linking method is not set to "manual" in config.
+    </p>
+<% } else { %>
+    <%= require('./templates/soulLinkManager.ejs')() %>
+<% } %>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" 
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
-import VA from './validate-argument';
-import Pokemon from './pokemon/pokemon';
+import VA from '../validate-argument';
+import Pokemon from '../pokemon/pokemon';
 
 class Slot {
     constructor(slot, changeId, pokemon, box) {
@@ -15,12 +15,19 @@ class Slot {
         this.pokemon = VA.hasValue(pokemon, 'pokemon');
     }
 
+    get soulLinkPokemon() {
+        if (this._soulLinkPokemon) {
+            return this._soulLinkPokemon.clientJSON;
+        }
+    }
+
     toJSON() {
         return {
             box: this.box,
             slot: this.slot,
             changeId: this.changeId,
             pokemon: this.pokemon.clientJSON,
+            slPokemon: this.soulLinkPokemon,
         };
     }
 }
@@ -32,7 +39,7 @@ Slot.emptyBox = function(box, slot, changeId) {
     let cid = changeId === undefined ? -1 : changeId;
     changeId = VA.int(cid, 'changeId', `Argument 'changeId' must be a valid integer or undefined.  Found ${changeId}.`);
 
-    return new Slot(slot, changeId, Pokemon.empty(), box);
+    return new Slot(slot, changeId, Pokemon.empty, box);
 };
 
 Slot.empty = function(slot, changeId) {
@@ -42,7 +49,7 @@ Slot.empty = function(slot, changeId) {
     let cid = changeId === undefined ? -1 : changeId;
     changeId = VA.int(cid, 'changeId', `Argument 'changeId' must be a valid integer or undefined.  Found ${changeId}.`);
 
-    return new Slot(slot, changeId, Pokemon.empty());
+    return new Slot(slot, changeId, Pokemon.empty);
 };
 
 export default Slot;

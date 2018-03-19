@@ -8,7 +8,7 @@ export default class Slot {
         this.lastValue = null;
         this.$slot = $(`.slot.slot-${slot}`);
         this.changeId = -2;
-        this.$img = $slot.find('img');
+        this.$img = $slot.find('.main > img');
         this.$level = $slot.find('.level');
         this.$species = $slot.find('.species');
         this.$nickname = $slot.find('.nickname');
@@ -17,17 +17,23 @@ export default class Slot {
         this.$deathMessage3 = $slot.find('.deathMessage3');
         this.$deathMessages = $slot.find('.deathMessage1, .deathMessage2, .deathMessage3');
         this.$allText = $slot.find('.level, .species, .nickname, .deathMessage1, .deathMessage2, .deathMessage3');
+
+        this.slChangeId = -2;
+        this.$soulLinkImg = $slot.find('.soul-linked > img');
+        this.$soulLinkLevel = $slot.find('.sl-level');
+        this.$soulLinkSpecies = $slot.find('.sl-species');
+        this.$soulLinkNickname = $slot.find('.sl-nickname');
         
         if (ALL_IN_ONE) {
             this.eventSource = Slot.eventSource;
         } else {
             this.eventSource = 
-                new EventSource(`http://slot${slot}.${API_BASE_URL}/slot/${slot}`);
+            new EventSource(`http://slot${slot}.${API_BASE_URL}/slot/${slot}`);
         }
-
+        
         this.eventSource.addEventListener('message', this.updateSlot.bind(this), false);
     }
-
+    
     close() {
         if (this.eventSource.readyState !== 2) {
             this.eventSource.close();
@@ -36,12 +42,12 @@ export default class Slot {
     
     updateSlot(e) {
         let val = JSON.parse(e.data);
-
+        
         if (val.constructor === Array) {
             for (let v of val) {
                 this.updateSlot({ data: JSON.stringify(v) });
             }
-
+            
             return;
         }
         
@@ -58,7 +64,7 @@ export default class Slot {
             $deathMessages,
             $allText
         } = this;
-
+        
         if (val === 'reset') {
             this.changeId = -2;
             this.lastValue = null;
@@ -71,49 +77,56 @@ export default class Slot {
             this.changeId = parseInt(val.changeId);
             $allText.resetText();
             $allText.find('.scaled').children().unwrap('.scaled');
-
-            let pkmn = val.pokemon;
-            $level.text(pkmn.level === 0 ? '' : pkmn.level);
-            $species.text(pkmn.speciesName);
-            $nickname.text(pkmn.nickname || pkmn.speciesName);
-            if (!pkmn.nickname) {
-                $nickname.addClass('no-nickname');
-            } else {
-                $nickname.removeClass('no-nickname');
-            }
-
-            $img.attr('src', pkmn.img);
             
-            if (pkmn.dead) {
-                $slot.addClass('dead');
+            if (val.pokemon) {
+                let pkmn = val.pokemon;
                 
-                if (Nuzlocke.enabled) {
-                    this.setDeathMessages();
-
-                    if (this.pokemonJustDied(pkmn)) {
-                        Nuzlocke.playDeathSound();
-                    }
+                $level.text(pkmn.level === 0 ? '' : pkmn.level);
+                $species.text(pkmn.speciesName);
+                $nickname.text(pkmn.nickname || pkmn.speciesName);
+                if (!pkmn.nickname) {
+                    $nickname.addClass('no-nickname');
+                } else {
+                    $nickname.removeClass('no-nickname');
                 }
+                
+                $img.attr('src', pkmn.img);
+                
+                if (pkmn.dead) {
+                    $slot.addClass('dead');
+                    
+                    if (Nuzlocke.enabled) {
+                        this.setDeathMessages();
+                        
+                        if (this.pokemonJustDied(pkmn)) {
+                            Nuzlocke.playDeathSound();
+                        }
+                    }
+                } else {
+                    $slot.removeClass('dead');
+                    $deathMessages.resetText();
+                }
+                
+                $allText.parent().scaleToFit();
             } else {
                 $slot.removeClass('dead');
-                $deathMessages.resetText();
+                $img.removeAttr('src');
             }
 
-            this.lastValue = val;
-            $allText.parent().scaleToFit();
+            this.lastValue = val;            
         }
     }
-
+    
     pokemonJustDied(n) {
         let c = this.lastValue;
         return c && 
-            !c.dead &&
-            c.slot === n.slot &&
-            c.level === n.level &&
-            c.nickname === n.nickname &&
-            c.species === n.species;
+        !c.dead &&
+        c.slot === n.slot &&
+        c.level === n.level &&
+        c.nickname === n.nickname &&
+        c.species === n.species;
     }
-
+    
     setDeathMessages() {
         if (!config.soulLink.enabled) {
             for (let i = 0; i < 3; i++) {
@@ -124,7 +137,7 @@ export default class Slot {
             }
         }
     }
-
+    
     setDeathMessage(i, msg) {
         let $dm = this[`$deathMessage${i}`];
         $dm.parent().children('.level, .species, .nickname').text('');

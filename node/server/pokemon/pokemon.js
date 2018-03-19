@@ -1,14 +1,56 @@
 import VA from '../validate-argument';
 import Pokedex from './pokedex';
 import PokemonImages from './pokemon-images';
-import SoulLink from '../soul-link';
 import Config from '../config';
+import StaticEncounters from './static-encounters';
 
 function getMaxPokemonId(generation) {
     return generation <= 3 ? 386 : 649; // values pulled from wikipedia
 }
 
 let maxPokemonId = getMaxPokemonId(Config.Current.generation);
+
+const DiscordNewPokemonFields = [
+    "pid",
+    "level",
+    "species",
+    "dead",
+    "locationMet",
+    "shinyId",
+    "isFemale",
+    "isStatic",
+    "nickname",
+];
+
+const DiscordUpdateFields = [
+    "pid",
+    "level",
+    "species",
+    "dead",
+];
+
+const ClientFields = [
+    "pid",
+    "speciesName",
+    "nickname",
+    "level",
+    "dead",
+    "isFemale",
+    "isShiny",
+    "levelMet",
+    "img",
+    "isStatic",
+    "isValid",
+];
+
+function extractFields(obj, fields) {
+    let o = {};
+    for (let f of fields) {
+        o[f] = obj[f];
+    }
+
+    return o;
+}
 
 Config.on('update', e => {
     let gen = e.next.generation;
@@ -19,32 +61,16 @@ Config.on('update', e => {
 });
 
 class Pokemon {
-    constructor(otid, otsid, locationMet, species, alternateForm, nickname, level, dead, female,
-            shiny, levelMet, shinyId) {
-        this.otid = VA.int(otid, 'otid');
-        this.otsid = VA.int(otsid, 'otsid');
-        this.locationMet = VA.int(locationMet, 'locationMet');
-        this.species = species === -1 ? -1 : VA.boundedInt(species, 'species', 1, maxPokemonId);
-        this.alternateForm = alternateForm || '';
-        this.nickname = SoulLink.Enabled && level !== 0 ? 
-            VA.stringHasValue(nickname, 'nickname', `When SoulLink is enabled, all Pokemon must have a nickname.  Found '${nickname}'`) 
-            : nickname;
+    constructor(data) {
+        if (data === undefined || data === null) {
+            Object.assign(this, emptyPokemonData);
+            this.isEmpty = true;
+            return;
+        }
 
-        // temporary fix to handle pokemon with invalid levels (> 100)... it's an issue in the script that I haven't
-        // quite figured out yet
-        this.level = level === -2 ? '' : VA.boundedInt(level, 'level', 0, 100);
-        this.dead = VA.bool(dead, 'dead');
-        this.female = VA.boolOrUndefinedFalse(female, 'female');
-        this.shiny = VA.boolOrUndefinedFalse(shiny, 'shiny');
-        this.levelMet = VA.int(levelMet, 'levelMet');
-
-        if (SoulLink.Enabled) {
-            this.linkId = nickname; // I've decided to use nicknames as the canonical ID
-            this.uniqueId = `${otid}${otsid}-${locationMet}-${levelMet}`;
-            if (shiny) {
-                this.shinyId === shinyId !== undefined ? shinyId : SoulLink.getNextShinyId();
-                this.uniqueId += `-s`;
-            }
+        Object.assign(this, data);
+        if (this.dead === undefined) {
+            this.dead = !this.living;
         }
     }
 
@@ -61,40 +87,72 @@ class Pokemon {
     }
 
     get img() {
-        return PokemonImages.get(this.species || -1).getImage(this.female, this.shiny, this.alternateForm);
+        return PokemonImages.get(this.species || -1).getImage(this.isFemale, this.isShiny, this.alternateForm);
     }
 
-    get discordJSON() {
+    // used when the other server has a record of this pokemon
+    get discordUpdateJSON() {
         if (!SoulLink.Enabled) {
             console.debug('Why are you calling Pokemon.discordJSON when SoulLink is disabled?  You should debug this.');
         }
 
-        return {
-            linkId: this.linkId,
-            level: this.level,
-            species: this.species,
-            dead: this.dead,
-            shinyId: this.shinyId, // likely undefined, and that is fine
-        };
+        return extractFields(this, DiscordUpdateFields);
+    }
+
+    // used when notifying the other server of a new pokemon
+    get discordNewPokemonJSON() {
+        if (!SoulLink.Enabled) {
+            console.debug('Why are you calling Pokemon.discordJSON when SoulLink is disabled?  You should debug this.');
+        }
+
+        return extractFields(this, DiscordNewPokemonFields);
     }
 
     get clientJSON() {
-        return {
-            speciesName: this.speciesName,
-            nickname: this.nickname,
-            level: this.level,
-            dead: this.dead,
-            female: this.female,
-            shiny: this.shiny,
-            levelMet: this.levelMet,
-            img: this.img,
-        };
+        if (this.isEmpty) {
+            return null;
+        }
+
+        return extractFields(this, ClientFields);
+    }
+
+    _validateValues() {
+        if (this.empty) {
+            return;
+        }
+
+        VA.int(this.pid, 'pid');
+        VA.int(this.otid, 'otid');
+        VA.int(this.otsid, 'otsid');
+        VA.int(this.locationMet, 'locationMet');
+        VA.boundedInt(this.species, 'species', 1, maxPokemonId);
+        VA.boundedInt(this.level, 'level', 0, 100);
+        VA.bool(this.dead, 'dead');
+        VA.boolOrUndefinedFalse(this.female, 'female');
+        VA.boolOrUndefinedFalse(this.shiny, 'shiny');
+        VA.int(this.levelMet, 'levelMet');
+        VA.bool(this.isStatic, 'static');
     }
 }
 
-Pokemon.empty = function() {
-    return new Pokemon(-1, -1, -1, -1, null, null, 0, false, false, false, -1);
+const emptyPokemonData = {
+    pid: -1,
+    otid: -1,
+    otsid: -1,
+    species: null,
+    level: -1,
+    nickname: "",
+    dead: false,
+    shiny: false,
+    female: false,
+    levelMet: -1,
+    locationMet: -1,
+    alternateForm: "",
+    isStatic: false,
 };
+
+const EmptyPokemon = new Pokemon();
+Pokemon.empty = EmptyPokemon;
 
 // TODO : Pokemon.fromJSON()?
 

@@ -3,7 +3,9 @@ import args from './args';
 
 const ERROR = 'error',
     ERROR_IGNORE = 'error-ignore',
-    WARNING = 'warning';
+    WARNING = 'warning',
+    INFO = 'info',
+    LOG = 'log';
 
 class AssertionResult {
     constructor(isValid, message, severity) {
@@ -34,7 +36,10 @@ const Validations = {
         genSupported: new Assertion(c => !c.nuzlocke.enabled || !c.nuzlocke.soulLink.enabled || c.generation === 4,
             `Currently only gen IV games are supported with Soul Link.  Found ${c.generation}.`, ERROR),
         nuzlockeDisabled: new Assertion(c => !c.soulLink.enabled || c.nuzlocke.enabled,
-            `Soul Link was enabled but Nuzlocke was disabled.  Ignoring Soul Link.`),
+            `SoulLink was enabled but Nuzlocke was disabled.  Ignoring Soul Link.`),
+        soulLinkSoundWithManualLinking: 
+            new Assertion(c => !c.soulLink.enabled || c.soulLink.linking.method !== 'manual' || !c.soulLink.deathSound.enabled,
+                `SoulLink deathSounds aren't available with manual linking method.`, LOG)
     },
     style: {
         nonTransparentBackground: new Assertion(c => 
@@ -62,7 +67,7 @@ const Validations = {
 
 function validateConfig(validationSet, validationSetName) {
     if (!validationSet) {
-        console.log('Validating config...');
+        console.info('Validating config...');
     }
 
     validationSet = validationSet || Validations;
@@ -77,10 +82,21 @@ function validateConfig(validationSet, validationSetName) {
                 switch (result.severity) {
                     case ERROR:
                         throw new Error(msg);
+
                     case ERROR_IGNORE:
                         console.error(msg);
                         break;
+
+                    case INFO:
+                        console.info(msg);
+                        break;
+
+                    case LOG:
+                        console.log(msg);
+                        break;
+
                     case WARN:
+                    default:
                         console.warn(msg);
                         break;
                 }

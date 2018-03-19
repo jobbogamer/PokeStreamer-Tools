@@ -88,9 +88,23 @@
         // been because I was a little bored.
         //
         // The devServerPort is only used behind the scenes when you run the dev server (autobuild.cmd) for testing 
-        // purposes.  Its only requirements are that it is not the same as "port", that it's not port 443, and that you
-        // are not already using the port for another service.  Beyond that, go wild.  Live a little.  We're super
-        // heroes; what could happen?
-        "devServerPort": 8082
+        // purposes.  Its only requirements are that it is not the same as "port" or "objectStorePort", that it's not 
+        // port 443, and that you are not already using the port for another service.  Beyond that, go wild.  Live a 
+        // little.  We're super heroes; what could happen?
+        "devServerPort": 8082,
+
+        // I know I gave you a hard time about devServerPort, but this one you should actually not touch.  Things 
+        // actually COULD break if you do.  If you're foolish enough to change this value while the server is running,
+        // well, you don't want to know what happens then.  Just for starters, the server will crash.  After that, it'll
+        // go after your family and friends--everyone you've ever known or loved--and... well, I'm honestly unsure what
+        // happens to them.  I mean, have you ever heard of someone who changed this value and lived to tell about it?
+        // Me neither.
+        "objectStorePort": 27017,
     },
+
+    "soulLink": {
+        "dataDirectory": "gameData",
+    },
+
+    "logLevel": "debug",
 }

@@ -5,7 +5,11 @@
     Valid values: 3 and 4 (eventually 5?).  This value must match the generation and selected game of the Lua script
     you are running, or Pokémon may not display properly.
     */
-    "generation": 3,
+    "generation": 4,
+
+    "gameVersion": "hg",
+
+    "isRandomized": false,
 
     // If you want override the settings in this file, specify a file or an array of files whose values will take
     // precedence.  Files at the beginning of the list have higher priority than those later.
@@ -14,7 +18,7 @@
     //
     // NOTE: this value is ignored in the override files themselves.  No infinite loops for you!
     "configOverride": [ 
-        // "./config.fail.json",
+        "./config.fail.json",
         // "./config.iipk.json"
     ],
 
@@ -100,15 +104,37 @@
     "soulLink": {
         "enabled": false,
         
-        "guild": "dxdt", // Discord server (they're called Guilds in the Discord API)
-        "channelName": "private-test",
-        "userToken": "NDIyMjg4OTU4OTcwNTI3NzQ0.DYaHyw.PLI1tXxO1UvgoroXynwz73HwQbI",
-        
         "deathSound": {
             "enabled": true,
             
             // if enabled but not specified, defaults to nuzlocke.deathSound.filePath
             "filePath": "you-lose-good-day-sir.mp3"
+        },
+
+        "linking": {
+            // Valid values:
+            // •  manual: manually soul-link pokemon using the page at stream.pokemon-soul.link/links
+            // •  discord: (TODO) have a bot (or your user) use discord to communicate with your partner in order to handle 
+            //             soul-linking automatically
+            "method": "manual",
+            
+            // settings ignored if method is set to manual
+            // 
+            // You MUST change these values.
+            "discord": {
+                // The Discord auth token of the Bot or User that will send and receive SoulLink information
+                "userToken": "NDIyMjg4OTU4OTcwNTI3NzQ0.DYaHyw.PLI1tXxO1UvgoroXynwz73HwQbI",
+
+                // Discord server (they're called Guilds in the Discord API)
+                "guild": "your-discord-server",
+
+                // Private channel used solely for transfering SoulLink data back and forth
+                // NOTE: You MUST invite both your bot/user and your partner's bot/user to this channel.  (Obviously.)
+                //       You should NOT invite anyone else.  I can't think of a way someone could maliciously use this
+                //       script to do harmful things to your computer, but I'm not a security expert, and I didn't build
+                //       this server script to have any layers of security.
+                "channelName": "#your-private-channel",
+            },
         }
     },
     

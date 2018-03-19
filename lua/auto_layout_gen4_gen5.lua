@@ -465,7 +465,7 @@ function do_print_first_pokemon_bytes(pidAddr)
 	-- first_pokemon_bytes = string.format("{ %s }", table.concat(memory.readbyterange(pidAddr, 0x27), ", "))
 				
 	print("---------------------------")
-	print("{" ..byte_str .. " }")
+	print("{" .. byte_str .. " }")
 	print("---------------------------")	
 end
 
@@ -483,7 +483,7 @@ function inspect_and_send_boxes()
 				cur_pkmn = Pokemon.parse_gen4_gen5(words, true, gen)
 				
 				if last_boxes[box] == nil then
-					cur_boxes[box][box_slot] = cur_pkmn
+					cur_boxes[box][box_slot] = cur_pkmn or Pokemon()
 					if cur_pkmn ~= nil then
 						delta_boxes[#delta_boxes + 1] = {
 							box_id = box,
@@ -504,8 +504,6 @@ function inspect_and_send_boxes()
 						cur_boxes[box][box_slot] = last_pkmn
 					end
 				end
-
-				need_to_read_boxes = need_to_read_boxes or cur_pkmn == nil				
 			end
 		end
 	end
@@ -514,18 +512,6 @@ function inspect_and_send_boxes()
 	if #delta_boxes > 0 and not_need_to_read_boxes then
 		send_slots(delta_boxes, gen)
 		delta_boxes = {}
-	end
-end
-
-function should_update_bad_level(cur_pkmn, last_pkmn)
-	-- make sure we're not updating an identical, but correctly-leveled slot with a bad level one
-	local tmpLp = last_pkmn:clone()
-	tmpLp.level = -2
-
-	if cur_pkmn ~= tmpLp then
-		return true, cur_pkmn
-	else
-		return false, last_pkmn
 	end
 end
 
@@ -550,7 +536,11 @@ function fn()
 			if print_first_pokemon_bytes then do_print_first_pokemon_bytes(pidAddr) end
 
 			local words = read_pokemon_words(pidAddr, Pokemon.word_size_in_party)
-			party[q] = Pokemon.parse_gen4_gen5(words, false, gen)
+			if last_party == nil or last_party[q] == nil or Pokemon.get_words_string(words) ~= last_party[q].data_str then
+				party[q] = Pokemon.parse_gen4_gen5(words, false, gen)
+			else
+				party[q] = last_party[q]
+			end
 		end
 		
 		local send_data = {}
@@ -573,6 +563,8 @@ function fn()
 						print("Slot " .. q .. ": " .. tostring(lp) .. " -> " .. tostring(p))
 						send_data[#send_data + 1] = { slot_id = q, pokemon = p }
 					end
+				else
+					party[q] = lp
 				end
 			end
 			

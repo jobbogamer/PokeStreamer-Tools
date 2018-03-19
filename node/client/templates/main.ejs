@@ -1,23 +1,15 @@
-<% config = require('../../config.json'); %>
-<html>
-    <body>
-        <span id="err"></span>
+<span id="err"></span>
 
-        <% if (!config.layout.allInOne) { %>
-            <div id="slotBtns"></div>
-            <%= require('./slot.ejs')({ config: config }) %>
-        <% } else { %>
-            <% for (let i = 1; i <= NUM_SLOTS; i++) { %>
-                <%= require('./slot.ejs')({ slot: i }) %>
-            <% } %>
-        <% } %>
+<% if (!config.layout.allInOne) { %>
+    <div id="slotBtns"></div>
+    <%= require('./slot.ejs')() %>
+<% } else { %>
+    <% for (let i = 1; i <= NUM_SLOTS; i++) { %>
+        <%= require('./slot.ejs')({ slot: i }) %>
+    <% } %>
+<% } %>
 
-        <% if (config.nuzlocke.enabled && config.soulLink.enabled && 
-               config.style.soulLinkOrientation !== 'custom') { %>
-            <%= require('./soulLinkSvg.ejs')({ config: config }) %>
-        <% } %>
-        
-        <script src="http://code.jquery.com/jquery-3.3.1.min.js" 
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    </body>
-</html>
+<% if (config.nuzlocke.enabled && config.soulLink.enabled && 
+        config.style.soulLinkOrientation !== 'custom') { %>
+    <%= require('./soulLinkSvg.ejs')() %>
+<% } %>

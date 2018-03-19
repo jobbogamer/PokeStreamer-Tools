@@ -2,6 +2,17 @@ local decrypt = require("pokemon_decrypt_gen_4_gen_5")
 local pokemon_memory_map, battle_stats_memory_map = unpack(require("pokemon_memory_map_gen_4_gen_5"))
 local json = require("dkjson")
 
+-- local lshift, rshift, xor, band, bor = bit.lshift, bit.rshift, bit.bxor, bit.band, bit.bor
+-- local function get_bits(a, b, d) return rshift(a, b) % lshift(1, d) end
+-- local function get_byte(word, idx) return get_bits(word, (idx - 1) * 8, 8) end
+
+local function unsign(n)
+    if n < 0 then
+        n = 4294967296 + n
+    end
+    return n
+end
+
 local function object_assign(...)
     local obj = {}
     for _, o in ipairs(arg) do
@@ -22,33 +33,45 @@ local Pokemon = {}
 local _defaultPokemonValues = {
     data_str = "",
 
-    -- these four fields form the SoulLink id as they don't change
-    otid = -1,              -- original trainer id
-    otsid = -1,             -- original trainer secret id
-    diamond_pearl_location_met = -1, -- location discovered in HG/SS
-    is_shiny = false,       -- whether the pokemon is shiny or not
-    
-    species = -1,           -- pokedex number
+    pid = -1,
+    otid = -1,
+    otsid = -1,
+    platinum_location_met = 0,
+    platinum_egg_location_met = 0,
+    is_shiny = false,
+    is_female = false,
+
+    species = -1,
     alternate_form = "",
+    alternate_form_id = -1,
     nickname = "",
     level = -1,
-    female = false,
     living = false,
-    level_met = -1
+    level_met = -1,
+    markings = 0,
+    is_gift = false,
+    encounter_type = -1,
+    is_empty = true
 }
 
 local _propertiesToSend = {
-    pid = "pid",
+    pid = { name = "pid", transform = unsign },
     otid = "otid",
     otsid = "otsid",
-    diamond_pearl_location_met = "locationMet",
-    is_shiny = "shiny",
+    platinum_location_met = "locationMet",
+    platinum_egg_location_met = "eggLocationMet",
+    is_shiny = "isShiny",
+    is_female = "isFemale",
     species = "species",
     alternate_form = "alternateForm",
+    alternate_form_id = "alternateFormId",
     nickname = "nickname",
     level = "level",
-    living = "living",
-    level_met = "levelMet"
+    living = { name = "dead", transform = function (living) return not living end },
+    level_met = "levelMet",
+    encounter_type = "encounterType",
+    markings = "markings",
+    is_gift = "gift",
 }
 
 function Pokemon.get_words_string(words)
@@ -72,7 +95,6 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
 
     local valid, words = decrypt(encrypted_words)
     if not valid then
-        print("invalid pokemon")
         return nil
     end
 
@@ -80,7 +102,7 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
         -- empty slot
         return Pokemon()
     end
-    
+
     for _, fn in ipairs(pokemon_memory_map) do
         local attr
         attr, fn = unpack(fn)
@@ -91,8 +113,8 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
             pkmn[attr] = fn(words, pkmn)
         end
     end
-    
-    if not in_box then 
+
+    if not in_box then
         for _, fn in ipairs(battle_stats_memory_map) do
             local attr
             attr, fn = unpack(fn)
@@ -104,9 +126,9 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
             end
         end
 
-        pkmn.living = pkmn.current_hp > 0    
+        pkmn.living = pkmn.current_hp > 0
     end
-    
+
     pkmn.gen = nil
 
     -- correct the level in case it's wrong in memory (or because it's in a box)
@@ -115,6 +137,7 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
 end
 
 function Pokemon:__call(init)
+    if init ~= nil then init.is_empty = false end
 	init = init or {}
     init = object_assign(_defaultPokemonValues, init)
 
@@ -124,17 +147,37 @@ function Pokemon:__call(init)
 end
 
 function Pokemon.__eq(left, right)
-    return left.data_str == right.data_str
+    for k, v in pairs(_propertiesToSend) do
+        if type(v) == "table" then
+            local tmpL, tmpR = left[k], right[k]
+
+            if v.transform ~= nil then
+                tmpL, tmpR = v.transform(tmpL), v.transform(tmpR)
+            end
+        
+            if tmpL ~= tmpR then
+                print(string.format("%s: %s -> %s", k, tmpL, tmpR))
+                return false
+            end
+        else
+            if left[k] ~= right[k] then
+                print(string.format("%s: %s -> %s", k, left[k], right[k]))
+                return false
+            end
+        end
+    end
+    
+    return true
 end
 
 function Pokemon:__tostring()
 	local strs = {}
 	for k, v in pairs(self) do
-		if type(v) ~= "function" and type(v) ~= "table" then
+		if type(v) ~= "function" and type(v) ~= "table" and k ~= "data_str" then
 			strs[#strs + 1] = string.format("%s = %s", k, type(v) == "string" and string.format([["%s"]], v) or tostring(v))
 		end
 	end
-    
+
 	return string.format("{ %s }", table.concat(strs, ", "))
 end
 
@@ -143,11 +186,29 @@ function Pokemon:clone()
 end
 
 function Pokemon:toJsonSerializableTable()
+    if self.is_empty then
+        return json.null
+    end
+
     local jsonTable = {}
     for k, v in pairs(_propertiesToSend) do
-        jsonTable[v] = self[k]
+        if type(v) == "table" then
+            local tmpV = self[k]
+
+            if v.transform ~= nil then
+                tmpV = v.transform(tmpV)
+            end
+
+            if v.format ~= nil then
+                tmpV = string.format(v.format, tmpV)
+            end
+
+            jsonTable[v.name] = tmpV
+        else
+            jsonTable[v] = self[k]
+        end
     end
-    
+
     return jsonTable
 end
 

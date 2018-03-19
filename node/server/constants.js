@@ -19,4 +19,13 @@ const ShinyImageRegex = new RegExp(`(\\d+)s(\\w*)\\.(${SupportedImageFormats.val
 
 const NodeRoot = path.resolve(__dirname, '..');
 
-export { SupportedImageFormats, ImageRegex, NodeRoot, ShinyImageRegex };
+const CleanConnectionIntervalMS = 2000;
+
+export { 
+    SupportedImageFormats,
+    ImageRegex,
+    NodeRoot,
+    ShinyImageRegex,
+    CleanConnectionIntervalMS 
+};
+    

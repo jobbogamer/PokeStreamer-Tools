@@ -1,0 +1,12 @@
+Workflow
+
+LUA update -> API
+API -> Slot Manager
+Slot Manager -> Pokemon Manager
+
+Pokemon Manager -> SoulLink Manager -> Discord Client
+
+Discord client -> SoulLink Manager
+SoulLink Manager -> Slot Manager
+
+Slot Manager -> API -> Client

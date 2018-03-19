@@ -14,6 +14,7 @@ const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
 let webpackConfig = {
     entry: {
         index: './client/index.js',
+        // soulLinkManager: './client/soulLink.js'
     },
     
     output: {
@@ -81,10 +82,17 @@ let webpackConfig = {
         new HtmlWebpackPlugin({
             template: '!!ejs-loader!./client/index.ejs',
             filename: 'index.html',
+            chunks: ['index'],
             inject: 'body',
-            chunks: [ 'index' ],
             cache: true
         }),
+        // new HtmlWebpackPlugin({
+        //     template: '!!ejs-loader!./client/soulLink.ejs',
+        //     filename: 'links.html',
+        //     chunks: ['soulLinkManager'],
+        //     inject: 'body',
+        //     cache: true
+        // }),
         new webpack.SourceMapDevToolPlugin({
             test: /\.js$|\.css$/,
             filename: '[file].map',

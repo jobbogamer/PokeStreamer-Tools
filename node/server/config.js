@@ -3,6 +3,7 @@ import path from 'path';
 import EventEmitter from 'events';
 import compileConfig from '../common/configCompiler';
 import { NodeRoot } from './constants';
+import setLogLevel from './console';
 
 class ConfigWatcher extends EventEmitter {
     constructor(config) {
@@ -83,7 +84,8 @@ class Config extends EventEmitter {
 
         this.configWatcher = new ConfigWatcher(next);
         this.configWatcher.on('change', this._readConfig.bind(this));
-        this.emit('update', { prev: prev, next: this._current });
+        setLogLevel(this._current.logLevel || 2);
+        this.emit('update', { prev: prev, next: this._current });        
     }
 
     get Current() { return Object.assign({}, this._current); }

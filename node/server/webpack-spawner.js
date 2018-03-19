@@ -1,6 +1,5 @@
 import path from 'path';
 import { spawn } from 'child_process';
-// import findFreePort from 'find-free-port';
 import { NodeRoot } from './constants';
 import cleanupProcess from './cleanup-process';
 
