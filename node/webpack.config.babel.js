@@ -13,11 +13,11 @@ const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
 
 let webpackConfig = {
     entry: {
-        app: './client/script.js',
+        index: './client/index.js',
     },
     
     output: {
-        filename: 'script.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'public'),
         publicPath: '/',
     },
@@ -82,6 +82,7 @@ let webpackConfig = {
             template: '!!ejs-loader!./client/index.ejs',
             filename: 'index.html',
             inject: 'body',
+            chunks: [ 'index' ],
             cache: true
         }),
         new webpack.SourceMapDevToolPlugin({
