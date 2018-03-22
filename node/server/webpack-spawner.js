@@ -9,7 +9,7 @@ function spawnWebpack(debugPort) {
     // let webpack = spawn('webpack-dev-server', 
         [
             debugPort ? `--inspect=${debugPort}` : '',
-            path.resolve(__dirname, '../node_modules/webpack-dev-server/bin/webpack-dev-server.js'),
+            `"${path.join(__dirname, '../node_modules/webpack-dev-server/bin/webpack-dev-server.js')}"`,
             // debugPort ? "--port" : "", 
             // debugPort ? debugPort : "", 
         ],
