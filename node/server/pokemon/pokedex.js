@@ -1,4 +1,4 @@
-const Pokedex = [ 
+let Pokedex = [ 
     '', // pokemon IDs start at 1 
     "Bulbasaur",
     "Ivysaur",
@@ -808,5 +808,7 @@ const Pokedex = [
     "Blacephalon",
     "Zeraora",
 ];
+
+Pokedex.Lower = Pokedex.map(p => p.toLowerCase());
 
 export default Pokedex;

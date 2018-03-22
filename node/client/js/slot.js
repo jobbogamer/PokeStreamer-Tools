@@ -42,6 +42,9 @@ export default class Slot {
     
     updateSlot(e) {
         let val = JSON.parse(e.data);
+        if (!val) { 
+            return; 
+        }
         
         if (val.constructor === Array) {
             for (let v of val) {
@@ -62,7 +65,8 @@ export default class Slot {
             $deathMessage2,
             $deathMessage3,
             $deathMessages,
-            $allText
+            $allText,
+            $soulLinkImg,
         } = this;
         
         if (val === 'reset') {
@@ -72,9 +76,10 @@ export default class Slot {
             $allText.find('.scaled').children().unwrap('.scaled');
             $nickname.removeClass('no-nickname');
             $img.removeAttr('src');
+            $soulLinkImg.removeAttr('src');
             $slot.removeClass('dead');
-        } else if (this.changeId < parseInt(val.changeId) && this.slot === val.slot) {
-            this.changeId = parseInt(val.changeId);
+        } else if (this.slot === val.slot) {
+            // this.changeId = parseInt(val.changeId);
             $allText.resetText();
             $allText.find('.scaled').children().unwrap('.scaled');
             
@@ -91,7 +96,14 @@ export default class Slot {
                 }
                 
                 $img.attr('src', pkmn.img);
-                
+                if (pkmn.linkedImg !== undefined) {
+                    if (pkmn.linkedImg === null) {
+                        $soulLinkImg.removeAttr('src');
+                    } else {
+                        $soulLinkImg.attr('src', pkmn.linkedImg);
+                    }
+                }
+
                 if (pkmn.dead) {
                     $slot.addClass('dead');
                     

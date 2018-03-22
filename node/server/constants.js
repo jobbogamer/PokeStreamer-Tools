@@ -14,8 +14,8 @@ let SupportedImageFormats = [
 
 SupportedImageFormats.validExtensions = SupportedImageFormats.map(f => f.searchStrings).flatten();
 
-const ImageRegex = new RegExp(`(\\d+)(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
-const ShinyImageRegex = new RegExp(`(\\d+)s(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
+const ImageRegex = new RegExp(`^(\\d+)(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
+const ShinyImageRegex = new RegExp(`^(\\d+)s(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 
 const NodeRoot = path.resolve(__dirname, '..');
 

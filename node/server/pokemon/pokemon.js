@@ -41,6 +41,7 @@ const ClientFields = [
     "img",
     "isStatic",
     "isValid",
+    "linkedImg",
 ];
 
 function extractFields(obj, fields) {
@@ -88,6 +89,14 @@ class Pokemon {
 
     get img() {
         return PokemonImages.get(this.species || -1).getImage(this.isFemale, this.isShiny, this.alternateForm);
+    }
+
+    get linkedImg() {
+        if (this.linkedSpecies) {
+            return PokemonImages.get(this.linkedSpecies).getImage();
+        }
+
+        return null;
     }
 
     // used when the other server has a record of this pokemon
