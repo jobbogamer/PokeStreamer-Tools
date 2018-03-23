@@ -71,7 +71,8 @@
     "style": {
         // set this value to a color (e.g. "red") in order to see how it lines up with your streaming background
         // set it to "transparent" to hide that color
-        "imageWrapperBackgroundForSettingUpLayout": "red",
+        "imageWrapperBackgroundForSettingUpLayout": "transparent",
+        // "imageWrapperBackgroundForSettingUpLayout": "rgba(0,0,0,.3)",
 
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
@@ -105,9 +106,14 @@
         "%topElement": {
             // don't set height here... set it above
         },
-
-        "bottomBg": "silver",
         
+        "%bottomElement": {
+            // don't set height here... set it above
+            "margin-top": "208px",
+            "font-weight": "bold",
+            "color": "black",
+        },
+
         "showWhenEmpty": [
             // "nickname",
         ],

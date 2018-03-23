@@ -72,7 +72,7 @@
     "style": {
         // set this value to a color (e.g. "red") in order to see how it lines up with your streaming background
         // set it to "transparent" to hide that color
-        "imageWrapperBackgroundForSettingUpLayout": "transparent",
+        "imageWrapperBackgroundForSettingUpLayout": "rgba(0,0,0,.3)",
 
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
@@ -117,7 +117,7 @@
             // don't set height here... set it above
             "background": "$bottomBg",
             "padding": "0 16px",
-            "margin-top": "12px",
+            "margin-top": "215px",
             "font-weight": "bold",
             "font-variant": "small-caps",
             "color": "black",
@@ -159,13 +159,17 @@
         
         "%levelText": {
             // "width": "$rightElementWidth !important",
-            "font-size": "36px",
-            
+			"font-family": "Balthazar, sans-serif",
+            "font-size": "56px",
+			"-webkit-text-fill-color": "cyan",
+			"-webkit-text-stroke-width": "2px",
+			"-webkit-text-stroke-color": "black",
+			
             // By default, texts on the left and right of the image are rotated.  Setting transform to "unset" prevents
             // this.
             // "transform": "unset !important"
 
-            "margin": "8px 16px",
+            "margin": "8px 0px",
         },
         
         // This should include a space after it and needs to be wrapped in single-quotes (as the value is being placed 
