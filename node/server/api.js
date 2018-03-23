@@ -44,6 +44,14 @@ function cleanDeadConnections() {
     }
 }
 
+function sseKeepAlive() {
+    if (!this.res.connection.destroyed) {
+        this.res.sseSend('// noop');
+    } else {
+        clearInterval(this.keepAlive);
+    }
+}
+
 function getSlot(req, res, next) {
     if (!res.sseSetup()) {
         // happens when the host is the wrong origin
@@ -57,6 +65,8 @@ function getSlot(req, res, next) {
             time: new Date().toLocaleTimeString(locale),
             res: res,
         };
+
+    conn.keepAlive = setInterval(sseKeepAlive.bind(conn), 5000);
 
     if (req.params[0] === 'all') {
         slot = 'all';
