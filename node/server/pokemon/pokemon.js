@@ -73,10 +73,14 @@ class Pokemon {
         if (this.dead === undefined) {
             this.dead = !this.living;
         }
+
+        if (this.isEgg) {
+            this.level = "";
+        }
     }
 
     get speciesName() {
-        return this.species ? Pokedex[this.species] : '';
+        return this.species ? !this.isEgg ? Pokedex[this.species] : 'Egg' : '';
     }
 
     set shinyNum(val) {
@@ -88,12 +92,12 @@ class Pokemon {
     }
 
     get img() {
-        return PokemonImages.get(this.species || -1).getImage(this.isFemale, this.isShiny, this.alternateForm);
+        return PokemonImages.get(this.species || -1).getImage(this.isFemale, this.isShiny, this.alternateForm, this.isEgg);
     }
 
     get linkedImg() {
         if (this.linkedSpecies) {
-            return PokemonImages.get(this.linkedSpecies).getImage();
+            return PokemonImages.get(this.linkedSpecies).getImage(null, this.isShiny, null, this.isEgg);
         }
 
         return null;

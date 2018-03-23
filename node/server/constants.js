@@ -34,9 +34,11 @@ SupportedImageFormats.validExtensions = SupportedImageFormats.map(f => f.searchS
 
 const ImageRegex = new RegExp(`^(\\d+)(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 const ShinyImageRegex = new RegExp(`^(\\d+)s(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
+const EggImageRegex = new RegExp(`^egg(\\d*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 
 export const Image = { 
     SupportedImageFormats,
     ImageRegex,
     ShinyImageRegex,
+    EggImageRegex,
 };

@@ -67,6 +67,7 @@ local _defaultPokemonValues = {
     is_gift = false,
     encounter_type = -1,
     is_empty = true,
+    is_egg = false,
     valid = true
 }
 
@@ -78,6 +79,7 @@ local _propertiesToSend = {
     platinum_egg_location_met = "eggLocationMet",
     is_shiny = "isShiny",
     is_female = "isFemale",
+    is_egg = "isEgg",
     species = "species",
     alternate_form = "alternateForm",
     alternate_form_id = "alternateFormId",
@@ -139,26 +141,24 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     -- print(Pokemon.get_words_string(words))
     -- print("----------------")
 
-    if valid then
-        for _, fn in ipairs(pokemon_memory_map) do
-            local attr
-            attr, fn = unpack(fn)
-            if type(fn) == "number" then
-                pkmn[attr] = words[fn]
-            else
-                -- print(attr)
-                pkmn[attr] = fn(words, pkmn)
-            end
+    for _, fn in ipairs(pokemon_memory_map) do
+        local attr
+        attr, fn = unpack(fn)
+        if type(fn) == "number" then
+            pkmn[attr] = words[fn]
+        else
+            -- print(attr)
+            pkmn[attr] = fn(words, pkmn)
         end
-
-        -- correct the level in case it's wrong in memory (or because it's in a box)
-        pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
-        if pkmn.level > 100 then
-            return nil
-        end
-
-        pkmn.death_code = death_code
     end
+
+    -- correct the level in case it's wrong in memory (or because it's in a box)
+    pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
+    if pkmn.level > 100 then
+        return nil
+    end
+
+    pkmn.death_code = death_code
 
     if not in_box then
         for _, fn in ipairs(battle_stats_memory_map) do

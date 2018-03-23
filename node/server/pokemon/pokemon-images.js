@@ -6,7 +6,8 @@ import { Image } from '../constants';
 
 const {
     ImageRegex, 
-    ShinyImageRegex, 
+    ShinyImageRegex,
+    EggImageRegex,
     SupportedImageFormats
 } = Image;
 
@@ -82,7 +83,7 @@ class PokemonImages extends EventEmitter {
 
     _loadImages(variant, dir) {
         if (!fs.existsSync(dir)) {
-            if (!this._gettingFormImages || variant === 'shiny') {
+            if ((!this._gettingFormImages || variant === 'shiny') && path.dirname) {
                 console.warn(`Warning: Image directory '${dir}' does not exist.  Skipping.`);
             }
     
@@ -112,6 +113,11 @@ class PokemonImages extends EventEmitter {
             fileType = m && m[3];
             
             if (id) {
+                if (id === '0') {
+                    // attempting to add an egg that is not an egg image
+                    continue;
+                }
+
                 if (!this._images[id]) {
                     this._images[id] = new PokemonImage();
                 }
@@ -127,6 +133,16 @@ class PokemonImages extends EventEmitter {
                 }
                 
                 imagesFound++;
+            } else if ((m = EggImageRegex.exec(file)) !== null) {
+                if (this._images[0]) {
+                    // already have an egg
+                    continue;
+                }
+
+                fileType = m[3];
+                
+                this._images[0] = new PokemonImage();
+                this._images[0]['base'] = this._getImgSrcString(filePath, fileType);
             }
         }
         
@@ -166,7 +182,11 @@ class PokemonImage {
         this.forms = {};
     }
     
-    getImage(female, shiny, form) {
+    getImage(female, shiny, form, egg) {
+        if (egg) {
+            return pokemonImages.get(0).base;
+        }
+
         if (form && this.forms[form]) {
             return this.forms[form].getImage(female, shiny) || this.base;
         }

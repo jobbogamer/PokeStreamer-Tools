@@ -1,5 +1,5 @@
 let Pokedex = [ 
-    '', // pokemon IDs start at 1 
+    "Egg",
     "Bulbasaur",
     "Ivysaur",
     "Venusaur",
@@ -809,6 +809,7 @@ let Pokedex = [
     "Zeraora",
 ];
 
-Pokedex.Lower = Pokedex.map(p => p.toLowerCase());
+Pokedex._ids = {};
+Pokedex.Lower = Pokedex.map((p, i) => p.toLowerCase());
 
 export default Pokedex;
