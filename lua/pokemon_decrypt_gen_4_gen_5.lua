@@ -77,7 +77,7 @@ local function decrypt(words)
     -- print("------------------------")
     -- print(#decrypted_words)
 
-    local valid =  checksum == cur_checksum % 0x10000
+    local valid = checksum == cur_checksum % 0x10000
     prng = pid
     
     -- if #words is only 72 long (such as when the pokemon is stored in a box), this next loop will automatically be 

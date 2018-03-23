@@ -51,7 +51,8 @@ local _defaultPokemonValues = {
     markings = 0,
     is_gift = false,
     encounter_type = -1,
-    is_empty = true
+    is_empty = true,
+    valid = true
 }
 
 local _propertiesToSend = {
@@ -74,10 +75,11 @@ local _propertiesToSend = {
     is_gift = "gift",
 }
 
-function Pokemon.get_words_string(words)
+function Pokemon.get_words_string(words, format)
+    format = format or "%04x"
     local hex = ""
     for _, w in ipairs(words) do
-        hex = hex .. string.format("%04x", w)
+        hex = hex .. string.format(format, w)
     end
     return hex
 end
@@ -94,24 +96,35 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     pkmn.data_str = Pokemon.get_words_string(encrypted_words)
 
     local valid, words = decrypt(encrypted_words)
+    
+    pkmn.valid = valid
     if not valid then
         return nil
     end
-
+    
     if words == nil then
         -- empty slot
         return Pokemon()
     end
 
-    for _, fn in ipairs(pokemon_memory_map) do
-        local attr
-        attr, fn = unpack(fn)
-        if type(fn) == "number" then
-            pkmn[attr] = words[fn]
-        else
-            -- print(attr)
-            pkmn[attr] = fn(words, pkmn)
+    -- print("----------------")
+    -- print(Pokemon.get_words_string(words))
+    -- print("----------------")
+
+    if valid then
+        for _, fn in ipairs(pokemon_memory_map) do
+            local attr
+            attr, fn = unpack(fn)
+            if type(fn) == "number" then
+                pkmn[attr] = words[fn]
+            else
+                -- print(attr)
+                pkmn[attr] = fn(words, pkmn)
+            end
         end
+
+        -- correct the level in case it's wrong in memory (or because it's in a box)
+        pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
     end
 
     if not in_box then
@@ -130,9 +143,6 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     end
 
     pkmn.gen = nil
-
-    -- correct the level in case it's wrong in memory (or because it's in a box)
-    pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
     return Pokemon(pkmn)
 end
 

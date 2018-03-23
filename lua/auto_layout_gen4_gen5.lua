@@ -58,6 +58,7 @@ local pid = 0
 local trainerID, secretID, lotteryID
 local shiftvalue
 local checksum = 0
+local in_battle = false
 
 local mode = 1
 local modetext = "Party"
@@ -437,6 +438,15 @@ function getNatClr(a)
 end
 
 function read_pokemon_words(addr, num_words)
+	if memory.readdword(addr + 0x4E9F0) ~= 0 then
+		-- pokemon is in battle... we can get live stats
+		addr = addr + 0x4E9F0
+		in_battle = true
+	else
+		in_battle = false
+	end
+
+
 	local words = {}
 	-- PID is taken as a whole, and we're in little endian hell, so reverse words
 	local dword = memory.readdword(addr)
@@ -533,10 +543,15 @@ function fn()
 			pointer = getPointer()
 			pidAddr = getPidAddr()
 
+			-- print("-----------")
+			-- print(string.format("0x%08x", pidAddr))
+			-- print("-----------")
+
 			if print_first_pokemon_bytes then do_print_first_pokemon_bytes(pidAddr) end
 
 			local words = read_pokemon_words(pidAddr, Pokemon.word_size_in_party)
-			if last_party == nil or last_party[q] == nil or Pokemon.get_words_string(words) ~= last_party[q].data_str then
+			
+			if last_party == nil or last_party[q] == nil or in_battle or Pokemon.get_words_string(words) ~= last_party[q].data_str then
 				party[q] = Pokemon.parse_gen4_gen5(words, false, gen)
 			else
 				party[q] = last_party[q]
