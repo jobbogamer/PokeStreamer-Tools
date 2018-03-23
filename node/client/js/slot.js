@@ -123,6 +123,7 @@ export default class Slot {
             } else {
                 $slot.removeClass('dead');
                 $img.removeAttr('src');
+                $soulLinkImg.removeAttr('src');
             }
 
             this.lastValue = val;            
