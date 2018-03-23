@@ -23,6 +23,8 @@ export default class Slot {
         this.$soulLinkLevel = $slot.find('.sl-level');
         this.$soulLinkSpecies = $slot.find('.sl-species');
         this.$soulLinkNickname = $slot.find('.sl-nickname');
+
+        this.$images = $slot.find('img');
         
         if (ALL_IN_ONE) {
             this.eventSource = Slot.eventSource;
@@ -67,6 +69,7 @@ export default class Slot {
             $deathMessages,
             $allText,
             $soulLinkImg,
+            $images,
         } = this;
         
         if (val === 'reset') {
@@ -82,6 +85,7 @@ export default class Slot {
             // this.changeId = parseInt(val.changeId);
             $allText.resetText();
             $allText.find('.scaled').children().unwrap('.scaled');
+            $images.unwrap('.death-wrapper');
             
             if (val.pokemon) {
                 let pkmn = val.pokemon;
@@ -110,6 +114,7 @@ export default class Slot {
                     if (Nuzlocke.enabled) {
                         this.setDeathMessages();
                         
+                        $images.wrap('<div class="death-wrapper">');
                         if (this.pokemonJustDied(pkmn)) {
                             Nuzlocke.playDeathSound();
                         }
@@ -126,18 +131,13 @@ export default class Slot {
                 $soulLinkImg.removeAttr('src');
             }
 
-            this.lastValue = val;            
+            this.lastValue = val;
         }
     }
     
     pokemonJustDied(n) {
-        let c = this.lastValue;
-        return c && 
-        !c.dead &&
-        c.slot === n.slot &&
-        c.level === n.level &&
-        c.nickname === n.nickname &&
-        c.species === n.species;
+        let c = this.lastValue && this.lastValue.pokemon;
+        return c && !c.dead && c.pid === n.pid;
     }
     
     setDeathMessages() {

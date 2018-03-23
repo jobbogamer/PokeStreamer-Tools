@@ -3,7 +3,7 @@ $hShift: $imageShift * $imageWrapperRatio;
 $vShift: $imageShift / $imageWrapperRatio;
 
 @mixin img-trans($transforms) {
-  img {
+  > img, > .death-wrapper {
     transform: $transforms;
   }
 }

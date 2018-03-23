@@ -83,9 +83,12 @@
             "filePath": "the-price-is-right-losing-horn.mp3"
         },
         
+        // Currently broken... may or may not work... if you set the font size to less than the height of its container,
+        // it should be fine.
+        //
         // Places some content before the nickname element.  This should include a space after it and needs to be 
         // wrapped in single-quotes (as the value is being placed in a CSS file).
-        "ripPrefix": "'RIP '",
+        // "ripPrefix": "'RIP '",
         
         // These messages are displayed, replacing the text in whichever element they appear, when a Pokemon dies.
         // NOTE: currently these are not supported in Soul Link mode
@@ -108,7 +111,7 @@
             "enabled": true,
             
             // if enabled but not specified, defaults to nuzlocke.deathSound.filePath
-            "filePath": "you-lose-good-day-sir.mp3"
+            // "filePath": "you-lose-good-day-sir.mp3"
         },
 
         "linking": {
@@ -230,7 +233,7 @@
         
         // these styles are applied to both death messages, and can be overridden below
         "%deathMessageText": {
-            "font-size": "20px",
+            // "font-size": "20px",
         },
         
         "%deathMessage1Text": {},
