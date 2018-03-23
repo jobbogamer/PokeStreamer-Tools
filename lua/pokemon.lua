@@ -85,7 +85,7 @@ end
 local function get_pokemon_level(species, xp)
     local exp_levels = experiece_to_reach_level[experience_gain_by_species[species]]
     local level = 1
-    while xp > exp_levels[level] do level = level + 1 end
+    while xp >= exp_levels[level] do level = level + 1 end
     return level - 1
 end
 
