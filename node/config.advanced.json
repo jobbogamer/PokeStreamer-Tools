@@ -33,6 +33,11 @@
     "pokemonImagesPath": "../../pokemon-images/BW",
 
     "server": {
+        // There's a bug in XSplit's browser code such that it doesn't send the right headers when performing API calls.
+        // Set this value to true if the browser isn't getting updated when you run the Lua script.  Assuming you're 
+        // running the server locally and your computer is not publicly facing, this "security" issue isn't a problem.
+        "useLessSecureAPI": false,
+
         // The port to use when accessing the page that you insert into your stream scene.
         // 
         // The url to that page will be http://stream.pokemon-soul.link:<port>/.  Using the default 8081 means that url 

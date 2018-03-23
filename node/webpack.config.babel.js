@@ -48,7 +48,7 @@ let webpackConfig = {
             },
             {
                 test: /\.s[ca]ss$/,
-                exclude: /node_modules/,
+                exclude: [ /node_modules/, /^.*(hot-update).*$/ ],
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [

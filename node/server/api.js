@@ -45,7 +45,10 @@ function cleanDeadConnections() {
 }
 
 function getSlot(req, res, next) {
-    res.sseSetup();
+    if (!res.sseSetup()) {
+        // happens when the host is the wrong origin
+        return;
+    }
     
     let locale = getLocaleString(req),
         slot, 

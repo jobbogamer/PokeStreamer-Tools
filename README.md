@@ -1,19 +1,3 @@
-# Note to Fail and IPK #
-When you get to the [Download the GitHub repository](#download-the-github-repository) step:
-*   If you don't already have the scripts downloaded, run
-
-    ```
-    git clone -b temp git@github.com:dfoverdx/PokeStreamer-Tools.git
-    ```
-
-*   If you do already have them downloaded, run
-
-    ```
-    git fetch
-    git checkout temp
-    git pull
-    ```
-
 # PokeStreamer-Tools
 
 A set of scripts and tools for Pokemon streamers
@@ -24,8 +8,6 @@ A set of scripts and tools for Pokemon streamers
 An issue with the original script is that every time a pokemon changes slots, it rewrites data to the hard drive several times.  This is a synchronous operation that causes the game (in particular, the audio) to lag significantly.
 
 This code uses a [Node.JS](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at `http://stream.pokemon-soul.link:8081/`.  (Optionally, for more flexibility, you can disable all-on-one mode in the `node/config.json` file, and access six separate pages at `http://stream.pokemon-soul.link:8081/?slot=slotNum` where `slotNum` is a number between 1 and 6.  That said, I might soon be deprecating this feature--yes, before v1.0 is released--and just make you use [CSS transformations](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) to move and scale your slots as desired.)
-
-**This project is still a work in progress.  Currently this only works with the `auto_layout_gen3.lua` script.  Gen 4+ support is forthcoming.**
 
 ### Server Requirements
 
@@ -69,13 +51,32 @@ Navigate to `/node` and run `setupPokemonImages.cmd`.  This script copies over t
 #### Configure settings
 
 1.  Navigate to `/node/`.
-2.  Open `/node/config.json` in your favorite text editor.  (If you don't have one, I suggest [VS Code](https://code.visualstudio.com).)
+    At this point you have two options (I recommend the second one if you have a rudamentary grasp of [JSON](https://www.w3schools.com/js/js_json_syntax.asp): 
+    -   Edit `/node/config.json` directly
+    -   Create a custom config file in `/node/`, e.g. `/node/config.custom.json` and use that for editing.  
+        In this case, you'll want to open up `/node/config.json` in a second window order to read the comments when adding setting your own values in your custom config file.  See the note at the bottom of this section for more information.
+2.  Open your chosen config file in your favorite text editor.  (If you don't have one, I suggest [VS Code](https://code.visualstudio.com).)
 3.  Change settings to your desire.  The file is pretty well commented, so hopefully it won't give you too much trouble.  If it does, you can reach me on [Discord](https://discord.gg/FKDntWR).
 4.  Save.  (Obviously.)
 
+The default settings are what [Failstream](https://twitch.tv/failstream) used in his first gen 3 Pokémon Randomizer run, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
+
+##### Using custom config files 
 If you want to have multiple setups (for example, one set up for solo-play and one for SoulLink), you can overwrite settings by creating additional `config.*.json` files, and specifying them in `config.json`.
 
-The default settings are what [Failstream](https://twitch.tv/failstream) used in his first Pokémon Randomizer run, since I initially wrote this tool for him.  His upcoming stream needs are also what spur the [roadmap](#roadmap) below.
+    "configOverride": [ 
+        "./config.custom.json"
+    ]
+
+Files at the top of the list have higher priority than ones after them.
+
+##### XSplit users
+
+There seems to be a bug in XSplit where it does not send the proper headers when accessing the server.  If running in XSplit doesn't seem to be working/updating when Pokemon change, change the value `/node/config.advanced.json`:
+
+    "server": {
+        "useLessSecureAPI": true
+    }
 
 #### Build
 

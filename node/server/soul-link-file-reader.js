@@ -18,45 +18,58 @@ class SoulLinkFileReader extends EventEmitter {
     }
 
     parseData() {
+        if (!fs.existsSync(path.join(__dirname, '../public/'))) {
+            // happens if running autobuild before running build
+            console.error(`Directory 'public' path does not exist in '${path.resolve(__dirname, '..')}'.  Are you sure you have run node/build.cmd yet?`);
+            throw new Error('Project has not been built.');
+        }
+
         if (!fs.existsSync(SoulLinkFile)) {
             fs.writeFileSync(SoulLinkFile, '{}');
             return;
         }
 
-        let contents = "";
+        let contents = '',
+            next;
         try {
             contents = fs.readFileSync(SoulLinkFile);
-            let next = JSON.parse(contents);
-            let changed = false;
-
-            for (let [pid, nextLink] of Object.entries(next)) {
-                let n = Pokedex.Lower.indexOf(nextLink.linkedSpecies.toLowerCase());
-                if (n === -1) {
-                    console.error(`Invalid species name: ${nextLink.linkedSpecies}`);
-                    return;
-                }
-
-                if (n === 0) {
-                    next[pid].linkedSpecies = null;
-                } else {
-                    next[pid].linkedSpecies = n;
-                }
-            }
-
-            for (let [pid, nextLink] of Object.entries(next)) {
-                let old = this._links[pid];
-                if (!old || old.linkedSpecies !== nextLink.linkedSpecies) {
-                    changed = true;
-                    break;
-                }
-            }
-
-            this._links = next;
-            if (changed) {
-                this.emit('update', next);
-            }
+            next = JSON.parse(contents);
         } catch (e) {
-            // pass
+            // file is invalid JSON... happens immediately after saving the file
+            return;
+        }
+
+        let changed = false;
+        for (let [pid, nextLink] of Object.entries(next)) {
+            if (nextLink.linkedSpecies === '') {
+                next[pid].linkedSpecies = null;
+                continue;
+            }
+
+            let n = Pokedex.Lower.indexOf(nextLink.linkedSpecies.toLowerCase());
+            if (n === -1) {
+                console.error(`Invalid species name: ${nextLink.linkedSpecies}.  Ignoring change to 'soullinkdata.json'.  Fix the species and save again.`);
+                return;
+            }
+
+            if (n === 0) {
+                next[pid].linkedSpecies = null;
+            } else {
+                next[pid].linkedSpecies = n;
+            }
+        }
+
+        for (let [pid, nextLink] of Object.entries(next)) {
+            let old = this._links[pid];
+            if (!old || old.linkedSpecies !== nextLink.linkedSpecies) {
+                changed = true;
+                break;
+            }
+        }
+
+        this._links = next;
+        if (changed) {
+            this.emit('update', next);
         }
     }
 

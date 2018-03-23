@@ -239,5 +239,9 @@
         "%boxedStyle": {
             "filter": "sepia(100%)",
         }
+    },
+
+    "server": {
+        "useLessSecureAPI": true
     }
 }
