@@ -2,7 +2,13 @@ import path from 'path';
 import fs from 'fs';
 import EventEmitter from 'events';
 import Config from '../config';
-import { ImageRegex, ShinyImageRegex, SupportedImageFormats } from '../constants';
+import { Image } from '../constants';
+
+const {
+    ImageRegex, 
+    ShinyImageRegex, 
+    SupportedImageFormats
+} = Image;
 
 const basicImageDirs = {
     base: '.',

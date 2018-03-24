@@ -2,9 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import EventEmitter from 'events';
 
-import Pokedex from './pokemon/pokedex';
+import { Paths } from '../constants';
+import Pokedex from '../pokemon/pokedex';
 
-const SoulLinkFile = path.resolve(__dirname, '../public/soullinkdata.json');
+const {
+    NodeRoot,
+    PublicPath,
+    SoulLinkFile,
+} = Paths;
+
 class SoulLinkFileReader extends EventEmitter {
     constructor() {
         super();
@@ -18,9 +24,9 @@ class SoulLinkFileReader extends EventEmitter {
     }
 
     parseData() {
-        if (!fs.existsSync(path.join(__dirname, '../public/'))) {
+        if (!fs.existsSync(PublicPath)) {
             // happens if running autobuild before running build
-            console.error(`Directory 'public' path does not exist in '${path.resolve(__dirname, '..')}'.  Are you sure you have run node/build.cmd yet?`);
+            console.error(`Directory 'public' path does not exist in '${NodeRoot}'.  Are you sure you have run node/build.cmd yet?`);
             throw new Error('Project has not been built.');
         }
 

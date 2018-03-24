@@ -2,9 +2,24 @@ local decrypt = require("pokemon_decrypt_gen_4_gen_5")
 local pokemon_memory_map, battle_stats_memory_map = unpack(require("pokemon_memory_map_gen_4_gen_5"))
 local json = require("dkjson")
 
--- local lshift, rshift, xor, band, bor = bit.lshift, bit.rshift, bit.bxor, bit.band, bit.bor
--- local function get_bits(a, b, d) return rshift(a, b) % lshift(1, d) end
--- local function get_byte(word, idx) return get_bits(word, (idx - 1) * 8, 8) end
+local lshift, rshift, xor, band, bor = bit.lshift, bit.rshift, bit.bxor, bit.band, bit.bor
+local function get_bits(a, b, d) return rshift(a, b) % lshift(1, d) end
+local function get_byte(word, idx) return get_bits(word, (idx - 1) * 8, 8) end
+
+function gettop(a)
+	return(rshift(a,16))
+end
+
+function mult32(a,b)
+	local c=rshift(a,16)
+	local d=a%0x10000
+	local e=rshift(b,16)
+	local f=b%0x10000
+	local g=(c*f+d*e)%0x10000
+	local h=d*f
+	local i=g*0x10000+h
+	return i
+end
 
 local function unsign(n)
     if n < 0 then
@@ -84,6 +99,19 @@ function Pokemon.get_words_string(words, format)
     return hex
 end
 
+-- returns 
+-- 1) the value to set current hp at 0
+-- 2) the value to set the pokemon to frozen
+function Pokemon.get_death_codes(pid)
+    local prng = pid
+    prng = mult32(prng,0x41C64E6D) + 0x6073
+    local frozen_code = xor(get_byte(gettop(prng), 1), lshift(1, 5))
+    prng = mult32(prng,0x41C64E6D) + 0x6073
+    prng = mult32(prng,0x41C64E6D) + 0x6073
+    prng = mult32(prng,0x41C64E6D) + 0x6073    
+    return gettop(prng), frozen_code
+end
+
 local function get_pokemon_level(species, xp)
     local exp_levels = experiece_to_reach_level[experience_gain_by_species[species]]
     local level = 1
@@ -95,7 +123,7 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     local pkmn = { gen = gen }
     pkmn.data_str = Pokemon.get_words_string(encrypted_words)
 
-    local valid, words = decrypt(encrypted_words)
+    local valid, words, death_code = decrypt(encrypted_words)
     
     pkmn.valid = valid
     if not valid then
@@ -125,6 +153,11 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
 
         -- correct the level in case it's wrong in memory (or because it's in a box)
         pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
+        if pkmn.level > 100 then
+            return nil
+        end
+
+        pkmn.death_code = death_code
     end
 
     if not in_box then

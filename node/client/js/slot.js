@@ -85,7 +85,6 @@ export default class Slot {
             // this.changeId = parseInt(val.changeId);
             $allText.resetText();
             $allText.find('.scaled').children().unwrap('.scaled');
-            $images.unwrap('.death-wrapper');
             
             if (val.pokemon) {
                 let pkmn = val.pokemon;
@@ -114,12 +113,16 @@ export default class Slot {
                     if (Nuzlocke.enabled) {
                         this.setDeathMessages();
                         
-                        $images.wrap('<div class="death-wrapper">');
+                        if (!$images.is('.death-wrapper > img')) {
+                            $images.wrap('<div class="death-wrapper">');
+                        }
+                        
                         if (this.pokemonJustDied(pkmn)) {
                             Nuzlocke.playDeathSound();
                         }
                     }
                 } else {
+                    $images.unwrap('.death-wrapper');
                     $slot.removeClass('dead');
                     $deathMessages.resetText();
                 }

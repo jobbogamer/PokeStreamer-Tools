@@ -2,8 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import EventEmitter from 'events';
 import compileConfig from '../common/configCompiler';
-import { NodeRoot } from './constants';
+import { Paths } from './constants';
 import setLogLevel from './console';
+
+const NodeRoot = Paths.NodeRoot;
 
 class ConfigWatcher extends EventEmitter {
     constructor(config) {

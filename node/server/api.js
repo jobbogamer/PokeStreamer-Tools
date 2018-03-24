@@ -2,13 +2,19 @@ import useragent from 'useragent';
 import EventEmitter from 'events';
 
 import { getLocaleString } from './helpers';
-import { CleanConnectionIntervalMS } from './constants';
+import { API as APIConstants } from './constants';
 import Config from './config';
 import Pokemon from './pokemon/pokemon';
 import Slot from './slot/slot';
-import SoulLinkFileReader from './soul-link-file-reader';
+import SoulLinkFileReader from './soul-link/soul-link-file-reader';
+import Nuzlocke from './nuzlocke';
 // import SlotManager from './slot/slot-manager';
 // import SoulLink from './soul-link';
+
+const {
+    KeepAliveIntervalMS,
+    CleanConnectionIntervalMS
+} = APIConstants;
 
 let connections = new Set(),
     dirtySlots = false;
@@ -26,7 +32,7 @@ class API extends EventEmitter {
         app.get(/^\/api\/reset$/i, reset);
         app.post(/^\/api\/update$/i, update);
         
-        setInterval(cleanDeadConnections, 2000);
+        setInterval(cleanDeadConnections, CleanConnectionIntervalMS);
     }
 }
 
@@ -66,7 +72,7 @@ function getSlot(req, res, next) {
             res: res,
         };
 
-    conn.keepAlive = setInterval(sseKeepAlive.bind(conn), 5000);
+    conn.keepAlive = setInterval(sseKeepAlive.bind(conn), KeepAliveIntervalMS);
 
     if (req.params[0] === 'all') {
         slot = 'all';
@@ -122,7 +128,8 @@ function update(req, res, next) {
             slot--;
             box && box--;
             
-            let pkmn = pokemon ? new Pokemon(pokemon) : null;
+            let pkmn = pokemon ? new Pokemon(pokemon) : null,
+                pid = pkmn && pkmn.pid;
             if (!pkmn) {
                 if (!isBox) {
                     slots[slot] = Slot.empty(slot, changeId);
@@ -131,16 +138,26 @@ function update(req, res, next) {
                     continue;
                 }
             } else {
-                if (!knownPokemon[pkmn.pid]) {
-                    if (SoulLinkFileReader.Links[pkmn.pid]) {
-                        pkmn.linkedSpecies = SoulLinkFileReader.Links[pkmn.pid].linkedSpecies;
+                if (!knownPokemon[pid]) {
+                    if (SoulLinkFileReader.Links[pid]) {
+                        pkmn.linkedSpecies = SoulLinkFileReader.Links[pid].linkedSpecies;
                     } else {
                         SoulLinkFileReader.addPokemon(pkmn);
                     }
                 }
 
-                pkmn.linkedSpecies = SoulLinkFileReader.Links[pkmn.pid].linkedSpecies;
-                knownPokemon[pkmn.pid] = pkmn;
+                if (!pkmn.dead) {
+                    if (Nuzlocke.getKnownDeadPokemon().has(pid)) {
+                        // shouldn't happen, but the script can be finicky and we don't want the Nuzlocke sounds playing
+                        // multiple times for the same pokemon
+                        pkmn.dead = true;
+                    }
+                } else {
+                    Nuzlocke.addDeadPokemon(pid);
+                }
+
+                pkmn.linkedSpecies = SoulLinkFileReader.Links[pid].linkedSpecies;
+                knownPokemon[pid] = pkmn;
                 slots[slot] = new Slot(slot, changeId, pkmn);
                 slotsToSend.push(slots[slot]);
             }

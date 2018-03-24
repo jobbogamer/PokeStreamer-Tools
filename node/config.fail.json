@@ -54,6 +54,25 @@
 
     "nuzlocke": {
         "enabled": true,
+
+        "deathSound": {
+            "filePath": [
+                "bad_afflicted_depressed.flac",
+                "bad_crit_02.flac",
+                "bad_death_04_alt.flac",
+                "bad_deathsdoor_05.flac",
+                "bad_questfail_04.flac",
+                "bad_afflicted_fearful.flac",
+                "bad_crit_03.flac",
+                "bad_death_05.flac",
+                "bad_questfail_01.flac",
+                "bad_questfail_05.flac",
+                "bad_crit_01.flac",
+                "bad_death_04.flac",
+                "bad_deathsdoor_04.flac",
+                "bad_questfail_02.flac"
+            ]
+        }
     },
 
     "soulLink": {

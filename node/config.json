@@ -1,3 +1,4 @@
+// NOTE: Unless otherwise specified, all paths are absolute or relative to /node/
 {
     /*
     Pokemon Generation
@@ -75,19 +76,23 @@
         // Make the pokemon spin slowly.
         "applyDeathSpin": true,
         
-        // **EXPERIMENTAL**
-        // Play a depressing sound when a Pokemon dies.  This path is absolute or relative to the /node/public/ 
-        // directory.
+        // Play a depressing sound when a Pokemon dies.
         "deathSound": {
             "enabled": true,
+
+            // Path or paths to sound(s), absolute or relative to /node/resources.  May be a string or an array of 
+            // strings.  If multiple paths are specified, a random sound is chosen upon each death.  Valid filetypes
+            // are anything a browser can play.  (mp3, flac, etc)
             "filePath": "the-price-is-right-losing-horn.mp3"
         },
         
-        // Currently broken... may or may not work... if you set the font size to less than the height of its container,
-        // it should be fine.
-        //
         // Places some content before the nickname element.  This should include a space after it and needs to be 
         // wrapped in single-quotes (as the value is being placed in a CSS file).
+        //
+        // NOTE: Currently broken... may or may not work... if you set the font size to less than the height of its 
+        // container and such that 11 characters (for nickname/pokemon name) + the prefix is always less wide than the 
+        // width of its container, it should be fine.
+        //
         // "ripPrefix": "'RIP '",
         
         // These messages are displayed, replacing the text in whichever element they appear, when a Pokemon dies.

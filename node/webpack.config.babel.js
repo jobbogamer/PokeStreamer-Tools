@@ -128,43 +128,37 @@ let nuzlocke = config.nuzlocke,
     soulLink = config.soulLink;
 if (nuzlocke.deathSound && nuzlocke.deathSound.enabled) {
     const getSoundPath = function(soundFileName) {
-        let possiblePaths = [
-            path.resolve(__dirname, 'resources', soundFileName),
-            path.resolve(__dirname, soundFileName),
-            path.resolve(soundFileName)
-        ];
-
-        for (let p of possiblePaths) {
-            if (fs.existsSync(p)) {
-                return p;
-            }
+        let p = path.resolve(__dirname, 'resources', soundFileName);
+        if (fs.existsSync(p)) {
+            return p;
         }
 
+        console.warn(`Could not find specified sound file at '${p}'. Skipping.`);
         return null;
     };
-    
-    let soundPath = getSoundPath(nuzlocke.deathSound.filePath);
-    if (soundPath) {
-        webpackConfig.plugins.push(
-            new CopyWebpackPlugin([{ 
-                from: soundPath,
-                to: `${path.parse(nuzlocke.deathSound.filePath).base}`
-            }])
-        );
-    }
 
-    if (soulLink.deathSound && 
-        soulLink.deathSound.enabled &&
-        soulLink.deathSound.filePath) {
-        soundPath = getSoundPath(soulLink.deathSound.filePath);
-        if (soundPath) {
-            webpackConfig.plugins.push(
-                new CopyWebpackPlugin([{ 
-                    from: soundPath,
-                    to: `${path.parse(soulLink.deathSound.filePath).base}`
-                }])
-            );
+    const copySounds = function(deathSounds) {
+        if (deathSounds.constructor === String) {
+            deathSounds = [ deathSounds ];
         }
+
+        for (let soundPath of deathSounds) {
+            soundPath = getSoundPath(soundPath);
+            if (soundPath) {
+                webpackConfig.plugins.push(
+                    new CopyWebpackPlugin([{ 
+                        from: soundPath,
+                        to: `${path.parse(soundPath).base}`
+                    }])
+                );
+            }
+        }
+    };
+
+    copySounds(nuzlocke.deathSound.filePath);
+
+    if (soulLink.deathSound && soulLink.deathSound.enabled && soulLink.deathSound.filePath) {
+        copySounds(soulLink.deathSound.filePath);
     }
 }
 

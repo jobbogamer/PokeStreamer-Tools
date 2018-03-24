@@ -1,7 +1,9 @@
 import json5 from 'json5';
 import path from 'path';
 import fs from 'fs';
-import { NodeRoot } from '../server/constants';
+import { Paths } from '../server/constants';
+
+const NodeRoot = Paths.NodeRoot;
 
 function parse(file) {
     if (!fs.existsSync(file)) {

@@ -2,6 +2,24 @@ import path from 'path';
 import './extensions';
 import { Img } from './pokemon/image-format';
 
+const NodeRoot = path.resolve(__dirname, '..');
+const PublicPath = path.join(NodeRoot, 'public');
+
+const SoulLinkFile = path.join(PublicPath, 'soullinkdata.json');
+const NuzlockeFile = path.join(PublicPath, 'nuzlockedata.json');
+
+export const Paths = {
+    NodeRoot,
+    PublicPath,
+    SoulLinkFile,
+    NuzlockeFile,
+};
+
+export const API = {
+    CleanConnectionIntervalMS: 2000,
+    KeepAliveIntervalMS: 30000,
+};
+
 let SupportedImageFormats = [
     Img('jpg', 'jpeg', ['jpg', 'jpeg']),
     Img('png'),
@@ -17,15 +35,8 @@ SupportedImageFormats.validExtensions = SupportedImageFormats.map(f => f.searchS
 const ImageRegex = new RegExp(`^(\\d+)(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 const ShinyImageRegex = new RegExp(`^(\\d+)s(\\w*)\\.(${SupportedImageFormats.validExtensions.join('|')})$`, 'i');
 
-const NodeRoot = path.resolve(__dirname, '..');
-
-const CleanConnectionIntervalMS = 2000;
-
-export { 
+export const Image = { 
     SupportedImageFormats,
     ImageRegex,
-    NodeRoot,
     ShinyImageRegex,
-    CleanConnectionIntervalMS 
 };
-    

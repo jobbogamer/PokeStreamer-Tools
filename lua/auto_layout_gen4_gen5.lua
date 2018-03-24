@@ -438,31 +438,36 @@ function getNatClr(a)
 end
 
 function read_pokemon_words(addr, num_words)
-	if memory.readdword(addr + 0x4E9F0) ~= 0 then
-		-- pokemon is in battle... we can get live stats
-		addr = addr + 0x4E9F0
-		in_battle = true
-	else
-		in_battle = false
-	end
+	local battle_addr = addr + 0x4E9F0
+	local pid = memory.readdword(addr)
+	in_battle = memory.readdword(battle_addr) == pid
+	local num_bytes = num_words * 2
 
+	local bytes
+	-- check that num_words > 0x88 in case we're looking at a boxed pokemon...?  doesn't make sense that this would ever
+	-- happen, but doesn't hurt to check either
+	if in_battle and num_bytes > 0x88 then
+		-- we can get live stats for the battle stat block -- don't trust it for other things like exp
+		-- bytes = memory.readbyterange(addr, 0x88)
+		bytes = memory.readbyterange(battle_addr, 0x88)
+		local battle_bytes = memory.readbyterange(battle_addr + 0x88, num_bytes - 0x88)
+		for _, b in ipairs(battle_bytes) do
+			bytes[#bytes + 1] = b
+		end
+	else
+		bytes = memory.readbyterange(addr, num_bytes)
+	end
 
 	local words = {}
-	-- PID is taken as a whole, and we're in little endian hell, so reverse words
-	local dword = memory.readdword(addr)
-	words[1] = getbits(dword, 16, 16)
-	words[2] = getbits(dword, 0, 16)
 
-	-- -- unused variable and checksum are sparate words
-	dword = memory.readdword(addr + 4)
-	words[3] = getbits(dword, 0, 16)
-	words[4] = getbits(dword, 16, 16)
+	-- PID is taken as a whole, and memory is in little-endian, so reverse the words
+	words[1] = getbits(pid, 16, 16)
+	words[2] = getbits(pid, 0, 16)
 
-	for i = 8, (num_words - 1) * 2, 4 do
-		dword = memory.readdword(addr + i)
-		words[#words + 1] = getbits(dword, 0, 16)
-		words[#words + 1] = getbits(dword, 16, 16)
+	for i = 5, #bytes, 2 do
+		words[#words + 1] = bytes[i] + lshift(bytes[i + 1], 8)
 	end
+
 	return words
 end
 
@@ -525,6 +530,22 @@ function inspect_and_send_boxes()
 	end
 end
 
+function kill_pokemon(pidAddr)
+	local pid = memory.readdword(pidAddr)
+	local death_code, frozen_code = Pokemon.get_death_codes(pid)
+	memory.writeword(pidAddr + 71 * 2, death_code)
+
+	-- if in battle
+	if memory.readdword(pidAddr + 0x4E9F0) == pid then
+		pidAddr = pidAddr + 0x4E9F0
+		for i = 0, 3 do
+			-- memory.writebyte(pidAddr + 0x88 + (i * 0x400000), frozen_code)
+			memory.writeword(pidAddr + 71 * 2 + (i * 0x400000), death_code)
+		end
+	end
+end
+
+local printed_slot_1 = false
 function fn()
 	--menu()
 	current_time = os.time()
@@ -538,14 +559,9 @@ function fn()
 		gen = getGen()
 		party = {}
 		for q = 1, 6 do
-			-- debug_current_slot = q
 			submode = q
 			pointer = getPointer()
 			pidAddr = getPidAddr()
-
-			-- print("-----------")
-			-- print(string.format("0x%08x", pidAddr))
-			-- print("-----------")
 
 			if print_first_pokemon_bytes then do_print_first_pokemon_bytes(pidAddr) end
 
@@ -557,7 +573,7 @@ function fn()
 				party[q] = last_party[q]
 			end
 		end
-		
+
 		local send_data = {}
 		if first_run then
 			reset_server()
