@@ -112,6 +112,8 @@
     "soulLink": {
         "enabled": false,
         
+        // currently unused -- at the moment, the SoulLink system doesn't distinguish between you killing a pokémon and
+        // your partner killing theirs
         "deathSound": {
             "enabled": true,
             
@@ -121,13 +123,12 @@
 
         "linking": {
             // Valid values:
-            // •  manual: manually soul-link pokemon using the page at stream.pokemon-soul.link/links
+            // •  manual: manually soul-link pokemon using the page at stream.pokemon-soul.link/soullink
             // •  discord: (TODO) have a bot (or your user) use discord to communicate with your partner in order to handle 
             //             soul-linking automatically
             "method": "manual",
             
-            // settings ignored if method is set to manual
-            // 
+            // Discord settings are ignored if method is set to manual
             // You MUST change these values.
             "discord": {
                 // The Discord auth token of the Bot or User that will send and receive SoulLink information
@@ -292,11 +293,6 @@
         "%invalidPokemonStyle": {
             "filter": "brightness(70%)",
         },
-
-        // the style to give your partner's pokemon when that pokemon is boxed
-        "%boxedStyle": {
-            "filter": "sepia(100%)",
-        }
     },
 
     // Many of the less-commonly-changed settings have been moved into ./config.advanced.json for the sake of

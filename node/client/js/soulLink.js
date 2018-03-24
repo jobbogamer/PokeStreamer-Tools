@@ -1,27 +1,12 @@
-import config from '../../config.json';
+import config, { soulLink } from '../../config.json';
+import DeathSounds from './death-sounds';
 import Nuzlocke from './nuzlocke';
-const soulLink = config.soulLink;
 
-let soulLinkDeathSound;
-
-if (Nuzlocke.enabled && soulLink.enabled && soulLink.deathSound.enabled && 
-    soulLink.deathSound.filePath) {
-    soulLinkDeathSound = new Audio(soulLink.deathSound.filePath.replace(/^.*[\\\/]/, ''));
-}
-
-class SoulLink {
+class SoulLink extends DeathSounds {
     constructor() {
+        super((Nuzlocke.deathSound && Nuzlocke.deathSound.filePath) || config.nuzlocke.deathSound.filePath);
         this.enabled = Nuzlocke.enabled && soulLink.enabled;
-    }
-
-    playDeathSound() {
-        if (this.enabled && this.deathSound && this.deathSound.enabled) {
-            if (soulLinkDeathSound) {
-                soulLinkDeathSound.play();
-            } else {
-                Nuzlocke.playDeathSound();
-            }
-        }
+        this._deathSoundsEnabled = this.enabled && soulLink.deathSound.enabled;
     }
 }
 
