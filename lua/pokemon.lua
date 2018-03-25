@@ -153,7 +153,7 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     end
 
     -- correct the level in case it's wrong in memory (or because it's in a box)
-    pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
+    local level = get_pokemon_level(pkmn.species, pkmn.exp)
     if pkmn.level > 100 then
         return nil
     end
@@ -170,6 +170,11 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
                 -- print(attr)
                 pkmn[attr] = fn(words, pkmn)
             end
+        end
+
+        -- best effort to determine that this battle data is not accurate
+        if pkmn.current_hp > pkmn.max_hp then
+            return nil
         end
 
         pkmn.living = pkmn.current_hp > 0
