@@ -1,4 +1,4 @@
-import compileConfig from '../../common/configCompiler';
+import compileConfig from '../../../common/configCompiler';
 
 let config = compileConfig(),
     sass = {

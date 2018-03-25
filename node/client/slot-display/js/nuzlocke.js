@@ -1,4 +1,4 @@
-import { nuzlocke } from '../../config.json';
+import { nuzlocke } from 'config.json';
 import DeathSounds from './death-sounds';
 
 class Nuzlocke extends DeathSounds {

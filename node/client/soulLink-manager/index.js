@@ -1,1 +1,1 @@
-import './sass/soulLinkManager.scss';
+import './sass/index.scss';

@@ -1,4 +1,4 @@
-import config from '../../config.json';
+import config from 'config.json';
 import Nuzlocke from './nuzlocke';
 import Soullink from './soulLink';
 import './jQuery.extensions';

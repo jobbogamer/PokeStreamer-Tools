@@ -1,4 +1,4 @@
-import config, { soulLink } from '../../config.json';
+import config, { soulLink } from 'config.json';
 import DeathSounds from './death-sounds';
 import Nuzlocke from './nuzlocke';
 
