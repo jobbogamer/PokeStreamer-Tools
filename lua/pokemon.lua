@@ -153,7 +153,7 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     end
 
     -- correct the level in case it's wrong in memory (or because it's in a box)
-    local level = get_pokemon_level(pkmn.species, pkmn.exp)
+    pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
     if pkmn.level > 100 then
         return nil
     end
