@@ -1,5 +1,5 @@
 {
-    "sourceMaps": "inline",
+    "sourceMaps": true,
     "presets": [
         "es2016",
         [ "es2015", { "modules": "commonjs"} ]

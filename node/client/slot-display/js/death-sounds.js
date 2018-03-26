@@ -14,8 +14,9 @@ class DeathSounds {
     }
 
     playDeathSound() {
-        let enabled = this.enabled && this._deathSoundsEnabled;
-        if (!this._deathSounds || !this._deathSounds.length || !enabled) {
+        let enabled = this.enabled && this._deathSoundsEnabled,
+            sounds = this._deathSounds;
+        if (!enabled || !sounds || !sounds.length) {
             return;
         }
 
