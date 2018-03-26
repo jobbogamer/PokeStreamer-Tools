@@ -234,14 +234,11 @@
         "%invalidPokemonStyle": {
             "filter": "brightness(70%)",
         },
-
-        // the style to give your partner's pokemon when that pokemon is boxed
-        "%boxedStyle": {
-            "filter": "sepia(100%)",
-        }
     },
 
     "server": {
         "useLessSecureAPI": true
-    }
+    },
+
+    "logLevel": "info",    
 }
