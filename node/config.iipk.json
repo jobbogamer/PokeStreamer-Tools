@@ -232,7 +232,7 @@
 
         // the style to give your pokemon when a suitable counterpart has not been found
         "%invalidPokemonStyle": {
-            "filter": "brightness(70%)",
+            "filter": "brightness(50%)",
         },
     },
 
