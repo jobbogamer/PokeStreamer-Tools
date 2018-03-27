@@ -188,7 +188,7 @@
             // this.
             // "transform": "unset !important"
 
-            "margin": "8px 0px",
+            "margin": "-4px 4px",
         },
         
         // This should include a space after it and needs to be wrapped in single-quotes (as the value is being placed 
