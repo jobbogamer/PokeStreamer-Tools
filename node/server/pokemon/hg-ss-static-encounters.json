@@ -1,6 +1,7 @@
 {
     "hg": [
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -23,6 +24,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -45,6 +47,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -67,6 +70,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -89,6 +93,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -111,6 +116,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -133,6 +139,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -155,6 +162,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -177,6 +185,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -199,6 +208,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -221,6 +231,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -243,6 +254,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -265,6 +277,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -287,6 +300,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -309,6 +323,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -331,6 +346,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -353,6 +369,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -375,6 +392,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -397,6 +415,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -419,6 +438,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -441,6 +461,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -463,6 +484,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -485,6 +507,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 2,
             "Species": 380,
             "Level": 35,
@@ -507,6 +530,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -529,6 +553,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -551,6 +576,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -573,6 +599,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -595,6 +622,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -617,6 +645,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -639,6 +668,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -661,6 +691,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -683,6 +714,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -705,6 +737,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -727,6 +760,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -749,6 +783,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -771,6 +806,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 7,
             "Species": 380,
             "Level": 35,
@@ -793,6 +829,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -815,6 +852,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -837,6 +875,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -859,6 +898,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -881,6 +921,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -903,6 +944,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -925,6 +967,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -947,6 +990,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -969,6 +1013,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -991,6 +1036,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -1013,6 +1059,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -1035,6 +1082,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -1057,6 +1105,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -1079,6 +1128,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -1101,6 +1151,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -1123,6 +1174,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -1145,6 +1197,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1167,6 +1220,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1189,6 +1243,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1211,6 +1266,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1233,6 +1289,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1255,6 +1312,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1277,6 +1335,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1299,6 +1358,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1321,6 +1381,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1343,6 +1404,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1365,6 +1427,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1387,6 +1450,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1409,6 +1473,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1431,6 +1496,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1453,6 +1519,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1475,6 +1542,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -1497,6 +1565,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1519,6 +1588,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1541,6 +1611,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1563,6 +1634,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1585,6 +1657,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1607,6 +1680,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1629,6 +1703,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1651,6 +1726,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1673,6 +1749,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -1695,6 +1772,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1717,6 +1795,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1739,6 +1818,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1761,6 +1841,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1783,6 +1864,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1805,6 +1887,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1827,6 +1910,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1849,6 +1933,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1871,6 +1956,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -1893,6 +1979,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 1,
             "Level": 5,
@@ -1915,6 +2002,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 4,
             "Level": 5,
@@ -1937,6 +2025,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 7,
             "Level": 5,
@@ -1959,6 +2048,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 152,
             "Level": 5,
@@ -1981,6 +2071,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 155,
             "Level": 5,
@@ -2003,6 +2094,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 158,
             "Level": 5,
@@ -2025,6 +2117,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 5,
             "EncounterType": 12,
             "Species": 252,
             "Level": 5,
@@ -2047,6 +2140,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 5,
             "EncounterType": 12,
             "Species": 255,
             "Level": 5,
@@ -2069,6 +2163,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 5,
             "EncounterType": 12,
             "Species": 258,
             "Level": 5,
@@ -2091,6 +2186,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 138,
             "Level": 20,
@@ -2113,6 +2209,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 140,
             "Level": 20,
@@ -2135,6 +2232,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 142,
             "Level": 20,
@@ -2157,6 +2255,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 7,
             "EncounterType": 12,
             "Species": 345,
             "Level": 20,
@@ -2179,6 +2278,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 13,
             "EncounterType": 12,
             "Species": 347,
             "Level": 20,
@@ -2201,6 +2301,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 408,
             "Level": 20,
@@ -2223,6 +2324,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 410,
             "Level": 20,
@@ -2245,6 +2347,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 133,
             "Level": 5,
@@ -2267,6 +2370,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 147,
             "Level": 15,
@@ -2289,6 +2393,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 14,
             "EncounterType": 12,
             "Species": 236,
             "Level": 10,
@@ -2311,6 +2416,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 122,
             "Level": 15,
@@ -2333,6 +2439,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 133,
             "Level": 15,
@@ -2355,6 +2462,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 137,
             "Level": 15,
@@ -2377,6 +2485,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 15,
             "EncounterType": 12,
             "Species": 63,
             "Level": 15,
@@ -2399,6 +2508,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 16,
             "EncounterType": 12,
             "Species": 23,
             "Level": 15,
@@ -2421,6 +2531,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 147,
             "Level": 15,
@@ -2443,6 +2554,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 9,
             "Species": 100,
             "Level": 23,
@@ -2465,6 +2577,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 9,
             "Species": 74,
             "Level": 21,
@@ -2487,6 +2600,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 9,
             "Species": 109,
             "Level": 21,
@@ -2509,6 +2623,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 7,
             "Species": 130,
             "Level": 30,
@@ -2531,6 +2646,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 7,
             "Species": 131,
             "Level": 20,
@@ -2553,6 +2669,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 9,
             "Species": 101,
             "Level": 23,
@@ -2575,6 +2692,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 172,
             "Level": 30,
@@ -2597,6 +2715,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 5,
             "Species": 144,
             "Level": 50,
@@ -2619,6 +2738,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 5,
             "Species": 146,
             "Level": 50,
@@ -2641,6 +2761,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 5,
             "Species": 150,
             "Level": 70,
@@ -2663,6 +2784,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 9,
             "EncounterType": 9,
             "Species": 245,
             "Level": 40,
@@ -2685,6 +2807,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 6,
             "EncounterType": 7,
             "Species": 249,
             "Level": 70,
@@ -2707,6 +2830,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 8,
             "EncounterType": 9,
             "Species": 250,
             "Level": 45,
@@ -2729,6 +2853,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 9,
             "Species": 381,
             "Level": 40,
@@ -2751,6 +2876,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 10,
             "EncounterType": 5,
             "Species": 382,
             "Level": 50,
@@ -2773,6 +2899,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 11,
             "EncounterType": 5,
             "Species": 384,
             "Level": 50,
@@ -2795,6 +2922,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 483,
             "Level": 1,
@@ -2817,6 +2945,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 484,
             "Level": 1,
@@ -2839,6 +2968,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 487,
             "Level": 1,
@@ -2863,6 +2993,7 @@
     ],
     "ss": [
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -2885,6 +3016,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -2907,6 +3039,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -2929,6 +3062,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -2951,6 +3085,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -2973,6 +3108,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -2995,6 +3131,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3017,6 +3154,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3039,6 +3177,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3061,6 +3200,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3083,6 +3223,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3105,6 +3246,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3127,6 +3269,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3149,6 +3292,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3171,6 +3315,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3193,6 +3338,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3215,6 +3361,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3237,6 +3384,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3259,6 +3407,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3281,6 +3430,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3303,6 +3453,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3325,6 +3476,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3347,6 +3499,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 2,
             "Species": 381,
             "Level": 35,
@@ -3369,6 +3522,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3391,6 +3545,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3413,6 +3568,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3435,6 +3591,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3457,6 +3614,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3479,6 +3637,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3501,6 +3660,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3523,6 +3683,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3545,6 +3706,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3567,6 +3729,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3589,6 +3752,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3611,6 +3775,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3633,6 +3798,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 12,
             "EncounterType": 7,
             "Species": 381,
             "Level": 35,
@@ -3655,6 +3821,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3677,6 +3844,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3699,6 +3867,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3721,6 +3890,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3743,6 +3913,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3765,6 +3936,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3787,6 +3959,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3809,6 +3982,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3831,6 +4005,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3853,6 +4028,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3875,6 +4051,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3897,6 +4074,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3919,6 +4097,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3941,6 +4120,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3963,6 +4143,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -3985,6 +4166,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 2,
             "Species": 243,
             "Level": 40,
@@ -4007,6 +4189,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4029,6 +4212,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4051,6 +4235,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4073,6 +4258,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4095,6 +4281,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4117,6 +4304,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4139,6 +4327,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4161,6 +4350,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4183,6 +4373,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4205,6 +4396,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4227,6 +4419,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4249,6 +4442,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4271,6 +4465,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4293,6 +4488,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4315,6 +4511,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4337,6 +4534,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 2,
             "Species": 244,
             "Level": 40,
@@ -4359,6 +4557,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4381,6 +4580,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4403,6 +4603,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4425,6 +4626,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4447,6 +4649,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4469,6 +4672,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4491,6 +4695,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4513,6 +4718,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4535,6 +4741,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 2,
             "EncounterType": 7,
             "Species": 243,
             "Level": 40,
@@ -4557,6 +4764,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4579,6 +4787,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4601,6 +4810,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4623,6 +4833,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4645,6 +4856,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4667,6 +4879,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4689,6 +4902,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4711,6 +4925,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4733,6 +4948,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 3,
             "EncounterType": 7,
             "Species": 244,
             "Level": 40,
@@ -4755,6 +4971,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 1,
             "Level": 5,
@@ -4777,6 +4994,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 4,
             "Level": 5,
@@ -4799,6 +5017,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 7,
             "Level": 5,
@@ -4821,6 +5040,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 152,
             "Level": 5,
@@ -4843,6 +5063,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 155,
             "Level": 5,
@@ -4865,6 +5086,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 158,
             "Level": 5,
@@ -4887,6 +5109,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 5,
             "EncounterType": 12,
             "Species": 252,
             "Level": 5,
@@ -4909,6 +5132,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 5,
             "EncounterType": 12,
             "Species": 255,
             "Level": 5,
@@ -4931,6 +5155,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 5,
             "EncounterType": 12,
             "Species": 258,
             "Level": 5,
@@ -4953,6 +5178,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 138,
             "Level": 20,
@@ -4975,6 +5201,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 140,
             "Level": 20,
@@ -4997,6 +5224,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 142,
             "Level": 20,
@@ -5019,6 +5247,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 13,
             "EncounterType": 12,
             "Species": 345,
             "Level": 20,
@@ -5041,6 +5270,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 7,
             "EncounterType": 12,
             "Species": 347,
             "Level": 20,
@@ -5063,6 +5293,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 408,
             "Level": 20,
@@ -5085,6 +5316,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 410,
             "Level": 20,
@@ -5107,6 +5339,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 133,
             "Level": 5,
@@ -5129,6 +5362,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 147,
             "Level": 15,
@@ -5151,6 +5385,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 14,
             "EncounterType": 12,
             "Species": 236,
             "Level": 10,
@@ -5173,6 +5408,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 122,
             "Level": 15,
@@ -5195,6 +5431,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 133,
             "Level": 15,
@@ -5217,6 +5454,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 137,
             "Level": 15,
@@ -5239,6 +5477,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 15,
             "EncounterType": 12,
             "Species": 63,
             "Level": 15,
@@ -5261,6 +5500,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 16,
             "EncounterType": 12,
             "Species": 27,
             "Level": 15,
@@ -5283,6 +5523,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 147,
             "Level": 15,
@@ -5305,6 +5546,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 9,
             "Species": 100,
             "Level": 23,
@@ -5327,6 +5569,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 9,
             "Species": 74,
             "Level": 21,
@@ -5349,6 +5592,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 9,
             "Species": 109,
             "Level": 21,
@@ -5371,6 +5615,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 7,
             "Species": 130,
             "Level": 30,
@@ -5393,6 +5638,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 7,
             "Species": 131,
             "Level": 20,
@@ -5415,6 +5661,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 9,
             "Species": 101,
             "Level": 23,
@@ -5437,6 +5684,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 172,
             "Level": 30,
@@ -5459,6 +5707,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 5,
             "Species": 144,
             "Level": 50,
@@ -5481,6 +5730,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 5,
             "Species": 146,
             "Level": 50,
@@ -5503,6 +5753,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 5,
             "Species": 150,
             "Level": 70,
@@ -5525,6 +5776,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 9,
             "EncounterType": 9,
             "Species": 245,
             "Level": 40,
@@ -5547,6 +5799,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 6,
             "EncounterType": 7,
             "Species": 249,
             "Level": 45,
@@ -5569,6 +5822,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 8,
             "EncounterType": 9,
             "Species": 250,
             "Level": 70,
@@ -5591,6 +5845,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 1,
             "EncounterType": 9,
             "Species": 380,
             "Level": 40,
@@ -5613,6 +5868,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 10,
             "EncounterType": 5,
             "Species": 383,
             "Level": 50,
@@ -5635,6 +5891,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 11,
             "EncounterType": 5,
             "Species": 384,
             "Level": 50,
@@ -5657,6 +5914,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 483,
             "Level": 1,
@@ -5679,6 +5937,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 484,
             "Level": 1,
@@ -5701,6 +5960,7 @@
             "EggEncounter": false
         },
         {
+            "EncounterId": 4,
             "EncounterType": 12,
             "Species": 487,
             "Level": 1,

@@ -47,7 +47,7 @@ StaticEncounters.isStaticEncounter = function(pokemon) {
     };
 
     if (!Config.Current.isRandomized) {
-        p.species = pokemon.species;
+        criteria.species = pokemon.species;
     }
 
     for (let enc of this._encounters) {
