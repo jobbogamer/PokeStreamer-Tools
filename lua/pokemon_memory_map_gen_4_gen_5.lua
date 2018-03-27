@@ -143,10 +143,9 @@ end
 
 local function get_alternate_form(word_idx)
     return function(words, pkmn_data)
-        local form = pkmn_data.alternate_form_id
-        if form > 0 then
-            print(pkmn_data.species)
-            return alternate_forms[pkmn_data.species][form]
+        if alternate_forms[pkmn_data.species] ~= nil then
+            local form = pkmn_data.alternate_form_id
+            return alternate_forms[pkmn_data.species][form + 1] -- Lua is 1-indexed
         else
             return nil
         end
