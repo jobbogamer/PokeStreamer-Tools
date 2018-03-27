@@ -1,11 +1,11 @@
 {
     "hg": [
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 149,
             "Ability": 0,
             "Form": 0,
@@ -22,13 +22,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 150,
             "Ability": 0,
             "Form": 0,
@@ -45,13 +44,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 151,
             "Ability": 0,
             "Form": 0,
@@ -68,13 +66,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 152,
             "Ability": 0,
             "Form": 0,
@@ -91,13 +88,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 153,
             "Ability": 0,
             "Form": 0,
@@ -114,13 +110,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 154,
             "Ability": 0,
             "Form": 0,
@@ -137,13 +132,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 155,
             "Ability": 0,
             "Form": 0,
@@ -160,13 +154,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 156,
             "Ability": 0,
             "Form": 0,
@@ -183,13 +176,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 157,
             "Ability": 0,
             "Form": 0,
@@ -206,13 +198,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 158,
             "Ability": 0,
             "Form": 0,
@@ -229,13 +220,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 159,
             "Ability": 0,
             "Form": 0,
@@ -252,13 +242,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 160,
             "Ability": 0,
             "Form": 0,
@@ -275,13 +264,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 161,
             "Ability": 0,
             "Form": 0,
@@ -298,13 +286,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 162,
             "Ability": 0,
             "Form": 0,
@@ -321,13 +308,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 163,
             "Ability": 0,
             "Form": 0,
@@ -344,13 +330,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 164,
             "Ability": 0,
             "Form": 0,
@@ -367,13 +352,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 165,
             "Ability": 0,
             "Form": 0,
@@ -390,13 +374,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 166,
             "Ability": 0,
             "Form": 0,
@@ -413,13 +396,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 169,
             "Ability": 0,
             "Form": 0,
@@ -436,13 +418,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 170,
             "Ability": 0,
             "Form": 0,
@@ -459,13 +440,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 172,
             "Ability": 0,
             "Form": 0,
@@ -482,13 +462,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 174,
             "Ability": 0,
             "Form": 0,
@@ -505,13 +484,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 176,
             "Ability": 0,
             "Form": 0,
@@ -528,13 +506,144 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
+            "Location": 152,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 154,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 157,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 158,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 160,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 161,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
             "Location": 167,
             "Ability": 0,
             "Form": 0,
@@ -551,13 +660,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 380,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 168,
             "Ability": 0,
             "Form": 0,
@@ -574,13 +682,122 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 169,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 170,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 172,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 174,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 380,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 176,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 177,
             "Ability": 0,
             "Form": 0,
@@ -597,13 +814,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 178,
             "Ability": 0,
             "Form": 0,
@@ -620,13 +836,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 179,
             "Ability": 0,
             "Form": 0,
@@ -643,13 +858,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 180,
             "Ability": 0,
             "Form": 0,
@@ -666,13 +880,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 181,
             "Ability": 0,
             "Form": 0,
@@ -689,13 +902,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 182,
             "Ability": 0,
             "Form": 0,
@@ -712,13 +924,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 183,
             "Ability": 0,
             "Form": 0,
@@ -735,13 +946,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 184,
             "Ability": 0,
             "Form": 0,
@@ -758,13 +968,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 185,
             "Ability": 0,
             "Form": 0,
@@ -781,13 +990,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 186,
             "Ability": 0,
             "Form": 0,
@@ -804,13 +1012,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 187,
             "Ability": 0,
             "Form": 0,
@@ -827,13 +1034,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 190,
             "Ability": 0,
             "Form": 0,
@@ -850,13 +1056,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 191,
             "Ability": 0,
             "Form": 0,
@@ -873,13 +1078,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 192,
             "Ability": 0,
             "Form": 0,
@@ -896,13 +1100,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 193,
             "Ability": 0,
             "Form": 0,
@@ -919,13 +1122,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 194,
             "Ability": 0,
             "Form": 0,
@@ -942,13 +1144,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 177,
             "Ability": 0,
             "Form": 0,
@@ -965,13 +1166,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 178,
             "Ability": 0,
             "Form": 0,
@@ -988,13 +1188,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 179,
             "Ability": 0,
             "Form": 0,
@@ -1011,13 +1210,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 180,
             "Ability": 0,
             "Form": 0,
@@ -1034,13 +1232,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 181,
             "Ability": 0,
             "Form": 0,
@@ -1057,13 +1254,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 182,
             "Ability": 0,
             "Form": 0,
@@ -1080,13 +1276,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 183,
             "Ability": 0,
             "Form": 0,
@@ -1103,13 +1298,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 184,
             "Ability": 0,
             "Form": 0,
@@ -1126,13 +1320,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 185,
             "Ability": 0,
             "Form": 0,
@@ -1149,13 +1342,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 186,
             "Ability": 0,
             "Form": 0,
@@ -1172,13 +1364,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 187,
             "Ability": 0,
             "Form": 0,
@@ -1195,13 +1386,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 190,
             "Ability": 0,
             "Form": 0,
@@ -1218,13 +1408,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 191,
             "Ability": 0,
             "Form": 0,
@@ -1241,13 +1430,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 192,
             "Ability": 0,
             "Form": 0,
@@ -1264,13 +1452,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 193,
             "Ability": 0,
             "Form": 0,
@@ -1287,13 +1474,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 194,
             "Ability": 0,
             "Form": 0,
@@ -1310,13 +1496,408 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 178,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 179,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 180,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 182,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 183,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 190,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 191,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 192,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 193,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 178,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 179,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 180,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 182,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 183,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 190,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 191,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 192,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 193,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 12,
             "Species": 1,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 138,
             "Ability": 0,
             "Form": 0,
@@ -1333,13 +1914,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 4,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 138,
             "Ability": 0,
             "Form": 0,
@@ -1356,13 +1936,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 7,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 138,
             "Ability": 0,
             "Form": 0,
@@ -1379,13 +1958,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 152,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 126,
             "Ability": 0,
             "Form": 0,
@@ -1402,13 +1980,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 155,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 126,
             "Ability": 0,
             "Form": 0,
@@ -1425,13 +2002,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 158,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 126,
             "Ability": 0,
             "Form": 0,
@@ -1448,13 +2024,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 252,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 148,
             "Ability": 0,
             "Form": 0,
@@ -1471,13 +2046,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 255,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 148,
             "Ability": 0,
             "Form": 0,
@@ -1494,13 +2068,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 258,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 148,
             "Ability": 0,
             "Form": 0,
@@ -1517,13 +2090,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 138,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -1540,13 +2112,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 140,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -1563,13 +2134,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 142,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -1586,13 +2156,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 345,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -1609,13 +2178,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 347,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -1632,13 +2200,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 408,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -1655,13 +2222,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 410,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -1678,13 +2244,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 133,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 131,
             "Ability": 0,
             "Form": 0,
@@ -1701,13 +2266,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 147,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 222,
             "Ability": 0,
             "Form": 0,
@@ -1724,13 +2288,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 236,
             "Level": 10,
             "LevelMin": 10,
             "LevelMax": 10,
-            "Generation": -1,
             "Location": 216,
             "Ability": 0,
             "Form": 0,
@@ -1747,105 +2310,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
-            "Species": 175,
-            "Level": 1,
-            "LevelMin": 1,
-            "LevelMax": 1,
-            "Generation": -1,
-            "Location": 0,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 2013,
-            "Gift": true,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": true
-        },
-        
-        {
-            "Species": 179,
-            "Level": 1,
-            "LevelMin": 1,
-            "LevelMax": 1,
-            "Generation": -1,
-            "Location": 0,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 2014,
-            "Gift": true,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": true
-        },
-        
-        {
-            "Species": 194,
-            "Level": 1,
-            "LevelMin": 1,
-            "LevelMax": 1,
-            "Generation": -1,
-            "Location": 0,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 2014,
-            "Gift": true,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": true
-        },
-        
-        {
-            "Species": 218,
-            "Level": 1,
-            "LevelMin": 1,
-            "LevelMax": 1,
-            "Generation": -1,
-            "Location": 0,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 2014,
-            "Gift": true,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": true
-        },
-        
-        {
+            "EncounterType": 12,
             "Species": 122,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 144,
             "Ability": 0,
             "Form": 0,
@@ -1862,13 +2332,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 133,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 144,
             "Ability": 0,
             "Form": 0,
@@ -1885,13 +2354,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 137,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 144,
             "Ability": 0,
             "Form": 0,
@@ -1908,13 +2376,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 63,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 131,
             "Ability": 0,
             "Form": 0,
@@ -1931,13 +2398,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 23,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 131,
             "Ability": 0,
             "Form": 0,
@@ -1954,13 +2420,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 147,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 131,
             "Ability": 0,
             "Form": 0,
@@ -1977,13 +2442,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 100,
             "Level": 23,
             "LevelMin": 23,
             "LevelMax": 23,
-            "Generation": -1,
             "Location": 213,
             "Ability": 0,
             "Form": 0,
@@ -2000,13 +2464,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 74,
             "Level": 21,
             "LevelMin": 21,
             "LevelMax": 21,
-            "Generation": -1,
             "Location": 213,
             "Ability": 0,
             "Form": 0,
@@ -2023,13 +2486,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 109,
             "Level": 21,
             "LevelMin": 21,
             "LevelMax": 21,
-            "Generation": -1,
             "Location": 213,
             "Ability": 0,
             "Form": 0,
@@ -2046,13 +2508,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 130,
             "Level": 30,
             "LevelMin": 30,
             "LevelMax": 30,
-            "Generation": -1,
             "Location": 135,
             "Ability": 0,
             "Form": 0,
@@ -2069,13 +2530,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 131,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 210,
             "Ability": 0,
             "Form": 0,
@@ -2092,13 +2552,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 101,
             "Level": 23,
             "LevelMin": 23,
             "LevelMax": 23,
-            "Generation": -1,
             "Location": 213,
             "Ability": 0,
             "Form": 0,
@@ -2115,82 +2574,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
-            "Species": 143,
-            "Level": 50,
-            "LevelMin": 50,
-            "LevelMax": 50,
-            "Generation": -1,
-            "Location": 159,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
-            "Species": 143,
-            "Level": 50,
-            "LevelMin": 50,
-            "LevelMax": 50,
-            "Generation": -1,
-            "Location": 160,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
-            "Species": 185,
-            "Level": 20,
-            "LevelMin": 20,
-            "LevelMax": 20,
-            "Generation": -1,
-            "Location": 184,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
+            "EncounterType": 12,
             "Species": 172,
             "Level": 30,
             "LevelMin": 30,
             "LevelMax": 30,
-            "Generation": -1,
             "Location": 214,
             "Ability": 0,
             "Form": 1,
@@ -2207,13 +2596,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 5,
             "Species": 144,
             "Level": 50,
             "LevelMin": 50,
             "LevelMax": 50,
-            "Generation": -1,
             "Location": 203,
             "Ability": 0,
             "Form": 0,
@@ -2230,36 +2618,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
-            "Species": 145,
-            "Level": 50,
-            "LevelMin": 50,
-            "LevelMax": 50,
-            "Generation": -1,
-            "Location": 158,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
+            "EncounterType": 5,
             "Species": 146,
             "Level": 50,
             "LevelMin": 50,
             "LevelMax": 50,
-            "Generation": -1,
             "Location": 219,
             "Ability": 0,
             "Form": 0,
@@ -2276,13 +2640,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 5,
             "Species": 150,
             "Level": 70,
             "LevelMin": 70,
             "LevelMax": 70,
-            "Generation": -1,
             "Location": 199,
             "Ability": 0,
             "Form": 0,
@@ -2299,36 +2662,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 245,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
-            "Location": 173,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
-            "Species": 245,
-            "Level": 40,
-            "LevelMin": 40,
-            "LevelMax": 40,
-            "Generation": -1,
             "Location": 206,
             "Ability": 0,
             "Form": 0,
@@ -2345,13 +2684,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 249,
             "Level": 70,
             "LevelMin": 70,
             "LevelMax": 70,
-            "Generation": -1,
             "Location": 218,
             "Ability": 0,
             "Form": 0,
@@ -2368,13 +2706,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 250,
             "Level": 45,
             "LevelMin": 45,
             "LevelMax": 45,
-            "Generation": -1,
             "Location": 205,
             "Ability": 0,
             "Form": 0,
@@ -2391,13 +2728,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 381,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -2414,13 +2750,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 5,
             "Species": 382,
             "Level": 50,
             "LevelMin": 50,
             "LevelMax": 50,
-            "Generation": -1,
             "Location": 232,
             "Ability": 0,
             "Form": 0,
@@ -2437,13 +2772,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 5,
             "Species": 384,
             "Level": 50,
             "LevelMin": 50,
             "LevelMax": 50,
-            "Generation": -1,
             "Location": 232,
             "Ability": 0,
             "Form": 0,
@@ -2460,13 +2794,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 483,
             "Level": 1,
             "LevelMin": 1,
             "LevelMax": 1,
-            "Generation": -1,
             "Location": 231,
             "Ability": 0,
             "Form": 0,
@@ -2483,13 +2816,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 484,
             "Level": 1,
             "LevelMin": 1,
             "LevelMax": 1,
-            "Generation": -1,
             "Location": 231,
             "Ability": 0,
             "Form": 0,
@@ -2506,13 +2838,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 487,
             "Level": 1,
             "LevelMin": 1,
             "LevelMax": 1,
-            "Generation": -1,
             "Location": 231,
             "Ability": 0,
             "Form": 1,
@@ -2529,15 +2860,14 @@
             "Roaming": false,
             "EggEncounter": false
         }
-        
     ],
     "ss": [
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 149,
             "Ability": 0,
             "Form": 0,
@@ -2554,13 +2884,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 150,
             "Ability": 0,
             "Form": 0,
@@ -2577,13 +2906,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 151,
             "Ability": 0,
             "Form": 0,
@@ -2600,13 +2928,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 152,
             "Ability": 0,
             "Form": 0,
@@ -2623,13 +2950,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 153,
             "Ability": 0,
             "Form": 0,
@@ -2646,13 +2972,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 154,
             "Ability": 0,
             "Form": 0,
@@ -2669,13 +2994,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 155,
             "Ability": 0,
             "Form": 0,
@@ -2692,13 +3016,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 156,
             "Ability": 0,
             "Form": 0,
@@ -2715,13 +3038,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 157,
             "Ability": 0,
             "Form": 0,
@@ -2738,13 +3060,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 158,
             "Ability": 0,
             "Form": 0,
@@ -2761,13 +3082,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 159,
             "Ability": 0,
             "Form": 0,
@@ -2784,13 +3104,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 160,
             "Ability": 0,
             "Form": 0,
@@ -2807,13 +3126,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 161,
             "Ability": 0,
             "Form": 0,
@@ -2830,13 +3148,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 162,
             "Ability": 0,
             "Form": 0,
@@ -2853,13 +3170,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 163,
             "Ability": 0,
             "Form": 0,
@@ -2876,13 +3192,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 164,
             "Ability": 0,
             "Form": 0,
@@ -2899,13 +3214,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 165,
             "Ability": 0,
             "Form": 0,
@@ -2922,13 +3236,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 166,
             "Ability": 0,
             "Form": 0,
@@ -2945,13 +3258,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 169,
             "Ability": 0,
             "Form": 0,
@@ -2968,13 +3280,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 170,
             "Ability": 0,
             "Form": 0,
@@ -2991,13 +3302,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 172,
             "Ability": 0,
             "Form": 0,
@@ -3014,13 +3324,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 174,
             "Ability": 0,
             "Form": 0,
@@ -3037,13 +3346,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 176,
             "Ability": 0,
             "Form": 0,
@@ -3060,13 +3368,144 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
+            "Location": 152,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 154,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 157,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 158,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 160,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 161,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
             "Location": 167,
             "Ability": 0,
             "Form": 0,
@@ -3083,13 +3522,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 381,
             "Level": 35,
             "LevelMin": 35,
             "LevelMax": 35,
-            "Generation": -1,
             "Location": 168,
             "Ability": 0,
             "Form": 0,
@@ -3106,13 +3544,122 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 169,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 170,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 172,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 174,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 381,
+            "Level": 35,
+            "LevelMin": 35,
+            "LevelMax": 35,
+            "Location": 176,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 177,
             "Ability": 0,
             "Form": 0,
@@ -3129,13 +3676,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 178,
             "Ability": 0,
             "Form": 0,
@@ -3152,13 +3698,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 179,
             "Ability": 0,
             "Form": 0,
@@ -3175,13 +3720,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 180,
             "Ability": 0,
             "Form": 0,
@@ -3198,13 +3742,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 181,
             "Ability": 0,
             "Form": 0,
@@ -3221,13 +3764,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 182,
             "Ability": 0,
             "Form": 0,
@@ -3244,13 +3786,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 183,
             "Ability": 0,
             "Form": 0,
@@ -3267,13 +3808,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 184,
             "Ability": 0,
             "Form": 0,
@@ -3290,13 +3830,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 185,
             "Ability": 0,
             "Form": 0,
@@ -3313,13 +3852,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 186,
             "Ability": 0,
             "Form": 0,
@@ -3336,13 +3874,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 187,
             "Ability": 0,
             "Form": 0,
@@ -3359,13 +3896,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 190,
             "Ability": 0,
             "Form": 0,
@@ -3382,13 +3918,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 191,
             "Ability": 0,
             "Form": 0,
@@ -3405,13 +3940,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 192,
             "Ability": 0,
             "Form": 0,
@@ -3428,13 +3962,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 193,
             "Ability": 0,
             "Form": 0,
@@ -3451,13 +3984,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 243,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 194,
             "Ability": 0,
             "Form": 0,
@@ -3474,13 +4006,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 177,
             "Ability": 0,
             "Form": 0,
@@ -3497,13 +4028,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 178,
             "Ability": 0,
             "Form": 0,
@@ -3520,13 +4050,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 179,
             "Ability": 0,
             "Form": 0,
@@ -3543,13 +4072,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 180,
             "Ability": 0,
             "Form": 0,
@@ -3566,13 +4094,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 181,
             "Ability": 0,
             "Form": 0,
@@ -3589,13 +4116,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 182,
             "Ability": 0,
             "Form": 0,
@@ -3612,13 +4138,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 183,
             "Ability": 0,
             "Form": 0,
@@ -3635,13 +4160,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 184,
             "Ability": 0,
             "Form": 0,
@@ -3658,13 +4182,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 185,
             "Ability": 0,
             "Form": 0,
@@ -3681,13 +4204,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 186,
             "Ability": 0,
             "Form": 0,
@@ -3704,13 +4226,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 187,
             "Ability": 0,
             "Form": 0,
@@ -3727,13 +4248,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 190,
             "Ability": 0,
             "Form": 0,
@@ -3750,13 +4270,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 191,
             "Ability": 0,
             "Form": 0,
@@ -3773,13 +4292,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 192,
             "Ability": 0,
             "Form": 0,
@@ -3796,13 +4314,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 193,
             "Ability": 0,
             "Form": 0,
@@ -3819,13 +4336,12 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 2,
             "Species": 244,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 194,
             "Ability": 0,
             "Form": 0,
@@ -3842,13 +4358,408 @@
             "Roaming": true,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 178,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 179,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 180,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 182,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 183,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 190,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 191,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 192,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 243,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 193,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 178,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 179,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 180,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 182,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 183,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 190,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 191,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 192,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 7,
+            "Species": 244,
+            "Level": 40,
+            "LevelMin": 40,
+            "LevelMax": 40,
+            "Location": 193,
+            "Ability": 0,
+            "Form": 0,
+            "Gender": -1,
+            "EggLocation": 0,
+            "Gift": false,
+            "Ball": 4,
+            "FlawlessIVCount": 0,
+            "HeldItem": 0,
+            "EggCycles": 0,
+            "Fateful": false,
+            "RibbonWishing": false,
+            "SkipFormCheck": false,
+            "Roaming": true,
+            "EggEncounter": false
+        },
+        {
+            "EncounterType": 12,
             "Species": 1,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 138,
             "Ability": 0,
             "Form": 0,
@@ -3865,13 +4776,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 4,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 138,
             "Ability": 0,
             "Form": 0,
@@ -3888,13 +4798,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 7,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 138,
             "Ability": 0,
             "Form": 0,
@@ -3911,13 +4820,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 152,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 126,
             "Ability": 0,
             "Form": 0,
@@ -3934,13 +4842,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 155,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 126,
             "Ability": 0,
             "Form": 0,
@@ -3957,13 +4864,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 158,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 126,
             "Ability": 0,
             "Form": 0,
@@ -3980,13 +4886,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 252,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 148,
             "Ability": 0,
             "Form": 0,
@@ -4003,13 +4908,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 255,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 148,
             "Ability": 0,
             "Form": 0,
@@ -4026,13 +4930,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 258,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 148,
             "Ability": 0,
             "Form": 0,
@@ -4049,13 +4952,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 138,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -4072,13 +4974,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 140,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -4095,13 +4996,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 142,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -4118,13 +5018,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 345,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -4141,13 +5040,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 347,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -4164,13 +5062,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 408,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -4187,13 +5084,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 410,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -4210,13 +5106,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 133,
             "Level": 5,
             "LevelMin": 5,
             "LevelMax": 5,
-            "Generation": -1,
             "Location": 131,
             "Ability": 0,
             "Form": 0,
@@ -4233,13 +5128,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 147,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 222,
             "Ability": 0,
             "Form": 0,
@@ -4256,13 +5150,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 236,
             "Level": 10,
             "LevelMin": 10,
             "LevelMax": 10,
-            "Generation": -1,
             "Location": 216,
             "Ability": 0,
             "Form": 0,
@@ -4279,105 +5172,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
-            "Species": 175,
-            "Level": 1,
-            "LevelMin": 1,
-            "LevelMax": 1,
-            "Generation": -1,
-            "Location": 0,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 2013,
-            "Gift": true,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": true
-        },
-        
-        {
-            "Species": 179,
-            "Level": 1,
-            "LevelMin": 1,
-            "LevelMax": 1,
-            "Generation": -1,
-            "Location": 0,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 2014,
-            "Gift": true,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": true
-        },
-        
-        {
-            "Species": 194,
-            "Level": 1,
-            "LevelMin": 1,
-            "LevelMax": 1,
-            "Generation": -1,
-            "Location": 0,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 2014,
-            "Gift": true,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": true
-        },
-        
-        {
-            "Species": 218,
-            "Level": 1,
-            "LevelMin": 1,
-            "LevelMax": 1,
-            "Generation": -1,
-            "Location": 0,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 2014,
-            "Gift": true,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": true
-        },
-        
-        {
+            "EncounterType": 12,
             "Species": 122,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 144,
             "Ability": 0,
             "Form": 0,
@@ -4394,13 +5194,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 133,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 144,
             "Ability": 0,
             "Form": 0,
@@ -4417,13 +5216,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 137,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 144,
             "Ability": 0,
             "Form": 0,
@@ -4440,13 +5238,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 63,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 131,
             "Ability": 0,
             "Form": 0,
@@ -4463,13 +5260,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 27,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 131,
             "Ability": 0,
             "Form": 0,
@@ -4486,13 +5282,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 147,
             "Level": 15,
             "LevelMin": 15,
             "LevelMax": 15,
-            "Generation": -1,
             "Location": 131,
             "Ability": 0,
             "Form": 0,
@@ -4509,13 +5304,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 100,
             "Level": 23,
             "LevelMin": 23,
             "LevelMax": 23,
-            "Generation": -1,
             "Location": 213,
             "Ability": 0,
             "Form": 0,
@@ -4532,13 +5326,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 74,
             "Level": 21,
             "LevelMin": 21,
             "LevelMax": 21,
-            "Generation": -1,
             "Location": 213,
             "Ability": 0,
             "Form": 0,
@@ -4555,13 +5348,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 109,
             "Level": 21,
             "LevelMin": 21,
             "LevelMax": 21,
-            "Generation": -1,
             "Location": 213,
             "Ability": 0,
             "Form": 0,
@@ -4578,13 +5370,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 130,
             "Level": 30,
             "LevelMin": 30,
             "LevelMax": 30,
-            "Generation": -1,
             "Location": 135,
             "Ability": 0,
             "Form": 0,
@@ -4601,13 +5392,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 131,
             "Level": 20,
             "LevelMin": 20,
             "LevelMax": 20,
-            "Generation": -1,
             "Location": 210,
             "Ability": 0,
             "Form": 0,
@@ -4624,13 +5414,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 101,
             "Level": 23,
             "LevelMin": 23,
             "LevelMax": 23,
-            "Generation": -1,
             "Location": 213,
             "Ability": 0,
             "Form": 0,
@@ -4647,82 +5436,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
-            "Species": 143,
-            "Level": 50,
-            "LevelMin": 50,
-            "LevelMax": 50,
-            "Generation": -1,
-            "Location": 159,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
-            "Species": 143,
-            "Level": 50,
-            "LevelMin": 50,
-            "LevelMax": 50,
-            "Generation": -1,
-            "Location": 160,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
-            "Species": 185,
-            "Level": 20,
-            "LevelMin": 20,
-            "LevelMax": 20,
-            "Generation": -1,
-            "Location": 184,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
+            "EncounterType": 12,
             "Species": 172,
             "Level": 30,
             "LevelMin": 30,
             "LevelMax": 30,
-            "Generation": -1,
             "Location": 214,
             "Ability": 0,
             "Form": 1,
@@ -4739,13 +5458,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 5,
             "Species": 144,
             "Level": 50,
             "LevelMin": 50,
             "LevelMax": 50,
-            "Generation": -1,
             "Location": 203,
             "Ability": 0,
             "Form": 0,
@@ -4762,36 +5480,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
-            "Species": 145,
-            "Level": 50,
-            "LevelMin": 50,
-            "LevelMax": 50,
-            "Generation": -1,
-            "Location": 158,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
+            "EncounterType": 5,
             "Species": 146,
             "Level": 50,
             "LevelMin": 50,
             "LevelMax": 50,
-            "Generation": -1,
             "Location": 219,
             "Ability": 0,
             "Form": 0,
@@ -4808,13 +5502,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 5,
             "Species": 150,
             "Level": 70,
             "LevelMin": 70,
             "LevelMax": 70,
-            "Generation": -1,
             "Location": 199,
             "Ability": 0,
             "Form": 0,
@@ -4831,36 +5524,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 245,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
-            "Location": 173,
-            "Ability": 0,
-            "Form": 0,
-            "Gender": -1,
-            "EggLocation": 0,
-            "Gift": false,
-            "Ball": 4,
-            "FlawlessIVCount": 0,
-            "HeldItem": 0,
-            "EggCycles": 0,
-            "Fateful": false,
-            "RibbonWishing": false,
-            "SkipFormCheck": false,
-            "Roaming": false,
-            "EggEncounter": false
-        },
-        
-        {
-            "Species": 245,
-            "Level": 40,
-            "LevelMin": 40,
-            "LevelMax": 40,
-            "Generation": -1,
             "Location": 206,
             "Ability": 0,
             "Form": 0,
@@ -4877,13 +5546,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 7,
             "Species": 249,
             "Level": 45,
             "LevelMin": 45,
             "LevelMax": 45,
-            "Generation": -1,
             "Location": 218,
             "Ability": 0,
             "Form": 0,
@@ -4900,13 +5568,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 250,
             "Level": 70,
             "LevelMin": 70,
             "LevelMax": 70,
-            "Generation": -1,
             "Location": 205,
             "Ability": 0,
             "Form": 0,
@@ -4923,13 +5590,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 9,
             "Species": 380,
             "Level": 40,
             "LevelMin": 40,
             "LevelMax": 40,
-            "Generation": -1,
             "Location": 140,
             "Ability": 0,
             "Form": 0,
@@ -4946,13 +5612,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 5,
             "Species": 383,
             "Level": 50,
             "LevelMin": 50,
             "LevelMax": 50,
-            "Generation": -1,
             "Location": 232,
             "Ability": 0,
             "Form": 0,
@@ -4969,13 +5634,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 5,
             "Species": 384,
             "Level": 50,
             "LevelMin": 50,
             "LevelMax": 50,
-            "Generation": -1,
             "Location": 232,
             "Ability": 0,
             "Form": 0,
@@ -4992,13 +5656,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 483,
             "Level": 1,
             "LevelMin": 1,
             "LevelMax": 1,
-            "Generation": -1,
             "Location": 231,
             "Ability": 0,
             "Form": 0,
@@ -5015,13 +5678,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 484,
             "Level": 1,
             "LevelMin": 1,
             "LevelMax": 1,
-            "Generation": -1,
             "Location": 231,
             "Ability": 0,
             "Form": 0,
@@ -5038,13 +5700,12 @@
             "Roaming": false,
             "EggEncounter": false
         },
-        
         {
+            "EncounterType": 12,
             "Species": 487,
             "Level": 1,
             "LevelMin": 1,
             "LevelMax": 1,
-            "Generation": -1,
             "Location": 231,
             "Ability": 0,
             "Form": 1,
@@ -5061,6 +5722,5 @@
             "Roaming": false,
             "EggEncounter": false
         }
-        
     ]
 }

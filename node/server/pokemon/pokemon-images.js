@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import EventEmitter from 'events';
 import Config from '../config';
-import { Image } from '../constants';
+import { Image, Paths } from '../constants';
 
 const {
     ImageRegex, 
@@ -48,10 +48,10 @@ class PokemonImages extends EventEmitter {
             console.warn('No specified empty slot image.  Skipping.');
             this._images[-1] = new PokemonImage();
         } else {
-            this._setEmptySlotImage(path.resolve(__dirname, '../..', Config.Current.emptySlotImagePath));
+            this._setEmptySlotImage(path.resolve(Paths.NodeRoot, Config.Current.emptySlotImagePath));
         }
         
-        let basePath = path.resolve(__dirname, '..', Config.Current.pokemonImagesPath),
+        let basePath = path.resolve(Paths.NodeRoot, Config.Current.pokemonImagesPath),
             formsPath = path.resolve(basePath, 'forms');
         
         if (!fs.existsSync(basePath)) {
@@ -82,8 +82,14 @@ class PokemonImages extends EventEmitter {
     }
 
     _loadImages(variant, dir) {
+        let basePath = path.resolve(Paths.NodeRoot, Config.Current.pokemonImagesPath),
+            formsPath = path.resolve(basePath, 'forms');
+
         if (!fs.existsSync(dir)) {
-            if ((!this._gettingFormImages || variant === 'shiny') && path.dirname) {
+            // search for shiny/female variants for all normal forms
+            // don't search for shiny/female variants of egg
+            // otherwise make sure there is at least shiny variant for each alternate form
+            if (!this._gettingFormImages || (variant === 'shiny' && path.relative(formsPath, dir).search('egg') === -1)) {
                 console.warn(`Warning: Image directory '${dir}' does not exist.  Skipping.`);
             }
     
@@ -150,7 +156,6 @@ class PokemonImages extends EventEmitter {
     }
 
     _setEmptySlotImage(filePath) {
-        filePath = path.resolve(__dirname, filePath);
         if (!fs.existsSync(filePath)) {
             console.warn(`emptySlot image '${filePath}' does not exist.  Skipping.`);
             return;

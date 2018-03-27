@@ -7,7 +7,8 @@
     "build": "node_modules/.bin/webpack --progress --color --mode production",
     "watch": "node_modules/.bin/webpack --progress --color --mode production --watch",
     "debug": "node -r babel-register server -d",
-    "start": "node -r babel-register server"
+    "start": "node -r babel-register server",
+    "setup": "node -r babel-register setup/setup-pokemon-images.js"
   },
   "author": "Jordan Hitch",
   "license": "ISC",

@@ -126,8 +126,8 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     pkmn.data_str = Pokemon.get_words_string(encrypted_words)
 
     local valid, words, death_code = decrypt(encrypted_words)
-    
-    pkmn.valid = valid
+
+    pkmn.valid = valid -- currently pointless code but I may use it in the future
     if not valid then
         return nil
     end
@@ -152,13 +152,9 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
         end
     end
 
-    -- correct the level in case it's wrong in memory (or because it's in a box)
-    pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
-    if pkmn.level > 100 then
-        return nil
-    end
-
     pkmn.death_code = death_code
+    local level = get_pokemon_level(pkmn.species, pkmn.exp)
+    pkmn.level = level
 
     if not in_box then
         for _, fn in ipairs(battle_stats_memory_map) do
@@ -170,6 +166,12 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
                 -- print(attr)
                 pkmn[attr] = fn(words, pkmn)
             end
+        end
+
+        if pkmn.level > 100 or pkmn.level > level + 5 or pkmn.level < level then
+            -- correct the level in case it's wrong in memory (or because it's in a box)
+            -- assume a level can be 5 higher than it was when it entered battle
+            pkmn.level = level
         end
 
         -- best effort to determine that this battle data is not accurate

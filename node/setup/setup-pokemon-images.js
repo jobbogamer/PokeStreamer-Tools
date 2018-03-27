@@ -3,15 +3,16 @@ import path from 'path';
 import Config from '../server/config';
 
 const config = Config.Current,
-    pokemonImagesPath = path.resolve('dummy', config.pokemonImagesPath);
+    pokemonImagesPath = path.resolve(__dirname, '..', config.pokemonImagesPath),
+    pokemonImagesFormsPath = path.resolve(pokemonImagesPath, 'forms');
 
 // rename Giratina
-let giratinaPath = path.resolve(pokemonImagesPath, 'forms', 'Giratina');
+let giratinaPath = path.resolve(pokemonImagesFormsPath, 'Giratina');
 if (!fs.existsSync(giratinaPath)) {
     console.warn(`Giratina forms path at '${giratinaPath}' not found... Skipping.`);
 } else {
     let anotherGiratinaPath = path.resolve(giratinaPath, '487another.png'),
-    anotherGiratinaShinyPath = path.resolve(giratinaPath, 'shiny', '487sanother.png');
+        anotherGiratinaShinyPath = path.resolve(giratinaPath, 'shiny', '487sanother.png');
     if (!fs.existsSync(anotherGiratinaPath)) {
         console.warn(`Giratina alternate form image at '${anotherGiratinaPath}' not found... Skipping.`);
     } else {
@@ -52,7 +53,7 @@ const arceusTypeMap = {
 const arceusRegex = new RegExp(`^(${Object.keys(arceusTypeMap).join('|')})((?:shiny)?)2\.png$`);
 
 let arceusDir = path.resolve(pokemonImagesPath, '../DPPt/Arceus'),
-    arceusTargetDir = path.resolve(pokemonImagesPath, 'forms/arceus'),
+    arceusTargetDir = path.resolve(pokemonImagesFormsPath, 'arceus'),
     arceusShinyTargetDir = path.resolve(arceusTargetDir, 'shiny');
 if (!fs.existsSync(arceusDir)) {
     console.warn(`Arceus directory at '${arceusDir}' not found... skipping.`);
@@ -79,6 +80,25 @@ if (!fs.existsSync(arceusDir)) {
             console.log(`Copied '${file}' to '${target}'.`);
         }
     }
+}
+
+// copy spiky-eared pichu sprites
+let pichuFormsPath = path.resolve(__dirname, '../../pokemon-images/pichu'),
+    pichuFormsDestPath = path.resolve(pokemonImagesFormsPath, 'pichu');
+if (!fs.existsSync(pichuFormsPath)) {
+    console.warn(`Pichu forms directory at '${pichuFormsPath}' not found... skipping.`);
+} else {
+    if (!fs.existsSync(pichuFormsDestPath)) {
+        fs.mkdirSync(pichuFormsDestPath);
+    }
+
+    if (!fs.existsSync(path.join(pichuFormsDestPath, 'shiny'))) {
+        fs.mkdirSync(path.join(pichuFormsDestPath, 'shiny'));
+    }
+    
+    fs.copyFileSync(path.join(pichuFormsPath, '172spiky-eared.png'), path.join(pichuFormsDestPath, '172spiky-eared.png'));
+    fs.copyFileSync(path.join(pichuFormsPath, 'shiny/172sspiky-eared.png'), path.join(pichuFormsDestPath, 'shiny/172sspiky-eared.png'));
+    console.log(`Copied pichu forms from '${pichuFormsPath}' to '${pichuFormsDestPath}'.`);
 }
 
 process.exit(0);

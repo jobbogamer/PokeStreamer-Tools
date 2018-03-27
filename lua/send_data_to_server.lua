@@ -1,6 +1,6 @@
 -- IMPORTANT: if you edit this value, you must also edit it in /node/config.advanced.json
 local server_port = 8081
-local api_host = 'api.pokemon-soul.link'
+local api_host = 'api.stream.pokemon-soul.link'
 local api_root = "http://" .. api_host .. ":" .. tostring(server_port) .. "/api"
 
 local print_debug_messages = false
