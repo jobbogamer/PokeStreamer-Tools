@@ -3059,7 +3059,7 @@
             "EggLocation": 128,
             "Gender": -1,
             "Form": 0,
-            "Gift": true,
+            "Gift": true
         },
         {
             "EncounterId": 19,
@@ -3070,7 +3070,7 @@
             "EggLocation": 128,
             "Gender": -1,
             "Form": 0,
-            "Gift": true,
+            "Gift": true
         },
         {
             "EncounterId": 19,
@@ -3081,7 +3081,7 @@
             "EggLocation": 128,
             "Gender": -1,
             "Form": 0,
-            "Gift": true,
+            "Gift": true
         },
         {
             "EncounterId": 20,
@@ -6156,7 +6156,7 @@
             "EggLocation": 128,
             "Gender": -1,
             "Form": 0,
-            "Gift": true,
+            "Gift": true
         },
         {
             "EncounterId": 19,
@@ -6167,7 +6167,7 @@
             "EggLocation": 128,
             "Gender": -1,
             "Form": 0,
-            "Gift": true,
+            "Gift": true
         },
         {
             "EncounterId": 19,
@@ -6178,7 +6178,7 @@
             "EggLocation": 128,
             "Gender": -1,
             "Form": 0,
-            "Gift": true,
+            "Gift": true
         },
         {
             "EncounterId": 20,
