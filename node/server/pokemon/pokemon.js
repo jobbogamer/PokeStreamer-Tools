@@ -18,7 +18,7 @@ const DiscordNewPokemonFields = [
     "locationMet",
     "shinyId",
     "isFemale",
-    "isStatic",
+    "staticId",
     "nickname",
 ];
 
@@ -39,7 +39,7 @@ const ClientFields = [
     "isShiny",
     "levelMet",
     "img",
-    "isStatic",
+    "staticId",
     "isValid",
     "linkedImg",
 ];
@@ -77,6 +77,8 @@ class Pokemon {
         if (this.isEgg) {
             this.level = "";
         }
+
+        this.staticId = StaticEncounters.getStaticEncounterId(this);
     }
 
     get speciesName() {
@@ -144,7 +146,7 @@ class Pokemon {
         VA.boolOrUndefinedFalse(this.female, 'female');
         VA.boolOrUndefinedFalse(this.shiny, 'shiny');
         VA.int(this.levelMet, 'levelMet');
-        VA.bool(this.isStatic, 'static');
+        VA.int(this.staticId, 'staticId');
     }
 }
 
@@ -161,7 +163,7 @@ const emptyPokemonData = {
     levelMet: -1,
     locationMet: -1,
     alternateForm: "",
-    isStatic: false,
+    staticId: -1,
 };
 
 const EmptyPokemon = new Pokemon();

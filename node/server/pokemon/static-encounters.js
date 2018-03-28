@@ -34,38 +34,38 @@ class StaticEncounters {
     get encounters() {
         return this._encounters;
     }
-}
 
-StaticEncounters.isStaticEncounter = function(pokemon) {
-    let criteria = {
-        Location: pokemon.location,
-        Gift: pokemon.gift,
-        Level: pokemon.levelMet,
-        EncounterType: pokemon.encounterType,
-        EggLocation: pokemon.eggLocationMet || 0,
-        Form: pokemon.alternateFormId,
-    };
-
-    if (!Config.Current.isRandomized) {
-        criteria.species = pokemon.species;
-    }
-
-    for (let enc of this._encounters) {
-        let found = true;
-        for (let [c, v] of Object.entries(criteria)) {
-            if (enc[c] !== v) {
-                found = false;
-                break;
+    getStaticEncounterId(pokemon) {
+        let criteria = {
+            Location: pokemon.locationMet,
+            Gift: pokemon.gift,
+            Level: pokemon.levelMet,
+            EncounterType: pokemon.encounterType,
+            EggLocation: pokemon.eggLocationMet || 0,
+            Form: pokemon.alternateFormId,
+        };
+    
+        if (!Config.Current.isRandomized) {
+            criteria.species = pokemon.species;
+        }
+    
+        for (let enc of this._encounters) {
+            let found = true;
+            for (let [c, v] of Object.entries(criteria)) {
+                if (enc[c] !== v) {
+                    found = false;
+                    break;
+                }
+            }
+    
+            if (found) {
+                return enc.EncounterId;
             }
         }
-
-        if (found) {
-            return true;
-        }
+    
+        return -1;
     }
-
-    return false;
-};
+}
 
 const se = new StaticEncounters();
 export default se;
