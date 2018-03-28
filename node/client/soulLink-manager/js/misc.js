@@ -22,6 +22,7 @@ function getGraveyardName() {
 addGraveyardName('Graveyard', 2);
 addGraveyardName('Valley of the Fallen', 1.5);
 addGraveyardName('Unceremonious corpse pile of shame', .2);
+addGraveyardName('Discarded tools', .1);
 
 if (Config.configOverride &&
     (Config.configOverride instanceof String && Config.configOverride.search('config.fail.json') > -1 || 

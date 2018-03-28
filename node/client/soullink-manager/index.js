@@ -58,7 +58,8 @@ function getIcon(pokemon) {
 }
 
 function removePokemonRow(pokemon) {
-    $(`#${pokemon.pid}`).remove();
+    let row = $(`#${pokemon.pid}`).attr('id', '').removeClass('show');
+    setTimeout(() => row.remove(), 500);
 }
 
 function addPokemon(msg) {

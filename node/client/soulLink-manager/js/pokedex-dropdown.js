@@ -11,12 +11,12 @@ export default function getDropDown(pokemon) {
     }
 
     if (!dropdowns[gen][shiny]) {
-        dropdowns[gen][shiny] = $('<div>').append(PokedexDropdown({ pokemon, pokemonIcons }));
+        dropdowns[gen][shiny] = $(PokedexDropdown({ pokemon, pokemonIcons }));
     }
 
     let dropdown = dropdowns[gen][shiny].clone();
-    dropdown.find('select').on('change', function() {
-        dropdown.find('img').attr('src', $(this).find(':selected').attr('data-img'));
+    dropdown.filter('select').on('change', function() {
+        dropdown.filter('img').attr('src', $(this).find(':selected').attr('data-img'));
     }).change();
     return dropdown;
 }

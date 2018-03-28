@@ -4,6 +4,10 @@
 
 #pokemonTable tbody {
   > tr {
+    &:nth-last-of-type(even) {
+      background-color: rgba(0,0,0,.05);
+    }
+
     &.placeholder:not(:only-child) {
       display: none;
     }
