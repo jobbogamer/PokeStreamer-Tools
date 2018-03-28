@@ -10,6 +10,8 @@ function spawnWebpack(debugPort) {
         [
             debugPort ? `--inspect=${debugPort}` : '',
             `"${path.join(__dirname, '../node_modules/webpack-dev-server/bin/webpack-dev-server.js')}"`,
+            '--mode', 'production',
+            '--hot'
             // debugPort ? "--port" : "", 
             // debugPort ? debugPort : "", 
         ],

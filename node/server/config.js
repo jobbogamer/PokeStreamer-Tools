@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import EventEmitter from 'events';
+
 import compileConfig from '../common/configCompiler';
 import { Paths } from './constants';
-import setLogLevel from './console';
+import Log from './console';
 
 const NodeRoot = Paths.NodeRoot;
 
@@ -86,12 +87,25 @@ class Config extends EventEmitter {
 
         this.configWatcher = new ConfigWatcher(next);
         this.configWatcher.on('change', this._readConfig.bind(this));
-        setLogLevel(this._current.logLevel || 2);
-        this.emit('update', { prev: prev, next: this._current });        
+
+        let ll = this._current.logLevel = Log.parseLevel(this._current.logLevel);
+        Log.setLevel(ll);
+        if (ll <= 2) {
+            Log.setPrefix(() => `[${new Date().toLocaleTimeString('en-US')}]:`, '\t');
+        } else {
+            Log.clearPrefx();
+        }
+
+        this.emit('update', prev, this._current );
     }
 
-    get Current() { return Object.assign({}, this._current); }
+    get Current() { 
+        let obj = Object.assign({}, this._current); 
+        obj.on = this.on.bind(this);
+        return obj;
+    }
 }
 
 const config = new Config();
-export default config;
+// export default config;
+export default config.Current;

@@ -13,37 +13,41 @@ function parse(file) {
     return json5.parse(fs.readFileSync(file));
 }
 
-export default function compileConfig(initialConfig) {
-    initialConfig = initialConfig || parse(path.resolve(NodeRoot, 'config.json'));
+function addMissingKeys(config) {
+    return mergeDeep(parse(path.resolve(__dirname, 'config.empty.json')), config);
+}
 
-    if (!initialConfig.advancedConfig) {
+function compileConfig(config) {
+    config = config || parse(path.resolve(NodeRoot, 'config.json'));
+
+    if (!config.advancedConfig) {
         console.warn(`config.json is missing "advancedConfig" setting.  If things are broken, this is a likely cause.`);
-    } else if (!fs.existsSync(initialConfig.advancedConfig)) {
-        throw new Error(`Advanced config file '${initialConfig.advancedConfig}' does not exist.`);
+    } else if (!fs.existsSync(config.advancedConfig)) {
+        throw new Error(`Advanced config file '${config.advancedConfig}' does not exist.`);
     } else {
-        let ac = parse(initialConfig.advancedConfig);
-        initialConfig = mergeDeep(ac, initialConfig);
+        let ac = parse(config.advancedConfig);
+        config = mergeDeep(ac, config);
     }
 
-    if (!initialConfig.configOverride) {
-        return initialConfig;
+    if (!config.configOverride) {
+        return config;
     }
     
-    let co = initialConfig.configOverride;
+    let co = config.configOverride;
     switch (co.constructor) {
         case String:
-            return mergeDeep(initialConfig, parse(co));
+            return mergeDeep(config, parse(co));
         
         case Array:
-            let configs = co.map(f => parse(f));
-            return configs.reduce(mergeDeep, initialConfig);
+            return co.map(f => parse(f)).reduce(mergeDeep, config);
         
         default:
             throw new Error(`Invalid value for configOverride in config.json.  Must be an array or a string.  Found ${co}.`);
     }
 }
 
-// helper methods from https://stackoverflow.com/a/37164538/3120446
+//#region Helpers
+/* helper methods from https://stackoverflow.com/a/37164538/3120446 */
 function isObject(item) {
     return item && typeof item === 'object' && !Array.isArray(item);
 }
@@ -65,4 +69,9 @@ function mergeDeep(target, source) {
     }
 
     return output;
+}
+//#endregion
+
+export default function(config) {
+    return addMissingKeys(compileConfig(config));
 }

@@ -12,7 +12,7 @@ $imageScale: scale(strip-unit($imageSideLength) / min(strip-unit($imageWrapperWi
   padding: 0;
   
   &:not(.soul-linked) {
-    @extend %imageWrapperStyle !optional;  
+    @extend %imageWrapper !optional;  
   }
   
   .img-overlay {

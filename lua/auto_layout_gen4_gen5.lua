@@ -525,7 +525,7 @@ function inspect_and_send_boxes()
 
 	last_boxes = cur_boxes
 	if #delta_boxes > 0 and not_need_to_read_boxes then
-		send_slots(delta_boxes, gen)
+		send_slots(delta_boxes, gen, game, subgame)
 		delta_boxes = {}
 	end
 end
@@ -629,7 +629,7 @@ function fn()
 		end
 
 		if (#send_data > 0) then
-			send_slots(send_data, gen)
+			send_slots(send_data, gen, game, subgame)
 		end
 
 		last_check = current_time

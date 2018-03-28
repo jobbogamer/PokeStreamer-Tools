@@ -1,4 +1,5 @@
 import express from 'express';
+import expressWS from 'express-ws';
 import path from 'path';
 import bodyParser from 'body-parser';
 import jade from 'jade';
@@ -14,36 +15,34 @@ let port;
 if (process.argv.includes('-d') || process.argv.includes('--debug')) {
     port = 'devServerPort';
     require('./webpack-spawner').default(50000);
+} else if (process.argv.includes('-dp')) {
+    port = 'devServerPort';
 } else {
     port = 'port';
 }
 
 let app = express();
+expressWS(app);
 app.engine('jade', jade.__express);
 app.set('view engine', 'jade');
+app.use('/api', sse, bodyParser.json(), API.Router);
+app.use('/icons', express.static(__dirname + '/../pokemon-icons'));
 app.use(express.static(__dirname + '/../public'));
-app.use(sse);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
-API.init(app);
-
-let server = app.listen(Config.Current.server[port], Config.Current.server.host, function() {
-    console.info(`Listening on ${Config.Current.server.host}:${Config.Current.server[port]}`);
+let server = app.listen(Config.server[port], Config.server.host, function() {
+    console.info(`Listening on ${Config.server.host}:${Config.server[port]}`);
 });
 
-Config.on('update', e => {
-    if (e.prev.server[port] !== e.next.server[port] ||
-        e.prev.server.host !== e.next.server.host ||
-        e.prev.server.apiHost !== e.next.server.apiHost) {
+Config.on('update', (p, n) => {
+    if (p.server[port] !== n.server[port] ||
+        p.server.host !== n.server.host ||
+        p.server.apiHost !== n.server.apiHost) {
         server.close(() => {
-            console.log(`Closed server listening on ${Config.Current.server.host}:${Config.Current.server[port]}`);
+            console.log(`Closed server listening on ${Config.server.host}:${Config.server[port]}`);
         });
 
-        server = app.listen(e.next.server[port], function() {
-            console.log(`Listening on ${Config.Current.server.host}:${Config.Current.server[port]}`);
+        server = app.listen(n.server[port], function() {
+            console.log(`Listening on ${Config.server.host}:${Config.server[port]}`);
         });
     }
 });
-
-console.debug(`Running generation ${Config.Current.generation}`);

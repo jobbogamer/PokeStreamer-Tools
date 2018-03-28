@@ -1,0 +1,13 @@
+<tr id="<%- pokemon.pid %>">
+    <%= require('./pokemon-cell.ejs')({ pokemon: pokemon }) %>
+    <td class="location"><div><%- pokemon.locationMetName %></div></td>
+    <%= require('./traits-cell.ejs')({ pokemon }) %>
+    <%= require('./pokemon-cell.ejs')({ pokemon: linked }) %>
+    <td>
+        <div>
+            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-danger btn-sm">
+                Unlink
+            </button>
+        </div>
+    </td>
+</tr>

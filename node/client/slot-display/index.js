@@ -1,8 +1,8 @@
 import './sass/index.scss';
+import config from 'config.json';
 import Nuzlocke from './js/nuzlocke';
 import SoulLink from './js/soulLink';
 import Slot from './js/slot';
-import config from 'config.json';
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;

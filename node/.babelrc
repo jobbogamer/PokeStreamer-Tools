@@ -2,7 +2,7 @@
     "sourceMaps": true,
     "presets": [
         "es2016",
-        [ "es2015", { "modules": "commonjs"} ]
+        [ "es2015" ]
     ],
     "retainLines": true
 }

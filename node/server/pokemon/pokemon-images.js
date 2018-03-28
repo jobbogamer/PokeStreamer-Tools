@@ -27,9 +27,9 @@ class PokemonImages extends EventEmitter {
 
         this._initPokemonImages();
 
-        Config.on('update', e => {
-            if (e.prev.pokemonImagesPath !== e.next.pokemonImagesPath ||
-                e.prev.emptySlotImagePath !== e.next.emptySlotImagePath) {
+        Config.on('update', (p, n) => {
+            if (p.pokemonImagesPath !== n.pokemonImagesPath ||
+                p.emptySlotImagePath !== n.emptySlotImagePath) {
                 console.log('Pokemon image paths in config changed.  Reloading all images.');
                 this._initPokemonImages();
             }
@@ -44,14 +44,14 @@ class PokemonImages extends EventEmitter {
         this._images = {};
         this._gettingFormImages = false;
     
-        if (!Config.Current.emptySlotImagePath) {
+        if (!Config.emptySlotImagePath) {
             console.warn('No specified empty slot image.  Skipping.');
             this._images[-1] = new PokemonImage();
         } else {
-            this._setEmptySlotImage(path.resolve(Paths.NodeRoot, Config.Current.emptySlotImagePath));
+            this._setEmptySlotImage(path.resolve(Paths.NodeRoot, Config.emptySlotImagePath));
         }
         
-        let basePath = path.resolve(Paths.NodeRoot, Config.Current.pokemonImagesPath),
+        let basePath = path.resolve(Paths.NodeRoot, Config.pokemonImagesPath),
             formsPath = path.resolve(basePath, 'forms');
         
         if (!fs.existsSync(basePath)) {
@@ -82,7 +82,7 @@ class PokemonImages extends EventEmitter {
     }
 
     _loadImages(variant, dir) {
-        let basePath = path.resolve(Paths.NodeRoot, Config.Current.pokemonImagesPath),
+        let basePath = path.resolve(Paths.NodeRoot, Config.pokemonImagesPath),
             formsPath = path.resolve(basePath, 'forms');
 
         if (!fs.existsSync(dir)) {

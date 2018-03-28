@@ -1,3 +1,49 @@
 <div class="manager">
-    
+    <div class="container">
+        <div class="card bg-white d-block">
+            <div class="card-header">Soul Links</div>
+            <table id="pokemonTable" class="table">
+                <thead>
+                    <tr class="bg-light">
+                        <th colspan="5">Unlinked Pokémon</th>
+                    </tr>
+                </thead>
+                <tbody class="unlinked-pokemon slide-down">
+                    <tr class="placeholder">
+                        <td colspan="5" class="text-muted text-center">no pending links</td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr class="bg-light">
+                        <th colspan="5">Linked Pokémon</th>
+                    </tr>
+                </thead>
+                <tbody class="linked-pokemon slide-down">
+                    <tr class="placeholder">
+                        <td colspan="5" class="text-muted text-center">no linked pokémon</td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr class="bg-light">
+                        <th colspan="5" id="graveyardheader">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody class="graveyard slide-up">
+                    <tr class="placeholder">
+                        <td colspan="5" class="text-muted text-center">
+                            the graveyard is empty... for now
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <% if (config.soulLink.linking.method !== 'manual') { %>
+                <div class="card-body text-right bg-secondary">
+                    <input id="autoLink" type="checkbox" class="form-check-input" />
+                    <label for="#autoLink" class="form-check-label">
+                        Try to automatically link Pokémon
+                    </label>
+                </div>
+            <% } %>
+        </div>
+    </div>
 </div>

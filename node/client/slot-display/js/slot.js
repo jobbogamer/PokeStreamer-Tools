@@ -1,7 +1,7 @@
 import config from 'config.json';
 import Nuzlocke from './nuzlocke';
 import Soullink from './soulLink';
-import './jQuery.extensions';
+import '../../jQuery.extensions';
 
 export default class Slot {
     constructor(slot, $slot) {
@@ -19,11 +19,14 @@ export default class Slot {
         this.$deathMessages = $slot.find('.deathMessage1, .deathMessage2, .deathMessage3');
         this.$allText = $slot.find('.level, .species, .nickname, .deathMessage1, .deathMessage2, .deathMessage3');
         
-        this.slChangeId = -2;
-        this.$soulLinkImg = $slot.find('.soul-linked > img');
-        this.$soulLinkLevel = $slot.find('.sl-level');
-        this.$soulLinkSpecies = $slot.find('.sl-species');
-        this.$soulLinkNickname = $slot.find('.sl-nickname');
+        if (config.soulLink.enabled) {
+            this.slChangeId = -2;
+            this.$soulLinkImg = $slot.find('.soul-linked > img');
+            this.$soulLinkLevel = $slot.find('.sl-level');
+            this.$soulLinkSpecies = $slot.find('.sl-species');
+            this.$soulLinkNickname = $slot.find('.sl-nickname');
+            this.$allText.add('.sl-level, .sl-species, .sl-nickname');
+        }
         
         this.$images = $slot.find('img');
         
@@ -70,6 +73,9 @@ export default class Slot {
             $allText,
             $soulLinkImg,
             $images,
+            $soulLinkLevel,
+            $soulLinkSpecies,
+            $soulLinkNickname,
         } = this;
         
         if (val === 'reset') {

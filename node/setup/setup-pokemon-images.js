@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Config from '../server/config';
 
-const config = Config.Current,
+const config = Config,
     pokemonImagesPath = path.resolve(__dirname, '..', config.pokemonImagesPath),
     pokemonImagesFormsPath = path.resolve(pokemonImagesPath, 'forms');
 

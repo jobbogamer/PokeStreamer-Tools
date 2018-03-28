@@ -390,7 +390,7 @@ function fn()
             end -- for loop slots
             
             if #slot_changes > 0 then
-                send_slots(slot_changes, gen)
+                send_slots(slot_changes, gen, game, subgame)
             end
 
             last_check = current_time

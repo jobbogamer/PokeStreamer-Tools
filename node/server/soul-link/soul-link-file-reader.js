@@ -3,7 +3,7 @@ import path from 'path';
 import EventEmitter from 'events';
 
 import { Paths } from '../constants';
-import Pokedex from '../pokemon/pokedex';
+import Pokedex from '../../common/pokedex';
 
 const {
     NodeRoot,

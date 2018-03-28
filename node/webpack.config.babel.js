@@ -9,13 +9,13 @@ import compileConfig from './common/configCompiler';
 
 function genConfig(env, options) {
     const config = compileConfig(),
-    isDevServer = path.basename(require.main.filename) === 'webpack-dev-server.js',
-    isHot = isDevServer && options.hot;
+        isDevServer = path.basename(require.main.filename) === 'webpack-dev-server.js',
+        isHot = isDevServer && options.hot;
     
     const NODE_ENV = (options.mode || process.env.NODE_ENV || 'production').trim(),
-    isProd = NODE_ENV === 'production',
-    isDev = !isProd,
-    host = `${config.server.host}:${config.server.port}`;
+        isProd = NODE_ENV === 'production',
+        isDev = !isProd,
+        host = `${config.server.host}:${config.server.port}`;
     
     function addDevServer(entry) {
         let entries = [ entry ];
@@ -36,7 +36,6 @@ function genConfig(env, options) {
             index: addDevServer('./client/slot-display/index'),
             soullink: addDevServer('./client/soullink-manager/index'),
             vendors: [ "lodash" ],
-            // pokemonIcons: './client/soullink-manager/pokemon-icons',
         },
         
         output: {
@@ -54,9 +53,6 @@ function genConfig(env, options) {
                         name: 'vendors',
                         minChunks: Infinity,
                     },
-                    // pokemonIcons: {
-                    //     name: 'pokemonIcons',
-                    // }
                 }
             },
         },
@@ -102,12 +98,12 @@ function genConfig(env, options) {
                     test: /\.ejs$/,
                     loader: 'ejs-loader',
                 },
-                // {
-                //     test: /\.png$/,
-                //     use: [
-                //         'url-loader'
-                //     ]
-                // }
+                {
+                    test: /\.png$/,
+                    use: [
+                        'url-loader'
+                    ]
+                }
             ],
         },
         

@@ -1,0 +1,9 @@
+<% let pokemonIcons = require('../js/pokemon-icons').default %>
+<td class="traits text-nowrap <%- pokemon.shiny %> <%- pokemon.static %>">
+    <div>
+        <img class="icon shiny-icon" data-toggle="tooltip" data-placement="top" title="Shiny pokémon" src="<%- pokemonIcons['ponyta']['shiny'] %>" />
+        <img class="icon static-icon" data-toggle="tooltip" data-placement="top" title="Static encounter" src="<%- pokemonIcons['snorlax']['regular'] %>" />
+        <img class="icon static-maybe-icon" data-toggle="tooltip" data-placement="top" title="Possible static encounter" src="<%- pokemonIcons['sudowoodo']['regular'] %>" />
+        <img class="icon boring-icon" data-toggle="tooltip" data-placement="top" title="Regular pokémon" src="<%- pokemonIcons['magikarp']['regular'] %>" />
+    </div>
+</td>

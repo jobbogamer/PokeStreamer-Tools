@@ -1,9 +1,11 @@
 -- IMPORTANT: if you edit this value, you must also edit it in /node/config.advanced.json
 local server_port = 8081
-local api_host = 'api.stream.pokemon-soul.link'
+local server_host = 'stream.pokemon-soul.link'
+
+local api_host = 'api.' .. server_host
 local api_root = "http://" .. api_host .. ":" .. tostring(server_port) .. "/api"
 
-local print_debug_messages = false
+local print_debug_messages = true
 local print_debug = require("print_debug")
 print_debug = print_debug(print_debug_messages)
 
@@ -26,9 +28,47 @@ function reset_server()
     http.request(api_root .. "/reset");
 end
 
-function send_request(request_body, generation)
+function get_game_version(gen, game, subgame)
+    if gen < 3 or gen > 5 then
+        print("[ERROR] Invalid game generation:", gen)
+        return nil
+    end
+
+    if gen == 3 then
+        if game > 6 then 
+            print("[ERROR] Invalid game selected for gen 3:", game)
+            return nil
+        end
+        
+        game = game % 3
+        return game == 0 and (subgame == 1 and "fr" or "lg")
+            or game == 1 and (subgame == 1 and "r" or "s")
+            or "e"
+    elseif gen == 4 then
+        if game > 3 then
+            print("[ERROR] Invalid game selected for gen 4:", game)
+            return nil
+        end
+
+        return game == 1 and (subgame == 1 and "d" or "p")
+            or game == 2 and (subgame == 1 and "g" or "ss")
+            or "pt"
+    else -- gen 5
+        if game < 4 or game > 7 then
+            print("[ERROR] Invalid game selected for gen 5:", game)
+            return nil
+        end
+
+        return game == 4 and "b" 
+            or game == 5 and "w"
+            or game == 6 and "b2"
+            or game == 7 and "w2"
+    end
+end
+
+function send_request(request_body, generation, game_version)
     print_debug("Generation" .. tostring(generation))
-    print_debug("Sending server request")
+    print_debug("Sending server request to", api_host)
     local pretty_print = string.gsub(request_body, "\n", "\r\n"); 
     print_debug(pretty_print)
 
@@ -39,7 +79,8 @@ function send_request(request_body, generation)
         headers = {
             ["Content-Type"] = "application/json",
             ["content-length"] = #request_body,
-            ["Pokemon-Generation"] = generation
+            ["Pokemon-Generation"] = generation,
+            ["Pokemon-Game"] = game_version
         }
     }
 
@@ -48,7 +89,12 @@ function send_request(request_body, generation)
     end
 end
 
-function send_slots(slots_info, generation)
+function send_slots(slots_info, generation, game, subgame)
+    local game_version = get_game_version(generation, game, subgame)
+    if game_version == nil then
+        return
+    end
+
     local tmp_info = {}
     for i, v in ipairs(slots_info) do
         tmp_info[#tmp_info + 1] = get_slot_data(v)
@@ -56,7 +102,7 @@ function send_slots(slots_info, generation)
 
     if #tmp_info <= 20 then
         local request_body = json.encode(tmp_info, { indent = print_debug_messages })
-        send_request(request_body, generation)
+        send_request(request_body, generation, game_version)
     else
         local idx = 1
         while idx < #tmp_info do
@@ -70,7 +116,7 @@ function send_slots(slots_info, generation)
             end
 
             local request_body = json.encode(batch, { indent = print_debug_messages })
-            send_request(request_body, generation)
+            send_request(request_body, generation, game_version)
         end
     end
 end

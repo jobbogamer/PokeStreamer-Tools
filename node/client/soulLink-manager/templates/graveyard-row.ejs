@@ -1,0 +1,22 @@
+<tr id="<%- pokemon.pid %>" class="bg-dark">
+    <%= require('./pokemon-cell.ejs')({ pokemon }) %>
+    <td class="location"><div><%- pokemon.locationMetName %></div></td>
+    <%= require('./traits-cell.ejs')({ pokemon }) %>
+    <td>
+        <div>
+            <% if (linkedPokemon) { %>
+                <img class="icon" src="<%- linkedPokemon.icon %>" />
+                <span class="nickname"><%- linkedPokemon.nickname %></span>
+                <span class="species"><%- linkedPokemon.speciesName %></span>
+            <% } else { %>
+                <img class="icon void" src="/icons/unknown.png" />
+                <span class="spcies">The soulless nothingness of the void</span>
+            <% } %>
+        </div>
+    </td>
+    <td colspan="2" class="text-right">
+        <div>
+            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-outline-light btn-sm">Revive</button>
+        </div>
+    </td>
+</tr>

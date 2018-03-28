@@ -1,3 +1,5 @@
+import PokedexLengths from './pokemon-generation-pokedex-lengths';
+
 let Pokedex = [ 
     "Egg",
     "Bulbasaur",
@@ -810,6 +812,23 @@ let Pokedex = [
 ];
 
 Pokedex._ids = {};
-Pokedex.Lower = Pokedex.map((p, i) => p.toLowerCase());
+
+function getLowerCase(dex) {
+    return dex.map(p => p.toLowerCase());
+}
+
+function getFileNames(dex) {
+    return dex.Lower.map(p => p.replace(/ /g, '-').replace(/[\.’]/g, '').replace('♀', '-f').replace('♂', '-m'));
+}
+
+Pokedex.Lower = getLowerCase(Pokedex);
+Pokedex.FileNames = getFileNames(Pokedex);
 
 export default Pokedex;
+export function getPokedex (generation) {
+    generation = generation || 7;
+    let dex = Pokedex.slice(0, PokedexLengths[generation]);
+    dex.Lower = getLowerCase(dex);
+    dex.FileNames = getFileNames(dex);
+    return dex;
+}

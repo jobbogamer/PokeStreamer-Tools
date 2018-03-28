@@ -1,3 +1,4 @@
+import express from 'express';
 import useragent from 'useragent';
 import EventEmitter from 'events';
 
@@ -8,16 +9,19 @@ import Pokemon from './pokemon/pokemon';
 import Slot from './slot/slot';
 import SoulLinkFileReader from './soul-link/soul-link-file-reader';
 import Nuzlocke from './nuzlocke';
-// import SlotManager from './slot/slot-manager';
-// import SoulLink from './soul-link';
+import SoulLink from './soul-link';
 
 const {
     KeepAliveIntervalMS,
     CleanConnectionIntervalMS
 } = APIConstants;
 
-let connections = new Set(),
-    dirtySlots = false;
+let slotConnections = new Set(),
+    slConnections = new Set(),
+    dirtySlots = false,
+    deadConnectionInterval,
+    router,
+    gameVersion;
 
 let knownPokemon = {},
     slots = [null, null, null, null, null, null];
@@ -25,23 +29,40 @@ let knownPokemon = {},
 class API extends EventEmitter {
     constructor() {
         super();
+
+        this.Router = this.Router.bind(this);
     }
     
     init(app) {
-        app.get(/^\/api\/slot\/([1-6]|all)$/i, getSlot);
-        app.get(/^\/api\/reset$/i, reset);
-        app.post(/^\/api\/update$/i, update);
+        router = new express.Router();
+        router.get(/^\/slot\/([1-6]|all)$/i, getSlot);
+        router.get('/reset', reset);
+        router.post('/update', update);
+
+        // soul link manager
+        if (SoulLink.Enabled && SoulLink.LinkingMethod === 'manual') {
+            router.ws('/soulLink', getSoulLink);
+        }
         
+        clearInterval(cleanDeadConnections);
         setInterval(cleanDeadConnections, CleanConnectionIntervalMS);
+    }
+
+    Router(req, res, next) {
+        if (!router) {
+            this.init();
+        }
+
+        router(req, res, next);
     }
 }
 
 function cleanDeadConnections() {
     let deadConnections = 0;
-    for (let conn of connections) {
+    for (let conn of slotConnections) {
         if (conn.res.connection.destroyed) {
             deadConnections++;
-            connections.delete(conn);
+            slotConnections.delete(conn);
         }
     }
     
@@ -76,50 +97,47 @@ function getSlot(req, res, next) {
 
     if (req.params[0] === 'all') {
         slot = 'all';
-        console.info(`Acquired connection for all slots at ${conn.time}.  User-agent: ${conn.userAgent}.`);
+        console.info(`Acquired connection for all slots.  User-agent: ${conn.userAgent}.`);
         
         res.sseSend(slots);
     } else {
         slot = parseInt(req.params[0]) - 1;
-        console.info(`Acquired connection for slot ${slot} at ${conn.time}.  User-agent: ${conn.userAgent}.`);
+        console.info(`Acquired connection for slot ${slot}.  User-agent: ${conn.userAgent}.`);
         
         res.sseSend(slots[slot]);
     }
     
     conn.slot = slot;
-    connections.add(conn);
+    slotConnections.add(conn);
     
     req.on('close', (function () {
-        console.debug(`Connection initialized at ${conn.time} closed.`);
-        connections.delete(this);
-        console.debug(`Remaining open connections: ${connections.size}`);
+        console.debug(`Connection initialized closed.`);
+        slotConnections.delete(this);
+        console.debug(`Remaining open connections: ${slotConnections.size}`);
     }).bind(conn));
     
-    console.debug(`Open connections: ${connections.size}`);
+    console.debug(`Open connections: ${slotConnections.size}`);
     next();
 }
 
 function reset(req, res, next) {
     console.log('Sending reset to all slot connections');
     let sentTo = 0;
-    for (let conn of connections) {
+    for (let conn of slotConnections) {
         conn.res.sseSend('reset');
         sentTo++;
     }
     
     console.log(`Sent reset to ${sentTo} connections`);
     
-    // SlotManager.resetPlayer();
     res.sendStatus(200);
 }
 
 function update(req, res, next) {
     console.info(`Received update on from Lua script`);
-    console.trace(JSON.stringify(req.body, null, 2));
+    console.log(JSON.stringify(req.body, null, 2));
     
     let hadError = false;
-    assertGeneration(req.header('Pokemon-Generation'));
-
     let slotsToSend = [];
     
     try
@@ -129,6 +147,10 @@ function update(req, res, next) {
                 isBox = !!box;
             slot--;
             box && box--;
+
+            if (!pokemon) { continue; }
+            pokemon.generation = parseInt(req.header('Pokemon-Generation'));
+            pokemon.gameVersion = req.header('Pokemon-Game');
             
             let pkmn = pokemon ? new Pokemon(pokemon) : null,
                 pid = pkmn && pkmn.pid;
@@ -163,11 +185,14 @@ function update(req, res, next) {
                 slots[slot] = new Slot(slot, changeId, pkmn);
                 slotsToSend.push(slots[slot]);
             }
-            // if (isBox) {
-            //     SlotManager.updateBankSlot(box, slot, changeId, pkmn);
-            // } else {
-            //     SlotManager.updatePartySlot(slot, changeId, pkmn);
-            // }
+
+            // temp debug code
+            slConnections.forEach(ws => {
+                ws.send(JSON.stringify({
+                    messageType: 'addPokemon',
+                    pokemon: pkmn.clientJSON,
+                }));
+            });
         }
     } catch (ex) {
         console.error(ex);
@@ -183,7 +208,7 @@ function update(req, res, next) {
     }
 
     if (slotsToSend.length) {
-        for (let conn of connections) {
+        for (let conn of slotConnections) {
             if (conn.slot === 'all') {
                 conn.res.sseSend(slotsToSend);
             } else {
@@ -205,7 +230,7 @@ SoulLinkFileReader.on('update', links => {
     }
 
     if (slotsToSend.length) {
-        for (let conn of connections) {
+        for (let conn of slotConnections) {
             if (conn.slot === 'all') {
                 conn.res.sseSend(slotsToSend);
             } else {
@@ -215,42 +240,23 @@ SoulLinkFileReader.on('update', links => {
     }
 });
 
-// function onSlotUpdate(e) {
-//     dirtySlots = true;
-// }
+function getSoulLink(ws, req) {
+    console.debug('Setting up SoulLink WebSocket connection');
+    ws.on('open', function () {
+        console.log('Connection opened');
+    });
 
-// setInterval(sendToClient, 1000);
-// function sendToClient() {
-//     if (!dirtySlots) {
-//         return;
-//     }
+    ws.on('message', function (msg) {
+        console.log('Message received from client');
+    });
 
-//     let slots = SlotManager.currentSlots;
+    ws.on('close', (function() {
+        console.log('WebSocket connection closed');
+        slConnections.delete(this);
+    }).bind(ws));
 
-//     let sentTo = 0;
-//     for (let conn of connections) {
-//         if (conn.res.connection.destroyed) {
-//             continue;
-//         }
-    
-//         sentTo++;
-//         if (conn.slot === 'all') {
-//             conn.res.sseSend(slots);
-//         } else if (slots[conn.slot]) {
-//             conn.res.sseSend(slots[conn.slot]);
-//         }
-//     }
-    
-//     console.log(`Sent update to ${sentTo} open connections.`);
-//     dirtySlots = false;
-// }
-
-function assertGeneration(luaGen) {
-    if (parseInt(luaGen) !== Config.Current.generation) {
-        console.error(`Generation mismatch: Lua is running gen ${luaGen}.  Node is running gen ${Config.Current.generation}.`);
-    }
+    slConnections.add(ws);
 }
 
-// SlotManager.on('update', onSlotUpdate);
 const api = new API();
 export default api;

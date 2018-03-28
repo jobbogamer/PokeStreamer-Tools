@@ -3,16 +3,6 @@
     example.
 */
 {
-    /*
-    Pokemon Generation
-    
-    Valid values: 3 and 4 (eventually 5?).  This value must match the generation and selected game of the Lua script
-    you are running, or Pokémon may not display properly.
-    */
-    "generation": 4,
-
-    "gameVersion": "ss",
-    
     "isRandomized": true,
     
     // Path to the image used when a slot is empty relative to /node/ directory.
@@ -215,7 +205,7 @@
         "%deathMessage3Text": {},
         
         // styles to apply to the div that contains the pokemon image
-        "%imageWrapperStyle": {
+        "%imageWrapper": {
             "border-radius": "0 6px 0 0",
             "border": "0 solid transparent",
 
@@ -232,17 +222,11 @@
         // • veritical: a vertical division with pokemon to the left and right
         // • thumbnail: your pokemon is displayed normally, and its soul-linked pokemon is overlayed in the bottom right
         //              corner
-        // • custom: (TODO) no style is applied except for the clipping SVGs you specify below; you must provide your 
-        //           own styles by editing /node/client/sass/* files
+        // • custom: no style is applied; you must provide your own styles by editing /node/client/sass/* files
         //
-        // NOTE: your pokemon will always be on the top (or the left in the vertical case unless you set 
-        //       soulLinkSwap below)
+        // NOTE: your pokemon will always be on the top (or the left in the vertical case) unless you set soulLinkSwap
+        //       below
         "soulLinkOrientation": "diagonal-backward",
-        
-        // TODO!
-        // if you want to use an SVG file to determine the clipping, specify the paths relative to /node/public
-        // "customClipSvgTop": "path/to/svg",
-        // "customClipSvgBottom": "path/to/svg",
         
         // set this to true if you want your pokemon to be on bottom (or on the right side in the vertical case)
         "soulLinkSwap": false,
@@ -259,7 +243,7 @@
         },
         
         // styles for the soulLinked image wrapper
-        "%soulLinkedWrapperStyle": {
+        "%soulLinkedWrapper": {
             "border-radius": "0 0 0 6px",
             "border": "0 solid transparent",
 
@@ -275,5 +259,6 @@
         },
     },
 
-    "logLevel": "info",
+    "logLevel": "debug",    
+    // "logLevel": "info",
 }

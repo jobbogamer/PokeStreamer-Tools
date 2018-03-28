@@ -186,16 +186,12 @@ $vShift: $imageShift / $imageWrapperRatio;
 
     &:not(.soul-linked) {
       &.invalid {
-        @extend %invalidPokemonStyle !optional;
+        @extend %invalidPokemon !optional;
       }
     }
 
     &.soul-linked {
-      @extend %soulLinkedWrapperStyle !optional;
-
-      &.boxed {
-        @extend %boxedStyle !optional;
-      }
+      @extend %soulLinkedWrapper !optional;
     }
   }
 }
