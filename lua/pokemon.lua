@@ -206,12 +206,12 @@ function Pokemon.__eq(left, right)
             end
         
             if tmpL ~= tmpR then
-                print(string.format("%s: %s -> %s", k, tostring(tmpL), tostring(tmpR)))
+                -- print(string.format("%s: %s -> %s", k, tostring(tmpL), tostring(tmpR)))
                 return false
             end
         else
             if left[k] ~= right[k] then
-                print(string.format("%s: %s -> %s", k, tostring(left[k]), tostring(right[k])))
+                -- print(string.format("%s: %s -> %s", k, tostring(left[k]), tostring(right[k])))
                 return false
             end
         end

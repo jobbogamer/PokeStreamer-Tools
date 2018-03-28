@@ -438,17 +438,17 @@ function getNatClr(a)
 end
 
 function read_pokemon_words(addr, num_words)
-	local battle_addr = addr + 0x4E9F0
 	local pid = memory.readdword(addr)
-	in_battle = memory.readdword(battle_addr) == pid and num_words > 0x88
+	in_battle = check_is_in_battle(addr, pid)
 	local num_bytes = num_words * 2
-
 	local bytes
+
 	-- check that num_words > 0x88 in case we're looking at a boxed pokemon...?  doesn't make sense that this would ever
 	-- happen, but doesn't hurt to check either
 	if in_battle and num_bytes > 0x88 then
 		-- we can get live stats for the battle stat block -- don't trust it for other things like exp
 		-- bytes = memory.readbyterange(addr, 0x88)
+		local battle_addr = addr + 0x4E9F0
 		bytes = memory.readbyterange(battle_addr, 0x88)
 		local battle_bytes = memory.readbyterange(battle_addr + 0x88, num_bytes - 0x88)
 		for _, b in ipairs(battle_bytes) do
@@ -545,8 +545,21 @@ function kill_pokemon(pidAddr)
 	end
 end
 
+-- attempt to check if in battle by comparing pid against all 4 places it seems to appear when in battle
+-- far from foolproof, but slightly better than nothing
+function check_is_in_battle(addr, pid)
+	local battle_addr = addr + 0x4E9F0
+	for i = 0, 3 do
+		if memory.readdword(battle_addr + (i * 0x400000), death_code) ~= pid then
+			return false
+		end
+	end
+
+	return true
+end
+
 -- attempt to check if in battle by examining enemy memory
--- doesn't actually work....
+-- doesn't actually work.... may debug this later
 -- function get_is_in_battle()
 -- 	submode = 1
 -- 	getPidAddr() -- this sets enemyAddr

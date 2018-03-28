@@ -114,7 +114,9 @@ function reset(req, res, next) {
 }
 
 function update(req, res, next) {
-    console.info(`Received update on from Lua script:\n${JSON.stringify(req.body, null, 2)}`);
+    console.info(`Received update on from Lua script`);
+    console.trace(JSON.stringify(req.body, null, 2));
+    
     let hadError = false;
     assertGeneration(req.header('Pokemon-Generation'));
 
