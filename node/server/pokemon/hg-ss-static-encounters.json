@@ -2989,6 +2989,19 @@
             "SkipFormCheck": false,
             "Roaming": false,
             "EggEncounter": false
+        },
+        {
+            "EncounterId": 17,
+            "EncounterType": null,
+            "Species": 175,
+            "Level": null,
+            "LevelMin": null,
+            "LevelMax": null,
+            "EggLocation": 129,
+            "Gender": -1,
+            "Form": 0,
+            "Location": null,
+            "Gift": true
         }
     ],
     "ss": [
@@ -5981,6 +5994,19 @@
             "SkipFormCheck": false,
             "Roaming": false,
             "EggEncounter": false
+        },
+        {
+            "EncounterId": 17,
+            "EncounterType": null,
+            "Species": 175,
+            "Level": null,
+            "LevelMin": null,
+            "LevelMax": null,
+            "EggLocation": 129,
+            "Gender": -1,
+            "Form": 0,
+            "Location": null,
+            "Gift": true
         }
     ]
 }

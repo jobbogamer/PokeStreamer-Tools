@@ -43,6 +43,7 @@ class StaticEncounters {
             EncounterType: pokemon.encounterType,
             EggLocation: pokemon.eggLocationMet || 0,
             Form: pokemon.alternateFormId,
+            Gender: pokemon.isFemale ? 1 : 0,
         };
     
         if (!Config.Current.isRandomized) {
@@ -52,7 +53,15 @@ class StaticEncounters {
         for (let enc of this._encounters) {
             let found = true;
             for (let [c, v] of Object.entries(criteria)) {
-                if (enc[c] !== v) {
+                if (!enc[c]) {
+                    // skip criteria for which the static encounter doesn't care 
+                    // (e.g. if I don't know what the encounter type is for Togepi's Myster Egg and I set it to null)
+                    continue;
+                }
+
+                if (c === 'Gender' && enc[c] !== -1 && enc[c] !== v) {
+                    found = false;
+                } else if (enc[c] !== v) {
                     found = false;
                     break;
                 }
