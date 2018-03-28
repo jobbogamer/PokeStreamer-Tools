@@ -29,7 +29,7 @@ if (Config.configOverride &&
      Config.configOverride instanceof Array && Config.configOverride.reduce((p, n) => Math.max(p, n.search(/config\.fail\.json/)), -1) > -1)) {
     addGraveyardName(`Failstream's Happy Place`, 1);
     addGraveyardName(`Failstream's Home Away from Home`, 1);
-    addGraveyardName(`Failstream's Default First Date Restaurant`, .5);
+    addGraveyardName(`Failstream's Preferred First Date Restaurant`, .5);
 }
 
 export { getGraveyardName };
