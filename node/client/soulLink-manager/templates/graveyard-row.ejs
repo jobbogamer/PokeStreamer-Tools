@@ -6,7 +6,7 @@
     <%= require('./traits-cell.ejs')({ pokemon }) %>
     <td>
         <% if (linkedPokemon) { %>
-            <%= require('./pokemon-cell.ejs')({ pokemon }) %>
+            <%= require('./pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
         <% } else { %>
             <div>
                 <span class="species">The soulless nothingness of the void</span>

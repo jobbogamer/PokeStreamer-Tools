@@ -86,6 +86,7 @@ export default class Slot {
             $nickname.removeClass('no-nickname');
             $images.removeAttr('src');
             $slot.removeClass('dead');
+            return;
         } else if (this.slot !== val.slot) {
             return;
         } else if (val.applyVoid) {
