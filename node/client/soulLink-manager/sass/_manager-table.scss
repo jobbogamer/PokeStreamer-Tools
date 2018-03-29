@@ -17,7 +17,6 @@
         padding-top: 0;
         padding-bottom: 0;
 
-
         > div {
           height: 0;
           margin: 0;
@@ -29,7 +28,6 @@
           position: relative;
 
           display: flex;
-          // justify-content: space-around;
         }
       }
       
@@ -37,10 +35,6 @@
         height: 2.5em;
         opacity: 1;
       }
-    }
-
-    button {
-      margin: auto;
     }
   }
   
@@ -53,52 +47,9 @@
   &.slide-up > tr > td > div {
     bottom: 0;
   }
-
-  // stolen from https://cssanimation.rocks/list-items/#swinging-in
-  &.swing {
-    perspective: 100%;
-    
-    > tr:not(.placeholder) {
-      transform: rotateX(-90deg);
-      transition: all 0.5 cubic-bezier(.36, -0.64, .34, 1.76);
-      
-      &.show {
-        transform: none;
-        transition: all 0.5 cubic-bezier(.36, -0.64, .34, 1.76);
-      }
-    }
-  }
 }
 
 .nickname:not(:empty):after {
   content: "/";
   margin: 0 8px;
-}
-
-.traits {
-  text-align: center;
-
-  &:not(.static), &.static.maybe {
-    img.static-icon {
-      display: none;
-    }
-  }
-  
-  &:not(.maybe), &:not(.static) {
-    img.static-maybe-icon {
-      display: none;
-    }
-  }
-  
-  &:not(.shiny) {
-    img.shiny-icon {
-      display: none;
-    }
-  }
-  
-  &.shiny, &.static, &.static.maybe {
-    img.boring-icon {
-      display: none;
-    }
-  }
 }

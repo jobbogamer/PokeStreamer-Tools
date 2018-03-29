@@ -6,6 +6,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 // import TidyHtmlWebpackPlugin from 'tidy-html-webpack-plugin';
 import compileConfig from './common/configCompiler';
+import './common/extensions';
 
 function genConfig(env, options) {
     const config = compileConfig(),
@@ -18,10 +19,10 @@ function genConfig(env, options) {
         host = `${config.server.host}:${config.server.port}`;
     
     function addDevServer(entry) {
-        let entries = [ entry ];
+        let entries = Array.makeArray(entry);
         
         if (isHot) {
-            entry.push('webpack/hot/only-dev-server');
+            entries.push('webpack/hot/only-dev-server');
         }
         
         if (isDevServer) {
@@ -34,32 +35,44 @@ function genConfig(env, options) {
     let webpackConfig = {
         entry: {
             index: addDevServer('./client/slot-display/index'),
+            // pokemonIcons: './client/pokemon-icons',
             soullink: addDevServer('./client/soullink-manager/index'),
-            vendors: [ "lodash" ],
+            vendors: [ 'lodash' ],
         },
         
         output: {
             // filename: opt => opt.chunk.name === 'index' ? 'index.js' : '[name]/[name].js',
-            filename: '[name]/index.js',
+            filename: '[name].js',
+            chunkFilename: '[name].js',
             path: path.resolve(__dirname, 'public'),
-            publicPath: '/',
+            // publicPath: '/',
         },
         
         optimization: {
             minimize: isProd && !isHot, // for some reason, hot replacement of SASS isn't working in development mode
-            splitChunks: {
-                cacheGroups: {
-                    vendor: {
-                        name: 'vendors',
-                        minChunks: Infinity,
-                    },
-                }
-            },
+            // splitChunks: {
+            //     // chunks: 'all',
+            //     //     // name: true,
+            //     //     // reuseExistingChunks: true,
+            //     cacheGroups: {
+            //         //     //     default: false,
+            //         pokemonIcons: {
+            //             test: /pokemon-icons\.js$/,
+            //             name: 'pokemon-icons',
+            //             minChunks: Infinity,
+            //         },
+            //         vendor: {
+            //             name: 'vendors',
+            //             minChunks: Infinity,
+            //         }
+            //     }
+            // },
         },
         
         resolve: {
             alias: {
                 'config.json': path.resolve(__dirname, 'config.json'),
+                'pokedex': path.resolve(__dirname, 'common/pokedex'),
             }
         },
         
@@ -128,11 +141,7 @@ function genConfig(env, options) {
                     target: `http://api.${config.server.host}:${config.server.devServerPort}/`,
                     secure: false,
                     ws: true
-                },
-                // '/icons': {
-                //     target: `http://${config.server.host}:${config.server.devServerPort}/`,
-                //     secure: false,
-                // }
+                }
             },
         }
     };
@@ -144,34 +153,38 @@ function genConfig(env, options) {
     }
     
     addPlugins([
-        new webpack.DefinePlugin({
-            NUM_SLOTS: 6,
-            ENVIRONMENT: NODE_ENV,
-            IS_HOT: isHot,
-            ALL_IN_ONE: config.layout.allInOne,
-            API_BASE_URL: `'api.${host}/api'`,
-            LINKING_METHOD: `'${config.soulLink.linking.method}'`,
-        }),
-        new webpack.ProvidePlugin({
-            _: 'lodash',
-        }),
-        new ExtractTextPlugin({ 
-            filename: '[name]/style.css',
-        }),
-        new HtmlWebpackPlugin({
-            template: '!!ejs-loader!./client/slot-display/index.ejs',
-            filename: 'index.html',
-            chunks: ['index'],
-            inject: 'body',
-            cache: true
-        }),
-        new HtmlWebpackPlugin({
-            template: '!!ejs-loader!./client/soulLink-manager/index.ejs',
-            filename: 'soullink/index.html',
-            chunks: ['soullink'],
-            inject: 'body',
-            cache: true
-        }),
+            new webpack.DefinePlugin({
+                NUM_SLOTS: 6,
+                ENVIRONMENT: NODE_ENV,
+                IS_HOT: isHot,
+                
+                ALL_IN_ONE: config.layout.allInOne,
+                API_BASE_URL: `'api.${host}/api'`,
+                
+                LINKING_METHOD: `'${config.soulLink.linking.method}'`,
+                MANUAL_LINKING: config.soulLink.linking.method === 'manual',
+            }),
+            new webpack.ProvidePlugin({
+                _: 'lodash',
+            }),
+            new CopyWebpackPlugin([{ from: './resources/*.png', flatten: true }]),
+            new ExtractTextPlugin({ 
+                filename: '[name].css',
+            }),
+            new HtmlWebpackPlugin({
+                template: '!!ejs-loader!./client/slot-display/index.ejs',
+                filename: 'index.html',
+                chunks: ['index'],
+                inject: 'body',
+                cache: true
+            }),
+            new HtmlWebpackPlugin({
+                template: '!!ejs-loader!./client/soulLink-manager/index.ejs',
+                filename: 'soullink/index.html',
+                chunks: ['soullink'],
+                inject: 'body',
+                cache: true
+            }),
         // new TidyHtmlWebpackPlugin({
         //     tabSize: 4,
         // }),
@@ -180,9 +193,10 @@ function genConfig(env, options) {
     if (isDev || isHot) {
         addPlugins([
             new webpack.SourceMapDevToolPlugin({
-                test: /\.js$|\.css$/,
+                test: /\.js$|\.s?css$/,
                 filename: '[file].map',
-                publicPath: '/',
+                exclude: [ 'vendors.js' ],
+                // publicPath: '/',
             }),
         ]);
     }

@@ -1,11 +1,29 @@
 <tr id="<%- pokemon.pid %>">
-    <%= require('./pokemon-cell.ejs')({ pokemon: pokemon }) %>
+    <td class="pokemon">
+        <%= require('./pokemon-cell.ejs')({ pokemon: pokemon }) %>
+    </td>
     <td class="location"><div><%- pokemon.locationMetName %></div></td>
     <%= require('./traits-cell.ejs')({ pokemon }) %>
-    <%= require('./pokemon-cell.ejs')({ pokemon: linked }) %>
+    <td class="linked-pokemon">
+        <% if (MANUAL_LINKING) { %>
+            <div class="dropdown">
+            </div>
+        <% } else { %>
+            <%= require('./pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
+        <% } %>
+    </td>
     <td>
         <div>
-            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-danger btn-sm">
+            <% if (MANUAL_LINKING) { %>
+                <button type="button" disabled data-pid="<%- pokemon.pid %>" class="btn-update-link btn btn-primary btn-sm">
+                    Update
+                </button>
+            <% } %>
+        </div>
+    </td>
+    <td>
+        <div>
+            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-light btn-sm">
                 Unlink
             </button>
         </div>

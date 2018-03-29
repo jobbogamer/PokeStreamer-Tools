@@ -1,0 +1,10 @@
+@import "atom-one-dark.min";
+
+#md {
+  overflow: hidden;
+  
+  > pre {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+}

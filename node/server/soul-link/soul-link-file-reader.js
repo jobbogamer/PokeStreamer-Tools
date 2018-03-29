@@ -19,8 +19,9 @@ class SoulLinkFileReader extends EventEmitter {
 
         this.parseData = this.parseData.bind(this);
         this.parseData();
-        this._filewatcher = new fs.watch(SoulLinkFile);
-        this._filewatcher.on('change', this.parseData);
+        this.emit('update', Object.assign({}, this._links));
+        // this._filewatcher = new fs.watch(SoulLinkFile);
+        // this._filewatcher.on('change', this.parseData);
     }
 
     parseData() {
@@ -74,9 +75,9 @@ class SoulLinkFileReader extends EventEmitter {
         }
 
         this._links = next;
-        if (changed) {
-            this.emit('update', next);
-        }
+        // if (changed) {
+        //     this.emit('update', next);
+        // }
     }
 
     addPokemon(pokemon) {
@@ -85,8 +86,26 @@ class SoulLinkFileReader extends EventEmitter {
             linkedSpecies: ''
         };
 
-        let fileLinks = Object.assign({}, this._links);
-        for (let [pid, link] of Object.entries(fileLinks)) {
+        this._writeFile();
+    }
+
+    // eventually linkedSpecies will be linkedPid for automatic linking
+    setLink(pid, linkedSpecies) {
+        if (!this._links[pid]) {
+            console.warn(`Attempted to add link to a pokemon we don't know about...`);
+            return;
+        }
+
+        this._links[pid].linkedSpecies = linkedSpecies;
+
+        this._writeFile();
+        this.emit('update', { [pid]: this._links[pid] });
+    }
+
+    _writeFile() {
+        let fileLinks = {};
+        for (let [pid, link] of Object.entries(this._links)) {
+            fileLinks[pid] = Object.assign({}, link);
             if (link.linkedSpecies === null) {
                 fileLinks[pid].linkedSpecies = '';
             } else if (link.linkedSpecies.constructor === Number) {
@@ -96,10 +115,10 @@ class SoulLinkFileReader extends EventEmitter {
 
         fs.writeFileSync(SoulLinkFile, JSON.stringify(fileLinks, null, 2));
 
-        if (!this._filewatcher) {
-            this._filewatcher = new fs.watch(SoulLinkFile);
-            this._filewatcher.on('change', this.parseData);
-        }
+        // if (!this._filewatcher) {
+        //     this._filewatcher = new fs.watch(SoulLinkFile);
+        //     this._filewatcher.on('change', this.parseData);
+        // }
     }
 
     get Links() {

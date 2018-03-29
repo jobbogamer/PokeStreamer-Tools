@@ -107,7 +107,7 @@ class Pokemon {
     }
     
     get linkedImg() {
-        if (this.linkedSpecies) {
+        if (this.linkedSpecies === 0 || this.linkedSpecies) {
             return PokemonImages.get(this.linkedSpecies).getImage(null, this.isShiny, null, this.isEgg);
         }
         

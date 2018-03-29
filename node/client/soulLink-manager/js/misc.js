@@ -30,6 +30,7 @@ if (Config.configOverride &&
     addGraveyardName(`Failstream's Happy Place`, 1);
     addGraveyardName(`Failstream's Home Away from Home`, 1);
     addGraveyardName(`Failstream's Preferred First Date Restaurant`, .5);
+    addGraveyardName(`Yoshi's House`, 1);
 }
 
 export { getGraveyardName };

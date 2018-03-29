@@ -74,8 +74,8 @@
         //               angle.
         // The "* 1.5" is to make the images the right size against a 720p background assuming your stream software
         // is set up to use a 1080p display
-        "imageWrapperWidth": "152px * 1.5",
-        "imageWrapperHeight": "123px * 1.5",
+        "imageWrapperWidth": "228px",
+        "imageWrapperHeight": "185px",
 
         // if you want to override the size of a slot, you can here... your milage may vary
         
@@ -135,6 +135,8 @@
         "%levelText": {
             "width": null,
             "font-size": "36px",
+            "color": "white",
+            "text-shadow": "0 0 8px black",
 
             "margin": "8px * 1.5",
         },

@@ -88,6 +88,13 @@ export default class Slot {
             $slot.removeClass('dead');
         } else if (this.slot !== val.slot) {
             return;
+        } else if (val.applyVoid) {
+            $img.wrap('<div class="void">');
+            setTimeout(() => {
+                this.updateSlot({ data: { slot: this.slot }});
+                $img.unwrap();
+            }, 2000);
+            return;
         }
         
         $allText.resetText();

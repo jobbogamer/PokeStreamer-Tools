@@ -10,6 +10,7 @@ import Slot from './slot/slot';
 import SoulLinkFileReader from './soul-link/soul-link-file-reader';
 import Nuzlocke from './nuzlocke';
 import SoulLink from './soul-link';
+import NuzlockeFileManager from './nuzlocke/nuzlocke-file-manager';
 
 const {
     KeepAliveIntervalMS,
@@ -148,7 +149,10 @@ function update(req, res, next) {
             slot--;
             box && box--;
 
-            if (!pokemon) { continue; }
+            if (!pokemon) { 
+                continue; 
+            }
+
             pokemon.generation = parseInt(req.header('Pokemon-Generation'));
             pokemon.gameVersion = req.header('Pokemon-Game');
             
@@ -170,13 +174,17 @@ function update(req, res, next) {
                     }
                 }
 
+                pkmn.previouslyKnown = knownPokemon[pid];                
+
                 if (!pkmn.dead) {
-                    if (Nuzlocke.getKnownDeadPokemon().has(pid)) {
+                    if (Nuzlocke.knownDeadPokemon.has(pid)) {
                         // shouldn't happen, but the script can be finicky and we don't want the Nuzlocke sounds playing
                         // multiple times for the same pokemon
                         pkmn.dead = true;
                     }
                 } else {
+                    // used for SoulLink manager
+                    pkmn.sendKill = !Nuzlocke.knownDeadPokemon.has(pid);
                     Nuzlocke.addDeadPokemon(pid);
                 }
 
@@ -185,14 +193,6 @@ function update(req, res, next) {
                 slots[slot] = new Slot(slot, changeId, pkmn);
                 slotsToSend.push(slots[slot]);
             }
-
-            // temp debug code
-            slConnections.forEach(ws => {
-                ws.send(JSON.stringify({
-                    messageType: 'addPokemon',
-                    pokemon: pkmn.clientJSON,
-                }));
-            });
         }
     } catch (ex) {
         console.error(ex);
@@ -216,17 +216,49 @@ function update(req, res, next) {
             }
         }
     }
+
+    for (let slot of slotsToSend) {
+        if (!slot || !slot.pokemon) {
+            continue;
+        }
+
+        if (!slot.pokemon.previouslyKnown) {
+            for (let conn of slConnections) {
+                conn.send(JSON.stringify({
+                    messageType: 'add-pokemon',
+                    pokemon: slot.pokemon.clientJSON,
+                }));
+            }
+        } else if (slot.pokemon.sendKill) {
+            for (let conn of slConnections) {
+                conn.send(JSON.stringify({
+                    messageType: 'kill-pokemon',
+                    pid: slot.pokemon.pid,
+                }));
+            }
+        }
+    }
 }
 
 SoulLinkFileReader.on('update', links => {
     let slotsToSend = [];
     for (let slot of slots) {
-        if (!slot || !slot.pokemon || slot.pokemon.pid === -1) { continue; }
+        if (!slot || !slot.pokemon || slot.pokemon.pid === -1 || !links[slot.pokemon.pid]) { continue; }
         let oldLinkedSpecies = slot.pokemon.linkedSpecies;
         slot.pokemon.linkedSpecies = links[slot.pokemon.pid].linkedSpecies;
         if (oldLinkedSpecies !== slot.pokemon.linkedSpecies) {
             slotsToSend.push(slot);
         }
+    }
+
+    for (let conn of slConnections) {
+        Object.entries(links).forEach(([pid, l]) => {
+            conn.send(JSON.stringify({
+                messageType: 'update-link',
+                pid,
+                linkedSpecies: l.linkedSpecies
+            }));
+        });
     }
 
     if (slotsToSend.length) {
@@ -240,14 +272,57 @@ SoulLinkFileReader.on('update', links => {
     }
 });
 
+Nuzlocke.on('revivedPokemon', pid => {
+    knownPokemon[pid].dead = false;
+
+    for (let conn of slConnections) {
+        conn.send(JSON.stringify({
+            messageType: 'revive',
+            pid
+        }));
+    }
+    
+    for (let slot of slots) {
+        if (!slot || !slot.pokemon || slot.pokemon.pid !== pid) {
+            continue;
+        }
+
+        for (let conn of slotConnections) {
+            if (conn.slot === 'all') {
+                conn.res.sseSend(slot);
+            } else {
+                // todo
+                // conn.res.sseSend(slots[conn.slot]);
+            }
+        }
+    }
+});
+
 function getSoulLink(ws, req) {
     console.debug('Setting up SoulLink WebSocket connection');
     ws.on('open', function () {
         console.log('Connection opened');
     });
 
-    ws.on('message', function (msg) {
-        console.log('Message received from client');
+    ws.on('message', function (e) {
+        try {
+            let msg = JSON.parse(e);
+            console.log(`Received ${msg.messageType} message from client`);
+            switch (msg.messageType) {
+                case 'update-link':
+                    SoulLinkFileReader.setLink(msg.pid, msg.linkedSpecies);
+                    break;
+                case 'unlink':
+                    SoulLinkFileReader.setLink(msg.pid, null);
+                    break;
+                case 'revive':
+                    Nuzlocke.revivePokemon(msg.pid);
+                    break;
+            }
+        } catch (err) {
+            console.error(`Invalid message from SoulLink manager:\n${e}`);
+            console.log(err.stack);
+        }
     });
 
     ws.on('close', (function() {
@@ -256,6 +331,11 @@ function getSoulLink(ws, req) {
     }).bind(ws));
 
     slConnections.add(ws);
+
+    Object.entries(knownPokemon).forEach(([pid, pokemon]) => ws.send(JSON.stringify({
+        messageType: 'add-pokemon',
+        pokemon: pokemon.clientJSON,
+    })));
 }
 
 const api = new API();

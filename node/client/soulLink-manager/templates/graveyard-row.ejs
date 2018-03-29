@@ -1,22 +1,21 @@
-<tr id="<%- pokemon.pid %>" class="bg-dark">
-    <%= require('./pokemon-cell.ejs')({ pokemon }) %>
+<tr id="<%- pokemon.pid %>" class="bg-dark text-white">
+    <td>
+        <%= require('./pokemon-cell.ejs')({ pokemon }) %>
+    </td>
     <td class="location"><div><%- pokemon.locationMetName %></div></td>
     <%= require('./traits-cell.ejs')({ pokemon }) %>
     <td>
-        <div>
-            <% if (linkedPokemon) { %>
-                <img class="icon" src="<%- linkedPokemon.icon %>" />
-                <span class="nickname"><%- linkedPokemon.nickname %></span>
-                <span class="species"><%- linkedPokemon.speciesName %></span>
-            <% } else { %>
-                <img class="icon void" src="/icons/unknown.png" />
-                <span class="spcies">The soulless nothingness of the void</span>
-            <% } %>
-        </div>
+        <% if (linkedPokemon) { %>
+            <%= require('./pokemon-cell.ejs')({ pokemon }) %>
+        <% } else { %>
+            <div>
+                <span class="species">The soulless nothingness of the void</span>
+            </div>
+        <% } %>
     </td>
-    <td colspan="2" class="text-right">
+    <td colspan="2">
         <div>
-            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-outline-light btn-sm">Revive</button>
+            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-revive btn btn-outline-light btn-sm">Revive</button>
         </div>
     </td>
 </tr>

@@ -1,6 +1,8 @@
+<% let widthScale = parseInt(config.style.imageWrapperWidth || config.style.imageSideLength) / 100,
+    heightScale = parseInt(config.style.imageWrapperHeight || config.style.imageSideLength) / 100; %>
 <svg width="0" height="0">
     <defs>
-        <clipPath id="soulLinkClipTop">
+        <clipPath id="soulLinkClipTop" transform="scale(<%- widthScale %>, <%- heightScale %>)">
             <% switch (config.style.soulLinkOrientation) {
                    case 'vertical': %>
                     <rect x="0" y="0" width="50" height="100" />
@@ -24,7 +26,7 @@
                 <% default: throw new Error(`Invalid SoulLink Orientation: ${config.style.soulLinkOrientation}`); %>
             <% } %>
         </clipPath>
-        <clipPath id="soulLinkClipBottom">
+        <clipPath id="soulLinkClipBottom" transform="scale(<%- widthScale %>, <%- heightScale %>)">
             <% switch (config.style.soulLinkOrientation) {
                    case 'vertical': %>
                     <rect x="50" y="0" width="50" height="100" />

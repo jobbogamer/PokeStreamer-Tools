@@ -1,5 +1,13 @@
-$.fn.resetText = function () {
+$.fn.resetText = function() {
     return this.text('').css('font-size', '');
+};
+
+$.fn.enable = function() {
+    return this.removeAttr('disabled').removeClass('disabled');
+};
+
+$.fn.disable = function() {
+    return this.attr('disabled', 'disabled').addClass('disabled');
 };
 
 function mergeRect(r1, r2) {

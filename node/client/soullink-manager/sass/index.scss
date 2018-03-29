@@ -1,7 +1,32 @@
 @import "./manager-table";
+@import "./traits";
+@import "./buttons";
 @import "./dropdown";
 @import "./icon";
 
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+.bs-tooltip-auto[x-placement^=top], .bs-tooltip-top {
+  .arrow.arrow-danger {
+    &::before {
+      border-top-color: $red;
+    }
+  }
+}
+
+.bs-tooltip-auto[x-placement^=bottom], .bs-tooltip-bottom {
+  .arrow.arrow-danger {
+    &::before {
+      border-bottom-color: $red;
+    }
+  }
+}
+
 .error {
-  color: red;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: 100vh;
+  padding-top: 30vh;
 }
