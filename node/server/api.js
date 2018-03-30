@@ -220,6 +220,11 @@ function update(req, res, next) {
                 messageType: 'add-pokemon',
                 pokemon: s.pokemon.clientJSON
             };
+        } else if (s.pokemon.previouslyKnown.species !== s.pokemon.species) {
+            return {
+                messageType: 'update-link',
+                species: s.pokemon.species
+            };
         } else if (s.pokemon.sendKill) {
             return {
                 messageType: 'kill-pokemon',
