@@ -89,12 +89,21 @@ export default class Slot {
             return;
         } else if (this.slot !== val.slot) {
             return;
-        } else if (val.applyVoid) {
-            $img.wrap('<div class="void">');
-            setTimeout(() => {
-                this.updateSlot({ data: { slot: this.slot }});
-                $img.unwrap();
-            }, 2000);
+        }
+        
+        if (val.pokemon && val.pokemon.isVoid) {
+            if (this.lastValue && this.lastValue.pokemon) {
+                $slot.addClass('void');
+                $img.wrap('<div class="void-wrapper">');
+                setTimeout(() => {
+                    this.lastValue = null;
+                    $allText.resetText();
+                    $images.removeAttr('src');
+                    $img.unwrap();
+                    $slot.removeClass('void');
+                }, 2000);
+            }
+
             return;
         }
         

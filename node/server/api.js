@@ -174,7 +174,8 @@ function update(req, res, next) {
                     }
                 }
 
-                pkmn.previouslyKnown = knownPokemon[pid];                
+                pkmn.previouslyKnown = knownPokemon[pid];
+                pkmn.isVoid = Nuzlocke.knownVoidPokemon.has(pid);
 
                 if (!pkmn.dead) {
                     if (Nuzlocke.knownDeadPokemon.has(pid)) {
@@ -184,7 +185,7 @@ function update(req, res, next) {
                     }
                 } else {
                     // used for SoulLink manager
-                    pkmn.sendKill = !Nuzlocke.knownDeadPokemon.has(pid);
+                    pkmn.sendKill = !Nuzlocke.knownDeadPokemon.has(pid) && !Nuzlocke.knownVoidPokemon.has(pid);
                     Nuzlocke.addDeadPokemon(pid);
                 }
 
@@ -254,6 +255,7 @@ SoulLinkFileReader.on('update', links => {
 
 Nuzlocke.on('revivedPokemon', pid => {
     knownPokemon[pid].dead = false;
+    knownPokemon[pid].isVoid = false;
 
     sendSLMessages({
         messageType: 'revive-pokemon',
@@ -261,6 +263,19 @@ Nuzlocke.on('revivedPokemon', pid => {
     });
     
     sendSlots(slots.filter(s => s && s.pokemon && s.pokemon.pid === pid));
+});
+
+Nuzlocke.on('addedVoidPokemon', pid => {
+    sendSLMessages({
+        messageType: 'void-pokemon',
+        pid
+    });
+
+    let slot = slots.filter(s => s && s.pokemon && s.pokemon.pid === pid);
+    if (slot.length) {
+        slot[0].pokemon.isVoid = true;
+        sendSlots(slot);
+    }
 });
 
 function sendSLMessages(messages, predicate) {
@@ -306,6 +321,12 @@ function getSoulLink(ws, req) {
                     break;
                 case 'revive-pokemon':
                     Nuzlocke.revivePokemon(msg.pid);
+                    break;
+                case 'new-game':
+                    console.warn('NOT IMPLEMENTED: new-game');
+                    break;
+                case 'void-pokemon':
+                    Nuzlocke.addVoidPokemon(msg.pid);
                     break;
 
                 default:

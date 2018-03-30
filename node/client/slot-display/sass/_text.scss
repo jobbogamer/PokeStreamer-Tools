@@ -12,6 +12,10 @@ $elements: 'level', 'species', 'nickname', 'deathMessage1', 'deathMessage2', 'de
         display: none;
       }
     }
+
+    .void & {
+      animation: 2s voidsmoke forwards;      
+    }
   }
 } 
 

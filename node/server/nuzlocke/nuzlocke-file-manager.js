@@ -4,6 +4,7 @@ import { Paths } from '../constants';
 const NuzlockeFile = Paths.NuzlockeFile;
 const DefaultNuzlockeObject = {
     knownDeaths: new Set(),
+    knownVoids: new Set(),
 };
 
 const NuzlockeFileManager = {
@@ -36,6 +37,7 @@ const NuzlockeFileManager = {
             contents = fs.readFileSync(NuzlockeFile);
             let nuzlockeObject = JSON.parse(contents);
             nuzlockeObject.knownDeaths = new Set(nuzlockeObject.knownDeaths);
+            nuzlockeObject.knownVoids = new Set(nuzlockeObject.knownVoids);
             return nuzlockeObject;
         } catch (e) {
             if (contents) {

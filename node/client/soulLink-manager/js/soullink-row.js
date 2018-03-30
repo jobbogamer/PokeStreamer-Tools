@@ -59,7 +59,7 @@ class SoulLinkRow {
     addRow() {
         this.removeRow();
 
-        if (this.pokemon.dead) {
+        if (this.pokemon.dead || this.pokemon.isVoid) {
             this.addGraveyardRow();
         } else if (this.linkedPokemon) {
             this.addLinkedRow();
@@ -116,7 +116,7 @@ class SoulLinkRow {
         });
 
         $voidBtn.click(() => {
-            this.sendMessage.call(this, 'void');
+            this.sendMessage.call(this, 'void-pokemon');
         });
     }
 
@@ -203,6 +203,15 @@ class SoulLinkRow {
 
                 break;
 
+            case 'void-pokemon':
+                if (!this.pokemon.dead || this.$row.closest('tbody').is(':not(.graveyard)')) {
+                    this.pokemon.dead = true;
+                    this.pokemon.linkedPokemon = null;
+                    this.addRow();
+                }
+
+                break;
+
             default:
                 console.error(`Received unknown message type from server: ${msg.messageType}`);
                 return;
@@ -230,6 +239,7 @@ class SoulLinkRow {
 
             case 'unlink':
             case 'revive-pokemon':
+            case 'void-pokemon':
                 ws.send(JSON.stringify(msg));
                 break;
 

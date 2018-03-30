@@ -5,7 +5,7 @@ $vShift: $imageShift / $imageWrapperRatio;
 @mixin img-trans($transforms) {
   > img, 
   > .death-wrapper, 
-  > .void {
+  > .void-wrapper {
     transform: $transforms;
   }
 }
@@ -203,27 +203,13 @@ $vShift: $imageShift / $imageWrapperRatio;
     }
   }
   
-  .void {
+  .void-wrapper {
     > img {
       animation: 2s voidsmoke forwards;
     }
 
     ~ .img-overlay {
       opacity: 0 !important;
-    }
-  }
-  
-  @keyframes voidsmoke {
-    from {
-      transform: rotate(0deg) scale(1) translate(0, 0);
-      filter: blur(0);
-      opacity: 1;
-    }
-    
-    to {
-      transform: rotate(-20deg) scale(1.2) translate(-20px, 20px);
-      filter: blur(30px);
-      opacity: 0;
     }
   }
 }

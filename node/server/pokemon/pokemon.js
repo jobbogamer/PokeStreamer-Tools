@@ -9,8 +9,6 @@ function getMaxPokemonId(generation) {
     return generation <= 3 ? 386 : 649; // values pulled from wikipedia
 }
 
-let maxPokemonId = getMaxPokemonId(Config.generation);
-
 const DiscordNewPokemonFields = [
     'pid',
     'level',
@@ -47,6 +45,7 @@ const ClientFields = [
     'generation',
     'linkedImg',
     'linkedSpecies',
+    'isVoid',
 ];
 
 function extractFields(obj, fields) {
@@ -57,14 +56,6 @@ function extractFields(obj, fields) {
     
     return o;
 }
-
-Config.on('update', (p, n) => {
-    let gen = n.generation;
-    if (p.generation !== gen) {
-        console.info(`Updating generation from ${p.generation} to ${gen}`);
-        maxPokemonId = getMaxPokemonId(gen);
-    }
-});
 
 class Pokemon {
     constructor(data) {
@@ -149,7 +140,7 @@ class Pokemon {
         VA.int(this.otid, 'otid');
         VA.int(this.otsid, 'otsid');
         VA.int(this.locationMet, 'locationMet');
-        VA.boundedInt(this.species, 'species', 1, maxPokemonId);
+        VA.boundedInt(this.species, 'species', 1, getMaxPokemonId(this.generation || 5));
         VA.boundedInt(this.level, 'level', 0, 100);
         VA.bool(this.dead, 'dead');
         VA.boolOrUndefinedFalse(this.female, 'female');

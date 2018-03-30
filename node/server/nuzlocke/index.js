@@ -8,6 +8,10 @@ class Nuzlocke extends EventEmitter {
         return new Set(nuzlockeObject.knownDeaths);
     }
 
+    get knownVoidPokemon() {
+        return new Set(nuzlockeObject.knownVoids);
+    }
+
     addDeadPokemon(pid) {
         if (!nuzlockeObject.knownDeaths.has(pid)) {
             nuzlockeObject.knownDeaths.add(pid);
@@ -17,10 +21,20 @@ class Nuzlocke extends EventEmitter {
         }
     }
 
+    addVoidPokemon(pid) {
+        if (!nuzlockeObject.knownVoids.has(pid)) {
+            nuzlockeObject.knownVoids.add(pid);
+            NuzlockeFileManager.saveFile(nuzlockeObject);
+
+            this.emit('addedVoidPokemon', pid);
+        }
+    }
+
     // used when manually reviving a pokemon -- not when the game reports that it is not dead
     revivePokemon(pid) { 
-        if (nuzlockeObject.knownDeaths.has(pid)) {
+        if (nuzlockeObject.knownDeaths.has(pid) || nuzlockeObject.knownVoids.has(pid)) {
             nuzlockeObject.knownDeaths.delete(pid);
+            nuzlockeObject.knownVoids.delete(pid);
             NuzlockeFileManager.saveFile(nuzlockeObject);
 
             this.emit('revivedPokemon', pid);
