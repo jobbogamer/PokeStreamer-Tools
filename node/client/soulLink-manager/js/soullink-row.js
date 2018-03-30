@@ -1,5 +1,6 @@
-import ws from './websocket-listener';
+import ws from './websocket';
 import config from 'config.json';
+import { useReviveButton } from './graveyard';
 import { LinkedRow, GraveyardRow, UnlinkedRow } from './row-types';
 import PokedexDropdown from './pokedex-dropdown';
 import PokemonCell from '../templates/pokemon-cell.ejs';
@@ -126,7 +127,7 @@ class SoulLinkRow {
     }
 
     addGraveyardRow() {
-        let $row = this.$row = $(GraveyardRow(this)),
+        let $row = this.$row = $(GraveyardRow(Object.assign({ useReviveButton }, this))),
             $reviveBtn = $row.find('button.btn-revive');
 
         $graveyard.prepend($row);
@@ -139,6 +140,7 @@ class SoulLinkRow {
     removeRow() {
         if (this.$row) {
             let $oldRow = this.$row.attr('id', '').removeClass('show');
+            this.$row = null;
             setTimeout(() => $oldRow.remove(), 500);
         }
     }
@@ -278,6 +280,12 @@ class SoulLinkRow {
         this.$row.removeClass('bg-danger text-white').addClass(this.defaultRowClasses)
             .tooltip('dispose').find('button, select').enable().filter('select').change();
         clearTimeout(this.reenableTimeout);
+    }
+
+    dispose() {
+        removeRow();
+        ws.off('message', this.onMessage);
+
     }
 }
 

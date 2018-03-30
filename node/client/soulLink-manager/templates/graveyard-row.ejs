@@ -8,14 +8,26 @@
         <% if (linkedPokemon) { %>
             <%= require('./pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
         <% } else { %>
-            <div class="text-right">
+            <div class="text-right text-void">
                 <span class="species w-100">The soulless nothingness of the void</span>
             </div>
         <% } %>
     </td>
-    <td colspan="2">
+    <td></td>
+    <td>
         <div>
-            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-revive btn btn-outline-secondary btn-sm">Revive</button>
+            <% if (useReviveButton) { %>
+                <button type="button" data-pid="<%- pokemon.pid %>" class="btn-revive btn btn-outline-secondary btn-sm">
+                    Revive
+                </button>
+            <% } else { %>
+                <div class="animate-corpse rounded my-auto">
+                    <div class="bg-img"></div>
+                    <button type="button" data-pid="<%- pokemon.pid %>" class="btn-revive animate-corpse btn btn-outline-reanimate btn-sm">
+                        Animate Corpse
+                    </button>
+                </div>
+            <% } %>
         </div>
     </td>
 </tr>

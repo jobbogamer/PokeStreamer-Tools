@@ -6,4 +6,4 @@ if (config.nuzlocke.enabled && config.soulLink.enabled) {
     require('./js/soullink-manager');
 } else {
     require('./sass/soullink-disabled.scss');
-} 
+}

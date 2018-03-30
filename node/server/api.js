@@ -335,21 +335,30 @@ function getSoulLink(ws, req) {
                 case 'update-link':
                     SoulLinkFileReader.setLink(msg.pid, msg.linkedSpecies);
                     break;
+
                 case 'unlink':
                     SoulLinkFileReader.setLink(msg.pid, null);
                     break;
+
                 case 'revive-pokemon':
                     Nuzlocke.revivePokemon(msg.pid);
                     break;
+
                 case 'new-game':
                     console.warn('NOT IMPLEMENTED: new-game');
                     break;
+
                 case 'void-pokemon':
                     Nuzlocke.addVoidPokemon(msg.pid);
                     break;
+
                 case 'kill-pokemon':
                     // called by SoulLink manager when a link's pokemon is dead
                     Nuzlocke.addDeadPokemon(msg.pid);
+                    break;
+
+                case 'refresh':
+                    sendSLConnAllPokemon(this);
                     break;
 
                 default:
@@ -369,10 +378,18 @@ function getSoulLink(ws, req) {
 
     slConnections.add(ws);
 
-    sendSLMessages(Object.values(knownPokemon).map(p => ({
+    sendSLConnAllPokemon(ws);
+}
+
+function sendSLConnAllPokemon(ws) {
+    Object.values(knownPokemon).map(p => ({
         messageType: 'add-pokemon',
         pokemon: p.clientJSON
-    })));
+    })).forEach(msg => ws.send(JSON.stringify(msg)));
+
+    ws.send(JSON.stringify({
+        messageType: 'refresh-done'
+    }));
 }
 
 const api = new API();

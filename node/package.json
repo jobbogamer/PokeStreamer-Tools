@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node_modules/.bin/webpack --progress --color --mode production",
     "watch": "node_modules/.bin/webpack --progress --color --mode production --watch",
+    "watch-d": "node_modules/.bin/webpack --progress --color --mode development --watch",
     "debug": "node -r babel-register server -d",
     "start": "node -r babel-register server",
     "setup": "node -r babel-register setup/setup-pokemon-images.js"

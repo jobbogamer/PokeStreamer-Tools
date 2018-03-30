@@ -1,49 +1,57 @@
+<% let placeholder = require('./placeholder-row.ejs'); %>
 <div class="manager">
     <div class="container">
         <div class="card bg-white d-block">
-            <div class="card-header">Soul Links</div>
+            <div class="card-header d-flex justify-content-between">
+                <h3 class="card-title">Soul Links</h3>
+                <div role="button" class="btn-refresh uninitialized border border-secondary rounded p-2 my-auto">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+            </div>
             <table id="pokemonTable" class="table">
                 <thead>
                     <tr class="bg-light">
                         <th colspan="6">Unlinked Pokémon</th>
                     </tr>
                 </thead>
-                <tbody class="unlinked-pokemon slide-down">
-                    <tr class="placeholder">
-                        <td colspan="6" class="text-muted text-center">no pending links</td>
-                    </tr>
+                <tbody class="unlinked-pokemon">
+                    <%= placeholder({ text: 'no pending links'}) %>
                 </tbody>
                 <thead>
                     <tr class="bg-light">
                         <th colspan="6">Linked Pokémon</th>
                     </tr>
                 </thead>
-                <tbody class="linked-pokemon slide-down">
-                    <tr class="placeholder">
-                        <td colspan="6" class="text-muted text-center">no linked pokémon</td>
-                    </tr>
+                <tbody class="linked-pokemon">
+                    <%= placeholder({ text: 'no linked pokémon' }) %>
                 </tbody>
                 <thead>
                     <tr class="bg-light">
-                        <th colspan="6" id="graveyardheader">&nbsp;</th>
+                        <th colspan="6" id="graveyardheader">
+                            <%- // just to make people question their sanity a little between builds
+                                Math.random() < .5 ? 'Cemetery' : 'Graveyard' 
+                            %>
+                        </th>
                     </tr>
                 </thead>
-                <tbody class="graveyard slide-down">
-                    <tr class="placeholder">
-                        <td colspan="6" class="text-muted text-center">
-                            the graveyard is empty... for now
-                        </td>
-                    </tr>
+                <tbody class="graveyard">
+                    <%= placeholder({ text: 'the graveyard is empty... for now' }) %>
                 </tbody>
             </table>
-            <% if (config.soulLink.linking.method !== 'manual') { %>
-                <div class="card-body text-right bg-secondary">
-                    <input id="autoLink" type="checkbox" class="form-check-input" />
-                    <label for="#autoLink" class="form-check-label">
-                        Try to automatically link Pokémon
-                    </label>
-                </div>
-            <% } %>
+            <div class="card-footer d-none">
+                <button class="btn btn-sm btn-secondary btn-new-game">
+                    Start New Game
+                </button>
+
+                <% if (config.soulLink.linking.method !== 'manual') { %>
+                    <div class="float-right">
+                        <input id="autoLink" type="checkbox" class="form-check-input" />
+                        <label for="#autoLink" class="form-check-label">
+                            Try to automatically link Pokémon
+                        </label>
+                    </div>
+                <% } %>
+            </card>
         </div>
     </div>
 </div>
