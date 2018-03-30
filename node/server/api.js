@@ -223,6 +223,7 @@ function update(req, res, next) {
         } else if (s.pokemon.previouslyKnown.species !== s.pokemon.species) {
             return {
                 messageType: 'update-link',
+                pid: s.pokemon.pid,
                 species: s.pokemon.species
             };
         } else if (s.pokemon.sendKill) {
