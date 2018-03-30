@@ -28,7 +28,7 @@ function createManualLinkedPokemon(pokemon) {
 
 class SoulLinkRow {
     constructor(msg) {
-        ws.addEventListener('message', this.onMessage.bind(this));
+        ws.on('message', this.onMessage.bind(this));
 
         this.setErrorState = this.setErrorState.bind(this);
         this.clearErrorState = this.clearErrorState.bind(this);
@@ -66,6 +66,8 @@ class SoulLinkRow {
         } else {
             this.addUnlinkedRow();
         }
+
+        this.defaultRowClasses = this.$row.attr('class');
 
         setImmediate(() => this.$row.addClass('show').find('.traits .icon').tooltip());
     }
@@ -125,7 +127,7 @@ class SoulLinkRow {
         $graveyard.prepend($row);
             
         $reviveBtn.click(() => {
-            this.sendMessage.call(this, 'revive');
+            this.sendMessage.call(this, 'revive-pokemon');
         });
     }
 
@@ -152,8 +154,10 @@ class SoulLinkRow {
         if (linkedSpecies !== undefined) {
             this.pokemon.linkedSpecies = linkedSpecies;
             if (this.linkedPokemon && linkedSpecies === null) {
+                let oldLink = this.linkedPokemon.species;
                 this.linkedPokemon = null;
                 this.addRow();
+                this.$row.find('select').val(oldLink).change();
                 return;
             } else if (!this.linkedPokemon) {
                 this.linkedPokemon = createManualLinkedPokemon(this.pokemon);
@@ -191,7 +195,7 @@ class SoulLinkRow {
 
                 break;
 
-            case 'revive':
+            case 'revive-pokemon':
                 if (this.pokemon.dead || this.$row.closest('tbody').is('.graveyard')) {
                     this.pokemon.dead = false;
                     this.addRow();
@@ -206,7 +210,7 @@ class SoulLinkRow {
     }
 
     sendMessage(messageType, ...args) {
-        this.$row.removeClass('bg-danger text-white').find('button, select').disable();
+        this.$row.removeClass('bg-danger text-white').addClass(this.defaultRowClasses).find('button, select').disable();
         this.reenableTimeout = setTimeout(() => this.setErrorState(`There was no response from the server.`), 2000);
         let msg = {
             messageType,
@@ -225,7 +229,7 @@ class SoulLinkRow {
                 break;
 
             case 'unlink':
-            case 'revive':
+            case 'revive-pokemon':
                 ws.send(JSON.stringify(msg));
                 break;
 
@@ -236,6 +240,7 @@ class SoulLinkRow {
     }
 
     setErrorState(message) {
+        this.$row.removeClass(this.defaultRowClasses);
         this.$row.addClass('bg-danger text-white').find('button, select').enable().filter('select').change();
         if (message) {
             console.error(message);
@@ -252,7 +257,8 @@ class SoulLinkRow {
     }
 
     clearErrorState() {
-        this.$row.removeClass('bg-danger text-white').tooltip('dispose').find('button, select').enable().filter('select').change();
+        this.$row.removeClass('bg-danger text-white').addClass(this.defaultRowClasses)
+            .tooltip('dispose').find('button, select').enable().filter('select').change();
         clearTimeout(this.reenableTimeout);
     }
 }

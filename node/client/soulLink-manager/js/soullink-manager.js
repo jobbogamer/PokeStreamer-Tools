@@ -7,6 +7,26 @@ import SoulLinkRow from './soullink-row';
 $('#graveyardheader').text(getGraveyardName());
 setInterval(() => $('#graveyardheader').text(getGraveyardName()), 5 * 60 * 1000);
 
+const $dcModal = $('#disconnectedModal');
+$dcModal.on('shown.bs.modal', () => {
+    if (ws.connected) {
+        $dcModal.modal('hide');
+    }
+});
+
+ws.on('open', () => {
+    $dcModal.modal('hide');
+});
+ws.on('close', () => {
+    $dcModal.modal('show');
+});
+
+setTimeout(() => {
+    if (!ws.connected) {
+        $dcModal.modal('show');
+    }
+}, 100);
+
 let doAutoLink = JSON.parse(Cookies.get('autolink') || true);
 if (doAutoLink === undefined) {
     doAutoLink = true;
@@ -24,7 +44,7 @@ if (!MANUAL_LINKING) {
 
 let knownPokemon = {};
 
-ws.addEventListener('message', e => {
+ws.on('message', e => {
     let msg = JSON.parse(e.data);
     if (msg.messageType === 'add-pokemon' && !knownPokemon[msg.pokemon.pid]) {
         knownPokemon[msg.pokemon.pid] = new SoulLinkRow(msg);

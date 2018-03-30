@@ -41,7 +41,7 @@ class API extends EventEmitter {
         router.post('/update', update);
 
         // soul link manager
-        if (SoulLink.Enabled && SoulLink.LinkingMethod === 'manual') {
+        if (SoulLink.Enabled) {
             router.ws('/soulLink', getSoulLink);
         }
         
@@ -207,40 +207,38 @@ function update(req, res, next) {
         next();
     }
 
-    if (slotsToSend.length) {
-        for (let conn of slotConnections) {
-            if (conn.slot === 'all') {
-                conn.res.sseSend(slotsToSend);
-            } else {
-                conn.res.sseSend(slots[conn.slot]);
-            }
-        }
-    }
+    sendSlots(slotsToSend);
 
-    for (let slot of slotsToSend) {
-        if (!slot || !slot.pokemon) {
-            continue;
+    let messages = slotsToSend.map(s => {
+        if (!s || !s.pokemon) { 
+            return null; 
         }
 
-        if (!slot.pokemon.previouslyKnown) {
-            for (let conn of slConnections) {
-                conn.send(JSON.stringify({
-                    messageType: 'add-pokemon',
-                    pokemon: slot.pokemon.clientJSON,
-                }));
-            }
-        } else if (slot.pokemon.sendKill) {
-            for (let conn of slConnections) {
-                conn.send(JSON.stringify({
-                    messageType: 'kill-pokemon',
-                    pid: slot.pokemon.pid,
-                }));
-            }
+        if (!s.pokemon.previouslyKnown) {
+            return {
+                messageType: 'add-pokemon',
+                pokemon: s.pokemon.clientJSON
+            };
+        } else if (s.pokemon.sendKill) {
+            return {
+                messageType: 'kill-pokemon',
+                pid: s.pokemon.pid
+            };
         }
-    }
+
+        return null;
+    }).filter(msg => msg !== null);
+
+    sendSLMessages(messages);
 }
 
 SoulLinkFileReader.on('update', links => {
+    sendSLMessages(Object.entries(links).map(([pid, l]) => ({
+        messageType: 'update-link',
+        pid,
+        linkedSpecies: l.linkedSpecies
+    })));
+
     let slotsToSend = [];
     for (let slot of slots) {
         if (!slot || !slot.pokemon || slot.pokemon.pid === -1 || !links[slot.pokemon.pid]) { continue; }
@@ -251,52 +249,43 @@ SoulLinkFileReader.on('update', links => {
         }
     }
 
-    for (let conn of slConnections) {
-        Object.entries(links).forEach(([pid, l]) => {
-            conn.send(JSON.stringify({
-                messageType: 'update-link',
-                pid,
-                linkedSpecies: l.linkedSpecies
-            }));
-        });
-    }
-
-    if (slotsToSend.length) {
-        for (let conn of slotConnections) {
-            if (conn.slot === 'all') {
-                conn.res.sseSend(slotsToSend);
-            } else {
-                conn.res.send(slots[conn.slot]);
-            }
-        }
-    }
+    sendSlots(slotsToSend);
 });
 
 Nuzlocke.on('revivedPokemon', pid => {
     knownPokemon[pid].dead = false;
 
-    for (let conn of slConnections) {
-        conn.send(JSON.stringify({
-            messageType: 'revive',
-            pid
-        }));
-    }
+    sendSLMessages({
+        messageType: 'revive-pokemon',
+        pid
+    });
     
-    for (let slot of slots) {
-        if (!slot || !slot.pokemon || slot.pokemon.pid !== pid) {
-            continue;
-        }
+    sendSlots(slots.filter(s => s && s.pokemon && s.pokemon.pid === pid));
+});
 
-        for (let conn of slotConnections) {
-            if (conn.slot === 'all') {
-                conn.res.sseSend(slot);
-            } else {
-                // todo
-                // conn.res.sseSend(slots[conn.slot]);
+function sendSLMessages(messages, predicate) {
+    for (let msg of Array.makeArray(messages)) {
+        if (!predicate || predicate(msg)) {
+            for (let conn of slConnections) {
+                conn.send(JSON.stringify(msg));
             }
         }
     }
-});
+}
+
+function sendSlots(slotsToSend) {
+    if (!slotsToSend.length) {
+        return;
+    }
+
+    for (let conn of slotConnections) {
+        if (conn.slot === 'all') {
+            conn.res.sseSend(slotsToSend);
+        } else {
+            conn.res.send(slots[conn.slot]);
+        }
+    }
+}
 
 function getSoulLink(ws, req) {
     console.debug('Setting up SoulLink WebSocket connection');
@@ -315,8 +304,12 @@ function getSoulLink(ws, req) {
                 case 'unlink':
                     SoulLinkFileReader.setLink(msg.pid, null);
                     break;
-                case 'revive':
+                case 'revive-pokemon':
                     Nuzlocke.revivePokemon(msg.pid);
+                    break;
+
+                default:
+                    console.warn(`Unknown message type sent from SoulLink Manager: ${msg.messageType}`);
                     break;
             }
         } catch (err) {
@@ -332,9 +325,9 @@ function getSoulLink(ws, req) {
 
     slConnections.add(ws);
 
-    Object.entries(knownPokemon).forEach(([pid, pokemon]) => ws.send(JSON.stringify({
+    sendSLMessages(Object.values(knownPokemon).map(p => ({
         messageType: 'add-pokemon',
-        pokemon: pokemon.clientJSON,
+        pokemon: p.clientJSON
     })));
 }
 

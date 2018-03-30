@@ -3,6 +3,8 @@
 }
 
 #pokemonTable tbody {
+  min-height: 2.5em;
+  
   > tr {
     &:nth-last-of-type(even) {
       background-color: rgba(0,0,0,.05);

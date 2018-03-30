@@ -9,6 +9,7 @@
     <% config = require('config.json') %>
     <% if (config.nuzlocke.enabled && config.soulLink.enabled) { %>
         <%= require('./templates/soullink-manager.ejs')() %>
+        <%= require('./templates/disconnected-modal.ejs')() %>
     <% } else { %>
         <%= require('./templates/soullink-disabled.ejs')() %>
     <% } %>

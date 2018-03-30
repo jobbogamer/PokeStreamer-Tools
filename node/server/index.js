@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import jade from 'jade';
 import sse from './sse';
 
+import '../common/extensions';
 import args from './args';
 import API from './api';
 import { NodeRoot } from './constants';
