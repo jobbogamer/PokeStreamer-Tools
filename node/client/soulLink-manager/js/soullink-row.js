@@ -171,6 +171,7 @@ class SoulLinkRow {
             } else if (this.linkedPokemon.species !== linkedSpecies) {
                 if (ManualLinking) {
                     this.$row.find('td.linked-pokemon > div.dropdown select').val(linkedSpecies).change();
+                    this.linkedPokemon.species = linkedSpecies;
                 } else {
                     this.$row.find('td.pokemon > div').replaceWith(PokemonCell(this.linkedPokemon));
                 }
