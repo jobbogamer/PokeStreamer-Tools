@@ -55,7 +55,11 @@ class WebSocketWrapper extends EventEmitter {
 
         this._ws = null;
         getWebSocket = getWebSocket.bind(this);
-        getWebSocket();
+    }
+
+    init() {
+        // wait to call this so that manager has time to hook up to events
+        getWebSocket();        
     }
 
     close(...args) {

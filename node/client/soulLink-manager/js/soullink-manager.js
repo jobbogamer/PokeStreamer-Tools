@@ -21,12 +21,6 @@ ws.on('close', () => {
     $dcModal.modal('show');
 });
 
-setTimeout(() => {
-    if (!ws.connected) {
-        $dcModal.modal('show');
-    }
-}, 100);
-
 let doAutoLink = JSON.parse(Cookies.get('autolink') || true);
 if (doAutoLink === undefined) {
     doAutoLink = true;
@@ -50,6 +44,14 @@ ws.on('message', e => {
         knownPokemon[msg.pokemon.pid] = new SoulLinkRow(msg);
     }
 });
+
+ws.init();
+
+setTimeout(() => {
+    if (!ws.connected) {
+        $dcModal.modal('show');
+    }
+}, 100);
 
 // function removePokemonRow(pokemon) {
 //     let row = $(`#${pokemon.pid}`).attr('id', '').removeClass('show');

@@ -13,19 +13,22 @@
         <% } %>
     </td>
     <td>
-        <div>
+        <div class="btn-group">
             <% if (MANUAL_LINKING) { %>
                 <button type="button" disabled data-pid="<%- pokemon.pid %>" class="btn-update-link btn btn-primary btn-sm">
                     Update
+                </button>
+                <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-outline-secondary btn-sm">
+                    Unlink
                 </button>
             <% } %>
         </div>
     </td>
     <td>
         <div>
-            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-light btn-sm">
-                Unlink
-            </button>
+            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-link-dead btn btn-sm btn-outline-dead">
+                Link Dead
+            </buttn>
         </div>
     </td>
 </tr>

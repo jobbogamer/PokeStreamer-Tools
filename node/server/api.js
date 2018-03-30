@@ -278,6 +278,19 @@ Nuzlocke.on('addedVoidPokemon', pid => {
     }
 });
 
+Nuzlocke.on('addedDeadPokemon', pid => {
+    sendSLMessages({
+        messageType: 'kill-pokemon',
+        pid
+    });
+
+    let slot = slots.filter(s => s && s.pokemon && s.pokemon.pid === pid);
+    if (slot.length) {
+        slot[0].pokemon.dead = true;
+        sendSlots(slot);
+    }
+});
+
 function sendSLMessages(messages, predicate) {
     for (let msg of Array.makeArray(messages)) {
         if (!predicate || predicate(msg)) {
@@ -327,6 +340,10 @@ function getSoulLink(ws, req) {
                     break;
                 case 'void-pokemon':
                     Nuzlocke.addVoidPokemon(msg.pid);
+                    break;
+                case 'kill-pokemon':
+                    // called by SoulLink manager when a link's pokemon is dead
+                    Nuzlocke.addDeadPokemon(msg.pid);
                     break;
 
                 default:

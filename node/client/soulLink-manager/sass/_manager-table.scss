@@ -6,15 +6,15 @@
   min-height: 2.5em;
   
   > tr {
-    &:nth-last-of-type(even) {
-      background-color: rgba(0,0,0,.05);
-    }
-
     &.placeholder:not(:only-child) {
       display: none;
     }
     
     &:not(.placeholder) {
+      &:nth-last-of-type(odd) {
+        background-color: rgba(0,0,0,.05);
+      }
+
       > td {
         padding-top: 0;
         padding-bottom: 0;

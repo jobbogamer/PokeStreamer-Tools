@@ -76,13 +76,14 @@ class SoulLinkRow {
         let $row = this.$row = $(LinkedRow(this));
         $linked.prepend($row);
         $row.find('button.btn-unlink').click(() => {
-            this.sendMessage.call(this, 'unlink');
+            this.sendMessage('unlink');
         });
 
         if (ManualLinking) {
             $row.find('div.dropdown').append(PokedexDropdown(this.pokemon, this.linkedPokemon.species));
             let $select = $row.find('div.dropdown select'),
-                $updateBtn = $row.find('button.btn-update-link');
+                $updateBtn = $row.find('button.btn-update-link'),
+                $linkDeadBtn = $row.find('button.btn-link-dead');
 
             $select.change(() => {
                 if (parseInt($select.val()) === this.pokemon.linkedSpecies) {
@@ -93,7 +94,11 @@ class SoulLinkRow {
             });
 
             $updateBtn.click(() => {
-                this.sendMessage.call(this, 'update-link', parseInt($select.val()));
+                this.sendMessage('update-link', parseInt($select.val()));
+            });
+
+            $linkDeadBtn.click(() => {
+                this.sendMessage('kill-pokemon');
             });
         }
     }
@@ -112,11 +117,11 @@ class SoulLinkRow {
         $unlinked.prepend($row);
         $linkBtn.click(() => {
             // val with either be the species or the PID depending on whether the linking is manual or automatic
-            this.sendMessage.call(this, 'update-link', parseInt($select.val()));
+            this.sendMessage('update-link', parseInt($select.val()));
         });
 
         $voidBtn.click(() => {
-            this.sendMessage.call(this, 'void-pokemon');
+            this.sendMessage('void-pokemon');
         });
     }
 
@@ -127,7 +132,7 @@ class SoulLinkRow {
         $graveyard.prepend($row);
             
         $reviveBtn.click(() => {
-            this.sendMessage.call(this, 'revive-pokemon');
+            this.sendMessage('revive-pokemon');
         });
     }
 
@@ -198,6 +203,7 @@ class SoulLinkRow {
             case 'revive-pokemon':
                 if (this.pokemon.dead || this.$row.closest('tbody').is('.graveyard')) {
                     this.pokemon.dead = false;
+                    this.pokemon.isVoid = false;
                     this.addRow();
                 }
 
@@ -237,6 +243,7 @@ class SoulLinkRow {
                 ws.send(JSON.stringify(msg));
                 break;
 
+            case 'kill-pokemon':
             case 'unlink':
             case 'revive-pokemon':
             case 'void-pokemon':

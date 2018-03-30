@@ -1,4 +1,4 @@
-<tr id="<%- pokemon.pid %>" class="bg-dark text-white">
+<tr id="<%- pokemon.pid %>">
     <td>
         <%= require('./pokemon-cell.ejs')({ pokemon }) %>
     </td>
@@ -8,14 +8,14 @@
         <% if (linkedPokemon) { %>
             <%= require('./pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
         <% } else { %>
-            <div>
-                <span class="species">The soulless nothingness of the void</span>
+            <div class="text-right">
+                <span class="species w-100">The soulless nothingness of the void</span>
             </div>
         <% } %>
     </td>
     <td colspan="2">
         <div>
-            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-revive btn btn-outline-light btn-sm">Revive</button>
+            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-revive btn btn-outline-secondary btn-sm">Revive</button>
         </div>
     </td>
 </tr>
