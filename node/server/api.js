@@ -359,8 +359,10 @@ function getSoulLink(ws, req) {
 
                 case 'new-game':
                     knownPokemon = {};
+                    slots = [ null, null, null, null, null, null ];
                     Nuzlocke.reset();
                     SoulLinkFileReader.reset();
+                    sendSlots('reset');
                     sendSLMessages({ messageType: 'new-game' });
                     break;
 
