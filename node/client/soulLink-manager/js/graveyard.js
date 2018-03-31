@@ -30,10 +30,11 @@ function getGraveyardName(prevVal) {
         do {
             idx++;
             tmp += graveyardNames[idx].weight;
+            nextVal = graveyardNames[idx].name;
         } while (tmp < r && idx < graveyardNames.length - 1);
     } while (nextVal === prevVal);
 
-    return graveyardNames[idx].name;
+    return nextVal;
 }
 
 addGraveyardName('Graveyard', 1);
