@@ -30,9 +30,14 @@
             not the type already in the filename.  (Leave "mystery" as-is, since Windows doesn't support filenames with 
             question marks in them.)
     */
-    "pokemonImagesPath": "../../pokemon-images/BW",
+    "pokemonImagesPath": "../pokemon-images/BW",
 
     "server": {
+        // There's a bug in XSplit's browser code such that it doesn't send the right headers when performing API calls.
+        // Set this value to true if the browser isn't getting updated when you run the Lua script.  Assuming you're 
+        // running the server locally and your computer is not publicly facing, this "security" issue isn't a problem.
+        "useLessSecureAPI": false,
+
         // The port to use when accessing the page that you insert into your stream scene.
         // 
         // The url to that page will be http://stream.pokemon-soul.link:<port>/.  Using the default 8081 means that url 
@@ -60,19 +65,15 @@
         // software, I recommend adding records to your hosts file rather than changing these DNS values.
         // You will need to add records for the following DNS names:
         //  •   stream.pokemon-soul.link
-        //  •   api.pokemon-soul.link
+        //  •   api.stream.pokemon-soul.link
         //
         // If you are not running in all-in-one-mode (see layout.allInOne above), you will also need to add records for
-        //  •   slot<n>.api.pokemon-soul.link
+        //  •   slot<n>.api.stream.pokemon-soul.link
         // where <n> is each value between 1 and 6.  This is to avoid the browser's limitation on the number of open
         // connections to the same host allowed.  (In Chrome, this value is 6.)
         //
         // See https://www.siteground.com/kb/how_to_use_the_hosts_file/ for information on how to edit your hosts file.
         "host": "stream.pokemon-soul.link",
-
-        // You almost certainly should not change this, but if you REALLY want to, make sure it is not the same as 
-        // "host" and that it points to the same IP address (127.0.0.1 by default).
-        "apiHost": "api.pokemon-soul.link",
 
         // You can ignore this value.  I *implore* you to leave this one alone unless for some reason you have a service
         // already running on 8082 (unlikely).  
@@ -93,17 +94,20 @@
         // little.  We're super heroes; what could happen?
         "devServerPort": 8082,
 
+        // TODO... maybe
+        //
         // I know I gave you a hard time about devServerPort, but this one you should actually not touch.  Things 
         // actually COULD break if you do.  If you're foolish enough to change this value while the server is running,
         // well, you don't want to know what happens then.  Just for starters, the server will crash.  After that, it'll
         // go after your family and friends--everyone you've ever known or loved--and... well, I'm honestly unsure what
         // happens to them.  I mean, have you ever heard of someone who changed this value and lived to tell about it?
         // Me neither.
-        "objectStorePort": 27017,
+        //
+        // "objectStorePort": 27017,
     },
 
     "soulLink": {
-        "dataDirectory": "gameData",
+        "dataDirectory": "./gameData",
     },
 
     "logLevel": "debug",

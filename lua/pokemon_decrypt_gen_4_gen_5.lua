@@ -77,7 +77,7 @@ local function decrypt(words)
     -- print("------------------------")
     -- print(#decrypted_words)
 
-    local valid =  checksum == cur_checksum % 0x10000
+    local valid = checksum == cur_checksum % 0x10000
     prng = pid
     
     -- if #words is only 72 long (such as when the pokemon is stored in a box), this next loop will automatically be 
@@ -86,8 +86,16 @@ local function decrypt(words)
         prng = mult32(prng,0x41C64E6D) + 0x6073
         decrypted_words[#decrypted_words + 1] = xor(words[i], gettop(prng))
     end
+
+    -- get current_hp xor-mask
+    prng = pid
+    prng = mult32(prng,0x41C64E6D) + 0x6073
+    prng = mult32(prng,0x41C64E6D) + 0x6073
+    prng = mult32(prng,0x41C64E6D) + 0x6073
     
-    return valid, decrypted_words
+    -- third return value is current_hp xor-mask...
+    -- set word 72 in memory to this value, and the pokemon faints
+    return valid, decrypted_words, gettop(prng)
 end
 
 return decrypt

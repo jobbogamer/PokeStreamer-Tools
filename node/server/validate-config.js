@@ -23,7 +23,7 @@ class Assertion {
     }
 
     get result() {
-        if (!this.test.call(Config.Current)) {
+        if (!this.test.call(Config)) {
             return new AssertionResult(false, this.message, this.severity);
         } else {
             return new AssertionResult(true);
@@ -39,7 +39,9 @@ const Validations = {
             `SoulLink was enabled but Nuzlocke was disabled.  Ignoring Soul Link.`),
         soulLinkSoundWithManualLinking: 
             new Assertion(c => !c.soulLink.enabled || c.soulLink.linking.method !== 'manual' || !c.soulLink.deathSound.enabled,
-                `SoulLink deathSounds aren't available with manual linking method.`, LOG)
+                `SoulLink deathSounds aren't available with manual linking method.`, LOG),
+        discordLinkingEnabled: new Assertion(c => !c.soulLink.enabled || c.soulLink.linking.method === 'manual',
+            `Currently only manual soullinking is supported.  Found: ${c.soulLink.linking.method}`, ERROR)
     },
     style: {
         nonTransparentBackground: new Assertion(c => 
@@ -65,7 +67,11 @@ const Validations = {
     }
 };
 
-function validateConfig(validationSet, validationSetName) {
+function validateConfig(prev, next) {
+    validateConfigInner();
+}
+
+function validateConfigInner(validationSet, validationSetName) {
     if (!validationSet) {
         console.info('Validating config...');
     }
@@ -107,5 +113,5 @@ function validateConfig(validationSet, validationSetName) {
     }
 }
 
-validateConfig();
+validateConfigInner();
 Config.on('update', validateConfig);

@@ -143,10 +143,9 @@ end
 
 local function get_alternate_form(word_idx)
     return function(words, pkmn_data)
-        local alternate_form_bits = get_bits(words[word_idx], 4, 5)
-        if alternate_form_bits > 0 then
-            print(pkmn_data.species)
-            return alternate_forms[pkmn_data.species][alternate_form_bits]
+        if alternate_forms[pkmn_data.species] ~= nil then
+            local form = pkmn_data.alternate_form_id
+            return alternate_forms[pkmn_data.species][form + 1] -- Lua is 1-indexed
         else
             return nil
         end
@@ -264,8 +263,8 @@ local pokemon_memory_map = {
     { "is_fateful_encounter", ggbool(33, 0) },          -- 0x40
     { "is_female", ggbool(33, 1) },                     -- 0x40
     { "is_genderless", ggbool(33, 2) },                 -- 0x40
-    { "alternate_form", get_alternate_form(33) },       -- 0x40
-    { "alternate_form_id", ggbit(33, 4, 5) },
+    { "alternate_form_id", ggbit(33, 3, 5) },           -- 0x40
+    { "alternate_form", get_alternate_form(33) },       
     { "shiny_leaves", get_shiny_leaves(33) },           -- 0x41 (byte 2 of word 33) (HG/SS only)
     -- word 34 unsed
     { "platinum_egg_location", 35 },

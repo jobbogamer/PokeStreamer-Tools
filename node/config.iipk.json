@@ -2,16 +2,6 @@
     This is the config generated specifically for iIPK to use during his SoulLink run.  It may be a useful example.
 */
 {
-    /*
-    Pokemon Generation
-    
-    Valid values: 3 and 4 (eventually 5?).  This value must match the generation and selected game of the Lua script
-    you are running, or Pokémon may not display properly.
-    */
-    "generation": 4,
-
-    "gameVersion": "hg",
-    
     "isRandomized": true,    
 
     // Path to the image used when a slot is empty relative to /node/ directory.
@@ -71,7 +61,8 @@
     "style": {
         // set this value to a color (e.g. "red") in order to see how it lines up with your streaming background
         // set it to "transparent" to hide that color
-        "imageWrapperBackgroundForSettingUpLayout": "red",
+        "imageWrapperBackgroundForSettingUpLayout": "transparent",
+        // "imageWrapperBackgroundForSettingUpLayout": "rgba(0,0,0,.3)",
 
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
@@ -83,8 +74,8 @@
         //               angle.
         // The "* 1.5" is to make the images the right size against a 720p background assuming your stream software
         // is set up to use a 1080p display
-        "imageWrapperWidth": "152px * 1.5",
-        "imageWrapperHeight": "123px * 1.5",
+        "imageWrapperWidth": "228px",
+        "imageWrapperHeight": "185px",
 
         // if you want to override the size of a slot, you can here... your milage may vary
         
@@ -105,9 +96,14 @@
         "%topElement": {
             // don't set height here... set it above
         },
-
-        "bottomBg": "silver",
         
+        "%bottomElement": {
+            // don't set height here... set it above
+            "margin-top": "208px",
+            "font-weight": "bold",
+            "color": "black",
+        },
+
         "showWhenEmpty": [
             // "nickname",
         ],
@@ -139,6 +135,8 @@
         "%levelText": {
             "width": null,
             "font-size": "36px",
+            "color": "white",
+            "text-shadow": "0 0 8px black",
 
             "margin": "8px * 1.5",
         },
@@ -170,7 +168,7 @@
         "%deathMessage3Text": {},
         
         // styles to apply to the div that contains the pokemon image
-        "%imageWrapperStyle": {
+        "%imageWrapper": {
             "border-radius": "16px 0 0 0",
             "border": "1px solid transparent",
 
@@ -187,17 +185,11 @@
         // • veritical: a vertical division with pokemon to the left and right
         // • thumbnail: your pokemon is displayed normally, and its soul-linked pokemon is overlayed in the bottom right
         //              corner
-        // • custom: (TODO) no style is applied except for the clipping SVGs you specify below; you must provide your 
-        //           own styles by editing /node/client/sass/* files
+        // • custom: (TODO) no style is applied; you must provide your own styles by editing /node/client/sass/* files
         //
-        // NOTE: your pokemon will always be on the top (or the left in the vertical case unless you set 
-        //       soulLinkSwap below)
+        // NOTE: your pokemon will always be on the top (or the left in the vertical case) unless you set soulLinkSwap
+        //       below
         "soulLinkOrientation": "diagonal-forward",
-        
-        // TODO!
-        // if you want to use an SVG file to determine the clipping, specify the paths relative to /node/public
-        // "customClipSvgTop": "path/to/svg",
-        // "customClipSvgBottom": "path/to/svg",
         
         // set this to true if you want your pokemon to be on bottom (or on the right side in the vertical case)
         "soulLinkSwap": false,
@@ -214,7 +206,7 @@
         },
         
         // styles for the soulLinked image wrapper
-        "%soulLinkedWrapperStyle": {
+        "%soulLinkedWrapper": {
             "border": "0px solid transparent",
             "border-radius": "0 0 16px 0",
 
@@ -226,12 +218,13 @@
 
         // the style to give your pokemon when a suitable counterpart has not been found
         "%invalidPokemonStyle": {
-            "filter": "brightness(70%)",
+            "filter": "brightness(50%)",
         },
+    },
 
-        // the style to give your partner's pokemon when that pokemon is boxed
-        "%boxedStyle": {
-            "filter": "sepia(100%)",
-        }
-    }
+    "server": {
+        "useLessSecureAPI": true
+    },
+
+    "logLevel": "info",    
 }

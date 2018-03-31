@@ -1,15 +1,7 @@
+// NOTE: Unless otherwise specified, all paths are absolute or relative to /node/
 {
-    /*
-    Pokemon Generation
-    
-    Valid values: 3 and 4 (eventually 5?).  This value must match the generation and selected game of the Lua script
-    you are running, or Pokémon may not display properly.
-    */
-    "generation": 4,
-
-    "gameVersion": "hg",
-
-    "isRandomized": false,
+    // If you are using a randomized ROM, set this to true
+    "usingRandomizer": false,
 
     // If you want override the settings in this file, specify a file or an array of files whose values will take
     // precedence.  Files at the beginning of the list have higher priority than those later.
@@ -75,17 +67,24 @@
         // Make the pokemon spin slowly.
         "applyDeathSpin": true,
         
-        // **EXPERIMENTAL**
-        // Play a depressing sound when a Pokemon dies.  This path is absolute or relative to the /node/public/ 
-        // directory.
+        // Play a depressing sound when a Pokemon dies.
         "deathSound": {
             "enabled": true,
+
+            // Path or paths to sound(s), absolute or relative to /node/resources.  May be a string or an array of 
+            // strings.  If multiple paths are specified, a random sound is chosen upon each death.  Valid filetypes
+            // are anything a browser can play.  (mp3, flac, etc)
             "filePath": "the-price-is-right-losing-horn.mp3"
         },
         
         // Places some content before the nickname element.  This should include a space after it and needs to be 
         // wrapped in single-quotes (as the value is being placed in a CSS file).
-        "ripPrefix": "'RIP '",
+        //
+        // NOTE: Currently broken... may or may not work... if you set the font size to less than the height of its 
+        // container and such that 11 characters (for nickname/pokemon name) + the prefix is always less wide than the 
+        // width of its container, it should be fine.
+        //
+        // "ripPrefix": "'RIP '",
         
         // These messages are displayed, replacing the text in whichever element they appear, when a Pokemon dies.
         // NOTE: currently these are not supported in Soul Link mode
@@ -104,36 +103,38 @@
     "soulLink": {
         "enabled": false,
         
+        // currently unused -- at the moment, the SoulLink system doesn't distinguish between you killing a pokémon and
+        // your partner killing theirs
         "deathSound": {
             "enabled": true,
             
             // if enabled but not specified, defaults to nuzlocke.deathSound.filePath
-            "filePath": "you-lose-good-day-sir.mp3"
+            // "filePath": "you-lose-good-day-sir.mp3"
         },
 
         "linking": {
             // Valid values:
             // •  manual: manually soul-link pokemon using the page at stream.pokemon-soul.link/links
-            // •  discord: (TODO) have a bot (or your user) use discord to communicate with your partner in order to handle 
-            //             soul-linking automatically
+            // •  discord: (TODO) have a bot (or your user) use discord to communicate with your partner in order to 
+            //             handle soul-linking automatically
             "method": "manual",
             
-            // settings ignored if method is set to manual
-            // 
+            // Discord settings are ignored if method is set to manual
             // You MUST change these values.
             "discord": {
                 // The Discord auth token of the Bot or User that will send and receive SoulLink information
                 "userToken": "NDIyMjg4OTU4OTcwNTI3NzQ0.DYaHyw.PLI1tXxO1UvgoroXynwz73HwQbI",
 
-                // Discord server (they're called Guilds in the Discord API)
-                "guild": "your-discord-server",
-
-                // Private channel used solely for transfering SoulLink data back and forth
+                // Discord server and private channel used solely for transfering SoulLink data back and forth
+                //
+                // Example:
+                //   "channel: "your-discord-server#your-private-channel"
+                //
                 // NOTE: You MUST invite both your bot/user and your partner's bot/user to this channel.  (Obviously.)
                 //       You should NOT invite anyone else.  I can't think of a way someone could maliciously use this
                 //       script to do harmful things to your computer, but I'm not a security expert, and I didn't build
                 //       this server script to have any layers of security.
-                "channelName": "#your-private-channel",
+                "channel": "your-discord-server#your-private-channel",
             },
         }
     },
@@ -145,6 +146,50 @@
     NOTE: If you want to use reference a value defined in the style section in another value, add a $ in front of it.
     Any values not prefixed with a $, %, @, or . are added as SASS variables and may be used in any later-defined
     values.  That is, you can define whatever new variables you'd like, though the ones already listed are required.
+
+    Example:
+        "foo": "red",
+
+        "%body": {
+            "background": "$foo",
+        }
+
+    More complicated example:
+        "testing": true,
+
+        "%imageWrapper": {
+            "background": "if($testing, red, transparent)"
+        },
+
+        "%soulLinkWrapper: {
+            "background": "if($testing, red, transparent)"
+        }
+
+    You can even even what are known as placeholders (sets of styles, denoted by prefixing the variable with a '%' 
+    character) and use the "@extend" property within another placeholder to apply the those styles.
+
+    Example:
+        "testing": true,
+
+        "%commonImageWrapperStyle": {
+            // if testing, set the background to red, otherwise make a semi-transparent, darkened background
+            "background": "if($testing, red, rgba(0, 0, 0, .2))", 
+            
+            // ... some other shared custom styles ...
+        }
+
+        "%imageWrapper": {
+            "@extend": "%commonImageWrapperStyle",
+
+            // custom styles for main image wrapper
+        }
+
+        "%soulLinkWrapper": {
+            "@extend": "%commonImageWrapperStyle",
+
+            // custom styles for Soul-Linked image wrapper
+        }
+
     See https://sass-lang.com/ for more information on SASS variables and what you can do with them.
     */
     "style": {
@@ -178,7 +223,6 @@
             // don't set height here... set it above
         },
 
-        
         "%bottomElement": {
             // don't set height here... set it above
         },
@@ -194,8 +238,6 @@
             // may be useful to change it when setting things up so that you can more easily see text if your text hard 
             // to see against the browser's default white background.
             "background": "transparent",
-            
-            "margin-top": "8px !important"
         },
         
         // Default text styles.  These can be overridden below.
@@ -214,7 +256,7 @@
         },
         
         "%levelText": {
-            // "font-size": "36px",
+            "font-size": "36px",
             
             // By default, texts on the left and right of the image are rotated.  Setting transform to "unset" prevents
             // this.
@@ -225,20 +267,21 @@
         // in a CSS file).
         "levelPrefix": "'Lvl '",
         
-        // "%speciesText": {},
-        // "%nicknameText": {},
+        "%speciesText": {},
+        "%nicknameText": {},
         
         // these styles are applied to both death messages, and can be overridden below
         "%deathMessageText": {
-            "font-size": "20px",
+            // "font-size": "20px",
         },
         
         "%deathMessage1Text": {},
         "%deathMessage2Text": {},
         "%deathMessage3Text": {},
         
-        // styles to apply to the div that contains the pokemon image
-        "%imageWrapperStyle": {},
+        // styles to apply to the div that contains the pokemon image (not applied to the soulLink image wrapper -- use
+        // %soulLinkWrapper to define those styles)
+        "%imageWrapper": {},
         
         // Soul Link styles
         
@@ -250,17 +293,11 @@
         // • veritical: a vertical division with pokemon to the left and right
         // • thumbnail: your pokemon is displayed normally, and its soul-linked pokemon is overlayed in the bottom right
         //              corner
-        // • custom: no style is applied except for the clipping SVGs you specify below; you must provide your own 
-        //           styles by editing /node/client/sass/* files
+        // • custom: no style is applied; you must provide your own styles by editing /node/client/sass/* files
         //
-        // NOTE: your pokemon will always be on the top (or the left in the vertical case unless you set 
-        //       soulLinkSwap below)
-        // "soulLinkOrientation": "diagonal-backward",
-        
-        // TODO: these don't do anything yet
-        // if you want to use an SVG file to determine the clipping, specify the paths relative to /node/public
-        // "customClipSvgTop": "path/to/svg",
-        // "customClipSvgBottom": "path/to/svg",
+        // NOTE: Your pokemon will always be on the top (or the left in the vertical case) unless you set 
+        //       soulLinkSwap below
+        "soulLinkOrientation": "diagonal-forward",
         
         // set this to true if you want your pokemon to be on bottom (or on the right side in the vertical case)
         "soulLinkSwap": false,
@@ -274,21 +311,16 @@
             "bottomLeft": "2px",
         },
         
-        // styles for the soulLinked image wrapper
-        "%soulLinkedWrapperStyle": {},
+        // styles for the SoulLinked image wrapper
+        "%soulLinkedWrapper": {},
 
-        // how far to shift the image away from the divide so that you can see more of the pokemon
+        // how far to shift the image away from the divide so that you can see more than half of the pokemon
         "imageShift": "10%",
 
         // the style to give your pokemon when a suitable counterpart has not been found
-        "%invalidPokemonStyle": {
-            "filter": "brightness(70%)",
+        "%invalidPokemon": {
+            "filter": "brightness(50%)",
         },
-
-        // the style to give your partner's pokemon when that pokemon is boxed
-        "%boxedStyle": {
-            "filter": "sepia(100%)",
-        }
     },
 
     // Many of the less-commonly-changed settings have been moved into ./config.advanced.json for the sake of

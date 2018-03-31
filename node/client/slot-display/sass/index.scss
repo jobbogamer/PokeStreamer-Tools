@@ -1,0 +1,22 @@
+@import './configSass.js';
+@import './helpers';
+
+$imageWrapperWidth: $imageSideLength !default;
+$imageWrapperHeight: $imageSideLength !default;
+$totalSlotWidth: $imageWrapperWidth + $leftElementWidth + $rightElementWidth !default;
+$totalSlotHeight: $imageWrapperHeight + $topElementHeight + $bottomElementHeight !default;
+
+@import './body';
+@import './voidsmoke';
+@import './slot';
+@import './image';
+@import './text';
+@import './nuzlocke';
+@import "./soulLink";
+
+#err {
+  color: red;
+  &:empty {
+    display: none;
+  }
+}

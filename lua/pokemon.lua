@@ -2,9 +2,24 @@ local decrypt = require("pokemon_decrypt_gen_4_gen_5")
 local pokemon_memory_map, battle_stats_memory_map = unpack(require("pokemon_memory_map_gen_4_gen_5"))
 local json = require("dkjson")
 
--- local lshift, rshift, xor, band, bor = bit.lshift, bit.rshift, bit.bxor, bit.band, bit.bor
--- local function get_bits(a, b, d) return rshift(a, b) % lshift(1, d) end
--- local function get_byte(word, idx) return get_bits(word, (idx - 1) * 8, 8) end
+local lshift, rshift, xor, band, bor = bit.lshift, bit.rshift, bit.bxor, bit.band, bit.bor
+local function get_bits(a, b, d) return rshift(a, b) % lshift(1, d) end
+local function get_byte(word, idx) return get_bits(word, (idx - 1) * 8, 8) end
+
+function gettop(a)
+	return(rshift(a,16))
+end
+
+function mult32(a,b)
+	local c=rshift(a,16)
+	local d=a%0x10000
+	local e=rshift(b,16)
+	local f=b%0x10000
+	local g=(c*f+d*e)%0x10000
+	local h=d*f
+	local i=g*0x10000+h
+	return i
+end
 
 local function unsign(n)
     if n < 0 then
@@ -51,7 +66,9 @@ local _defaultPokemonValues = {
     markings = 0,
     is_gift = false,
     encounter_type = -1,
-    is_empty = true
+    is_empty = true,
+    is_egg = false,
+    valid = true
 }
 
 local _propertiesToSend = {
@@ -62,6 +79,7 @@ local _propertiesToSend = {
     platinum_egg_location_met = "eggLocationMet",
     is_shiny = "isShiny",
     is_female = "isFemale",
+    is_egg = "isEgg",
     species = "species",
     alternate_form = "alternateForm",
     alternate_form_id = "alternateFormId",
@@ -74,18 +92,32 @@ local _propertiesToSend = {
     is_gift = "gift",
 }
 
-function Pokemon.get_words_string(words)
+function Pokemon.get_words_string(words, format)
+    format = format or "%04x"
     local hex = ""
     for _, w in ipairs(words) do
-        hex = hex .. string.format("%04x", w)
+        hex = hex .. string.format(format, w)
     end
     return hex
+end
+
+-- returns 
+-- 1) the value to set current hp at 0
+-- 2) the value to set the pokemon to frozen
+function Pokemon.get_death_codes(pid)
+    local prng = pid
+    prng = mult32(prng,0x41C64E6D) + 0x6073
+    local frozen_code = xor(get_byte(gettop(prng), 1), lshift(1, 5))
+    prng = mult32(prng,0x41C64E6D) + 0x6073
+    prng = mult32(prng,0x41C64E6D) + 0x6073
+    prng = mult32(prng,0x41C64E6D) + 0x6073    
+    return gettop(prng), frozen_code
 end
 
 local function get_pokemon_level(species, xp)
     local exp_levels = experiece_to_reach_level[experience_gain_by_species[species]]
     local level = 1
-    while xp > exp_levels[level] do level = level + 1 end
+    while xp >= exp_levels[level] do level = level + 1 end
     return level - 1
 end
 
@@ -93,15 +125,21 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     local pkmn = { gen = gen }
     pkmn.data_str = Pokemon.get_words_string(encrypted_words)
 
-    local valid, words = decrypt(encrypted_words)
+    local valid, words, death_code = decrypt(encrypted_words)
+
+    pkmn.valid = valid -- currently pointless code but I may use it in the future
     if not valid then
         return nil
     end
-
+    
     if words == nil then
         -- empty slot
         return Pokemon()
     end
+
+    -- print("----------------")
+    -- print(Pokemon.get_words_string(words))
+    -- print("----------------")
 
     for _, fn in ipairs(pokemon_memory_map) do
         local attr
@@ -113,6 +151,10 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
             pkmn[attr] = fn(words, pkmn)
         end
     end
+
+    pkmn.death_code = death_code
+    local level = get_pokemon_level(pkmn.species, pkmn.exp)
+    pkmn.level = level
 
     if not in_box then
         for _, fn in ipairs(battle_stats_memory_map) do
@@ -126,13 +168,21 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
             end
         end
 
+        if pkmn.level > 100 or pkmn.level > level + 5 or pkmn.level < level then
+            -- correct the level in case it's wrong in memory (or because it's in a box)
+            -- assume a level can be 5 higher than it was when it entered battle
+            pkmn.level = level
+        end
+
+        -- best effort to determine that this battle data is not accurate
+        if pkmn.current_hp > pkmn.max_hp then
+            return nil
+        end
+
         pkmn.living = pkmn.current_hp > 0
     end
 
     pkmn.gen = nil
-
-    -- correct the level in case it's wrong in memory (or because it's in a box)
-    pkmn.level = get_pokemon_level(pkmn.species, pkmn.exp)
     return Pokemon(pkmn)
 end
 
@@ -156,12 +206,12 @@ function Pokemon.__eq(left, right)
             end
         
             if tmpL ~= tmpR then
-                print(string.format("%s: %s -> %s", k, tmpL, tmpR))
+                -- print(string.format("%s: %s -> %s", k, tostring(tmpL), tostring(tmpR)))
                 return false
             end
         else
             if left[k] ~= right[k] then
-                print(string.format("%s: %s -> %s", k, left[k], right[k]))
+                -- print(string.format("%s: %s -> %s", k, tostring(left[k]), tostring(right[k])))
                 return false
             end
         end

@@ -1,0 +1,24 @@
+<tr id="<%- pokemon.pid %>">
+    <td>
+        <%= require('./pokemon-cell.ejs')({ pokemon }) %>
+    </td>
+    <td class="location"><div><%- pokemon.locationMetName %></div></td>
+    <%= require('./traits-cell.ejs')({ pokemon }) %>
+    <td>
+        <div class="dropdown">
+            <% if (!MANUAL_LINKING) { %>
+                <%= require('./link-dropdown.ejs')({ likelyMatches, unlikelyMatches }) %>
+            <% } %>
+        </div>
+    </td>
+    <td class="width-fixed">
+        <div>
+            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-add-link btn btn-sm btn-primary">Link</button>
+        </div>
+    </td>
+    <td class="width-fixed">
+        <div>
+            <button type="button" data-pid="<%- pokemon.pid %>" class="btn-void btn btn-sm btn-outline-void">Link to the Void</button>
+        </div>
+    </td>
+</tr>

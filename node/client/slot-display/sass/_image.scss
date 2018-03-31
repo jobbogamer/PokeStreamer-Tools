@@ -1,0 +1,36 @@
+$imageWrapperWidth: $imageSideLength !default;
+$imageWrapperHeight: $imageSideLength !default;
+$imgWidth: min($imageSideLength, $imageWrapperWidth);
+$imgHeight: min($imageSideLength, $imageWrapperHeight);
+$imageScale: scale(strip-unit($imageSideLength) / min(strip-unit($imageWrapperWidth), strip-unit($imageWrapperHeight)));
+
+.img-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0;
+  
+  &:not(.soul-linked) {
+    @extend %imageWrapper !optional;  
+  }
+  
+  .img-overlay {
+    display: flex;
+    position: absolute;
+  }
+  
+  img {
+    display: block;
+    width: $imgWidth;
+    max-width: $imgWidth;
+    height: $imgHeight;
+    max-height: $imgHeight;
+    margin: 0;
+    transform: $imageScale;
+    
+    &:not([src]) {
+      visibility: hidden;
+    }
+  }
+}

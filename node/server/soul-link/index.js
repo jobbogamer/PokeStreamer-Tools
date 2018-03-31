@@ -2,8 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import EventEmitter from 'events';
 import Discord from 'discord.js';
-import config from '../config';
-import SlotManager from '../slot/slot-manager';
+import Config from '../config';
 import PokemonManager from '../pokemon/pokemon-manager';
 
 let shinyId = 0;
@@ -31,17 +30,20 @@ class SoulLink extends EventEmitter {
                 throw new Error(`Invalid config.soulLink.method.  Must be "manual" or "discord".  Found '${this.Config.method}'.`);
         }
 
-        // SlotManager.on('update', this._handlePokemonUpdate.bind(this));
-        config.on('update', this._handleConfigChange.bind(this));
+        Config.on('update', this._handleConfigChange.bind(this));
     }
 
     get Config() {
-        return config.Current.soulLink;
+        return Config.soulLink;
     }
 
     get Enabled() {
-        return config.Current.nuzlocke && config.Current.nuzlocke.enabled &&
+        return Config.nuzlocke && Config.nuzlocke.enabled &&
             this.Config && this.Config.enabled;
+    }
+
+    get LinkingMethod() {
+        return this.Enabled && this.Config.linking.method;
     }
 
     newGame(otid, otsid) {
@@ -94,7 +96,7 @@ class SoulLink extends EventEmitter {
     }
 
     _initDiscordClient() {
-        // if (!config.Current.nuzlocke.enabled) {
+        // if (!Config.nuzlocke.enabled) {
         //     console.error('Nuzlocke is not enabled in config.json.  Aborting');
         //     return;
         // }
@@ -181,7 +183,7 @@ class SoulLink extends EventEmitter {
         
     }
 
-    _handleConfigChange(e) {
+    _handleConfigChange(prev, next) {
         // if (this.Config.enabled && !this._initialized) {
         //     console.debug('Config changed.  Starting up Soul Link.');
         //     this._initDiscordClient();

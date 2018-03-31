@@ -1,72 +1,107 @@
 /* Add colors to console output */
 let conWarn = console.warn;
 function warn(msg, ...args) {
-    conWarn.call(null, `\x1b[93m${msg}\x1b[0m`, ...args);
+    conWarn.call(null, `\x1b[93m${prefix()}${msg}\x1b[0m`, ...args);
 }
 
 let conError = console.error;
 function error(msg, ...args) {
-    conWarn.call(null, `\x1b[91m${msg}\x1b[0m`, ...args);
+    conWarn.call(null, `\x1b[91m${prefix()}${msg}\x1b[0m`, ...args);
 }
 
 let conDebug = console.debug;
 function debug(msg, ...args) {
-    conDebug.call(null, `\x1b[92m${msg}\x1b[0m`, ...args);
+    conDebug.call(null, `\x1b[92m${prefix(msg)}\x1b[0m`, ...args);
 }
 
 let conInfo = console.info;
 function info(msg, ...args) {
-    conInfo.call(null, `\x1b[96m${msg}\x1b[0m`, ...args);
-}
-
-let conTrace = console.trace;
-function trace(msg, ...args) {
-    // don't change color yet... too lazy to think of one
-    conTrace.call(null, msg, ...args);
+    conInfo.call(null, `\x1b[96m${prefix(msg)}\x1b[0m`, ...args);
 }
 
 let conLog = console.log;
 function log(msg, ...args) {
     // don't change color yet... too lazy to think of one
-    conLog.call(null, msg, ...args);
+    conLog.call(null, `${prefix(msg)}`, ...args);
 }
 
 function noop() {}
 
-function setLogLevel(level) {
-    let l;
+function noPrefix() {
+    return '';
+}
+
+let prefix = noPrefix;
+
+function parseLevel(level) {
+    if (level === undefined || level === null) {
+        return 2;
+    }
+
     switch (level) {
         case 'debug':
         case 1:
-            l = 1;
-            break;
+            return 1;
 
         case 'info':
         case undefined:
-        case '2':
-            l = 2;
-            break;
+        case 2:
+            return 2;
 
         case 'warn':
         case 3:
-            l = 3;
-            break;
+            return 3;
 
         case 'error':
-        case '4':
-            l = 4;
-            break;
+        case 4:
+            return 4;
 
         default:
             throw new Error(`Invalid log level: ${level}`);
     }
-
-    console.trace = l <= 1 ? trace : noop;
-    console.debug = l <= 1 ? debug : noop;
-    console.log = l <= 2 ? log : noop;
-    console.info = l <= 2 ? info : noop;
-    console.warn = l <= 3 ? warn : noop;
-    console.error = l <= 4 ? error : noop;
 }
 
-export default setLogLevel;
+function setLevel(level) {
+    level = parseLevel(level);
+    console.debug   = level <= 1 ? debug : noop;
+    console.log     = level <= 2 ? log : noop;
+    console.info    = level <= 2 ? info : noop;
+    console.warn    = level <= 3 ? warn : noop;
+    console.error   = level <= 4 ? error : noop;
+}
+
+function setPrefix(fn, separator) {
+    if (!fn) {
+        prefix = noPrefix;
+        return;
+    }
+
+    if (separator === undefined) {
+        separator = ' ';
+    } else if (separator instanceof Number) {
+        let tmp = [];
+        tmp.length = separator + 1;
+        separator = tmp.join(' ');
+    }
+
+    prefix = function(msg) {
+        if (msg) {
+            return fn() + separator + msg;
+        }
+
+        // case for when calling console.log() to add a blank line
+        // don't want to add our prefix then
+        return '';
+    };
+}
+
+function clearPrefix() {
+    prefix = noPrefix;
+}
+
+export default {
+    setLevel,
+    setPrefix,
+    clearPrefix,
+    parseLevel
+};

@@ -2,7 +2,14 @@ import path from 'path';
 import fs from 'fs';
 import EventEmitter from 'events';
 import Config from '../config';
-import { ImageRegex, ShinyImageRegex, SupportedImageFormats } from '../constants';
+import { Image, Paths } from '../constants';
+
+const {
+    ImageRegex, 
+    ShinyImageRegex,
+    EggImageRegex,
+    SupportedImageFormats
+} = Image;
 
 const basicImageDirs = {
     base: '.',
@@ -20,9 +27,9 @@ class PokemonImages extends EventEmitter {
 
         this._initPokemonImages();
 
-        Config.on('update', e => {
-            if (e.prev.pokemonImagesPath !== e.next.pokemonImagesPath ||
-                e.prev.emptySlotImagePath !== e.next.emptySlotImagePath) {
+        Config.on('update', (p, n) => {
+            if (p.pokemonImagesPath !== n.pokemonImagesPath ||
+                p.emptySlotImagePath !== n.emptySlotImagePath) {
                 console.log('Pokemon image paths in config changed.  Reloading all images.');
                 this._initPokemonImages();
             }
@@ -37,14 +44,14 @@ class PokemonImages extends EventEmitter {
         this._images = {};
         this._gettingFormImages = false;
     
-        if (!Config.Current.emptySlotImagePath) {
+        if (!Config.emptySlotImagePath) {
             console.warn('No specified empty slot image.  Skipping.');
             this._images[-1] = new PokemonImage();
         } else {
-            this._setEmptySlotImage(path.resolve(__dirname, '../..', Config.Current.emptySlotImagePath));
+            this._setEmptySlotImage(path.resolve(Paths.NodeRoot, Config.emptySlotImagePath));
         }
         
-        let basePath = path.resolve(__dirname, '..', Config.Current.pokemonImagesPath),
+        let basePath = path.resolve(Paths.NodeRoot, Config.pokemonImagesPath),
             formsPath = path.resolve(basePath, 'forms');
         
         if (!fs.existsSync(basePath)) {
@@ -75,8 +82,14 @@ class PokemonImages extends EventEmitter {
     }
 
     _loadImages(variant, dir) {
+        let basePath = path.resolve(Paths.NodeRoot, Config.pokemonImagesPath),
+            formsPath = path.resolve(basePath, 'forms');
+
         if (!fs.existsSync(dir)) {
-            if (!this._gettingFormImages || variant === 'shiny') {
+            // search for shiny/female variants for all normal forms
+            // don't search for shiny/female variants of egg
+            // otherwise make sure there is at least shiny variant for each alternate form
+            if (!this._gettingFormImages || (variant === 'shiny' && path.relative(formsPath, dir).search('egg') === -1)) {
                 console.warn(`Warning: Image directory '${dir}' does not exist.  Skipping.`);
             }
     
@@ -106,6 +119,11 @@ class PokemonImages extends EventEmitter {
             fileType = m && m[3];
             
             if (id) {
+                if (id === '0') {
+                    // attempting to add an egg that is not an egg image
+                    continue;
+                }
+
                 if (!this._images[id]) {
                     this._images[id] = new PokemonImage();
                 }
@@ -121,6 +139,16 @@ class PokemonImages extends EventEmitter {
                 }
                 
                 imagesFound++;
+            } else if ((m = EggImageRegex.exec(file)) !== null) {
+                if (this._images[0]) {
+                    // already have an egg
+                    continue;
+                }
+
+                fileType = m[3];
+                
+                this._images[0] = new PokemonImage();
+                this._images[0]['base'] = this._getImgSrcString(filePath, fileType);
             }
         }
         
@@ -128,7 +156,6 @@ class PokemonImages extends EventEmitter {
     }
 
     _setEmptySlotImage(filePath) {
-        filePath = path.resolve(__dirname, filePath);
         if (!fs.existsSync(filePath)) {
             console.warn(`emptySlot image '${filePath}' does not exist.  Skipping.`);
             return;
@@ -160,7 +187,11 @@ class PokemonImage {
         this.forms = {};
     }
     
-    getImage(female, shiny, form) {
+    getImage(female, shiny, form, egg) {
+        if (egg) {
+            return pokemonImages.get(0).base;
+        }
+
         if (form && this.forms[form]) {
             return this.forms[form].getImage(female, shiny) || this.base;
         }

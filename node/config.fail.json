@@ -3,16 +3,6 @@
     example.
 */
 {
-    /*
-    Pokemon Generation
-    
-    Valid values: 3 and 4 (eventually 5?).  This value must match the generation and selected game of the Lua script
-    you are running, or Pokémon may not display properly.
-    */
-    "generation": 4,
-
-    "gameVersion": "ss",
-    
     "isRandomized": true,
     
     // Path to the image used when a slot is empty relative to /node/ directory.
@@ -54,6 +44,25 @@
 
     "nuzlocke": {
         "enabled": true,
+
+        "deathSound": {
+            "filePath": [
+                "bad_afflicted_depressed.flac",
+                "bad_crit_02.flac",
+                "bad_death_04_alt.flac",
+                "bad_deathsdoor_05.flac",
+                "bad_questfail_04.flac",
+                "bad_afflicted_fearful.flac",
+                "bad_crit_03.flac",
+                "bad_death_05.flac",
+                "bad_questfail_01.flac",
+                "bad_questfail_05.flac",
+                "bad_crit_01.flac",
+                "bad_death_04.flac",
+                "bad_deathsdoor_04.flac",
+                "bad_questfail_02.flac"
+            ]
+        }
     },
 
     "soulLink": {
@@ -72,7 +81,7 @@
     "style": {
         // set this value to a color (e.g. "red") in order to see how it lines up with your streaming background
         // set it to "transparent" to hide that color
-        "imageWrapperBackgroundForSettingUpLayout": "transparent",
+        "imageWrapperBackgroundForSettingUpLayout": "rgba(0,0,0,.3)",
 
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
@@ -117,7 +126,7 @@
             // don't set height here... set it above
             "background": "$bottomBg",
             "padding": "0 16px",
-            "margin-top": "12px",
+            "margin-top": "215px",
             "font-weight": "bold",
             "font-variant": "small-caps",
             "color": "black",
@@ -159,13 +168,17 @@
         
         "%levelText": {
             // "width": "$rightElementWidth !important",
-            "font-size": "36px",
-            
+			"font-family": "Balthazar, sans-serif",
+            "font-size": "56px",
+			"-webkit-text-fill-color": "cyan",
+			"-webkit-text-stroke-width": "2px",
+			"-webkit-text-stroke-color": "black",
+			
             // By default, texts on the left and right of the image are rotated.  Setting transform to "unset" prevents
             // this.
             // "transform": "unset !important"
 
-            "margin": "8px 16px",
+            "margin": "-4px 4px",
         },
         
         // This should include a space after it and needs to be wrapped in single-quotes (as the value is being placed 
@@ -192,7 +205,7 @@
         "%deathMessage3Text": {},
         
         // styles to apply to the div that contains the pokemon image
-        "%imageWrapperStyle": {
+        "%imageWrapper": {
             "border-radius": "0 6px 0 0",
             "border": "0 solid transparent",
 
@@ -209,17 +222,11 @@
         // • veritical: a vertical division with pokemon to the left and right
         // • thumbnail: your pokemon is displayed normally, and its soul-linked pokemon is overlayed in the bottom right
         //              corner
-        // • custom: (TODO) no style is applied except for the clipping SVGs you specify below; you must provide your 
-        //           own styles by editing /node/client/sass/* files
+        // • custom: no style is applied; you must provide your own styles by editing /node/client/sass/* files
         //
-        // NOTE: your pokemon will always be on the top (or the left in the vertical case unless you set 
-        //       soulLinkSwap below)
+        // NOTE: your pokemon will always be on the top (or the left in the vertical case) unless you set soulLinkSwap
+        //       below
         "soulLinkOrientation": "diagonal-backward",
-        
-        // TODO!
-        // if you want to use an SVG file to determine the clipping, specify the paths relative to /node/public
-        // "customClipSvgTop": "path/to/svg",
-        // "customClipSvgBottom": "path/to/svg",
         
         // set this to true if you want your pokemon to be on bottom (or on the right side in the vertical case)
         "soulLinkSwap": false,
@@ -236,7 +243,7 @@
         },
         
         // styles for the soulLinked image wrapper
-        "%soulLinkedWrapperStyle": {
+        "%soulLinkedWrapper": {
             "border-radius": "0 0 0 6px",
             "border": "0 solid transparent",
 
@@ -248,12 +255,10 @@
 
         // the style to give your pokemon when a suitable counterpart has not been found
         "%invalidPokemonStyle": {
-            "filter": "brightness(70%)",
+            "filter": "brightness(50%)",
         },
+    },
 
-        // the style to give your partner's pokemon when that pokemon is boxed
-        "%boxedStyle": {
-            "filter": "sepia(100%)",
-        }
-    }
+    "logLevel": "debug",    
+    // "logLevel": "info",
 }

@@ -121,6 +121,7 @@ pokemon =  {
 }
 
 alternate_forms = {}
+alternate_forms[172] = { "normal", "spiky-eared" }
 alternate_forms[201] = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" }
 alternate_forms[385] = { "normal", "attack", "defense", "speed" }
 alternate_forms[412] = { "plant", "sandy", "trash" }

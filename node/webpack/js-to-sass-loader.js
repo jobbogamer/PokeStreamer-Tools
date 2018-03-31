@@ -25,7 +25,7 @@ function transform(data) {
                     if (!dg.hasNode(v)) {
                         dg.addNode(v);
                     }
-
+                    
                     dg.addDependency(key, v);
                 });
             }
@@ -36,7 +36,7 @@ function transform(data) {
             dg.addNode(key);
             let varVal = parseValue(data[key]);
             findSassVariableReferences(varVal).forEach(v => {
-                    v = v.slice(1);
+                v = v.slice(1);
                 if (!dg.hasNode(v)) {
                     dg.addNode(v);
                 }
@@ -83,24 +83,24 @@ function parseMap(map) {
         .filter(key => isValidKey(key))
         .map(key => `${key}: ${parseValue(map[key])}`)
         .join(',')})`;
-    }
+}
+
+function shouldWrapInStrings(input) {
+    const inputWithoutFunctions = input.replace(/[a-zA-Z]+\([^)]*\)/, ""); // Remove functions
+    return inputWithoutFunctions.includes(',');
+}
+
+export default function (content) {
+    let self = this;
     
-    function shouldWrapInStrings(input) {
-        const inputWithoutFunctions = input.replace(/[a-zA-Z]+\([^)]*\)/, ""); // Remove functions
-        return inputWithoutFunctions.includes(',');
-    }
-    
-    export default function (content) {
-        let self = this;
-        
-        return content.replace(importRegex, (match, relativePath) => {
-            if (match) {
-                let filePath = path.join(self.context, relativePath);
-                self.addDependency(filePath);
-                
-                // prevent cacheing of the module
-                delete require.cache[require.resolve(filePath)];
-                return transform(require(filePath).default);
-            }
-        });
-    }
+    return content.replace(importRegex, (match, relativePath) => {
+        if (match) {
+            let filePath = path.join(self.context, relativePath);
+            self.addDependency(filePath);
+            
+            // prevent cacheing of the module
+            delete require.cache[require.resolve(filePath)];
+            return transform(require(filePath).default);
+        }
+    });
+}

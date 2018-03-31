@@ -58,6 +58,7 @@ local pid = 0
 local trainerID, secretID, lotteryID
 local shiftvalue
 local checksum = 0
+local in_battle = false
 
 local mode = 1
 local modetext = "Party"
@@ -437,22 +438,36 @@ function getNatClr(a)
 end
 
 function read_pokemon_words(addr, num_words)
-	local words = {}
-	-- PID is taken as a whole, and we're in little endian hell, so reverse words
-	local dword = memory.readdword(addr)
-	words[1] = getbits(dword, 16, 16)
-	words[2] = getbits(dword, 0, 16)
+	local pid = memory.readdword(addr)
+	in_battle = check_is_in_battle(addr, pid)
+	local num_bytes = num_words * 2
+	local bytes
 
-	-- -- unused variable and checksum are sparate words
-	dword = memory.readdword(addr + 4)
-	words[3] = getbits(dword, 0, 16)
-	words[4] = getbits(dword, 16, 16)
-
-	for i = 8, (num_words - 1) * 2, 4 do
-		dword = memory.readdword(addr + i)
-		words[#words + 1] = getbits(dword, 0, 16)
-		words[#words + 1] = getbits(dword, 16, 16)
+	-- check that num_words > 0x88 in case we're looking at a boxed pokemon...?  doesn't make sense that this would ever
+	-- happen, but doesn't hurt to check either
+	if in_battle and num_bytes > 0x88 then
+		-- we can get live stats for the battle stat block -- don't trust it for other things like exp
+		-- bytes = memory.readbyterange(addr, 0x88)
+		local battle_addr = addr + 0x4E9F0
+		bytes = memory.readbyterange(battle_addr, 0x88)
+		local battle_bytes = memory.readbyterange(battle_addr + 0x88, num_bytes - 0x88)
+		for _, b in ipairs(battle_bytes) do
+			bytes[#bytes + 1] = b
+		end
+	else
+		bytes = memory.readbyterange(addr, num_bytes)
 	end
+
+	local words = {}
+
+	-- PID is taken as a whole, and memory is in little-endian, so reverse the words
+	words[1] = getbits(pid, 16, 16)
+	words[2] = getbits(pid, 0, 16)
+
+	for i = 5, #bytes, 2 do
+		words[#words + 1] = bytes[i] + lshift(bytes[i + 1], 8)
+	end
+
 	return words
 end
 
@@ -510,46 +525,87 @@ function inspect_and_send_boxes()
 
 	last_boxes = cur_boxes
 	if #delta_boxes > 0 and not_need_to_read_boxes then
-		send_slots(delta_boxes, gen)
+		send_slots(delta_boxes, gen, game, subgame)
 		delta_boxes = {}
 	end
 end
 
+function kill_pokemon(pidAddr)
+	local pid = memory.readdword(pidAddr)
+	local death_code, frozen_code = Pokemon.get_death_codes(pid)
+	memory.writeword(pidAddr + 71 * 2, death_code)
+
+	-- if in battle
+	if memory.readdword(pidAddr + 0x4E9F0) == pid then
+		pidAddr = pidAddr + 0x4E9F0
+		for i = 0, 3 do
+			-- memory.writebyte(pidAddr + 0x88 + (i * 0x400000), frozen_code)
+			memory.writeword(pidAddr + 71 * 2 + (i * 0x400000), death_code)
+		end
+	end
+end
+
+-- attempt to check if in battle by comparing pid against all 4 places it seems to appear when in battle
+-- far from foolproof, but slightly better than nothing
+function check_is_in_battle(addr, pid)
+	local battle_addr = addr + 0x4E9F0
+	for i = 0, 3 do
+		if memory.readdword(battle_addr + (i * 0x400000), death_code) ~= pid then
+			return false
+		end
+	end
+
+	return true
+end
+
+-- attempt to check if in battle by examining enemy memory
+-- doesn't actually work.... may debug this later
+-- function get_is_in_battle()
+-- 	submode = 1
+-- 	getPidAddr() -- this sets enemyAddr
+-- 	local enemyWords = read_pokemon_words(enemyAddr, Pokemon.word_size_in_party)
+-- 	local enemy = Pokemon.parse_gen4_gen5(enemyWords, false, gen, true)
+-- 	print(enemy ~= nil)
+-- end
+
+local printed_slot_1 = false
 function fn()
 	--menu()
-	current_time = os.time()
+	current_time = os.clock() -- use clock() rather than time() so we can check more than once per second
 	if need_to_read_boxes or run_soul_link and current_time - last_box_check > check_box_frequency then
 		gen = getGen()
 		inspect_and_send_boxes()
 		last_box_check = current_time
 	end
 
-	if current_time - last_check > .1 then
+	if current_time - last_check > .5 then
 		gen = getGen()
+		pointer = getPointer()
 		party = {}
+
+		-- in_battle = get_is_in_battle()
+
 		for q = 1, 6 do
-			-- debug_current_slot = q
 			submode = q
-			pointer = getPointer()
 			pidAddr = getPidAddr()
 
 			if print_first_pokemon_bytes then do_print_first_pokemon_bytes(pidAddr) end
 
 			local words = read_pokemon_words(pidAddr, Pokemon.word_size_in_party)
-			if last_party == nil or last_party[q] == nil or Pokemon.get_words_string(words) ~= last_party[q].data_str then
+			
+			if last_party == nil or last_party[q] == nil or in_battle or Pokemon.get_words_string(words) ~= last_party[q].data_str then
 				party[q] = Pokemon.parse_gen4_gen5(words, false, gen)
 			else
 				party[q] = last_party[q]
 			end
 		end
-		
+
 		local send_data = {}
 		if first_run then
 			reset_server()
 			last_party = {}
 			for k, pkmn in pairs(party) do
 				last_party[k] = pkmn or Pokemon() -- invalid pokemon are returned as nil from parse_gen4_gen5
-				
 				print("Slot " .. k .. ": " .. tostring(pkmn))
 				send_data[#send_data + 1] = { slot_id = k, pokemon = pkmn }
 			end
@@ -573,7 +629,7 @@ function fn()
 		end
 
 		if (#send_data > 0) then
-			send_slots(send_data, gen)
+			send_slots(send_data, gen, game, subgame)
 		end
 
 		last_check = current_time

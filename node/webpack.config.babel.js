@@ -4,168 +4,242 @@ import path from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+// import TidyHtmlWebpackPlugin from 'tidy-html-webpack-plugin';
 import compileConfig from './common/configCompiler';
+import './common/extensions';
 
-const config = compileConfig(),
-    isHot = path.basename(require.main.filename) === 'webpack-dev-server.js';
-
-const NODE_ENV = (process.env.NODE_ENV || 'production').trim();
-
-let webpackConfig = {
-    entry: {
-        index: './client/index.js',
-        // soulLinkManager: './client/soulLink.js'
-    },
+function genConfig(env, options) {
+    const config = compileConfig(),
+        isDevServer = path.basename(require.main.filename) === 'webpack-dev-server.js',
+        isHot = isDevServer && options.hot;
     
-    output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, 'public'),
-        publicPath: '/',
-    },
-
-    optimization: {
-        minimize: false,
-    },
+    const NODE_ENV = (options.mode || process.env.NODE_ENV || 'production').trim(),
+        isProd = NODE_ENV === 'production',
+        isDev = !isProd,
+        host = `${config.server.host}:${config.server.port}`;
     
-    resolveLoader: {
-        alias: {
-            'js-to-sass-loader': path.resolve(__dirname, 'webpack/js-to-sass-loader'),
-            'config-compiler-loader': path.resolve(__dirname, 'webpack/config-compiler-loader')
+    function addDevServer(entry) {
+        let entries = Array.makeArray(entry);
+        
+        if (isHot) {
+            entries.push('webpack/hot/only-dev-server');
         }
-    },
+        
+        if (isDevServer) {
+            entries.push(`webpack-dev-server/client?http://${host}`);            
+        }
+        
+        return entries;
+    }
     
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-            },
-            {
-                test: /\.json$/,
-                exclude: /node_modules/,
-                loader: 'config-compiler-loader',
-            },
-            {
-                test: /\.s[ca]ss$/,
-                exclude: /node_modules/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        { loader: 'css-loader' },
-                        { loader: 'sass-loader' },
-                        { loader: 'js-to-sass-loader' },
-                    ]
-                }),
-            },
-            {
-                test: /\.ejs$/,
-                loader: 'ejs-loader',
-            }
-        ],
-    },
-    
-    plugins: [
-        new webpack.DefinePlugin({
-            NUM_SLOTS: 6,
-            ENVIRONMENT: NODE_ENV,
-            IS_HOT: isHot,
-            ALL_IN_ONE: config.layout.allInOne,
-            API_BASE_URL: `'${config.server.apiHost}:${config.server.port}/api'`,
-        }),
-        new webpack.ProvidePlugin({
-            _: 'lodash',
-        }),
-        new ExtractTextPlugin({ 
-            filename: 'style.css',
-        }),
-        new HtmlWebpackPlugin({
-            template: '!!ejs-loader!./client/index.ejs',
-            filename: 'index.html',
-            chunks: ['index'],
-            inject: 'body',
-            cache: true
-        }),
-        // new HtmlWebpackPlugin({
-        //     template: '!!ejs-loader!./client/soulLink.ejs',
-        //     filename: 'links.html',
-        //     chunks: ['soulLinkManager'],
-        //     inject: 'body',
-        //     cache: true
-        // }),
-        new webpack.SourceMapDevToolPlugin({
-            test: /\.js$|\.css$/,
-            filename: '[file].map',
-            publicPath: '/',
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-    ],
-    
-    externals: [
-        { jquery: '$' },
-    ],
-
-    devServer: {
-        hot: true,
-        overlay: true,
-        index: 'index.html',
-        contentBase: path.join(__dirname, 'public'),
-        host: config.server.host,
-        port: config.server.port,
-        allowedHosts: [
-            config.server.apiHost,
-        ],
-        proxy: {
-            '/api': {
-                target: `http://${config.server.apiHost}:${config.server.devServerPort}/`,
-                secure: false
+    let webpackConfig = {
+        entry: {
+            index: addDevServer('./client/slot-display/index'),
+            // pokemonIcons: './client/pokemon-icons',
+            soullink: addDevServer('./client/soullink-manager/index'),
+            vendors: [ 'lodash' ],
+        },
+        
+        output: {
+            // filename: opt => opt.chunk.name === 'index' ? 'index.js' : '[name]/[name].js',
+            filename: '[name].js',
+            chunkFilename: '[name].js',
+            path: path.resolve(__dirname, 'public'),
+            // publicPath: '/',
+        },
+        
+        optimization: {
+            minimize: isProd && !isHot, // for some reason, hot replacement of SASS isn't working in development mode
+            // splitChunks: {
+            //     // chunks: 'all',
+            //     //     // name: true,
+            //     //     // reuseExistingChunks: true,
+            //     cacheGroups: {
+            //         //     //     default: false,
+            //         pokemonIcons: {
+            //             test: /pokemon-icons\.js$/,
+            //             name: 'pokemon-icons',
+            //             minChunks: Infinity,
+            //         },
+            //         vendor: {
+            //             name: 'vendors',
+            //             minChunks: Infinity,
+            //         }
+            //     }
+            // },
+        },
+        
+        resolve: {
+            alias: {
+                'config.json': path.resolve(__dirname, 'config.json'),
+                'pokedex': path.resolve(__dirname, 'common/pokedex'),
             }
         },
+        
+        resolveLoader: {
+            alias: {
+                'js-to-sass-loader': path.resolve(__dirname, 'webpack/js-to-sass-loader'),
+                'config-compiler-loader': path.resolve(__dirname, 'webpack/config-compiler-loader')
+            }
+        },
+        
+        module: {
+            rules: [
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    loader: 'babel-loader',
+                },
+                {
+                    test: /\.json$/,
+                    exclude: /node_modules/,
+                    loader: 'config-compiler-loader',
+                },
+                {
+                    test: /\.s[ca]ss$/,
+                    exclude: [ /node_modules/, /^.*(hot-update).*$/ ],
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            { loader: 'css-loader' },
+                            { loader: 'sass-loader' },
+                            { loader: 'js-to-sass-loader' },
+                        ]
+                    }),
+                },
+                {
+                    test: /\.ejs$/,
+                    loader: 'ejs-loader',
+                },
+                {
+                    test: /\.png$/,
+                    use: [
+                        'url-loader'
+                    ]
+                }
+            ],
+        },
+        
+        plugins: [],
+        
+        externals: [
+            { jquery: '$' },
+        ],
+        
+        devServer: {
+            hot: isHot,
+            overlay: true,
+            index: 'index.htm',
+            contentBase: path.join(__dirname, 'public'),
+            host: config.server.host,
+            port: config.server.port,
+            allowedHosts: [
+                `api.${config.server.host}`,
+            ],
+            proxy: {
+                '/api': {
+                    target: `http://api.${config.server.host}:${config.server.devServerPort}/`,
+                    secure: false,
+                    ws: true
+                }
+            },
+        }
+    };
+    
+    function addPlugins(plugins) {
+        for (let plugin of plugins) {
+            webpackConfig.plugins.push(plugin);
+        }
     }
-};
-
-let nuzlocke = config.nuzlocke,
+    
+    addPlugins([
+            new webpack.DefinePlugin({
+                NUM_SLOTS: 6,
+                ENVIRONMENT: NODE_ENV,
+                IS_HOT: isHot,
+                
+                ALL_IN_ONE: config.layout.allInOne,
+                API_BASE_URL: `'api.${host}/api'`,
+                
+                LINKING_METHOD: `'${config.soulLink.linking.method}'`,
+                MANUAL_LINKING: config.soulLink.linking.method === 'manual',
+            }),
+            new webpack.ProvidePlugin({
+                _: 'lodash',
+            }),
+            new CopyWebpackPlugin([{ from: './resources/*.png', flatten: true }]),
+            new ExtractTextPlugin({ 
+                filename: '[name].css',
+            }),
+            new HtmlWebpackPlugin({
+                template: '!!ejs-loader!./client/slot-display/index.ejs',
+                filename: 'index.html',
+                chunks: ['index'],
+                inject: 'body',
+                cache: true
+            }),
+            new HtmlWebpackPlugin({
+                template: '!!ejs-loader!./client/soulLink-manager/index.ejs',
+                filename: 'soullink/index.html',
+                chunks: ['soullink'],
+                inject: 'body',
+                cache: true
+            }),
+        // new TidyHtmlWebpackPlugin({
+        //     tabSize: 4,
+        // }),
+    ]);
+    
+    if (isDev || isHot) {
+        addPlugins([
+            new webpack.SourceMapDevToolPlugin({
+                test: /\.js$|\.s?css$/,
+                filename: '[file].map',
+                exclude: [ 'vendors.js' ],
+                // publicPath: '/',
+            }),
+        ]);
+    }
+    
+    let nuzlocke = config.nuzlocke,
     soulLink = config.soulLink;
-if (nuzlocke.deathSound && nuzlocke.deathSound.enabled) {
-    const getSoundPath = function(soundFileName) {
-        let possiblePaths = [
-            path.resolve(__dirname, 'resources', soundFileName),
-            path.resolve(__dirname, soundFileName),
-            path.resolve(soundFileName)
-        ];
-
-        for (let p of possiblePaths) {
+    if (nuzlocke.deathSound && nuzlocke.deathSound.enabled) {
+        const getSoundPath = function(soundFileName) {
+            let p = path.resolve(__dirname, 'resources', soundFileName);
             if (fs.existsSync(p)) {
                 return p;
             }
+            
+            console.warn(`Could not find specified sound file at '${p}'. Skipping.`);
+            return null;
+        };
+        
+        const copySounds = function(deathSounds) {
+            if (deathSounds.constructor === String) {
+                deathSounds = [ deathSounds ];
+            }
+            
+            for (let soundPath of deathSounds) {
+                soundPath = getSoundPath(soundPath);
+                if (soundPath) {
+                    webpackConfig.plugins.push(
+                        new CopyWebpackPlugin([{ 
+                            from: soundPath,
+                            to: `${path.parse(soundPath).base}`
+                        }])
+                    );
+                }
+            }
+        };
+        
+        copySounds(nuzlocke.deathSound.filePath);
+        
+        if (soulLink.deathSound && soulLink.deathSound.enabled && soulLink.deathSound.filePath) {
+            copySounds(soulLink.deathSound.filePath);
         }
-
-        return null;
-    };
-    
-    let soundPath = getSoundPath(nuzlocke.deathSound.filePath);
-    if (soundPath) {
-        webpackConfig.plugins.push(
-            new CopyWebpackPlugin([{ 
-                from: soundPath,
-                to: `${path.parse(nuzlocke.deathSound.filePath).base}`
-            }])
-        );
-    }
-
-    if (soulLink.deathSound && 
-        soulLink.deathSound.enabled &&
-        soulLink.deathSound.filePath) {
-        soundPath = getSoundPath(soulLink.deathSound.filePath);
-        if (soundPath) {
-            webpackConfig.plugins.push(
-                new CopyWebpackPlugin([{ 
-                    from: soundPath,
-                    to: `${path.parse(soulLink.deathSound.filePath).base}`
-                }])
-            );
-        }
+        
+        return webpackConfig;
     }
 }
 
-export default webpackConfig;
+export default genConfig;
