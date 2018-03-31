@@ -15,6 +15,7 @@ class Nuzlocke extends EventEmitter {
     // used for when starting a new game from the SoulLink Manager
     reset() {
         NuzlockeFileManager.reset();
+        nuzlockeObject = NuzlockeFileManager.loadFile();
     }
 
     addDeadPokemon(pid) {
