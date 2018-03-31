@@ -12,7 +12,7 @@
             <%= require('./pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
         <% } %>
     </td>
-    <td>
+    <td class="width-fixed">
         <div class="btn-group">
             <% if (MANUAL_LINKING) { %>
                 <button type="button" disabled data-pid="<%- pokemon.pid %>" class="btn-update-link btn btn-primary btn-sm">
@@ -24,7 +24,7 @@
             <% } %>
         </div>
     </td>
-    <td>
+    <td class="width-fixed">
         <div>
             <button type="button" data-pid="<%- pokemon.pid %>" class="btn-link-dead btn btn-sm btn-outline-dead">
                 Link Died

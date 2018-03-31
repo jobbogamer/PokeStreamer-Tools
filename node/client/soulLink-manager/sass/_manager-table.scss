@@ -31,6 +31,10 @@
           display: flex;
           transition: all .5s ease-out;
         }
+
+        &.width-fixed {
+          width: 180px;
+        }
       }
       
       &.placeholder > td > div {

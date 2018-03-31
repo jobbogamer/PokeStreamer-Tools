@@ -50,6 +50,11 @@ ws.on('message', e => {
         case 'add-pokemon':
             if (!knownPokemon[msg.pokemon.pid]) {
                 knownPokemon[msg.pokemon.pid] = new SoulLinkRow(msg);
+            } else if (msg.isRefresh) {
+                knownPokemon[msg.pokemon.pid].updateLink({ 
+                    species: msg.pokemon.spcies, 
+                    linkedSpecies: msg.pokemon.linkedSpecies 
+                });
             }
             break;
 

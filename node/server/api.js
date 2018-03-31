@@ -19,7 +19,6 @@ const {
 
 let slotConnections = new Set(),
     slConnections = new Set(),
-    dirtySlots = false,
     deadConnectionInterval,
     router,
     gameVersion;
@@ -354,7 +353,7 @@ function getSoulLink(ws, req) {
                     break;
 
                 case 'refresh':
-                    sendSLConnAllPokemon(this);
+                    sendSLConnAllPokemon(this, true);
                     break;
 
                 case 'new-game':
@@ -386,10 +385,11 @@ function getSoulLink(ws, req) {
     sendSLConnAllPokemon(ws);
 }
 
-function sendSLConnAllPokemon(ws) {
+function sendSLConnAllPokemon(ws, isRefresh) {
     Object.values(knownPokemon).map(p => ({
         messageType: 'add-pokemon',
-        pokemon: p.clientJSON
+        pokemon: p.clientJSON,
+        isRefresh: isRefresh
     })).forEach(msg => ws.send(JSON.stringify(msg)));
 
     ws.send(JSON.stringify({
