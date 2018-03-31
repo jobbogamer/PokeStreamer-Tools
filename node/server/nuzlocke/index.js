@@ -12,6 +12,11 @@ class Nuzlocke extends EventEmitter {
         return new Set(nuzlockeObject.knownVoids);
     }
 
+    // used for when starting a new game from the SoulLink Manager
+    reset() {
+        NuzlockeFileManager.reset();
+    }
+
     addDeadPokemon(pid) {
         if (!nuzlockeObject.knownDeaths.has(pid)) {
             nuzlockeObject.knownDeaths.add(pid);

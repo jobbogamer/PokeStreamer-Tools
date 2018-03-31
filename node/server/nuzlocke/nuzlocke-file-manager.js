@@ -8,6 +8,10 @@ const DefaultNuzlockeObject = {
 };
 
 const NuzlockeFileManager = {
+    reset: function() {
+        fs.writeFileSync(NuzlockeFile, JSON.stringify(DefaultNuzlockeObject));
+    },
+
     saveFile: function(nuzlockeObject) {
         try {
             fs.writeFileSync(NuzlockeFile, JSON.stringify(nuzlockeObject));

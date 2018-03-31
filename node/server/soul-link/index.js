@@ -30,7 +30,6 @@ class SoulLink extends EventEmitter {
                 throw new Error(`Invalid config.soulLink.method.  Must be "manual" or "discord".  Found '${this.Config.method}'.`);
         }
 
-        // SlotManager.on('update', this._handlePokemonUpdate.bind(this));
         Config.on('update', this._handleConfigChange.bind(this));
     }
 

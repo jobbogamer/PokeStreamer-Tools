@@ -22,7 +22,7 @@ function enableModal(enable, close) {
         $ngModal.find('button').enable();
         $ngModal.off('hide.bs.modal', stopHide);
         if (close) {
-            $ngModal.modal('close');
+            $ngModal.modal('hide');
         }
     } else {
         $ngModal.find('button').disable();
@@ -45,6 +45,7 @@ $confirmBtn.click(() => {
 ws.on('message', e => {
     let msg = JSON.parse(e.data);
     if (msg.messageType === 'new-game') {
+        clearTimeout(newGameTimeout);
         enableModal(true, true);
     }
 });

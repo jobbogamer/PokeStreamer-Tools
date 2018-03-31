@@ -61,7 +61,6 @@ ws.on('message', e => {
         case 'new-game':
             Object.values(knownPokemon).forEach(row => row.dispose());
             knownPokemon = {};
-
             break;
     }
 });

@@ -75,9 +75,11 @@ class SoulLinkFileReader extends EventEmitter {
         }
 
         this._links = next;
-        // if (changed) {
-        //     this.emit('update', next);
-        // }
+    }
+
+    reset() {
+        fs.writeFileSync(SoulLinkFile, '{}');
+        this._links = {};
     }
 
     addPokemon(pokemon) {

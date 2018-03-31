@@ -283,9 +283,8 @@ class SoulLinkRow {
     }
 
     dispose() {
-        removeRow();
-        ws.off('message', this.onMessage);
-
+        this.removeRow();
+        ws.removeListener('message', this.onMessage);
     }
 }
 

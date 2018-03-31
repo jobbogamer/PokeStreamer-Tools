@@ -344,10 +344,6 @@ function getSoulLink(ws, req) {
                     Nuzlocke.revivePokemon(msg.pid);
                     break;
 
-                case 'new-game':
-                    console.warn('NOT IMPLEMENTED: new-game');
-                    break;
-
                 case 'void-pokemon':
                     Nuzlocke.addVoidPokemon(msg.pid);
                     break;
@@ -359,6 +355,13 @@ function getSoulLink(ws, req) {
 
                 case 'refresh':
                     sendSLConnAllPokemon(this);
+                    break;
+
+                case 'new-game':
+                    knownPokemon = {};
+                    Nuzlocke.reset();
+                    SoulLinkFileReader.reset();
+                    sendSLMessages({ messageType: 'new-game' });
                     break;
 
                 default:
