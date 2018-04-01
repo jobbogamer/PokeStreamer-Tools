@@ -6,7 +6,7 @@
     if (config.configOverride) {
         if (config.configOverride instanceof String) {
             primaryConfigFile = config.configOverride;
-        } else {
+        } else if (config.configOverride.length) {
             primaryConfigFile = config.configOverride[0];
         }
     }
