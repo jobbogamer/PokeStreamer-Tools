@@ -148,15 +148,16 @@ function update(req, res, next) {
             slot--;
             box && box--;
 
-            if (!pokemon) { 
-                continue; 
+            if (pokemon === undefined) {
+                continue;
+            } else if (pokemon) {
+                pokemon.generation = parseInt(req.header('Pokemon-Generation'));
+                pokemon.gameVersion = req.header('Pokemon-Game');
             }
-
-            pokemon.generation = parseInt(req.header('Pokemon-Generation'));
-            pokemon.gameVersion = req.header('Pokemon-Game');
             
             let pkmn = pokemon ? new Pokemon(pokemon) : null,
                 pid = pkmn && pkmn.pid;
+                
             if (!pkmn) {
                 if (!isBox) {
                     slots[slot] = Slot.empty(slot, changeId);
