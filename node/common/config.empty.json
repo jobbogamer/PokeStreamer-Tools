@@ -13,7 +13,7 @@
     "server": {
         "port": 8081,
         "host": "stream.pokemon-soul.link",
-        "devServerPort": 0,
+        "devServerPort": 8082,
     },
     "layout": {
         "allInOne": true,
@@ -37,7 +37,6 @@
     },
     "soulLink": {
         "enabled": false,
-        "dataDirectory": "./gameData",
         "deathSound": {
             "enabled": false,
             "filePath": null
@@ -46,8 +45,7 @@
             "method": null,
             "discord": {
                 "userToken": "",
-                "guild": "",
-                "channelName": ""
+                "channel": null,
             }
         }
     },
