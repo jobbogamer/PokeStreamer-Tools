@@ -8,7 +8,7 @@
     "watch": "node_modules/.bin/webpack --progress --color --mode production --watch",
     "watch-d": "node_modules/.bin/webpack --progress --color --mode development --watch",
     "debug": "node -r babel-register server -d",
-    "start": "node -r babel-register server",
+    "start": "node -r babel-register server"
   },
   "author": "Jordan Hitch",
   "license": "ISC",
