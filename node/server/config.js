@@ -91,7 +91,7 @@ class Config extends EventEmitter {
         let ll = this._current.logLevel = Log.parseLevel(this._current.logLevel);
         Log.setLevel(ll);
         if (ll <= 2) {
-            Log.setPrefix(() => `[${new Date().toLocaleTimeString('en-US')}]:`, '\t');
+            Log.useDatePrefix();
         } else {
             Log.clearPrefx();
         }

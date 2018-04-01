@@ -1,34 +1,39 @@
 /* Add colors to console output */
+// NOTE: use lambda-functions so that they aren't bound
 let conWarn = console.warn;
-function warn(msg, ...args) {
-    conWarn.call(null, `\x1b[93m${prefix()}${msg}\x1b[0m`, ...args);
-}
+const warn = (msg, ...args) => {
+    conWarn(`\x1b[93m${prefix()}${msg}\x1b[0m`, ...args);
+};
 
 let conError = console.error;
-function error(msg, ...args) {
-    conWarn.call(null, `\x1b[91m${prefix()}${msg}\x1b[0m`, ...args);
-}
+const error = (msg, ...args) => {
+    conWarn(`\x1b[91m${prefix()}${msg}\x1b[0m`, ...args);
+};
 
 let conDebug = console.debug;
-function debug(msg, ...args) {
-    conDebug.call(null, `\x1b[92m${prefix(msg)}\x1b[0m`, ...args);
-}
+const debug = (msg, ...args) => {
+    conDebug(`\x1b[92m${prefix(msg)}\x1b[0m`, ...args);
+};
 
 let conInfo = console.info;
-function info(msg, ...args) {
-    conInfo.call(null, `\x1b[96m${prefix(msg)}\x1b[0m`, ...args);
-}
+const info = (msg, ...args) => {
+    conInfo(`\x1b[96m${prefix(msg)}\x1b[0m`, ...args);
+};
 
 let conLog = console.log;
 function log(msg, ...args) {
     // don't change color yet... too lazy to think of one
-    conLog.call(null, `${prefix(msg)}`, ...args);
+    conLog(`${prefix(msg)}`, ...args);
 }
 
 function noop() {}
 
 function noPrefix() {
     return '';
+}
+
+function useDatePrefix() {
+    setPrefix(() => `[${new Date().toLocaleTimeString('en-US')}]:`, '\t');
 }
 
 let prefix = noPrefix;
@@ -76,6 +81,11 @@ function setPrefix(fn, separator) {
         return;
     }
 
+    if (typeof fn !== 'function') {
+        console.warn(`Arugment 'fn' in setPrefix() must be a function.  Found: ${typeof fn}`);
+        return;
+    }
+
     if (separator === undefined) {
         separator = ' ';
     } else if (separator instanceof Number) {
@@ -102,6 +112,7 @@ function clearPrefix() {
 export default {
     setLevel,
     setPrefix,
+    useDatePrefix,
     clearPrefix,
-    parseLevel
+    parseLevel,
 };
