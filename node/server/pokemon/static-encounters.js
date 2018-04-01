@@ -29,7 +29,7 @@ function getStaticEncounterId(pokemon) {
     };
     
     if (!Config.isRandomized) {
-        p.species = pokemon.species;
+        criteria.species = pokemon.species;
     }
     
     for (let enc of getEncounters(pokemon.generation, pokemon.gameVersion)) {
