@@ -123,7 +123,7 @@
             // You MUST change these values.
             "discord": {
                 // The Discord auth token of the Bot or User that will send and receive SoulLink information
-                "userToken": "NDIyMjg4OTU4OTcwNTI3NzQ0.DYaHyw.PLI1tXxO1UvgoroXynwz73HwQbI",
+                "userToken": "...",
 
                 // Discord server and private channel used solely for transfering SoulLink data back and forth
                 //
@@ -131,6 +131,8 @@
                 //   "channel: "your-discord-server#your-private-channel"
                 //
                 // NOTE: You MUST invite both your bot/user and your partner's bot/user to this channel.  (Obviously.)
+                //       Make sure that both your bot/user and your partner's bot/user have the "Attach Files" 
+                //       permission.
                 //       You should NOT invite anyone else.  I can't think of a way someone could maliciously use this
                 //       script to do harmful things to your computer, but I'm not a security expert, and I didn't build
                 //       this server script to have any layers of security.
