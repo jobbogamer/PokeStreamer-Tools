@@ -1,24 +1,24 @@
 /* Add colors to console output */
 // NOTE: use lambda-functions so that they aren't bound
 let conWarn = console.warn;
-const warn = (msg, ...args) => {
-    conWarn(`\x1b[93m${prefix()}${msg}\x1b[0m`, ...args);
-};
+function warn(msg, ...args) {
+    conWarn(`\x1b[93m${prefix(msg)}\x1b[0m`, ...args);
+}
 
 let conError = console.error;
-const error = (msg, ...args) => {
-    conWarn(`\x1b[91m${prefix()}${msg}\x1b[0m`, ...args);
-};
+function error(msg, ...args) {
+    conWarn(`\x1b[91m${prefix(msg)}\x1b[0m`, ...args);
+}
 
 let conDebug = console.debug;
-const debug = (msg, ...args) => {
+function debug(msg, ...args) {
     conDebug(`\x1b[92m${prefix(msg)}\x1b[0m`, ...args);
-};
+}
 
 let conInfo = console.info;
-const info = (msg, ...args) => {
+function info(msg, ...args) {
     conInfo(`\x1b[96m${prefix(msg)}\x1b[0m`, ...args);
-};
+}
 
 let conLog = console.log;
 function log(msg, ...args) {
@@ -33,7 +33,7 @@ function noPrefix() {
 }
 
 function useDatePrefix() {
-    setPrefix(() => `[${new Date().toLocaleTimeString('en-US')}]:`, '\t');
+    setPrefix(() => `[${new Date().toLocaleTimeString('en-US')}]`, '\t');
 }
 
 let prefix = noPrefix;
@@ -49,7 +49,6 @@ function parseLevel(level) {
             return 1;
 
         case 'info':
-        case undefined:
         case 2:
             return 2;
 
