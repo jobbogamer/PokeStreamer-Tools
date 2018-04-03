@@ -52,7 +52,7 @@ if (Config.configOverride &&
     addGraveyardName(`Yoshi's House`, 1);
 }
 
-const useReviveButton = Math.random() < .9;
+const useReviveButton = Math.random() < .8;
 
 export {
     getGraveyardName as default,
