@@ -19,6 +19,10 @@ class PokemonIcons {
     }
 
     getIcon(pokemon) {
+        if (pokemon.isEgg) {
+            return this.egg.regular;
+        }
+        
         return this[Pokedex.FileNames[pokemon.species]][pokemon.shiny];
     }
 }
