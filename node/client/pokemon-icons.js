@@ -22,6 +22,13 @@ class PokemonIcons {
         if (pokemon.isEgg) {
             return this.egg.regular;
         }
+
+        if (pokemon.alteredForm) {
+            let file = `${Pokedex.FileNames[pokemon.species]}-${pokemon.alteredForm}`;
+            if (this[file]) {
+                return this[file][pokemon.shiny];
+            }
+        }
         
         return this[Pokedex.FileNames[pokemon.species]][pokemon.shiny];
     }
