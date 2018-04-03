@@ -37,6 +37,7 @@ const ClientFields = [
     'dead',
     'isFemale',
     'isShiny',
+    'isEgg',
     'levelMet',
     'img',
     'staticId',
