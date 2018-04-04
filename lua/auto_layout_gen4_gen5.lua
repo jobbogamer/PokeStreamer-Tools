@@ -76,7 +76,7 @@ for i = 1, 18 do
 	last_boxes[i] = nil
 end
 
-local need_to_read_boxes = false
+local need_to_read_boxes = run_soul_link
 local last_box_check = 0
 local check_box_frequency = 5 -- seconds
 
@@ -524,10 +524,16 @@ function inspect_and_send_boxes()
 	end
 
 	last_boxes = cur_boxes
-	if #delta_boxes > 0 and not_need_to_read_boxes then
-		send_slots(delta_boxes, gen, game, subgame)
+	if #delta_boxes > 0 and not need_to_read_boxes then
+		if not send_slots(delta_boxes, gen, game, subgame) then
+			print("ERROR: Failed to connect to server.  Disabling SoulLink.")
+			run_soul_link = false
+			return false
+		end
 		delta_boxes = {}
 	end
+
+	return true
 end
 
 function kill_pokemon(pidAddr)
@@ -574,7 +580,11 @@ function fn()
 	current_time = os.clock() -- use clock() rather than time() so we can check more than once per second
 	if need_to_read_boxes or run_soul_link and current_time - last_box_check > check_box_frequency then
 		gen = getGen()
-		inspect_and_send_boxes()
+		if not inspect_and_send_boxes() then
+			-- prevent further execution to avoid killing the game
+			return
+		end
+
 		last_box_check = current_time
 	end
 

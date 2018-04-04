@@ -10,3 +10,5 @@ node/hot/
 /lua/lua*5*.exe
 /lua/mobdebug.lua
 /node/resources/*.flac
+
+/node/config.json

@@ -86,13 +86,20 @@ function send_request(request_body, generation, game_version)
 
     if status ~= 200 then
         print(string.format("HTTP Request failed: %s", status))
+
+        if status == "connection refused" then
+            -- don't try to send any more requests to prevent game from crashing
+            return false
+        end
     end
+
+    return true
 end
 
 function send_slots(slots_info, generation, game, subgame)
     local game_version = get_game_version(generation, game, subgame)
     if game_version == nil then
-        return
+        return true
     end
 
     local tmp_info = {}
@@ -102,7 +109,7 @@ function send_slots(slots_info, generation, game, subgame)
 
     if #tmp_info <= 20 then
         local request_body = json.encode(tmp_info, { indent = print_debug_messages })
-        send_request(request_body, generation, game_version)
+        return send_request(request_body, generation, game_version)
     else
         local idx = 1
         while idx < #tmp_info do
@@ -116,9 +123,13 @@ function send_slots(slots_info, generation, game, subgame)
             end
 
             local request_body = json.encode(batch, { indent = print_debug_messages })
-            send_request(request_body, generation, game_version)
+            if not send_request(request_body, generation, game_version) then
+                return false
+            end
         end
     end
+
+    return true
 end
 
 function get_slot_data(info)
