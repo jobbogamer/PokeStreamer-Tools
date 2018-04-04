@@ -10,7 +10,7 @@
     //
     // NOTE: this value is ignored in the override files themselves.  No infinite loops for you!
     "configOverride": [ 
-        "./config.fail.json",
+        // "./config.custom.json",
     ],
 
     // Path to the image used when a slot is empty relative to /node/ directory.
