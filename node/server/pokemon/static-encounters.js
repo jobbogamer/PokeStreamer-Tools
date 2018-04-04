@@ -35,7 +35,7 @@ function getStaticEncounterId(pokemon) {
     for (let enc of getEncounters(pokemon.generation, pokemon.gameVersion)) {
         let found = true;
         for (let [c, v] of Object.entries(criteria)) {
-            if (!enc[c]) {
+            if (!(c in enc)) {
                 // skip criteria for which the static encounter doesn't care 
                 // (e.g. if I don't know what the encounter type is for Togepi's Myster Egg and I set it to null)
                 continue;
