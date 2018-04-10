@@ -2,6 +2,7 @@
 !/pokemon-images/pokeball.png
 node_modules
 node/public/**
+node/gameData/**
 .vscode
 *.code-workspace
 .eslint*
