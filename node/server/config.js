@@ -3,6 +3,7 @@ import path from 'path';
 import EventEmitter from 'events';
 
 import compileConfig from '../common/configCompiler';
+import CleanupProcess from './cleanup-process';
 import { Paths } from './constants';
 import Log from './console';
 
@@ -14,7 +15,7 @@ class ConfigWatcher extends EventEmitter {
 
         let self = this;
         let createWatcher = file => 
-            fs.watch(path.resolve(NodeRoot, file), function(e, fn) { self.emit(e, fn); }.bind(this));
+            fs.watch(path.resolve(NodeRoot, file), function (e, fn) { self.emit(e, fn); }.bind(this));
 
         let watchers = this.watchers = [];
         watchers.push(createWatcher('config.json'));
@@ -36,11 +37,14 @@ class ConfigWatcher extends EventEmitter {
         }
 
         console.log(`Watching ${watchers.length} config file(s).`);
+        CleanupProcess(this.close);
     }
 
     close() {
-        for (let watcher of this.watchers) {
-            watcher.close();
+        if (this.watchers) {
+            for (let watcher of this.watchers) {
+                watcher.close();
+            }
         }
     }
 }
@@ -98,14 +102,16 @@ class Config extends EventEmitter {
 
         this.emit('update', prev, this._current );
     }
-
-    get Current() { 
-        let obj = Object.assign({}, this._current); 
-        obj.on = this.on.bind(this);
-        return obj;
-    }
 }
 
-const config = new Config();
-// export default config;
-export default config.Current;
+const configProxy = new Proxy(new Config(), {
+    get: function(config, prop) {
+        if (Object.getOwnPropertyNames(config._current).indexOf(prop) !== -1) {
+            return JSON.parse(JSON.stringify(config._current[prop]));
+        } else {
+            return config[prop];
+        }
+    }
+});
+
+export default configProxy;
