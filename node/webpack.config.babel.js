@@ -97,15 +97,21 @@ function genConfig(env, options) {
                 },
                 {
                     test: /\.s[ca]ss$/,
-                    exclude: [ /node_modules/, /^.*(hot-update).*$/ ],
-                    use: ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        use: [
-                            { loader: 'css-loader' },
-                            { loader: 'sass-loader' },
-                            { loader: 'js-to-sass-loader' },
-                        ]
-                    }),
+                    exclude: /node_modules/,
+                    use: isHot ? [
+                            'style-loader',
+                            'css-loader',
+                            'sass-loader',
+                            'js-to-sass-loader'
+                        ] :
+                        ExtractTextPlugin.extract({
+                            fallback: 'style-loader',
+                            use: [
+                                { loader: 'css-loader' },
+                                { loader: 'sass-loader' },
+                                { loader: 'js-to-sass-loader' },
+                            ]
+                        }),
                 },
                 {
                     test: /\.ejs$/,
@@ -129,7 +135,6 @@ function genConfig(env, options) {
         devServer: {
             hot: isHot,
             overlay: true,
-            index: 'index.htm',
             contentBase: path.join(__dirname, 'public'),
             host: config.server.host,
             port: config.server.port,
@@ -153,38 +158,38 @@ function genConfig(env, options) {
     }
     
     addPlugins([
-            new webpack.DefinePlugin({
-                NUM_SLOTS: 6,
-                ENVIRONMENT: NODE_ENV,
-                IS_HOT: isHot,
-                
-                ALL_IN_ONE: config.layout.allInOne,
-                API_BASE_URL: `'api.${host}/api'`,
-                
-                LINKING_METHOD: `'${config.soulLink.linking.method}'`,
-                MANUAL_LINKING: config.soulLink.linking.method === 'manual',
-            }),
-            new webpack.ProvidePlugin({
-                _: 'lodash',
-            }),
-            new CopyWebpackPlugin([{ from: './resources/*.png', flatten: true }]),
-            new ExtractTextPlugin({ 
-                filename: '[name].css',
-            }),
-            new HtmlWebpackPlugin({
-                template: '!!ejs-loader!./client/slot-display/index.ejs',
-                filename: 'index.html',
-                chunks: ['index'],
-                inject: 'body',
-                cache: true
-            }),
-            new HtmlWebpackPlugin({
-                template: '!!ejs-loader!./client/soulLink-manager/index.ejs',
-                filename: 'soullink/index.html',
-                chunks: ['soullink'],
-                inject: 'body',
-                cache: true
-            }),
+        new webpack.DefinePlugin({
+            NUM_SLOTS: 6,
+            ENVIRONMENT: NODE_ENV,
+            IS_HOT: isHot,
+            
+            ALL_IN_ONE: config.layout.allInOne,
+            API_BASE_URL: `'api.${host}/api'`,
+            
+            LINKING_METHOD: `'${config.soulLink.linking.method}'`,
+            MANUAL_LINKING: config.soulLink.linking.method === 'manual',
+        }),
+        new webpack.ProvidePlugin({
+            _: 'lodash',
+        }),
+        new CopyWebpackPlugin([{ from: './resources/*.png', flatten: true }]),
+        new ExtractTextPlugin({ 
+            filename: '[name].css',
+        }),
+        new HtmlWebpackPlugin({
+            template: '!!ejs-loader!./client/slot-display/index.ejs',
+            filename: 'index.html',
+            chunks: ['index'],
+            inject: 'body',
+            cache: true
+        }),
+        new HtmlWebpackPlugin({
+            template: '!!ejs-loader!./client/soulLink-manager/index.ejs',
+            filename: 'soullink/index.html',
+            chunks: ['soullink'],
+            inject: 'body',
+            cache: true
+        }),
         // new TidyHtmlWebpackPlugin({
         //     tabSize: 4,
         // }),
@@ -204,7 +209,7 @@ function genConfig(env, options) {
     let nuzlocke = config.nuzlocke,
     soulLink = config.soulLink;
     if (nuzlocke.deathSound && nuzlocke.deathSound.enabled) {
-        const getSoundPath = function(soundFileName) {
+        const getSoundPath = function (soundFileName) {
             let p = path.resolve(__dirname, 'resources', soundFileName);
             if (fs.existsSync(p)) {
                 return p;
@@ -214,7 +219,7 @@ function genConfig(env, options) {
             return null;
         };
         
-        const copySounds = function(deathSounds) {
+        const copySounds = function (deathSounds) {
             if (deathSounds.constructor === String) {
                 deathSounds = [ deathSounds ];
             }

@@ -30,7 +30,7 @@ function transform(data) {
                 });
             }
             
-            let css = Object.keys(val).map(k => `    ${k}: ${val[k]};`).join('\n');
+            let css = Object.keys(val).map(k => `    ${k}: ${val[k] || 'inherit'};`).join('\n');
             dg.setNodeData(key, `${key} {\n${css}\n}`);
         } else if (isValidKey(key)) {
             dg.addNode(key);
@@ -100,7 +100,12 @@ export default function (content) {
             
             // prevent cacheing of the module
             delete require.cache[require.resolve(filePath)];
-            return transform(require(filePath).default);
+            let js = require(filePath);
+            for (let dep of js.dependencies) {
+                self.addDependency(dep);
+            }
+            
+            return transform(js.default);
         }
     });
 }

@@ -1,15 +1,19 @@
 import json5 from 'json5';
 import path from 'path';
 import fs from 'fs';
+import mergeDeep from './mergeDeep';
 import { Paths } from '../server/constants';
 
 const NodeRoot = Paths.NodeRoot;
+
+let dependencies = new Set();
 
 function parse(file) {
     if (!fs.existsSync(file)) {
         throw new Error(`Config file '${file}' not found.  Check that the path is right in config.json.`);
     }
 
+    dependencies.add(file);
     return json5.parse(fs.readFileSync(file));
 }
 
@@ -46,32 +50,11 @@ function compileConfig(config) {
     }
 }
 
-//#region Helpers
-/* helper methods from https://stackoverflow.com/a/37164538/3120446 */
-function isObject(item) {
-    return item && typeof item === 'object' && !Array.isArray(item);
-}
-
-function mergeDeep(target, source) {
-    let output = Object.assign({}, target);
-    if (isObject(target) && isObject(source)) {
-        Object.keys(source).forEach(key => {
-            if (isObject(source[key])) {
-                if (!(key in target)) {
-                    Object.assign(output, { [key]: source[key] });
-                } else {
-                    output[key] = mergeDeep(target[key], source[key]);
-                }
-            } else {
-                Object.assign(output, { [key]: source[key] });
-            }
-        });
-    }
-
-    return output;
-}
-//#endregion
-
-export default function(config) {
+function compile(config)  {
     return addMissingKeys(compileConfig(config));
 }
+
+export {
+    compile as default,
+    dependencies
+};

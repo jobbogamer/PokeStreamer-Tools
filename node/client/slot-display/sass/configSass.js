@@ -1,4 +1,4 @@
-import compileConfig from '../../../common/configCompiler';
+import compileConfig, {dependencies} from '../../../common/configCompiler';
 
 let config = compileConfig(),
     sass = {
@@ -16,4 +16,7 @@ for (let key of Object.keys(config.style)) {
 
 sass.debug = (process.env.NODE_ENV || 'production').trim() === 'development';
 
-export default sass;
+export { 
+    sass as default,
+    dependencies
+};

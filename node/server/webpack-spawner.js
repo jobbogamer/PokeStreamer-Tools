@@ -1,19 +1,18 @@
 import path from 'path';
 import { spawn } from 'child_process';
-import { NodeRoot } from './constants';
+import { Paths } from './constants';
 import cleanupProcess from './cleanup-process';
+
+const { NodeRoot } = Paths;
 
 function spawnWebpack(debugPort) {
     console.log('Spinning up webpack-dev-server...');
     let webpack = spawn('node', 
-    // let webpack = spawn('webpack-dev-server', 
         [
-            debugPort ? `--inspect=${debugPort}` : '',
+            `--inspect=50000`,
             `"${path.join(__dirname, '../node_modules/webpack-dev-server/bin/webpack-dev-server.js')}"`,
-            '--mode', 'production',
-            '--hot'
-            // debugPort ? "--port" : "", 
-            // debugPort ? debugPort : "", 
+            '--mode', 'development',
+            '--hot',
         ],
         { 
             shell: true,
@@ -41,12 +40,4 @@ function spawnWebpack(debugPort) {
     return webpack;
 }
 
-export default function () {
-    if (process.argv.includes('-w') || process.argv.includes('--debug-webpack')) {
-        // const findFreePort = require('find-free-port');
-        // findFreePort().then(port => spawnWebpack(port));
-        return Promise.resolve().then(() => spawnWebpack(50000));
-    } else {
-        return spawnWebpack();
-    }
-}
+export default spawnWebpack;
