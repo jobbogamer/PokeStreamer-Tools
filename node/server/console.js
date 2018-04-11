@@ -1,39 +1,19 @@
-/* Add colors to console output */
-// NOTE: use lambda-functions so that they aren't bound
-let conWarn = console.warn;
-function warn(msg, ...args) {
-    conWarn(`\x1b[93m${prefix(msg)}\x1b[0m`, ...args);
-}
+import { styles } from 'colors';
 
-let conError = console.error;
-function error(msg, ...args) {
-    conWarn(`\x1b[91m${prefix(msg)}\x1b[0m`, ...args);
-}
+const { debug, log, info, warn, error } = console;
+const [ timestampColor, debugColor, logColor, infoColor, warnColor, errorColor, resetColor ] = 
+      [ 'gray', 'gray', 'white', 'cyan', 'yellow', 'red', 'reset' ].map(c => styles[c].open);
 
-let conDebug = console.debug;
-function debug(msg, ...args) {
-    conDebug(`\x1b[92m${prefix(msg)}\x1b[0m`, ...args);
-}
-
-let conInfo = console.info;
-function info(msg, ...args) {
-    conInfo(`\x1b[96m${prefix(msg)}\x1b[0m`, ...args);
-}
-
-let conLog = console.log;
-function log(msg, ...args) {
-    // don't change color yet... too lazy to think of one
-    conLog(`${prefix(msg)}`, ...args);
-}
+let currentLevel = 4;
 
 function noop() {}
 
 function noPrefix() {
-    return '';
+    Object.defineProperty(console, 'prefix', { get: () => resetColor, configurable: true });
 }
 
 function useDatePrefix() {
-    setPrefix(() => `[${new Date().toLocaleTimeString('en-US')}]`, '\t');
+    setPrefix(() => `${timestampColor}[${new Date().toLocaleTimeString('en-US')}]`);
 }
 
 let prefix = noPrefix;
@@ -66,12 +46,12 @@ function parseLevel(level) {
 }
 
 function setLevel(level) {
-    level = parseLevel(level);
-    console.debug   = level <= 1 ? debug : noop;
-    console.log     = level <= 2 ? log : noop;
-    console.info    = level <= 2 ? info : noop;
-    console.warn    = level <= 3 ? warn : noop;
-    console.error   = level <= 4 ? error : noop;
+    currentLevel = parseLevel(level);
+    console.debug   = level <= 1 ?  debug.bind(console, console.prefix + debugColor) : noop;
+    console.log     = level <= 2 ?  log.bind(console,   console.prefix + logColor)   : noop;
+    console.info    = level <= 2 ?  info.bind(console,  console.prefix + infoColor)  : noop;
+    console.warn    = level <= 3 ?  warn.bind(console,  console.prefix + warnColor)  : noop;
+    console.error   = level <= 4 ?  error.bind(console, console.prefix + errorColor) : noop;
 }
 
 function setPrefix(fn, separator) {
@@ -85,23 +65,17 @@ function setPrefix(fn, separator) {
         return;
     }
 
+
     if (separator === undefined) {
-        separator = ' ';
+        separator = '';
     } else if (separator instanceof Number) {
         let tmp = [];
         tmp.length = separator + 1;
         separator = tmp.join(' ');
     }
 
-    prefix = function(msg) {
-        if (msg) {
-            return fn() + separator + msg;
-        }
-
-        // case for when calling console.log() to add a blank line
-        // don't want to add our prefix then
-        return '';
-    };
+    Object.defineProperty(console, 'prefix', { get: () => resetColor + fn() + separator, configurable: true });
+    setLevel(currentLevel);
 }
 
 function clearPrefix() {

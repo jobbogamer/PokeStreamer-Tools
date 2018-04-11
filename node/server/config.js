@@ -93,7 +93,7 @@ class Config extends EventEmitter {
         if (ll <= 2) {
             Log.useDatePrefix();
         } else {
-            Log.clearPrefx();
+            Log.clearPrefix();
         }
 
         this.emit('update', prev, this._current );

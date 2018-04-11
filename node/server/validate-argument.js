@@ -78,6 +78,6 @@ ValidateArgument.stringHasValue = function(arg, argName, msg) {
     }
 
     throw new Error(msg);
-}
+};
 
 export default ValidateArgument;

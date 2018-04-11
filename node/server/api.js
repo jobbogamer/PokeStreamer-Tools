@@ -111,7 +111,7 @@ function getSlot(req, res, next) {
     slotConnections.add(conn);
     
     req.on('close', (function () {
-        console.debug(`Connection initialized closed.`);
+        console.debug(`Connection closed.`);
         slotConnections.delete(this);
         console.debug(`Remaining open connections: ${slotConnections.size}`);
     }).bind(conn));
@@ -128,14 +128,14 @@ function reset(req, res, next) {
         sentTo++;
     }
     
-    console.log(`Sent reset to ${sentTo} connections`);
+    console.debug(`Sent reset to ${sentTo} connections`);
     
     res.sendStatus(200);
 }
 
 function update(req, res, next) {
     console.info(`Received update on from Lua script`);
-    console.log(JSON.stringify(req.body, null, 2));
+    console.debug(JSON.stringify(req.body, null, 2));
     
     let hadError = false;
     let slotsToSend = [];
@@ -324,13 +324,13 @@ function sendSlots(slotsToSend) {
 function getSoulLink(ws, req) {
     console.debug('Setting up SoulLink WebSocket connection');
     ws.on('open', function () {
-        console.log('Connection opened');
+        console.info('Connection opened');
     });
 
     ws.on('message', function (e) {
         try {
             let msg = JSON.parse(e);
-            console.log(`Received ${msg.messageType} message from client`);
+            console.debug(`Received ${msg.messageType} message from client`);
             switch (msg.messageType) {
                 case 'update-link':
                     SoulLinkFileReader.setLink(msg.pid, msg.linkedSpecies);
@@ -367,12 +367,12 @@ function getSoulLink(ws, req) {
                     break;
 
                 default:
-                    console.warn(`Unknown message type sent from SoulLink Manager: ${msg.messageType}`);
+                    console.error(`Unknown message type sent from SoulLink Manager: ${msg.messageType}`);
                     break;
             }
         } catch (err) {
             console.error(`Invalid message from SoulLink manager:\n${e}`);
-            console.log(err.stack);
+            console.debug(err.stack);
         }
     });
 
