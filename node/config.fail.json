@@ -261,6 +261,5 @@
         },
     },
 
-    "logLevel": "debug",    
-    // "logLevel": "info",
+    "logLevel": "info",
 }

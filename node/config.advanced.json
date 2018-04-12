@@ -106,9 +106,5 @@
         // "objectStorePort": 27017,
     },
 
-    "soulLink": {
-        "dataDirectory": "./gameData",
-    },
-
     "logLevel": "debug",
 }
