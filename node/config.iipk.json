@@ -47,6 +47,9 @@
 
     "soulLink": {
         "enabled": true,
+        "linking": {
+            "method": "discord",
+        },
     },
 
     /*
@@ -62,7 +65,6 @@
         // set this value to a color (e.g. "red") in order to see how it lines up with your streaming background
         // set it to "transparent" to hide that color
         "imageWrapperBackgroundForSettingUpLayout": "transparent",
-        // "imageWrapperBackgroundForSettingUpLayout": "rgba(0,0,0,.3)",
 
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
@@ -72,8 +74,6 @@
         //
         // Note to iIPK: these values are required to be set the way they are to make the divide be at the correct
         //               angle.
-        // The "* 1.5" is to make the images the right size against a 720p background assuming your stream software
-        // is set up to use a 1080p display
         "imageWrapperWidth": "228px",
         "imageWrapperHeight": "185px",
 
