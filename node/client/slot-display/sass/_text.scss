@@ -19,7 +19,7 @@ $elements: 'level', 'species', 'nickname', 'deathMessage1', 'deathMessage2', 'de
   }
 } 
 
-.level {
+.level, .sl-level {
   @extend %baseText;
   @extend %levelText !optional;
 
@@ -34,18 +34,30 @@ $elements: 'level', 'species', 'nickname', 'deathMessage1', 'deathMessage2', 'de
   }
 }
 
-.species {
+.sl-level {
+  @extend %sl-levelText !optional;
+}
+
+.species, .sl-species {
   @extend %baseText;
   @extend %speciesText !optional;
 }
 
-.nickname {
+.sl-species {
+  @extend %sl-speciesText !optional;
+}
+
+.nickname, .sl-nickname {
   @extend %baseText;
   @extend %nicknameText !optional;
 
   &.no-nickname {
     font-variant: small-caps;
   }
+}
+
+.sl-nickname {
+  @extend %sl-nicknameText !optional;
 }
 
 .deathMessage1 {

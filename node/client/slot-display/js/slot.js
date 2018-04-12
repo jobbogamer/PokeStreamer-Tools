@@ -174,8 +174,13 @@ export default class Slot {
                 
                 $img.closest('.img-wrapper').addClass('invalid');
             } else {
-                $soulLinkImg.attr('src', pkmn.link.img);
+                let link = pkmn.link;
+                $soulLinkImg.attr('src', link.img);
                 $img.closest('.img-wrapper').removeClass('invalid');
+
+                $soulLinkLevel.text(link.level);
+                $soulLinkNickname.text(link.nickname || pkmn.speciesName);
+                $soulLinkSpecies.text(link.speciesName);
             }
         }
         
