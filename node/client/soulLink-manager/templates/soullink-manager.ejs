@@ -4,8 +4,15 @@
         <div class="card bg-white d-block">
             <div class="card-header d-flex justify-content-between">
                 <h3 class="card-title">Soul Links</h3>
-                <div role="button" class="btn-refresh uninitialized border border-secondary rounded p-2 my-auto">
-                    <i class="fas fa-sync-alt"></i>
+                <div class="header-icons d-flex flex-row">
+                    <% if (config.soulLink.linking.method === 'discord') { %>
+                        <div class="discord-indicator uninitialized unknown d-inline-block rounded p2 mx-2 my-auto">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                    <% } %>
+                    <div role="button" class="btn-refresh uninitialized d-inline-block border border-secondary rounded p-2 my-auto">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
                 </div>
             </div>
             <table id="pokemonTable" class="table">
@@ -43,13 +50,16 @@
                     Start New Game
                 </button>
 
-                <% if (config.soulLink.linking.method !== 'manual') { %>
+                <% if (!MANUAL_LINKING) { %>
+                    <!--
+                    May or may not implement this...
                     <div class="float-right">
                         <input id="autoLink" type="checkbox" class="form-check-input" />
                         <label for="#autoLink" class="form-check-label">
                             Try to automatically link Pokémon
                         </label>
                     </div>
+                    -->
                 <% } %>
             </card>
         </div>

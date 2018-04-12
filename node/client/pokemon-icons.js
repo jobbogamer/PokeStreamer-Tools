@@ -26,11 +26,11 @@ class PokemonIcons {
         if (pokemon.alteredForm) {
             let file = `${Pokedex.FileNames[pokemon.species]}-${pokemon.alteredForm}`;
             if (this[file]) {
-                return this[file][pokemon.shiny];
+                return this[file][pokemon.isShiny ? 'shiny' : 'regular'];
             }
         }
         
-        return this[Pokedex.FileNames[pokemon.species]][pokemon.shiny];
+        return this[Pokedex.FileNames[pokemon.species]][pokemon.isShiny ? 'shiny' : 'regular'];
     }
 }
 

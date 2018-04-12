@@ -1,12 +1,12 @@
-$.fn.resetText = function() {
+$.fn.resetText = function () {
     return this.text('').css('font-size', '');
 };
 
-$.fn.enable = function() {
+$.fn.enable = function () {
     return this.removeAttr('disabled').removeClass('disabled');
 };
 
-$.fn.disable = function() {
+$.fn.disable = function () {
     return this.attr('disabled', 'disabled').addClass('disabled');
 };
 
@@ -80,7 +80,7 @@ $.fn.scaleToFit = function () {
         if (scale !== 1) {
             let $scaleWrapper = $('<span>').addClass('scaled').css('font-size', `${scale}em`);
 
-            let scaleText = function() {
+            let scaleText = function () {
                 if (this.nodeType === 3) {
                     if (this.textContent.trim()) {
                         $(this).wrap($scaleWrapper);

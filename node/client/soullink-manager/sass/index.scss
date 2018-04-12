@@ -1,27 +1,13 @@
 @import "./bootstrap-override";
 @import "~bootstrap/scss/bootstrap";
 
+@import "./tooltip";
+
 @import "./manager-table";
 @import "./traits";
 @import "./buttons";
 @import "./dropdown";
 @import "./icon";
-
-.bs-tooltip-auto[x-placement^=top], .bs-tooltip-top {
-  .arrow.arrow-danger {
-    &::before {
-      border-top-color: $red;
-    }
-  }
-}
-
-.bs-tooltip-auto[x-placement^=bottom], .bs-tooltip-bottom {
-  .arrow.arrow-danger {
-    &::before {
-      border-bottom-color: $red;
-    }
-  }
-}
 
 .error {
   display: flex;

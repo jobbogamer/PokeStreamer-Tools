@@ -1,12 +1,18 @@
 import Config from '../config';
 
+let data = {};
+
 function getEncounters(generation, game) {
     switch (generation) {
         case 4:
         switch (game) {
             case "hg":
             case "ss":
-                return require('./hg-ss-static-encounters.json')[game];
+                if (!data[game]) {
+                    data[game] = require('./hg-ss-static-encounters.json')[game];
+                }
+
+                return data[game];
             
             default:
                 throw new Error("Currently only HeartGold and SoulSilver versions are supported.");

@@ -98,12 +98,23 @@ export default class Slot {
                 setTimeout(() => {
                     this.lastValue = null;
                     $allText.resetText();
-                    $images.removeAttr('src');
+                    if (val.pokemon.emptyLinkImage) {
+                        $images.attr('src', val.pokemon.emptyLinkImage);
+                    } else {
+                        $images.removeAttr('src');
+                    }
                     $img.unwrap();
                     $slot.removeClass('void');
                 }, 2000);
+                return;
             }
 
+            if (val.pokemon.emptyLinkImage) {
+                $images.attr('src', val.pokemon.emptyLinkImage).closest('.img-wrapper').addClass('invalid');
+            } else {
+                $images.removeAttr('src');
+            }
+            
             return;
         }
         
@@ -154,11 +165,16 @@ export default class Slot {
         }
         
         if (Soullink.enabled) {
-            if (!pkmn.linkedImg) {
-                $soulLinkImg.removeAttr('src');
+            if (!pkmn.link) {
+                if (pkmn.emptyLinkImage) {
+                    $soulLinkImg.attr('src', pkmn.emptyLinkImage);
+                } else {
+                    $soulLinkImg.removeAttr('src');
+                }
+                
                 $img.closest('.img-wrapper').addClass('invalid');
             } else {
-                $soulLinkImg.attr('src', pkmn.linkedImg);
+                $soulLinkImg.attr('src', pkmn.link.img);
                 $img.closest('.img-wrapper').removeClass('invalid');
             }
         }

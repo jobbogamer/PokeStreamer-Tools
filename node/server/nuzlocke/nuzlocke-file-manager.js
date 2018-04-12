@@ -1,18 +1,22 @@
 import fs from 'fs';
 import { Paths } from '../constants';
 
-const NuzlockeFile = Paths.NuzlockeFile;
+const { 
+    NuzlockeFile,
+    GameDataPath,
+} = Paths;
+
 const DefaultNuzlockeObject = {
     knownDeaths: new Set(),
     knownVoids: new Set(),
 };
 
 const NuzlockeFileManager = {
-    reset: function() {
+    reset: function () {
         fs.writeFileSync(NuzlockeFile, JSON.stringify(DefaultNuzlockeObject));
     },
 
-    saveFile: function(nuzlockeObject) {
+    saveFile: function (nuzlockeObject) {
         try {
             fs.writeFileSync(NuzlockeFile, JSON.stringify(nuzlockeObject));
             return true;
@@ -23,14 +27,24 @@ const NuzlockeFileManager = {
         }
     },
     
-    loadFile: function() {
+    loadFile: function () {
+        if (!fs.existsSync(GameDataPath)) {
+            try {
+                fs.mkdirSync(GameDataPath);
+            } catch (e) {
+                console.error(`Did not find gameData directory at ${GameDataPath}.  Attempted to create it and failed with error:`);
+                console.error(e.message);
+                throw e;
+            }
+        }
+
         if (!fs.existsSync(NuzlockeFile)) {
             try {
                 fs.writeFileSync(NuzlockeFile, JSON.stringify(DefaultNuzlockeObject));
             } catch (e) {
-                console.warn(`Did not find Nuzlocke data file at ${NuzlockeFile}.  Attempted to create it and failed with error:`);
-                console.warn(e.message);
-                console.log(e.stack);
+                console.error(`Did not find Nuzlocke data file at ${NuzlockeFile}.  Attempted to create it and failed with error:`);
+                console.error(e.message);
+                throw e;
             } finally {
                 return Object.assign({}, DefaultNuzlockeObject);                
             }

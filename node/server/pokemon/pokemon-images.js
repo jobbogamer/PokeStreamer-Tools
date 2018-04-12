@@ -45,7 +45,7 @@ class PokemonImages extends EventEmitter {
         this._gettingFormImages = false;
     
         if (!Config.emptySlotImagePath) {
-            console.warn('No specified empty slot image.  Skipping.');
+            console.debug('No specified empty slot image.  Skipping.');
             this._images[-1] = new PokemonImage();
         } else {
             this._setEmptySlotImage(path.resolve(Paths.NodeRoot, Config.emptySlotImagePath));
@@ -89,7 +89,8 @@ class PokemonImages extends EventEmitter {
             // search for shiny/female variants for all normal forms
             // don't search for shiny/female variants of egg
             // otherwise make sure there is at least shiny variant for each alternate form
-            if (!this._gettingFormImages || (variant === 'shiny' && path.relative(formsPath, dir).search('egg') === -1)) {
+            if (!this._gettingFormImages || 
+                (variant === 'shiny' && path.relative(formsPath, dir).search('egg') === -1)) {
                 console.warn(`Warning: Image directory '${dir}' does not exist.  Skipping.`);
             }
     
@@ -152,7 +153,7 @@ class PokemonImages extends EventEmitter {
             }
         }
         
-        console.log(`Found ${imagesFound} ${variant} images in ${fs.realpathSync(dir)}`);
+        console.debug(`Found ${imagesFound} ${variant} images in ${fs.realpathSync(dir)}`);
     }
 
     _setEmptySlotImage(filePath) {

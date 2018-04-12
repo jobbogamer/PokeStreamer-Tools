@@ -10,6 +10,10 @@
       > td > div {
         height: 2.5em;
         opacity: 1;
+
+        &.text-void {
+          margin-left: 40px;
+        }
       }
     }
 
@@ -45,6 +49,10 @@
         background-color: rgba(0,0,0,.05);
       }
     }
+  }
+
+  .graveyard tr.bg-danger .text-void {
+    color: white !important;
   }
 }
 

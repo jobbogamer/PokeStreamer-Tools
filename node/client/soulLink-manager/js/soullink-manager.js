@@ -1,24 +1,23 @@
 import Cookies from 'js-cookie';
 import config from 'config.json';
 import init from './init';
+import './discord-connection-monitor';
 import newGameModal from './new-game-modal';
 import ws from './websocket';
 import SoulLinkRow from './soullink-row';
 
-let doAutoLink = JSON.parse(Cookies.get('autolink') || true);
-if (doAutoLink === undefined) {
-    doAutoLink = true;
-}
+// let doAutoLink = JSON.parse(Cookies.get('autolink') || true);
+// if (doAutoLink === undefined) {
+//     doAutoLink = true;
+// }
 
-let icons = null;
-
-if (!MANUAL_LINKING) {
-    let $autolink = $('input#autoLink');
-    $autolink.prop('checked', doAutoLink);
-    $autolink.on('change', function() {
-        Cookies.set('autolink', this.checked);
-    });
-}
+// if (!MANUAL_LINKING) {
+//     let $autolink = $('input#autoLink');
+//     $autolink.prop('checked', doAutoLink);
+//     $autolink.on('change', function () {
+//         Cookies.set('autolink', this.checked);
+//     });
+// }
 
 const $refreshBtn = $('.btn-refresh');
 $refreshBtn.click(() => {
@@ -45,7 +44,8 @@ function queueRefresh() {
 ws.on('open', queueRefresh);
 
 ws.on('message', e => {
-    let msg = JSON.parse(e.data);
+    let msg = JSON.parse(e.data),
+        pid, row;
     switch (msg.messageType) {
         case 'add-pokemon':
             if (!knownPokemon[msg.pokemon.pid]) {
@@ -66,6 +66,42 @@ ws.on('message', e => {
         case 'new-game':
             Object.values(knownPokemon).forEach(row => row.dispose());
             knownPokemon = {};
+            break;
+
+        case 'update-link':
+            pid = parseInt(msg.pid);
+            if (!pid) {
+                // happens when we get an update from Discord about an unlinked pokemon
+                return;
+            }
+
+            row = knownPokemon[pid];
+            if (!row) {
+                // TODO: figure out why this happens sometimes
+                console.error(`Received update for pid ${pid} that has no associated row.`);
+                return;
+            }
+
+            row.handleMessage(msg);
+            break;
+            
+        case 'kill-pokemon':
+        case 'revive-pokemon':
+        case 'void-pokemon':
+        case 'error':
+            pid = parseInt(msg.pid);
+            if (!pid) {
+                console.error(`Received message type '${msg.messageType}' without a pid.`);
+                return;
+            }
+
+            row = knownPokemon[pid];
+            if (!row) {
+                console.error(`Received update for pid ${pid} that has no associated row.`);
+                return;
+            }
+
+            row.handleMessage(msg);
             break;
     }
 });

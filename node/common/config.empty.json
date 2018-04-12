@@ -44,7 +44,8 @@
         "linking": {
             "method": null,
             "discord": {
-                "userToken": "",
+                "botToken": null,
+                "partnerBotTag": null,
                 "channel": null,
             }
         }

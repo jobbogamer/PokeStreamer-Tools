@@ -59,7 +59,7 @@ class WebSocketWrapper extends EventEmitter {
 
     init() {
         // wait to call this so that manager has time to hook up to events
-        getWebSocket();        
+        getWebSocket();
     }
 
     close(...args) {

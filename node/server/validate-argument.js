@@ -1,6 +1,6 @@
 function ValidateArgument() {}
 
-ValidateArgument.int = function(arg, argName, msg) {
+ValidateArgument.int = function (arg, argName, msg) {
     msg = msg || `Argument '${argName}' must be an integer.  Found ${JSON.stringify(arg)}.`;
 
     if (isNaN(arg) || !Number.isInteger(parseFloat(arg))) {
@@ -10,7 +10,7 @@ ValidateArgument.int = function(arg, argName, msg) {
     return parseInt(arg);
 };
 
-ValidateArgument.intOrEmpty = function(arg, argName, msg) {
+ValidateArgument.intOrEmpty = function (arg, argName, msg) {
     if (arg === undefined || arg === null) {
         return arg;
     }
@@ -18,7 +18,7 @@ ValidateArgument.intOrEmpty = function(arg, argName, msg) {
     return ValidateArgument.int.apply(arguments);
 };
 
-ValidateArgument.boundedInt = function(arg, argName, min, max, msg) {
+ValidateArgument.boundedInt = function (arg, argName, min, max, msg) {
     arg = ValidateArgument.int(arg, argName, msg);
     msg = msg || `Argument '${argName}' must be an integer between ${min} and ${max}.  Found '${arg}'.`;
     if (arg < min || arg > max) {
@@ -28,7 +28,7 @@ ValidateArgument.boundedInt = function(arg, argName, min, max, msg) {
     return arg;
 };
 
-ValidateArgument.boundedIntOrEmpty = function(arg, argName, min, max, msg) {
+ValidateArgument.boundedIntOrEmpty = function (arg, argName, min, max, msg) {
     if (arg === undefined || arg === null) {
         return arg;
     }
@@ -36,7 +36,7 @@ ValidateArgument.boundedIntOrEmpty = function(arg, argName, min, max, msg) {
     return ValidateArgument.boundedInt.apply(arguments);
 };
 
-ValidateArgument.hasValue = function(arg, argName, msg) {
+ValidateArgument.hasValue = function (arg, argName, msg) {
     msg = msg || `Argument '${argName}' must be defined and not null.  Found '${arg}'.`;
     if (arg === undefined || arg === null) {
         throw new Error(msg);
@@ -45,7 +45,7 @@ ValidateArgument.hasValue = function(arg, argName, msg) {
     return arg;
 };
 
-ValidateArgument.bool = function(arg, argName, msg) {
+ValidateArgument.bool = function (arg, argName, msg) {
     ValidateArgument.hasValue(arg);
 
     msg = msg || `Argument '${argName}' must be a valid boolean.  Found '${arg}'.`;
@@ -67,11 +67,11 @@ ValidateArgument.bool = function(arg, argName, msg) {
     }
 };
 
-ValidateArgument.boolOrUndefinedFalse = function(arg, argName, msg) {
+ValidateArgument.boolOrUndefinedFalse = function (arg, argName, msg) {
     return arg === undefined ? false : ValidateArgument.bool.apply(null, arguments);
 };
 
-ValidateArgument.stringHasValue = function(arg, argName, msg) {
+ValidateArgument.stringHasValue = function (arg, argName, msg) {
     msg = msg || `Argument '${argName}' must be a non-empty string.  Found '${arg}'.`;
     if (ValidateArgument.hasValue(arg, argName, msg) && arg.constructor === String && arg.length) {
         return arg;

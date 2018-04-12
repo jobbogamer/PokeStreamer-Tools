@@ -24,7 +24,7 @@ export default function getDropDown(pokemon, selectedSpecies) {
 
     $dropdown.val(selectedSpecies || 0);
 
-    $dropdown.on('change', function() {
+    $dropdown.on('change', function () {
         $img.attr('src', $(this).find(':selected').attr('data-img'));
     }).change();
     

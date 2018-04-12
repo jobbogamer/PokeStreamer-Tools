@@ -1,20 +1,7 @@
-<select class="selectpicker select-partner-pokemon">
-    <optGroup label="Likely matches">
-        <% for (let pokemon of likelyMatches) { %>
-            <option value="<%- pokemon.pid %>">
-                <%- pokemon.nickname ? pokemon.nickname + ' / ' : '' %>
-                <%- pokemon.speciesName %>
-            </option>
-        <% } %>
-    </optGroup>
-    <optGroup label="Other unlinked pokemon">
-        <% for (let pokemon of unlikelyMatches) { %>
-            <% let iconSrc=`/icons/${pokemon.shiny || 'regular'}/${pokemon.speciesName}.png`,
-                   optionText = `${pokemon.nickname ? pokemon.nickname + ' / ' : ''}${pokemon.speciesName}`; %>
-            <option value="<%- partnerPokemon.pid %>" 
-                data-content="<img src='<%- iconSrc %>' /> <%- optionText %>">
-                <%- optionText %>
-            </option>
-        <% } %>
-    </optGroup>
+<img class="icon partner-pokemon" />
+<select class="form-control-sm select-partner-pokemon">
+    <option value="-1" disabled>no available links</option>
+    <% for (let pokemon of Object.values(unlinkedPartnerPokemon)) { %>
+        <%= require('./pokemon-dropdown-option.ejs')({ Icons, Pokedex, pokemon }) %>
+    <% } %>
 </select>

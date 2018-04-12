@@ -191,10 +191,12 @@ $vShift: $imageShift / $imageWrapperRatio;
     &:not(.soul-linked) {
       &.invalid {
         @extend %invalidPokemon !optional;
-      }
 
-      &:not(.invalid) {
-        transition: all .5s;        
+        ~ .soul-linked {
+          @extend %invalidPokemon !optional;
+
+          filter: blur(30%);
+        }
       }
     }
     

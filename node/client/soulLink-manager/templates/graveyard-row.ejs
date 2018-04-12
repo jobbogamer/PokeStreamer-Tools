@@ -4,16 +4,19 @@
     </td>
     <td class="location"><div><%- pokemon.locationMetName %></div></td>
     <%= require('./traits-cell.ejs')({ pokemon }) %>
-    <td>
-        <% if (linkedPokemon) { %>
+    <% if (linkedPokemon) { %>
+        <td>
             <%= require('./pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
-        <% } else { %>
-            <div class="text-right text-void">
+        </td>
+        <td class="width-fixed"></td>
+    <% } else { %>
+        <td colspan="2">
+            <div class="text-void">
                 <span class="species w-100">The soulless nothingness of the void</span>
             </div>
-        <% } %>
-    </td>
-    <td class="width-fixed"></td>
+        </div>
+    <% } %>
+
     <td class="width-fixed">
         <div>
             <% if (useReviveButton) { %>

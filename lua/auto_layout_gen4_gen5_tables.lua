@@ -7,7 +7,8 @@ BlockD = {4,3,4,3,2,2, 4,3,4,3,2,2, 4,3,4,3,2,2, 1,1,1,1,1,1}
 -- if you want to discover them
 bills_pc_address = {
     { nil, nil }, 				-- not discovered for Diamond/Pearl
-    { 0x0228B998, 0X0228B928 },	-- HeartGold, SoulSilver
+    { 0x0228B998, 0x0228B928 },	-- HeartGold, SoulSilver
+    -- { 0x0228B998, 0x0228B9A0 },	-- HeartGold, SoulSilver
     { nil },					-- not discovered for Platinum
     { nil },					-- not discovered for Black
     { nil },					-- not discovered for White

@@ -47,14 +47,15 @@ function parseLevel(level) {
 
 function setLevel(level) {
     currentLevel = parseLevel(level);
-    console.debug   = level <= 1 ?  debug.bind(console, console.prefix + debugColor) : noop;
-    console.log     = level <= 2 ?  log.bind(console,   console.prefix + logColor)   : noop;
-    console.info    = level <= 2 ?  info.bind(console,  console.prefix + infoColor)  : noop;
-    console.warn    = level <= 3 ?  warn.bind(console,  console.prefix + warnColor)  : noop;
-    console.error   = level <= 4 ?  error.bind(console, console.prefix + errorColor) : noop;
+    // TODO: make prefixes dynamic
+    console.debug   = level <= 1 ?  debug.bind(console, /* console.prefix + */ debugColor) : noop;
+    console.log     = level <= 2 ?  log.bind(console,   /* console.prefix + */ logColor)   : noop;
+    console.info    = level <= 2 ?  info.bind(console,  /* console.prefix + */ infoColor)  : noop;
+    console.warn    = level <= 3 ?  warn.bind(console,  /* console.prefix + */ warnColor)  : noop;
+    console.error   = level <= 4 ?  error.bind(console, /* console.prefix + */ errorColor) : noop;
 }
 
-function setPrefix(fn, separator) {
+function setPrefix(fn) {
     if (!fn) {
         prefix = noPrefix;
         return;
@@ -65,16 +66,7 @@ function setPrefix(fn, separator) {
         return;
     }
 
-
-    if (separator === undefined) {
-        separator = '';
-    } else if (separator instanceof Number) {
-        let tmp = [];
-        tmp.length = separator + 1;
-        separator = tmp.join(' ');
-    }
-
-    Object.defineProperty(console, 'prefix', { get: () => resetColor + fn() + separator, configurable: true });
+    Object.defineProperty(console, 'prefix', { get: () => resetColor + fn(), configurable: true });
     setLevel(currentLevel);
 }
 

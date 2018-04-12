@@ -9,7 +9,7 @@ import '../common/extensions';
 import args from './args';
 import API from './api';
 import Config from './config';
-import SoulLink from './soul-link';
+import SoulLink from './soullink/soullink';
 
 let port;
 if (process.argv.includes('-d') || process.argv.includes('--debug')) {
@@ -29,7 +29,7 @@ app.use('/api', sse, bodyParser.json(), API.Router);
 app.use('/icons', express.static(__dirname + '/../pokemon-icons'));
 app.use(express.static(__dirname + '/../public'));
 
-let server = app.listen(Config.server[port], Config.server.host, function() {
+let server = app.listen(Config.server[port], Config.server.host, function () {
     console.info(`Listening on ${Config.server.host}:${Config.server[port]}`);
 });
 
@@ -41,8 +41,16 @@ Config.on('update', (p, n) => {
             console.log(`Closed server listening on ${Config.server.host}:${Config.server[port]}`);
         });
 
-        server = app.listen(n.server[port], function() {
+        server = app.listen(n.server[port], function () {
             console.log(`Listening on ${Config.server.host}:${Config.server[port]}`);
         });
+    }
+});
+
+setImmediate(() => {
+    API.init();
+
+    if (Config.soulLink.enabled) {
+        SoulLink.init();
     }
 });

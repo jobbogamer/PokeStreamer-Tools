@@ -68,7 +68,8 @@ local _defaultPokemonValues = {
     encounter_type = -1,
     is_empty = true,
     is_egg = false,
-    valid = true
+    valid = true,
+    friendship_egg_steps = -1
 }
 
 local _propertiesToSend = {
@@ -90,6 +91,10 @@ local _propertiesToSend = {
     encounter_type = "encounterType",
     markings = "markings",
     is_gift = "gift",
+    friendship_egg_steps = { 
+        name = "eggCycles", 
+        transform = function (egg_cycles, pkmn) return pkmn.is_egg and egg_cycles or nil end 
+    }
 }
 
 function Pokemon.get_words_string(words, format)
@@ -117,7 +122,9 @@ end
 local function get_pokemon_level(species, xp)
     local exp_levels = experiece_to_reach_level[experience_gain_by_species[species]]
     local level = 1
-    while xp >= exp_levels[level] do level = level + 1 end
+    while level < 100 and xp >= exp_levels[level] do 
+        level = level + 1 
+    end
     return level - 1
 end
 
@@ -156,7 +163,10 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     local level = get_pokemon_level(pkmn.species, pkmn.exp)
     pkmn.level = level
 
-    if not in_box then
+    if in_box then
+        pkmn.current_hp = pkmn.max_hp
+        pkmn.living = true
+    else 
         for _, fn in ipairs(battle_stats_memory_map) do
             local attr
             attr, fn = unpack(fn)
@@ -202,7 +212,7 @@ function Pokemon.__eq(left, right)
             local tmpL, tmpR = left[k], right[k]
 
             if v.transform ~= nil then
-                tmpL, tmpR = v.transform(tmpL), v.transform(tmpR)
+                tmpL, tmpR = v.transform(tmpL, left), v.transform(tmpR, right)
             end
         
             if tmpL ~= tmpR then
@@ -246,7 +256,7 @@ function Pokemon:toJsonSerializableTable()
             local tmpV = self[k]
 
             if v.transform ~= nil then
-                tmpV = v.transform(tmpV)
+                tmpV = v.transform(tmpV, self)
             end
 
             if v.format ~= nil then

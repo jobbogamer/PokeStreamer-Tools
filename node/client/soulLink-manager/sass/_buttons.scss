@@ -49,19 +49,40 @@
   }
 }
 
-.btn-refresh {
-  @extend .btn-outline-secondary;
+.header-icons > * {
   cursor: pointer;
 
-  transition: opacity .5s;
+  transition: all .5s;
   opacity: 1;
+
+  &.discord-indicator {
+    // I chafe at this absolute value, but figuring out relative values would be a lot of pointless work
+    font-size: 34px;
+    color: theme-color('discord');
+
+    &.unknown {
+      color: theme-color('secondary');
+    }
+
+    &.partner-offline {
+      color: theme-color('warning');
+    }
+
+    &.disconnected {
+      color: theme-color('danger');
+    }
+  }
+
+  &.btn-refresh {
+    @extend .btn-outline-secondary;
+
+    &.spinning svg {
+      animation: spinning .5s linear forwards Infinite;
+    }
+  }
 
   &.uninitialized {
     opacity: 0;
-  }
-
-  &.spinning svg {
-    animation: spinning .5s linear forwards Infinite;
   }
 }
 

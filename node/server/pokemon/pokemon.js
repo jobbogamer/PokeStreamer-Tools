@@ -1,61 +1,17 @@
+import _ from 'lodash';
+
 import VA from '../validate-argument';
 import Pokedex from '../../common/pokedex';
 import PokemonLocations from './pokemon-locations';
 import PokemonImages from './pokemon-images';
+import PM from './pokemon-manager';
+import Nuzlocke from '../nuzlocke/nuzlocke';
+import SoulLink from '../soullink/soullink';
 import Config from '../config';
 import getStaticEncounterId from './static-encounters';
 
 function getMaxPokemonId(generation) {
     return generation <= 3 ? 386 : 649; // values pulled from wikipedia
-}
-
-const DiscordNewPokemonFields = [
-    'pid',
-    'level',
-    'species',
-    'dead',
-    'locationMet',
-    'shinyId',
-    'isFemale',
-    'staticId',
-    'nickname',
-];
-
-const DiscordUpdateFields = [
-    'pid',
-    'level',
-    'species',
-    'dead',
-];
-
-const ClientFields = [
-    'pid',
-    'species',
-    'speciesName',
-    'nickname',
-    'level',
-    'dead',
-    'isFemale',
-    'isShiny',
-    'isEgg',
-    'levelMet',
-    'img',
-    'staticId',
-    'isValid',
-    'locationMetName',
-    'generation',
-    'linkedImg',
-    'linkedSpecies',
-    'isVoid',
-];
-
-function extractFields(obj, fields) {
-    let o = {};
-    for (let f of fields) {
-        o[f] = obj[f];
-    }
-    
-    return o;
 }
 
 class Pokemon {
@@ -72,13 +28,19 @@ class Pokemon {
         }
         
         if (this.isEgg) {
-            this.level = "";
+            this.level = '';
         }
         
-        this.staticId = getStaticEncounterId(this);
+        if (this.staticId === undefined) {
+            this.staticId = getStaticEncounterId(this);
+        }
     }
     
     get locationMetName() {
+        if (this.isEgg && this.eggLocationMet && this.eggLocationMet.hgss[this.locationMet]) {
+            return this.eggLocationMet.hgss[this.locationMet];
+        }
+
         return this.locationMet ? PokemonLocations.hgss[this.locationMet] : '';
     }
     
@@ -86,50 +48,90 @@ class Pokemon {
         return this.species ? !this.isEgg ? Pokedex[this.species] : 'Egg' : '';
     }
     
-    set shinyNum(val) {
-        if (!shiny) {
-            throw new Error('Pokemon is not shiny.');
-        }
-        
-        this.shinyNum = val;
-    }
-    
     get img() {
         return PokemonImages.get(this.species || -1).getImage(this.isFemale, this.isShiny, this.alternateForm, this.isEgg);
     }
     
-    get linkedImg() {
-        if (this.linkedSpecies === 0 || this.linkedSpecies) {
-            return PokemonImages.get(this.linkedSpecies).getImage(null, this.isShiny, null, this.isEgg);
+    get link() {
+        if (this.linkPid !== undefined && this.linkPid !== null) {
+            let linked;
+            if (SoulLink.linkingMethod === 'manual') {
+                linked = new Pokemon();
+                Object.assign(linked, {
+                    species: this.linkPid,
+                    dead: this.dead,
+                    isShiny: this.isShiny,
+                    isEgg: this.linkPid === 0,
+                    isEmpty: false,
+                });
+            } else {
+                linked = PM.knownSLPokemon[this.linkPid];
+                if (!linked) {
+                    return null;
+                }
+            }
+            
+            delete linked.linkPid; // make sure we don't produce an infinite loop
+            return linked;
         }
-        
+
         return null;
     }
-    
-    // used when the other server has a record of this pokemon
-    get discordUpdateJSON() {
-        if (!SoulLink.Enabled) {
-            console.debug('Why are you calling Pokemon.discordJSON when SoulLink is disabled?  You should debug this.');
+
+    get emptyLinkImage() {
+        if (!this.link) {
+            return PokemonImages.get(-1).getImage();
         }
-        
-        return extractFields(this, DiscordUpdateFields);
     }
     
     // used when notifying the other server of a new pokemon
-    get discordNewPokemonJSON() {
-        if (!SoulLink.Enabled) {
-            console.debug('Why are you calling Pokemon.discordJSON when SoulLink is disabled?  You should debug this.');
-        }
-        
-        return extractFields(this, DiscordNewPokemonFields);
-    }
-    
-    get clientJSON() {
+    get discordJSON() {
         if (this.isEmpty) {
             return null;
         }
-        
-        return extractFields(this, ClientFields);
+
+        let flags = getFlags(this);
+        return {
+            g: this.generation,
+            v: this.gameVersion,
+            p: this.pid,
+            n: this.nickname && this.nickname.length ? this.nickname : undefined,
+            l: this.level,
+            s: this.species,
+            a: this.alternateForm && this.alternateForm.length ? this.alternateForm : undefined,
+            f: flags ? flags : undefined,
+            m: this.locationMet,
+            x: this.staticId && this.staticId !== -1 ? this.staticId : undefined,
+        };
+    }
+    
+    toJSON() {
+        return _.pick(this, [
+                'pid',
+                'species',
+                'speciesName',
+                'nickname',
+                'level',
+                'dead',
+                'isFemale',
+                'isShiny',
+                'isEgg',
+                'levelMet',
+                'img',
+                'staticId',
+                'isValid',
+                'locationMetName',
+                'generation',
+                'link',
+                'isVoid',
+                'emptyLinkImage',
+            ]);
+    }
+
+    clone() {
+        // Object.getOwnPropertyNames() returns all properties but no getters, which is perfect as our getter properties
+        // don't have associated setters.
+        return new Pokemon(_.pick(this, Object.getOwnPropertyNames(this)));
     }
     
     _validateValues() {
@@ -145,9 +147,23 @@ class Pokemon {
         VA.boundedInt(this.level, 'level', 0, 100);
         VA.bool(this.dead, 'dead');
         VA.boolOrUndefinedFalse(this.female, 'female');
-        VA.boolOrUndefinedFalse(this.shiny, 'shiny');
+        VA.boolOrUndefinedFalse(this.isShiny, 'isShiny');
         VA.int(this.levelMet, 'levelMet');
         VA.int(this.staticId, 'staticId');
+    }
+
+    static fromDiscordJSON(obj) {
+        return new Pokemon(Object.assign(parseFlags(obj.f), {
+            generation: obj.g,
+            gameVersion: obj.v,
+            pid: obj.p,
+            level: obj.l,
+            species: obj.s,
+            nickname: obj.n || '',
+            alternateForm: obj.a || '',
+            locationMet: obj.m,
+            staticId: obj.x,
+        }));
     }
 }
 
@@ -156,20 +172,57 @@ const emptyPokemonData = {
     otid: -1,
     otsid: -1,
     species: null,
-    level: -1,
-    nickname: "",
+    level: '',
+    nickname: '',
     dead: false,
     shiny: false,
     female: false,
     levelMet: -1,
     locationMet: -1,
-    alternateForm: "",
+    alternateForm: '',
     staticId: -1,
 };
 
 const EmptyPokemon = new Pokemon();
 Pokemon.empty = EmptyPokemon;
 
-// TODO : Pokemon.fromJSON()?
+// TODO: refactor this into something much cleaner
+//       preferably make this and parseFlags automatically updated when the other is updated
+function getFlags(p) {
+    let flags = p.f || 0;
+
+    if (p.isFemale) {
+        flags += 0x1;
+    }
+
+    if (p.isEgg) {
+        flags += 0x2;
+    }
+
+    if (p.dead) {
+        flags += 0x4;
+    }
+
+    // is void
+    if (p.isVoid) {
+        flags += 0x8;
+    }
+
+    if (p.isShiny) {
+        flags += 0x10;
+    }
+
+    return flags;
+}
+
+function parseFlags(flags) {
+    return {
+        isFemale: !!(flags & 0x1),
+        isEgg: !!(flags & 0x2),
+        dead: !!(flags & 0x4),
+        isVoid: !!(flags & 0x8),
+        isShiny: !!(flags & 0x10),
+    };
+}
 
 export default Pokemon;

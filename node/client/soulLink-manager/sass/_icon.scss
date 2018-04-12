@@ -13,6 +13,11 @@ img.icon {
   margin-bottom: auto;
 
   width: 40px;
+  min-width: 40px;
+
+  &:not([src]) {
+    visibility: hidden;
+  }
 
   &.void {
     animation: rotating 5s linear infinite;

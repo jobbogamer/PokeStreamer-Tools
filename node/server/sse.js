@@ -41,7 +41,7 @@ export default function (req, res, next) {
         return true;
     };
 
-    res.sseSend = function(data) {
+    res.sseSend = function (data) {
         if (!res.connection.destroyed) {
             res.write(`data: ${JSON.stringify(data)}\n\n`);
         }

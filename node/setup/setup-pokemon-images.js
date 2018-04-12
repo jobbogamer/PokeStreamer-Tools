@@ -1,8 +1,10 @@
 import fs from 'fs';
 import path from 'path';
-import Config from '../server/config';
+import compileConfig from '../common/configCompiler';
 
-const config = Config,
+console.info('Massaging pokémon images');
+
+const config = compileConfig(),
     pokemonImagesPath = path.resolve(__dirname, '..', config.pokemonImagesPath),
     pokemonImagesFormsPath = path.resolve(pokemonImagesPath, 'forms');
 
@@ -100,5 +102,3 @@ if (!fs.existsSync(pichuFormsPath)) {
     fs.copyFileSync(path.join(pichuFormsPath, 'shiny/172sspiky-eared.png'), path.join(pichuFormsDestPath, 'shiny/172sspiky-eared.png'));
     console.log(`Copied pichu forms from '${pichuFormsPath}' to '${pichuFormsDestPath}'.`);
 }
-
-process.exit(0);

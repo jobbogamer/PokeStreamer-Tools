@@ -1,16 +1,17 @@
 import path from 'path';
-import './extensions';
+import '../common/extensions';
 import { Img } from './pokemon/image-format';
 
 const NodeRoot = path.resolve(__dirname, '..');
 const PublicPath = path.join(NodeRoot, 'public');
-
-const SoulLinkFile = path.join(PublicPath, 'soullinkdata.json');
-const NuzlockeFile = path.join(PublicPath, 'nuzlockedata.json');
+const GameDataPath = path.join(NodeRoot, 'gameData');
+const SoulLinkFile = path.join(GameDataPath, 'soullinkdata.json');
+const NuzlockeFile = path.join(GameDataPath, 'nuzlockedata.json');
 
 export const Paths = {
     NodeRoot,
     PublicPath,
+    GameDataPath,
     SoulLinkFile,
     NuzlockeFile,
 };

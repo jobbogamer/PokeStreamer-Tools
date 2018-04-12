@@ -1,24 +1,33 @@
 import ws from './websocket';
 import config from 'config.json';
+
+import LinkDropdown from '../templates/link-dropdown.ejs';
+import PokemonDropdownOption from '../templates/pokemon-dropdown-option.ejs';
+import PokemonCell from '../templates/pokemon-cell.ejs';
+import TooltipTemplate from '../templates/tooltip-template.ejs';
+
 import { useReviveButton } from './graveyard';
 import { LinkedRow, GraveyardRow, UnlinkedRow } from './row-types';
 import PokedexDropdown from './pokedex-dropdown';
-import PokemonCell from '../templates/pokemon-cell.ejs';
 import Pokedex from 'pokedex';
 import Icons from '../../pokemon-icons';
+import UnlinkedPartnerPokemon from './unlinked-partner-pokemon';
 
 const $unlinked = $('#pokemonTable > tbody.unlinked-pokemon'),
     $linked = $('#pokemonTable > tbody.linked-pokemon'),
-    $graveyard = $('#pokemonTable > tbody.graveyard'),
-    ManualLinking = MANUAL_LINKING; // make this a variable so that lines don't get screwed up while testing
+    $graveyard = $('#pokemonTable > tbody.graveyard');
 
 function createManualLinkedPokemon(pokemon) {
+    if (!MANUAL_LINKING) {
+        console.warn(`Called createManualLinkedPokemon() when linking method is not set to 'manual'`);
+    }
+
     let lp = null;
     if (Number.isInteger(pokemon.linkedSpecies) && pokemon.linkedSpecies > -1) {
         lp = {
             species: pokemon.linkedSpecies,
             speciesName: Pokedex[pokemon.linkedSpecies],
-            shiny: pokemon.shiny
+            isShiny: pokemon.isShiny
         };
 
         lp.icon = Icons.getIcon(lp);
@@ -29,28 +38,24 @@ function createManualLinkedPokemon(pokemon) {
 
 class SoulLinkRow {
     constructor(msg) {
-        ws.on('message', this.onMessage.bind(this));
-
         this.setErrorState = this.setErrorState.bind(this);
         this.clearErrorState = this.clearErrorState.bind(this);
+        this.onMessage = this.handleMessage.bind(this);
+        this._addUnlinkedPokemonOption = this._addUnlinkedPokemonOption.bind(this);
+        this._updateUnlinkedPokemonOption = this._updateUnlinkedPokemonOption.bind(this);
+        this._removeUnlinkedPokemonOption = this._removeUnlinkedPokemonOption.bind(this);
 
-        let {
-            pokemon,
-            linkedPokemon,
-        } = msg;
+        let pokemon = msg.pokemon;
 
-        pokemon.shiny = pokemon.isShiny ? 'shiny' : 'regular';
         pokemon.static = pokemon.staticId > 0 ? 'static' : '';
         pokemon.icon = Icons.getIcon(pokemon);
 
         this.pokemon = pokemon;
         this.pid = pokemon.pid;
 
-        this.linkedPokemon = linkedPokemon || null;
+        this.linkedPokemon = pokemon.link || null;
 
-        if (!ManualLinking) {
-            this.expectedPids = msg.expectedPids;
-        } else {
+        if (MANUAL_LINKING) {
             this.linkedPokemon = createManualLinkedPokemon(pokemon);
         }
 
@@ -60,6 +65,10 @@ class SoulLinkRow {
     addRow() {
         this.removeRow();
 
+        if (!MANUAL_LINKING && this.linkedPokemon) {
+            this.linkedPokemon.icon = Icons.getIcon(this.linkedPokemon);
+        }
+        
         if (this.pokemon.dead || this.pokemon.isVoid) {
             this.addGraveyardRow();
         } else if (this.linkedPokemon) {
@@ -70,7 +79,7 @@ class SoulLinkRow {
 
         this.defaultRowClasses = this.$row.attr('class');
 
-        setImmediate(() => this.$row.addClass('show').find('.traits .icon').tooltip());
+        setTimeout(() => this.$row.addClass('show').find('.traits .icon').tooltip(), 20);
     }
 
     addLinkedRow() {
@@ -80,7 +89,7 @@ class SoulLinkRow {
             this.sendMessage('unlink');
         });
 
-        if (ManualLinking) {
+        if (MANUAL_LINKING) {
             $row.find('div.dropdown').append(PokedexDropdown(this.pokemon, this.linkedPokemon.species));
             let $select = $row.find('div.dropdown select'),
                 $updateBtn = $row.find('button.btn-update-link'),
@@ -107,13 +116,38 @@ class SoulLinkRow {
     addUnlinkedRow() {
         let $row = this.$row = $(UnlinkedRow(this));
 
-        if (ManualLinking) {
+        if (MANUAL_LINKING) {
             $row.find('div.dropdown').append(PokedexDropdown(this.pokemon));            
+        } else {
+            $row.find('div.dropdown').append(LinkDropdown({ Icons, Pokedex, unlinkedPartnerPokemon: UnlinkedPartnerPokemon.pokemon }));
         }
 
         let $linkBtn = $row.find('button.btn-add-link'),
             $voidBtn = $row.find('button.btn-void'),
-            $select = $row.find('div.dropdown select');
+            $select = $row.find('div.dropdown select'),
+            $icon = $row.find('div.dropdown img');
+
+        if (!MANUAL_LINKING) {
+            if ($select.children('option').length === 1) {
+                $select.val(-1).addClass('no-links');
+            } else {
+                $select.removeClass('no-links');
+            }
+
+            $select.on('change', () => {
+                if (parseInt($select.val()) === -1 || $select.children('option').length === 1) {
+                    $linkBtn.disable();
+                    $icon.removeAttr('src');
+                } else {
+                    $linkBtn.enable();
+                    setImmediate(() => $icon.attr('src', $select.find(':selected').attr('data-img')));
+                }
+            }).change();
+
+            UnlinkedPartnerPokemon.on('add', this._addUnlinkedPokemonOption);
+            UnlinkedPartnerPokemon.on('update', this._updateUnlinkedPokemonOption);
+            UnlinkedPartnerPokemon.on('remove', this._removeUnlinkedPokemonOption);
+        }
 
         $unlinked.prepend($row);
         $linkBtn.click(() => {
@@ -141,50 +175,69 @@ class SoulLinkRow {
         if (this.$row) {
             let $oldRow = this.$row.attr('id', '').removeClass('show');
             this.$row = null;
+            
+            if (!MANUAL_LINKING && $oldRow.closest('tbody').is('.unlinked-pokemon')) {
+                UnlinkedPartnerPokemon.removeListener('add', this._addUnlinkedPokemonOption);
+                UnlinkedPartnerPokemon.removeListener('update', this._updateUnlinkedPokemonOption);
+                UnlinkedPartnerPokemon.removeListener('remove', this._removeUnlinkedPokemonOption);
+            }
+
             setTimeout(() => $oldRow.remove(), 500);
         }
     }
 
-    // handles both the case when your pokemon evolves
-    // and when the linked species changes either because it evolved or because we changed it manually
+    // handles both the case when your pokemon evolves and when the linked species changes either because it evolved or
+    // because we changed it manually
     updateLink(msg) {
         let {
-            species,
-            linkedSpecies
+            pokemon,
+            link
         } = msg;
         
-        if (species !== undefined && this.pokemon.species !== species) {
-            this.pokemon.species = species;
+        if (pokemon !== undefined) {
+            this.pokemon = pokemon;
             this.$row.find('td.pokemon > div').replaceWith(PokemonCell(this.pokemon));
         }
 
-        if (linkedSpecies !== undefined) {
-            this.pokemon.linkedSpecies = linkedSpecies;
-            if (this.linkedPokemon && linkedSpecies === null) {
-                let oldLink = this.linkedPokemon.species;
-                this.linkedPokemon = null;
-                this.addRow();
-                this.$row.find('select').val(oldLink).change();
-                return;
-            } else if (!this.linkedPokemon) {
-                this.linkedPokemon = createManualLinkedPokemon(this.pokemon);
-                this.addRow();
-                return;
-            } else if (this.linkedPokemon.species !== linkedSpecies) {
-                if (ManualLinking) {
-                    this.$row.find('td.linked-pokemon > div.dropdown select').val(linkedSpecies).change();
-                    this.linkedPokemon.species = linkedSpecies;
-                } else {
-                    this.$row.find('td.pokemon > div').replaceWith(PokemonCell(this.linkedPokemon));
+        if (link !== undefined) {
+            if (MANUAL_LINKING) {
+                // link is a species
+                this.pokemon.linkedSpecies = link;
+                if (this.linkedPokemon && link === null) {
+                    let oldLink = this.linkedPokemon.species;
+                    this.linkedPokemon = null;
+                    this.addRow();
+                    this.$row.find('select').val(oldLink).change();
+                } else if (!this.linkedPokemon) {
+                    this.linkedPokemon = createManualLinkedPokemon(this.pokemon);
+                    this.addRow();
+                } else if (this.linkedPokemon.species !== link) {
+                    this.$row.find('td.linked-pokemon > div.dropdown select').val(link).change();
+                    this.linkedPokemon.species = link;
+                }
+            } else {
+                // link is a pokemon
+                if (this.linkedPokemon && link === null) {
+                    let oldLink = this.linkedPokemon.pid;
+                    this.linkedPokemon = null;
+                    this.addRow();
+                    this.$row.find('select').val(oldLink).change();
+                } else if (!this.linkedPokemon) {
+                    this.linkedPokemon = UnlinkedPartnerPokemon.pokemon[link.pid] || UnlinkedPartnerPokemon.linkedPokemon[this.pokemon.pid];
+                    this.addRow();
+                } else if (this.linkedPokemon.pid === link.pid) {
+                    link.icon = Icons.getIcon(link);
+                    this.linkedPokemon = link;
+                    this.$row.find('td.linked-pokemon > div').replaceWith(PokemonCell({ pokemon: link }));
                 }
             }
         }
     }
 
-    onMessage(e) {
-        let msg = JSON.parse(e.data),
-            pid = parseInt(msg.pid);
+    handleMessage(msg) {
+        let pid = parseInt(msg.pid);
         if (!pid || pid !== this.pid) {
+            console.error(`Row ${this.pid} received mismatched message type '${msg.messageType}' from soullink-manager for pid ${pid}`);
             return;
         }
 
@@ -221,6 +274,10 @@ class SoulLinkRow {
 
                 break;
 
+            case 'error':
+                this.setErrorState(msg.errorMessage);
+                break;
+
             default:
                 console.error(`Received unknown message type from server: ${msg.messageType}`);
                 return;
@@ -229,7 +286,7 @@ class SoulLinkRow {
 
     sendMessage(messageType, ...args) {
         this.$row.removeClass('bg-danger text-white').addClass(this.defaultRowClasses).find('button, select').disable();
-        this.reenableTimeout = setTimeout(() => this.setErrorState(`There was no response from the server.`), 2000);
+        this.reenableTimeout = setTimeout(() => this.setErrorState(`There was no response from the server.`), 5000);
         let msg = {
             messageType,
             pid: parseInt(this.pid)
@@ -237,12 +294,7 @@ class SoulLinkRow {
 
         switch (messageType) {
             case 'update-link':
-                if (!ManualLinking) {
-                    this.setErrorState(`Cannot update a pokemon link manually when linking is automatic.  How did you even get here?`);
-                    return;
-                }
-
-                msg.linkedSpecies = args[0];
+                msg.link = args[0];
                 ws.send(JSON.stringify(msg));
                 break;
 
@@ -267,7 +319,7 @@ class SoulLinkRow {
             this.$row.tooltip({
                 title: message,
                 container: 'body',
-                template: '<div class="tooltip" role="tooltip"><div class="arrow arrow-danger"></div><div class="tooltip-inner bg-danger"></div></div>',
+                template: TooltipTemplate({ variant: 'danger' }),
             });
         } else {
             this.$row.tooltip('dispose');
@@ -284,7 +336,33 @@ class SoulLinkRow {
 
     dispose() {
         this.removeRow();
-        ws.removeListener('message', this.onMessage);
+        ws.removeListener('message', this.handleMessage);
+    }
+
+    _addUnlinkedPokemonOption(ulp) {
+        this.$row.find('.dropdown select')
+            .not(`:has(option[value="${ulp.pid}"])`)
+            .prepend(PokemonDropdownOption({ Icons, Pokedex, pokemon: ulp }))
+            .change()
+            .removeClass('no-links')
+            .filter(function () { return $(this).children('option').length === 2; })
+            .val(ulp.pid);
+    }
+
+    _updateUnlinkedPokemonOption(ulp)  {
+        this.$row.find(`.dropdown select option[value="${ulp.pid}"]`)
+            .attr('data-img', Icons[Pokedex.FileNames[ulp.species]][ulp.isShiny ? 'shiny' : 'regular'])
+            .text(`${ulp.speciesName}${ulp.nickname ? ' / ' + ulp.nickname : ''}`)
+            .change();
+    }
+
+    _removeUnlinkedPokemonOption(pid) {
+        let $select = this.$row.find('.dropdown select').find(`option[value="${pid}"]`).remove().end();
+        if ($select.children('option').length === 1) {
+            $select.val(-1).addClass('no-links');
+        }
+
+        $select.change();
     }
 }
 

@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 import NuzlockeFileManager from './nuzlocke-file-manager';
+import PM from '../pokemon/pokemon-manager';
 
 let nuzlockeObject = NuzlockeFileManager.loadFile();
 
@@ -18,32 +19,53 @@ class Nuzlocke extends EventEmitter {
         nuzlockeObject = NuzlockeFileManager.loadFile();
     }
 
+    partnerReset(partnerPids) {
+        for (let p in partnerPids) {
+            nuzlockeObject.knownDeaths.delete(p);
+            nuzlockeObject.knownVoids.delete(p);
+        }
+
+        NuzlockeFileManager.saveFile(nuzlockeObject);
+    }
+
     addDeadPokemon(pid) {
+        pid = parseInt(pid);
         if (!nuzlockeObject.knownDeaths.has(pid)) {
             nuzlockeObject.knownDeaths.add(pid);
             NuzlockeFileManager.saveFile(nuzlockeObject);
 
-            this.emit('addedDeadPokemon', pid);
+            // don't want to send this update for SL pokemon
+            if (PM.knownPokemon[pid]) {
+                this.emit('addedDeadPokemon', pid);
+            }
         }
     }
 
     addVoidPokemon(pid) {
+        pid = parseInt(pid);
         if (!nuzlockeObject.knownVoids.has(pid)) {
             nuzlockeObject.knownVoids.add(pid);
             NuzlockeFileManager.saveFile(nuzlockeObject);
 
-            this.emit('addedVoidPokemon', pid);
+            // don't want to send this update for SL pokemon
+            if (PM.knownPokemon[pid]) {
+                this.emit('addedVoidPokemon', pid);
+            }
         }
     }
 
     // used when manually reviving a pokemon -- not when the game reports that it is not dead
     revivePokemon(pid) { 
+        pid = parseInt(pid);
         if (nuzlockeObject.knownDeaths.has(pid) || nuzlockeObject.knownVoids.has(pid)) {
             nuzlockeObject.knownDeaths.delete(pid);
             nuzlockeObject.knownVoids.delete(pid);
             NuzlockeFileManager.saveFile(nuzlockeObject);
 
-            this.emit('revivedPokemon', pid);
+            // don't want to send this update for SL pokemon
+            if (PM.knownPokemon[pid]) {
+                this.emit('revivedPokemon', pid);
+            }
         }
     }
 }

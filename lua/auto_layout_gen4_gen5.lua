@@ -77,8 +77,10 @@ for i = 1, 18 do
 end
 
 local need_to_read_boxes = run_soul_link
-local last_box_check = 0
-local check_box_frequency = 5 -- seconds
+local last_box_check_time = 0
+local check_box_frequency = 1 -- in seconds
+local box_id_to_check = 1
+local boxes_to_check_per_run = 6
 
 local last_party = {}
 local first_run = true
@@ -172,75 +174,6 @@ end
 
 function gettop(a)
 	return(rshift(a,16))
-end
-
-function menu()
-	tabl = input.get()
-	leftarrow1color = "white"
-	leftarrow2color = "white"
-	rightarrow1color = "white"
-	rightarrow2color = "white"
-	if tabl["1"] and not prev["1"] then
-		game = game + 1
-		if game == 8 then
-			game = 1
-		end
-	end
-	if tabl["7"] then
-		leftarrow2color = "yellow"
-	end
-	if tabl["8"] then
-		rightarrow2color = "yellow"
-	end
-	if tabl["3"] then
-		leftarrow1color = "yellow"
-	end
-	if tabl["4"] then
-		rightarrow1color = "yellow"
-	end
-	if tabl["7"] and not prev["7"] and mode < 5 then
-		submode = submode - 1
-		if submode == 0 then
-			submode = submodemax
-		end
-	end
-	if tabl["8"] and not prev["8"] and mode < 5 then
-		submode = submode + 1
-		if submode == submodemax + 1 then
-			submode = 1
-		end
-	end
-	if tabl["3"] and not prev["3"] then
-		mode = mode - 1
-		if mode == 0 then
-			mode = modemax
-		end
-	end
-	if tabl["4"] and not prev["4"] then
-		mode = mode + 1
-		if mode == modemax + 1 then
-			mode = 1
-		end
-	end
-	if tabl["0"] and not prev["0"] then
-		if yfix == 10 then
-			yfix = -185
-		else
-			yfix = 10
-		end
-	end
-	prev = tabl
-	if mode == 1 then
-		modetext = "Party"
-	elseif mode == 2 then
-		modetext = "Enemy"
-	elseif mode == 3 then
-		modetext = "Enemy 2"
-	elseif mode == 4 then
-		modetext = "Partner"
-	else -- mode == 5
-		modetext = "Wild"
-	end
 end
 
 function getGen()
@@ -489,12 +422,24 @@ function inspect_and_send_boxes()
 	local cur_boxes = {}
 	local box_offset = bills_pc_address[game][subgame]
 	local last_pkmn, cur_pkmn, should_update, words
+	local end_box_id
 
-	for box = 1, 18 do
+	if first_run then
+		-- the first time the script is run, read all boxes
+		end_box_id = 18
+	else
+		end_box_id = box_id_to_check + boxes_to_check_per_run - 1
+		if end_box_id > 18 then
+			-- it's easier to just not check the max number of boxes if boxes_to_check_per_run doesn't divide 18
+			end_box_id = 18
+		end
+	end
+
+	for box = box_id_to_check, end_box_id do
 		cur_boxes[box] = {}
 		for box_slot = 1, 30 do
-			words = read_pokemon_words(box_offset + (box - 1) * box_size + (box_slot - 1) * box_slot_size, 136)
-			if last_boxes[box] == nil or Pokemon.get_words_string(words) ~= last_boxes[box].data_str then	
+			words = read_pokemon_words(box_offset + (box - 1) * box_size + (box_slot - 1) * box_slot_size, Pokemon.word_size_in_box)
+			if last_boxes[box] == nil or Pokemon.get_words_string(words) ~= last_boxes[box].data_str then
 				cur_pkmn = Pokemon.parse_gen4_gen5(words, true, gen)
 				
 				if last_boxes[box] == nil then
@@ -521,21 +466,26 @@ function inspect_and_send_boxes()
 				end
 			end
 		end
+
+		last_boxes[box] = cur_boxes[box]
 	end
 
-	last_boxes = cur_boxes
-	if #delta_boxes > 0 and not need_to_read_boxes then
+	if #delta_boxes > 0 then
 		if not send_slots(delta_boxes, gen, game, subgame) then
-			print("ERROR: Failed to connect to server.  Disabling SoulLink.")
-			run_soul_link = false
+			print("ERROR: Failed to connect to server.  Check that the server is running.  Skipping box data upload.")
 			return false
 		end
 		delta_boxes = {}
 	end
 
+	box_id_to_check = box_id_to_check + boxes_to_check_per_run
+	if box_id_to_check > 18 then
+		box_id_to_check = box_id_to_check - 18
+	end
 	return true
 end
 
+-- Uncalled function for the time being (and probably forever if I'm being honest)
 function kill_pokemon(pidAddr)
 	local pid = memory.readdword(pidAddr)
 	local death_code, frozen_code = Pokemon.get_death_codes(pid)
@@ -565,7 +515,7 @@ function check_is_in_battle(addr, pid)
 end
 
 -- attempt to check if in battle by examining enemy memory
--- doesn't actually work.... may debug this later
+-- doesn't actually work... enemyAddr doesn't seem to be accurate... may debug this later
 -- function get_is_in_battle()
 -- 	submode = 1
 -- 	getPidAddr() -- this sets enemyAddr
@@ -576,24 +526,23 @@ end
 
 local printed_slot_1 = false
 function fn()
-	--menu()
 	current_time = os.clock() -- use clock() rather than time() so we can check more than once per second
-	if need_to_read_boxes or run_soul_link and current_time - last_box_check > check_box_frequency then
+
+	if run_soul_link and current_time - last_box_check_time > check_box_frequency then
 		gen = getGen()
 		if not inspect_and_send_boxes() then
 			-- prevent further execution to avoid killing the game
+			last_box_check_time = current_time
 			return
 		end
 
-		last_box_check = current_time
+		last_box_check_time = current_time
 	end
 
 	if current_time - last_check > .5 then
 		gen = getGen()
 		pointer = getPointer()
 		party = {}
-
-		-- in_battle = get_is_in_battle()
 
 		for q = 1, 6 do
 			submode = q
@@ -616,7 +565,7 @@ function fn()
 			last_party = {}
 			for k, pkmn in pairs(party) do
 				last_party[k] = pkmn or Pokemon() -- invalid pokemon are returned as nil from parse_gen4_gen5
-				print("Slot " .. k .. ": " .. tostring(pkmn))
+				-- print("Slot " .. k .. ": " .. tostring(pkmn))
 				send_data[#send_data + 1] = { slot_id = k, pokemon = pkmn }
 			end
 			first_run = false
@@ -626,7 +575,7 @@ function fn()
 				lp = last_party[q]
 				if p ~= nil then
 					if lp == nil or p ~= lp then
-						print("Slot " .. q .. ": " .. tostring(lp) .. " -> " .. tostring(p))
+						-- print("Slot " .. q .. ": " .. tostring(lp) .. " -> " .. tostring(p))
 						send_data[#send_data + 1] = { slot_id = q, pokemon = p }
 					end
 				else

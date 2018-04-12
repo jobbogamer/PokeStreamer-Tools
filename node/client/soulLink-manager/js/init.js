@@ -4,7 +4,7 @@ import getGraveyardName from './graveyard';
 
 // allow for stacked modals -- in particular, if the New Game modal is up and the server disconnects, the reconnecting
 // modal will display itself over the new game one
-$(document).on('show.bs.modal', '.modal', function(e) {
+$(document).on('show.bs.modal', '.modal', function (e) {
     let zIndex = 1040 + (10 * $('.modal:visible').length);
     $(this).css('z-index', zIndex);
     setImmediate(() => {
@@ -12,12 +12,12 @@ $(document).on('show.bs.modal', '.modal', function(e) {
     });
 });
 
-export default function() {
+export default function () {
     setInterval(() => $('#graveyardheader').text((_, t) => getGraveyardName(t)), 5 * 60 * 1000);
 
     // show refresh button once FontAwesome sync i-element has been replaced with the SVG
-    $('.btn-refresh').has('svg').removeClass('uninitialized').end()
-        .has('i').one('DOMSubtreeModified', function() { $(this).removeClass('uninitialized'); });
+    $('.header-icons > .uninitialized').has('svg').removeClass('uninitialized').end()
+        .has('i').one('DOMSubtreeModified', function () { $(this).removeClass('uninitialized'); });
 
     const $dcModal = $('#disconnectedModal');
     $dcModal.on('shown.bs.modal', () => {

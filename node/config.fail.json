@@ -6,7 +6,7 @@
     "isRandomized": true,
     
     // Path to the image used when a slot is empty relative to /node/ directory.
-    // "emptySlotImagePath": null,
+    "emptySlotImagePath": null,
 
     "layout": {         
         /*  
@@ -17,7 +17,6 @@
         
         NOTE: The death messages *replace* the other elements listed (aside from other death messages).
         NOTE: Currently SoulLink, and thus, sl-* values, are not available for gen3.
-        NOTE: Currently nickname and sl-nickname are not available for gen4/gen5.
         
         Available elements are:
         • nickname
@@ -67,6 +66,9 @@
 
     "soulLink": {
         "enabled": true,
+        "linking": {
+            "method": "discord"
+        }
     },
     
     /*
