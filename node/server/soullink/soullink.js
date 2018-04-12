@@ -38,8 +38,10 @@ class SoulLink extends EventEmitter {
         this._handleDataDump = this._handleDataDump.bind(this);
         this._partnerNewGame = this._partnerNewGame.bind(this);
 
-        this._parseData();
-        this.emit('update', new Map(this._links));
+        if (this.enabled) {
+            this._parseData();
+            this.emit('update', new Map(this._links));
+        }
 
         Config.on('update', this._handleConfigChange.bind(this));
     }
@@ -264,7 +266,7 @@ class SoulLink extends EventEmitter {
             next = JSON.parse(contents);
             if (next.method !== this.linkingMethod) {
                 let backupFileName = this._makeBackupFile();
-                console.warn(`Current soulLink.json gameData file uses the ${contents.method} linking method, while config is using ${this.linkingMethod}.  These are incompatible.  Backed up the game data file to ${backupFileName} and created an empty data file.`);
+                console.warn(`Current soulLink.json gameData file uses the ${next.method} linking method, while config is using ${this.linkingMethod}.  These are incompatible.  Backed up the game data file to ${backupFileName} and created an empty data file.`);
                 this.reset();
                 return;
             }
@@ -365,7 +367,7 @@ class SoulLink extends EventEmitter {
     }
 
     _makeBackupFile() {
-        let backupFileName = path.join(GameDataPath, `soullink.${new Date().getTime()}.json`);
+        let backupFileName = path.join(GameDataPath, `soullinkdata.${new Date().getTime()}.json`);
         fs.copyFileSync(SoulLinkFile, backupFileName);
         return backupFileName;
     }
