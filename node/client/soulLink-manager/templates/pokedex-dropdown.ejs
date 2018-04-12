@@ -2,7 +2,7 @@
 <img class="icon partner-pokemon" />
 <select class="form-control-sm select-partner-pokemon">
     <% for (let i = 0; i < pokedex.length; i++) { %>
-        <% let iconSrc = pokemonIcons[pokedex.FileNames[i]][pokemon.shiny]; %>
+        <% let iconSrc = pokemonIcons[pokedex.FileNames[i]][pokemon.isShiny ? 'shiny' : 'regular']; %>
         <option value="<%- i %>" data-img="<%- iconSrc %>" data-species-name="<%- pokedex[i] %>">
             <%- pokedex[i] %>
         </option>

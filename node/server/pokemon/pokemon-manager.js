@@ -104,9 +104,10 @@ class PokemonManager {
         }
         
         knownPokemon[pid].linkPid = slPid;
-        if (slPid !== null) {
+        if (slPid !== null && !SoulLink.manualLinking) {
             knownSLPokemon[slPid].linkPid = pid;
         }
+        
         return true;
     }
 
