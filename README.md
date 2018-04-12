@@ -1,17 +1,25 @@
 # PokeStreamer-Tools
 
-A set of scripts and tools for Pokemon streamers
+A set of scripts and tools for Pokémon streamers
 
 **README is a work in progress.  Most of the settings information can be found in `node/config.json`.**  Any comments in the config files that contradict the readme are more accurate than the readme.
 
-**This is a modified version of [EverOddish's PokeStreamer-Tools](https://github.com/EverOddish/PokeStreamer-Tools).**
-An issue with the original script is that every time a pokemon changes slots, it rewrites data to the hard drive several times.  This is a synchronous operation that causes the game (in particular, the audio) to lag significantly.
+<div style="color: #0c5460; background-color: #d1ecf1; border-color: #bee5eb; position: relative; padding: .75rem .75rem 0; 1.25rem; margin: 1rem 0; border: 1px solid; border-radius: .25rem;">
 
-This code uses a [Node.JS](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at `http://stream.pokemon-soul.link:8081/`.  (Optionally, for more flexibility, you can disable all-on-one mode in the `node/config.json` file, and access six separate pages at `http://stream.pokemon-soul.link:8081/?slot=slotNum` where `slotNum` is a number between 1 and 6.  That said, I might soon be deprecating this feature--yes, before v1.0 is released--and just make you use [CSS transformations](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) to move and scale your slots as desired.)
+**Note**: You will have a ***much*** easier time if you download the repository via [Git](https://git-scm.com/download/win) than if you simply download and extract a zip.
+
+</div>
+
+**This is a modified version of [EverOddish's PokeStreamer-Tools](https://github.com/EverOddish/PokeStreamer-Tools).**
+An issue with the original script is that every time a pokémon changes slots, it rewrites data to the hard drive several times.  This is a synchronous operation that causes the game (in particular, the audio) to lag significantly.  This modified version remedies this lag as well as provides extensive tools for Nuzlocke and SoulLink runs.
+
+This code uses a [Node.js](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at http://stream.pokemon-soul.link:8081/.
+
+For SoulLink runs, the server also provides an SoulLink Manager--at [http://stream.pokemon-soul.link:8081/soullink](http://stream.pokemon-soul.link:8081/soullink)--for setting links between your pokémon and your partner's.  If you both have Discord, the majority of that linking can be done automatically.
 
 ### Server Requirements
 
-The following are required *in addition* to the [requirements](#requirements) listed below.
+The following are required *in addition* to the [requirements](#requirements) listed for the original tool.
 
 *   [Git for Windows](https://git-scm.com/download/win)
 *   [Python **v2.7**](http://https://www.python.org/downloads/) used for building some dependencies ([download link](https://www.python.org/ftp/python/2.7.14/python-2.7.14.msi))
@@ -21,7 +29,10 @@ The following are required *in addition* to the [requirements](#requirements) li
 Optional:
 
 *   [LuaSocket 2.0.2 32-bit](http://files.luaforge.net/releases/luasocket/luasocket/luasocket-2.0.2) - The included LuaSocket binaries in `/lua/` are [64-bit versions](https://download.zerobrane.com/luasocket-win64.zip) (as they're harder to come by).  If you are using a 32-bit emulator, you will need to download the 32-bit version and replace the 64-bit versions.
-*   [Discord](https://discordapp.com/) - Required for SoulLink functionality (forthcoming).
+*   [Discord](https://discordapp.com/) - Required for SoulLink automatic linking functionality
+*   Merging tool - when updating to the latest version of the PokeStreamer Tool, incoming changes may conflict with changes you've made to your config.  A merge tool can be helpful in resolving those conflicts.
+    *   [Meld](http://meldmerge.org/) - A simple, clean tool for comparing files/folders with decent merge capability
+    *   [VS Code](https://code.visualstudio.com/) - Overkill if you are only using it for merging, but on top of making merging very easy, it's the best text editor I've found
 
 ### Server Setup
 
@@ -31,7 +42,7 @@ Optional:
 2.  Navigate to the folder (using `cd`) you will want to install the server to.  (This is the *parent* directory; running the next command will create a folder named `PokemonStreamer-Tools` automatically.)
 3.  Run `git clone https://github.com/dfoverdx/PokeStreamer-Tools.git`
 
-#### Download Pokemon Images
+#### Download Pokémon Images
 
 I *highly* recommend you use the zip located [here](http://pkmn.net/?action=content&page=viewpage&id=8644) as it includes all the required images named the way my script expects them to be named (i.e. numbered by PokeDex number).
 
@@ -91,7 +102,7 @@ Files at the top of the list have higher priority than ones after them.
 
 ##### XSplit users
 
-There seems to be a bug in XSplit where it does not send the proper headers when accessing the server.  If running in XSplit doesn't seem to be working/updating when Pokemon change, add this setting to your config:
+There seems to be a bug in XSplit where it does not send the proper headers when accessing the server.  If running in XSplit doesn't seem to be working/updating when pokémon change, add this setting to your config:
 ```json
 {
     "server": {
@@ -170,7 +181,7 @@ If `method` is set to `manual`, the `discord` section is ignored--no need to del
 
 #### Discord Linking
 
-You can use [Discord](https://discordapp.com/) to transfer SoulLink data between you and your partner.  For the most part, the server can then handle linking Pokemon automatically by looking at whether the pokémon is a known static encounter and the location in which it was caught.  However, there are a couple exceptions, so you will still need to have http://stream.pokemon-soul.link:8081/soullink open for linking/unlinking when an automatic link is not possible or incorrect.
+You can use [Discord](https://discordapp.com/) to transfer SoulLink data between you and your partner.  For the most part, the server can then handle linking pokémon automatically by looking at whether the pokémon is a known static encounter and the location in which it was caught.  However, there are a couple exceptions, so you will still need to have http://stream.pokemon-soul.link:8081/soullink open for linking/unlinking when an automatic link is not possible or incorrect.
 
 <details><summary>Cases that automatic linking won't work</summary>
 
@@ -263,7 +274,13 @@ If you are not the one creating the channel, all you will need to supply your pa
 
 If you do not have a Discord server, create one.  (On the left side of the Discord app, click the (+) icon at the bottom of your channel list, click `Create`, and give it a name.)
 
-Create a new Text Channel that you will use *only for communication between you and your partner*--that is, do not use the same text channel you use for soul linking with another person.
+Create a new Text Channel that you will use *only for communication between you and your partner*--that is, do not use the same text channel you use for soul linking with another person.  
+
+<div style="color: #0c5460; background-color: #d1ecf1; border-color: #bee5eb; position: relative; padding: 0 1.25rem; margin-top: 1rem; margin-bottom: 1rem; border: 1px solid; border-radius: .25rem; padding-top: .75rem">
+
+If you already have defined server roles, when you create the channel, there is a toggle to mark it as a private channel.  If you check this, you can skip the next step.
+
+</div>
 
 ##### Make the channel private -- <span style="color: red">do not skip this step</span>
 
@@ -276,11 +293,14 @@ Create a new Text Channel that you will use *only for communication between you 
 
 ##### Add your and your partner's the bots to the server
 
-Get your partner's bot's Client ID from them.  (See step 7 of [Setting the `botToken` and `partnerBotTag`](#setting-the-bottoken-and-partnerbottag).)  Replace `CLIENTID` in the following link with their Client ID, navigate to that URL in your browser, and authorize the bot to access your server.
-```
-https://discordapp.com/oauth2/authorize?scope=bot&permissions=35840&client_id=CLIENTID
-```
-Repeat the process using your bot's Client ID.  Make sure the bots that will be accessing the channel appear on the right-hand side as members of the server before continuing.
+1.  Find/copy your bot's Client ID from your [bot/app's page](https://discordapp.com/developers/applications/me) (see step 7 of [Setting the `botToken` and `partnerBotTag`](#setting-the-bottoken-and-partnerbottag))
+2.  Paste it at the end of the link below.  (You can type directly in the box and then copy it.)  
+    <a style="width:100%; background: rgba(0,0,0,.2); padding: .2rem .4rem; border: 1px solid rgba(0,0,0,.4); border-radius: 2px; display:inline-block; margin:.2rem 0;" contenteditable="true">
+    https://discordapp.com/oauth2/authorize?scope=bot&permissions=35840&client_id=
+    </a>
+3.  Navigate to this URL in your browser, and authorize the bot to access your server.
+
+Repeat the process using your partner's bot's Client ID.  Make sure the bots that will be accessing the channel appear on the right-hand side as members of the server before continuing.
 
 If you cannot add your partner's bot, most likely they did not check the *Public Bot* checkbox on their Application Page.
 
@@ -290,7 +310,7 @@ You do not need to give your partner's Discord user access to see this channel. 
 
 ##### Set permissions in the channel for your bots
 
-Click the Edit Channel ️⚙ icon for your channel again, and click *Permissions*.
+Click the Edit Channel ️⚙ icon for your channel, and click *Permissions*.
 
 For your each bot:
 
@@ -377,7 +397,7 @@ See https://sass-lang.com/ for more information on SASS variables and what you c
 
 No guarantees I will ever get around to these, but here are the features I plan/hope to implement soon.
 
-- [x] Pokemon variation support (shiny, gender)
+- [x] Pokémon variation support (shiny, gender)
 - [x] Gen4-5 support
     - [x] Significant refactoring of Lua code
 - [ ] Additional Nuzlocke features
@@ -386,15 +406,15 @@ No guarantees I will ever get around to these, but here are the features I plan/
     - [x] Communication via Discord
     - Low priority items
       - [ ] Automatic soul-linked deaths
-      - [ ] Shared experience between soul-linked pokemon
+      - [ ] Shared experience between soul-linked pokémon
 - [ ] Stream chat interactivity (*wayyy* down the line--aka realistically, never)
     *   Use bits or stream currency to purchase in game effects (*Hunger Games Sponsor mode*)
-        *   Heal the current pokemon
+        *   Heal the current pokémon
         *   Heal the whole team
-        *   Restore PP to the current pokemon
+        *   Restore PP to the current pokémon
         *   Add item to inventory
         *   etc
-    *   Vote to select next Pokemon encounter
+    *   Vote to select next Pokémon encounter
         *   May not be possible, or way too complicated for me to figure out, but it would be fun
 
 (Personal note just so I remember where it is.  Look into https://github.com/wojons/lua-resty-sse for communicating from Node server to Lua.)

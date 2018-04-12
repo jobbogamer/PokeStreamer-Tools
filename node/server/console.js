@@ -1,8 +1,11 @@
 import { styles } from 'colors';
 
 const { debug, log, info, warn, error } = console;
+
+// for each color, set the color, navigate up one row, navigate to the end of that row
+// this removes the prepended space that console.log puts between printed arguments
 const [ timestampColor, debugColor, logColor, infoColor, warnColor, errorColor, resetColor ] = 
-      [ 'gray', 'gray', 'white', 'cyan', 'yellow', 'red', 'reset' ].map(c => styles[c].open);
+      [ 'gray', 'gray', 'white', 'cyan', 'yellow', 'red', 'reset' ].map(c => `${styles[c].open}\u001b[0F\u001b[1000C`);
 
 let currentLevel = 4;
 
