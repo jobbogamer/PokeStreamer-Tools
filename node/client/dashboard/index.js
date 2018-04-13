@@ -1,9 +1,9 @@
 import '../jQuery.extensions';
 import config from 'config.json';
 
-if (config.nuzlocke.enabled && config.soulLink.enabled) {
+if (config.nuzlocke.enabled) {
     require('./sass/index.scss');
-    require('./js/soullink-manager');
+    require('./js/manager');
 } else {
-    require('./sass/soullink-disabled.scss');
+    require('./sass/disabled.scss');
 }

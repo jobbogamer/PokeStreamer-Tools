@@ -147,6 +147,8 @@ function genConfig(env, options) {
             
             ALL_IN_ONE: config.layout.allInOne,
             API_BASE_URL: `'api.${host}/api'`,
+
+            NUZLOCKE_ENABLED: config.nuzlocke.enabled,
             
             LINKING_METHOD: `'${config.soulLink.linking.method}'`,
             MANUAL_LINKING: config.soulLink.linking.method === 'manual',
