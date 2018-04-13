@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import Config from '../config';
 import NuzlockeFileManager from './nuzlocke-file-manager';
 import PM from '../pokemon/pokemon-manager';
 
@@ -11,6 +12,10 @@ class Nuzlocke extends EventEmitter {
 
     get knownVoidPokemon() {
         return new Set(nuzlockeObject.knownVoids);
+    }
+
+    get enabled() {
+        return Config.nuzlocke.enabled;
     }
 
     // used for when starting a new game from the SoulLink Manager

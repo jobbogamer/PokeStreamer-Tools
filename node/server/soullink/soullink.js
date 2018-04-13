@@ -121,7 +121,7 @@ class SoulLink extends EventEmitter {
         fs.writeFileSync(SoulLinkFile, JSON.stringify(data, null, 2));
         this._links = new Map();
         this._unlinkedPartnerPokemon = new Set();
-        if (this.linkingMethod === 'discord') {
+        if (this.discordLinking) {
             DC.send(new Message.NewGame());
         }
     }
@@ -130,7 +130,7 @@ class SoulLink extends EventEmitter {
         this._links.set(pokemon.pid, null);
         this._writeFile();
 
-        if (this.linkingMethod === 'discord') {
+        if (this.discordLinking) {
             DC.send(new Message.UpdatePokemon(pokemon));
         }
     }
@@ -240,10 +240,17 @@ class SoulLink extends EventEmitter {
     }
 
     async sendPokemon(pid) {
-        return DC.send(new Message.UpdatePokemon(PM.knownPokemon[pid]));
+        if (this.discordLinking) {
+            return DC.send(new Message.UpdatePokemon(PM.knownPokemon[pid]));
+        }
     }
 
     async _requestPokemon(pid) {
+        if (this.manualLinking) {
+            console.error('Attempted to request pokemon when manual linking.');
+            return null;
+        }
+
         DC.send(new Message.RequestPokemon(pid));
         let msg = await DC.waitForMessage('update-pokemon', msg => msg.pokemon.pid === pid, 2000);
         return Pokemon.fromDiscordJSON(msg.pokemon);
