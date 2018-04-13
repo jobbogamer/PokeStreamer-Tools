@@ -35,8 +35,7 @@ function genConfig(env, options) {
     let webpackConfig = {
         entry: {
             index: addDevServer('./client/slot-display/index'),
-            // pokemonIcons: './client/pokemon-icons',
-            soullink: addDevServer('./client/soullink-manager/index'),
+            dashboard: addDevServer('./client/dashboard/index'),
             vendors: [ 'lodash' ],
         },
         
@@ -49,24 +48,7 @@ function genConfig(env, options) {
         },
         
         optimization: {
-            minimize: isProd && !isHot, // for some reason, hot replacement of SASS isn't working in development mode
-            // splitChunks: {
-            //     // chunks: 'all',
-            //     //     // name: true,
-            //     //     // reuseExistingChunks: true,
-            //     cacheGroups: {
-            //         //     //     default: false,
-            //         pokemonIcons: {
-            //             test: /pokemon-icons\.js$/,
-            //             name: 'pokemon-icons',
-            //             minChunks: Infinity,
-            //         },
-            //         vendor: {
-            //             name: 'vendors',
-            //             minChunks: Infinity,
-            //         }
-            //     }
-            // },
+            minimize: isProd,
         },
         
         resolve: {
@@ -184,9 +166,9 @@ function genConfig(env, options) {
             cache: true
         }),
         new HtmlWebpackPlugin({
-            template: '!!ejs-loader!./client/soulLink-manager/index.ejs',
-            filename: 'soullink/index.html',
-            chunks: ['soullink'],
+            template: '!!ejs-loader!./client/dashboard/index.ejs',
+            filename: 'dashboard/index.html',
+            chunks: ['dashboard'],
             inject: 'body',
             cache: true
         }),

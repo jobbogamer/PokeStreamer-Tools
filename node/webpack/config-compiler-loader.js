@@ -5,6 +5,11 @@ import compileConfig from '../common/configCompiler';
 export default function (source) {
     let baseConfig = json5.parse(source);
     let self = this;
+    if (source === 'config.json') {
+        this.addDependency(path.join(this.context, 'common/config.empty.json'));
+        this.addDependency(path.join(this.context, baseConfig.advancedConfig));
+    }
+    
     if (baseConfig.configOverride) {
         switch (baseConfig.configOverride.constructor) {
             case String:

@@ -35,9 +35,9 @@ class API extends EventEmitter {
         router.get('/reset', reset);
         router.post('/update', update);
 
-        if (SoulLink.enabled) {
-            // soul link manager
-            router.ws('/soulLink', getSoulLink);
+        if (Nuzlocke.enabled) {
+            // Nuzlocke/SoulLink manager
+            router.ws('/dashboard', getDashboard);
             
             // TODO
             // router.ws('/graveyard', getGraveyard);
@@ -335,8 +335,8 @@ function sendSlots(slotsToSend) {
     }
 }
 
-function getSoulLink(ws, req) {
-    console.debug('Setting up SoulLink WebSocket connection');
+function getDashboard(ws, req) {
+    console.debug('Setting up Dashboard WebSocket connection');
     ws.on('open', function () {
         console.info('Connection opened');
     });

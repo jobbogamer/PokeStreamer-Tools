@@ -5,7 +5,7 @@ const reconnectDelayInSeconds = 5;
 // Spaghetti code!
 function initWebSocket() {
     return new Promise((res, rej) => {
-        let ws = new WebSocket(`ws://${API_BASE_URL}/soulLink`);
+        let ws = new WebSocket(`ws://${API_BASE_URL}/dashboard`);
         setImmediate(() => {
             if (ws.readyState === 1) {
                 res(ws);

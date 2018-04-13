@@ -21,7 +21,8 @@
         "bottomElements": [],
         "leftElements": [],
         "rightElements": [],
-        "imageOverlayElements": []
+        "imageOverlayElements": [],
+        "soulLinkOverlayElements": [],
     },
     "nuzlocke": {
         "enabled": false,
