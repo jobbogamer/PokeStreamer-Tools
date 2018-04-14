@@ -67,7 +67,6 @@ function get_game_version(gen, game, subgame)
 end
 
 function send_request(request_body, generation, game_version)
-    print_debug("Generation" .. tostring(generation))
     print_debug("Sending server request to", api_host)
     local pretty_print = string.gsub(request_body, "\n", "\r\n"); 
     print_debug(pretty_print)

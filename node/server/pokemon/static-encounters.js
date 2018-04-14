@@ -34,14 +34,14 @@ function getStaticEncounterId(pokemon) {
         Gender: pokemon.isFemale ? 1 : 0,
     };
     
-    if (!Config.isRandomized) {
+    if (!Config.usingRandomizer) {
         criteria.species = pokemon.species;
     }
     
     for (let enc of getEncounters(pokemon.generation, pokemon.gameVersion)) {
         let found = true;
         for (let [c, v] of Object.entries(criteria)) {
-            if (!(c in enc)) {
+            if (!hasValue(enc[c])) {
                 // skip criteria for which the static encounter doesn't care 
                 // (e.g. if I don't know what the encounter type is for Togepi's Myster Egg and I set it to null)
                 continue;

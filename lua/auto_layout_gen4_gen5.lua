@@ -11,34 +11,15 @@ local game = 2
 -- 2 = Pearl, SoulSilver
 local subgame = 2
 
+-- FEATURE CURRENTLY DOESN'T WORK
 -- Set this to true if you and a partner are doing a SoulLink run (this will additionally access information in Bill's 
 -- 	  PC).  If you are using a version other than HeartGold/SoulSilver, see the note below.
-local run_soul_link = true
+-- local run_soul_link = true
 
 local print_debug_messages = false
-
--- Currently the memory address of Bill's PC are unknown for all versions but HeartGold/SoulSilver
--- This value is required for playing SoulLinked
--- If you would like to be able to detect what Pokemon are stored in boxes:
--- 	  • temporarily set this value to true
--- 	  • go to a PC and open up Bill's PC (don't yet deposit the pokemon)
--- 	  • run this script in DeSmuME
--- 	      • it will print out the first 0x40 bytes of the first member of your party
--- 	      • copy the value between the dashed lines
--- 	      • open up find_memory_address_gen4_gen5.lua in a text editor
--- 	      • paste the value in the "needle = " line (overwriting the current numeric values) and save the file
---        • set print_first_pokemon_bytes back to false in auto_layout_gen4_gen5.lua
--- 	  • stop running this script in DeSmuMe
--- 	  • deposit your first pokemon into Bill's PC in Box 1
--- 	  • open and run find_memory_address_gen4_gen5.lua in DeSmuMe
--- 	  • copy the outputed value (it should look like 0x02XXXXXX)
--- 	  • open auto_layout_gen4_gen5_tables.lua
--- 	  • replace the proper "nil" value with the value outputed from the script and save
--- Now you should be able to run auto_layout_gen4_gen5.lua  
--- If you want to help other players out, post the value (and which game you're using) in the 
---    dxdt#pokemon-streamer-tools Discord channel (https://discord.gg/FKDntWR), and I will add it to the github repo
-local print_first_pokemon_bytes = false
 -----------
+
+local print_first_pokemon_bytes = false
 
 local print_debug = require("print_debug")
 print_debug = print_debug(print_debug_messages)
@@ -76,7 +57,6 @@ for i = 1, 18 do
 	last_boxes[i] = nil
 end
 
-local need_to_read_boxes = run_soul_link
 local last_box_check_time = 0
 local check_box_frequency = 1 -- in seconds
 local box_id_to_check = 1
@@ -417,73 +397,72 @@ function do_print_first_pokemon_bytes(pidAddr)
 	print("---------------------------")	
 end
 
-function inspect_and_send_boxes()
-	need_to_read_boxes = false
-	local cur_boxes = {}
-	local box_offset = bills_pc_address[game][subgame]
-	local last_pkmn, cur_pkmn, should_update, words
-	local end_box_id
+-- function inspect_and_send_boxes()
+-- 	local cur_boxes = {}
+-- 	local box_offset = bills_pc_address[game][subgame]
+-- 	local last_pkmn, cur_pkmn, should_update, words
+-- 	local end_box_id
 
-	if first_run then
-		-- the first time the script is run, read all boxes
-		end_box_id = 18
-	else
-		end_box_id = box_id_to_check + boxes_to_check_per_run - 1
-		if end_box_id > 18 then
-			-- it's easier to just not check the max number of boxes if boxes_to_check_per_run doesn't divide 18
-			end_box_id = 18
-		end
-	end
+-- 	if first_run then
+-- 		-- the first time the script is run, read all boxes
+-- 		end_box_id = 18
+-- 	else
+-- 		end_box_id = box_id_to_check + boxes_to_check_per_run - 1
+-- 		if end_box_id > 18 then
+-- 			-- it's easier to just not check the max number of boxes if boxes_to_check_per_run doesn't divide 18
+-- 			end_box_id = 18
+-- 		end
+-- 	end
 
-	for box = box_id_to_check, end_box_id do
-		cur_boxes[box] = {}
-		for box_slot = 1, 30 do
-			words = read_pokemon_words(box_offset + (box - 1) * box_size + (box_slot - 1) * box_slot_size, Pokemon.word_size_in_box)
-			if last_boxes[box] == nil or Pokemon.get_words_string(words) ~= last_boxes[box].data_str then
-				cur_pkmn = Pokemon.parse_gen4_gen5(words, true, gen)
+-- 	for box = box_id_to_check, end_box_id do
+-- 		cur_boxes[box] = {}
+-- 		for box_slot = 1, 30 do
+-- 			words = read_pokemon_words(box_offset + (box - 1) * box_size + (box_slot - 1) * box_slot_size, Pokemon.word_size_in_box)
+-- 			if last_boxes[box] == nil or Pokemon.get_words_string(words) ~= last_boxes[box].data_str then
+-- 				cur_pkmn = Pokemon.parse_gen4_gen5(words, true, gen)
 				
-				if last_boxes[box] == nil then
-					cur_boxes[box][box_slot] = cur_pkmn or Pokemon()
-					if cur_pkmn ~= nil then
-						delta_boxes[#delta_boxes + 1] = {
-							box_id = box,
-							slot_id = box_slot,
-							pokemon = cur_pkmn
-						}
-					end
-				else
-					last_pkmn = last_boxes[box][box_slot]
-					if cur_pkmn ~= nil and cur_pkmn ~= last_pkmn then
-						cur_boxes[box][box_slot] = cur_pkmn
-						delta_boxes[#delta_boxes + 1] = {
-							box_id = box,
-							slot_id = box_slot,
-							pokemon = cur_pkmn
-						}
-					else
-						cur_boxes[box][box_slot] = last_pkmn
-					end
-				end
-			end
-		end
+-- 				if last_boxes[box] == nil then
+-- 					cur_boxes[box][box_slot] = cur_pkmn or Pokemon()
+-- 					if cur_pkmn ~= nil then
+-- 						delta_boxes[#delta_boxes + 1] = {
+-- 							box_id = box,
+-- 							slot_id = box_slot,
+-- 							pokemon = cur_pkmn
+-- 						}
+-- 					end
+-- 				else
+-- 					last_pkmn = last_boxes[box][box_slot]
+-- 					if cur_pkmn ~= nil and cur_pkmn ~= last_pkmn then
+-- 						cur_boxes[box][box_slot] = cur_pkmn
+-- 						delta_boxes[#delta_boxes + 1] = {
+-- 							box_id = box,
+-- 							slot_id = box_slot,
+-- 							pokemon = cur_pkmn
+-- 						}
+-- 					else
+-- 						cur_boxes[box][box_slot] = last_pkmn
+-- 					end
+-- 				end
+-- 			end
+-- 		end
 
-		last_boxes[box] = cur_boxes[box]
-	end
+-- 		last_boxes[box] = cur_boxes[box]
+-- 	end
 
-	if #delta_boxes > 0 then
-		if not send_slots(delta_boxes, gen, game, subgame) then
-			print("ERROR: Failed to connect to server.  Check that the server is running.  Skipping box data upload.")
-			return false
-		end
-		delta_boxes = {}
-	end
+-- 	if #delta_boxes > 0 then
+-- 		if not send_slots(delta_boxes, gen, game, subgame) then
+-- 			print("ERROR: Failed to connect to server.  Check that the server is running.  Skipping box data upload.")
+-- 			return false
+-- 		end
+-- 		delta_boxes = {}
+-- 	end
 
-	box_id_to_check = box_id_to_check + boxes_to_check_per_run
-	if box_id_to_check > 18 then
-		box_id_to_check = box_id_to_check - 18
-	end
-	return true
-end
+-- 	box_id_to_check = box_id_to_check + boxes_to_check_per_run
+-- 	if box_id_to_check > 18 then
+-- 		box_id_to_check = box_id_to_check - 18
+-- 	end
+-- 	return true
+-- end
 
 -- Uncalled function for the time being (and probably forever if I'm being honest)
 function kill_pokemon(pidAddr)
@@ -528,16 +507,19 @@ local printed_slot_1 = false
 function fn()
 	current_time = os.clock() -- use clock() rather than time() so we can check more than once per second
 
-	if run_soul_link and current_time - last_box_check_time > check_box_frequency then
-		gen = getGen()
-		if not inspect_and_send_boxes() then
-			-- prevent further execution to avoid killing the game
-			last_box_check_time = current_time
-			return
-		end
+	-- This feature doesn't currently work as apparently Bill's PC's address moves around, game to game.
+	-- Yay Nintendo.
+	--
+	-- if run_soul_link and current_time - last_box_check_time > check_box_frequency then
+	-- 	gen = getGen()
+	-- 	if not inspect_and_send_boxes() then
+	-- 		-- prevent further execution to avoid killing the game
+	-- 		last_box_check_time = current_time
+	-- 		return
+	-- 	end
 
-		last_box_check_time = current_time
-	end
+	-- 	last_box_check_time = current_time
+	-- end
 
 	if current_time - last_check > .5 then
 		gen = getGen()
@@ -548,7 +530,7 @@ function fn()
 			submode = q
 			pidAddr = getPidAddr()
 
-			if print_first_pokemon_bytes then do_print_first_pokemon_bytes(pidAddr) end
+			if first_run and print_first_pokemon_bytes and q == 1 then do_print_first_pokemon_bytes(pidAddr) end
 
 			local words = read_pokemon_words(pidAddr, Pokemon.word_size_in_party)
 			
