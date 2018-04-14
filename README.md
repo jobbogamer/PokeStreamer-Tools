@@ -15,7 +15,7 @@ An issue with the original script is that every time a pokémon changes slots, i
 
 This code uses a [Node.js](http://nodejs.org) webserver to host the images.  The Lua script, in turn, POSTs its updates to the server, and the server sends the updates to the webpage at http://stream.pokemon-soul.link:8081/.
 
-For SoulLink runs, the server also provides an SoulLink Manager--at [http://stream.pokemon-soul.link:8081/soullink](http://stream.pokemon-soul.link:8081/soullink)--for setting links between your pokémon and your partner's.  If you both have Discord, the majority of that linking can be done automatically.
+For Nuzlocke and SoulLink runs, the server also provides dashboard--at [http://stream.pokemon-soul.link:8081/dashboard](http://stream.pokemon-soul.link:8081/dashboard)--for setting links between your pokémon and your partner's.  If you both have Discord, the majority of that linking can be done automatically.
 
 ### Server Requirements
 
@@ -138,7 +138,7 @@ If you are doing a SoulLink run with a partner, you can display your partner's p
 }
 ```
 
-You must set a `linking` method in config ([covered a little later](#setting-the-linking-method)), and then once you've built and started the server, you can open the SoulLink Manager at http://stream.pokemon-soul.link:8081/soullink to manage links between pokémon.
+You must set a `linking` method in config ([covered a little later](#setting-the-linking-method)), and then once you've built and started the server, you can open the Dashboard at http://stream.pokemon-soul.link:8081/dashboard to manage links between pokémon.
 
 **Currently SoulLink is only supported for HeartGold and SoulSilver.**
 <details><summary>Adding support for other versions</summary>
@@ -153,11 +153,11 @@ Open `/lua/auto_layout_gen4_gen5.lua` and set `run_soul_link` to `true`.
 
 ### Setting the Linking method
 
-Currently, there are two ways to handle linking: [`manual`](#manual-linking) and [`discord`](#discord-linking).  Manual linking is, as the name implies, done manually via the SoulLink Manager (http://stream.pokemon-soul.link:8081/soullink).
+Currently, there are two ways to handle linking: [`manual`](#manual-linking) and [`discord`](#discord-linking).  Manual linking is, as the name implies, done manually via the Dashboard (http://stream.pokemon-soul.link:8081/dashboard).
 
 Using the discord method, you and your partner can each set up a Discord bot, and those bots will send data back and forth to handle (mostly) automatic linking, updating of species (such as when the link evolves), and automatic detection of when your partner's pokémon die.  Discord linking also grants additional information to be displayed in the Slot Display, such as the Pokémon's nickname and level.
 
-**NOTE**: The way SoulLink data is stored, changing the linking method requires resetting your links, so you will need re-apply those links via the SoulLink Manager.
+**NOTE**: The way SoulLink data is stored, changing the linking method requires resetting your links, so you will need re-apply those links via the Dashboard.
 
 #### Manual Linking
 
@@ -181,7 +181,7 @@ If `method` is set to `manual`, the `discord` section is ignored--no need to del
 
 #### Discord Linking
 
-You can use [Discord](https://discordapp.com/) to transfer SoulLink data between you and your partner.  For the most part, the server can then handle linking pokémon automatically by looking at whether the pokémon is a known static encounter and the location in which it was caught.  However, there are a couple exceptions, so you will still need to have http://stream.pokemon-soul.link:8081/soullink open for linking/unlinking when an automatic link is not possible or incorrect.
+You can use [Discord](https://discordapp.com/) to transfer SoulLink data between you and your partner.  For the most part, the server can then handle linking pokémon automatically by looking at whether the pokémon is a known static encounter and the location in which it was caught.  However, there are a couple exceptions, so you will still need to have http://stream.pokemon-soul.link:8081/dashboard open for linking/unlinking when an automatic link is not possible or incorrect.
 
 <details><summary>Cases that automatic linking won't work</summary>
 
