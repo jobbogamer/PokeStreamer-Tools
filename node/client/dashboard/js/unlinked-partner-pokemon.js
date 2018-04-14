@@ -12,6 +12,9 @@ class UnlinkedPartnerPokemon extends EventEmitter {
         if (Config.soulLink.linking.method === 'discord') {
             ws.on('message', this._handleMessage.bind(this));
         }
+
+        // assume that we'll have a max of 100 pokemon in a SoulLink run, which conceivably means 100 unlinked rows
+        this.setMaxListeners(100);
     }
 
     get pokemon() {

@@ -1,12 +1,12 @@
 <tr id="<%- pokemon.pid %>">
     <td>
-        <%= require('./pokemon-cell.ejs')({ pokemon }) %>
+        <%= require('../pokemon-cell.ejs')({ pokemon }) %>
     </td>
     <td class="location"><div><%- pokemon.locationMetName %></div></td>
-    <%= require('./traits-cell.ejs')({ pokemon }) %>
+    <%= require('../traits-cell.ejs')({ pokemon }) %>
     <% if (linkedPokemon) { %>
         <td>
-            <%= require('./pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
+            <%= require('../pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
         </td>
         <td class="width-fixed"></td>
     <% } else { %>

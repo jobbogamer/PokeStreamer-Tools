@@ -341,7 +341,7 @@ function getDashboard(ws, req) {
         console.info('Connection opened');
     });
 
-    ws.on('message', function (e) {
+    ws.on('message', async function (e) {
         try {
             let msg = JSON.parse(e);
             console.debug(`Received ${msg.messageType} message from client`);
@@ -382,6 +382,13 @@ function getDashboard(ws, req) {
                     sendSLMessages({ messageType: 'new-game' });
                     break;
 
+                case 'set-static-pokemon':
+                    let pokemon = PM.knownPokemon[msg.pid].clone();
+                    pokemon.static = msg.setStatic;
+                    await PM.registerPokemon(pokemon);
+                    sendSLMessages(msg);
+                    break;
+
                 default:
                     console.error(`Unknown message type sent from SoulLink Manager: ${msg.messageType}`);
                     break;
@@ -407,7 +414,7 @@ function getDashboard(ws, req) {
         }));
     }
 
-    sendSLConnAllPokemon(ws);
+    sendSLConnAllPokemon(ws, true);
 }
 
 function sendSLConnAllPokemon(ws, isRefresh) {

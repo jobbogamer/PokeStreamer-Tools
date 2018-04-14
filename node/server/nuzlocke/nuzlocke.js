@@ -14,6 +14,10 @@ class Nuzlocke extends EventEmitter {
         return new Set(nuzlockeObject.knownVoids);
     }
 
+    get knownStaticPokemon() {
+        return new Map(nuzlockeObject.knownStatic);
+    }
+
     get enabled() {
         return Config.nuzlocke.enabled;
     }
@@ -72,6 +76,17 @@ class Nuzlocke extends EventEmitter {
                 this.emit('revivedPokemon', pid);
             }
         }
+    }
+
+    setStaticPokemon(pid, staticId) {
+        pid = parseInt(pid);
+        if (staticId === -2 || staticId === 9999) {
+            nuzlockeObject.knownStatic.set(pid, staticId);
+        } else {
+            nuzlockeObject.knownStatic.delete(pid);
+        }
+
+        NuzlockeFileManager.saveFile(nuzlockeObject);
     }
 }
 

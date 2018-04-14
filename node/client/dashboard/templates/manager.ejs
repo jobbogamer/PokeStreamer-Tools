@@ -1,9 +1,12 @@
 <% let placeholder = require('./placeholder-row.ejs'); %>
+<% const tableColumns = SOULLINK_ENABLED ? 6 : 4; %>
 <div class="manager">
     <div class="container">
         <div class="card bg-white d-block">
             <div class="card-header d-flex justify-content-between">
-                <h3 class="card-title">Soul Links</h3>
+                <h3 class="card-title">
+                    <%- SOULLINK_ENABLED ? 'Soul Links' : 'Nuzlocke' %>
+                </h3>
                 <div class="header-icons d-flex flex-row">
                     <% if (config.soulLink.linking.method === 'discord') { %>
                         <div class="discord-indicator uninitialized unknown d-inline-block rounded p2 mx-2 my-auto">
@@ -16,25 +19,36 @@
                 </div>
             </div>
             <table id="pokemonTable" class="table">
+                <% if (SOULLINK_ENABLED) { %>
+                    <thead>
+                        <tr class="bg-light">
+                            <th colspan="<%- tableColumns %>">Unlinked Pokémon</th>
+                        </tr>
+                    </thead>
+                    <tbody class="unlinked-pokemon">
+                        <%= placeholder({ text: 'no pending links'}) %>
+                    </tbody>
+                    <thead>
+                        <tr class="bg-light">
+                            <th colspan="<%- tableColumns %>">Linked Pokémon</th>
+                        </tr>
+                    </thead>
+                    <tbody class="linked-pokemon">
+                        <%= placeholder({ text: 'no linked pokémon' }) %>
+                    </tbody>
+                <% } else { %>
+                    <thead>
+                        <tr class="bg-light">
+                            <th colspan="<%- tableColumns %>">Pokémon</th>
+                        </tr>
+                    </thead>
+                    <tbody class="living-pokemon">
+                        <%= placeholder({ text: 'no pokémon' }) %>
+                    </tbody>
+                <% } %>
                 <thead>
                     <tr class="bg-light">
-                        <th colspan="6">Unlinked Pokémon</th>
-                    </tr>
-                </thead>
-                <tbody class="unlinked-pokemon">
-                    <%= placeholder({ text: 'no pending links'}) %>
-                </tbody>
-                <thead>
-                    <tr class="bg-light">
-                        <th colspan="6">Linked Pokémon</th>
-                    </tr>
-                </thead>
-                <tbody class="linked-pokemon">
-                    <%= placeholder({ text: 'no linked pokémon' }) %>
-                </tbody>
-                <thead>
-                    <tr class="bg-light">
-                        <th colspan="6" id="graveyardheader">
+                        <th colspan="<%- tableColumns %>" id="graveyardheader">
                             <%- // just to make people question their sanity a little between builds
                                 Math.random() < .5 ? 'Cemetery' : 'Graveyard' 
                             %>

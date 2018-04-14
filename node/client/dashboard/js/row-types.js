@@ -1,10 +1,13 @@
 // Pokemon Row ejs wrapper
-import GraveyardRow from '../templates/graveyard-row.ejs';
-import LinkedRow from '../templates/linked-pokemon-row.ejs';
-import UnlinkedRow from '../templates/unlinked-pokemon-row.ejs';
-
-export {
-    UnlinkedRow,
-    LinkedRow,
-    GraveyardRow,
-};
+if (SOULLINK_ENABLED) {
+    module.exports = {
+        GraveyardRow: require('../templates/soullink-rows/graveyard-row.ejs'),
+        LinkedRow: require('../templates/soullink-rows/linked-pokemon-row.ejs'),
+        UnlinkedRow: require('../templates/soullink-rows/unlinked-pokemon-row.ejs'),
+    };
+} else {
+    module.exports = {
+        LivingRow: require('../templates/nuzlocke-rows/living-row.ejs'),
+        GraveyardRow: require('../templates/nuzlocke-rows/graveyard-row.ejs'),
+    };
+}

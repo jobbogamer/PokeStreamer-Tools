@@ -5,7 +5,6 @@ import Pokedex from '../../common/pokedex';
 import PokemonLocations from './pokemon-locations';
 import PokemonImages from './pokemon-images';
 import PM from './pokemon-manager';
-import Nuzlocke from '../nuzlocke/nuzlocke';
 import SoulLink from '../soullink/soullink';
 import Config from '../config';
 import getStaticEncounterId from './static-encounters';
@@ -103,6 +102,14 @@ class Pokemon {
             m: this.locationMet,
             x: this.staticId && this.staticId !== -1 ? this.staticId : undefined,
         };
+    }
+
+    set static(isStatic) {
+        if (isStatic) {
+            this.staticId = 9999;
+        } else {
+            this.staticId = -2;
+        }
     }
     
     toJSON() {

@@ -1,6 +1,6 @@
 .traits {
   text-align: center;
-
+  
   &:not(.static), &.static.maybe {
     img.static-icon {
       display: none;
@@ -22,6 +22,12 @@
   &.shiny, &.static, &.static.maybe {
     img.boring-icon {
       display: none;
+    }
+  }
+  
+  .dropdown .dropdown-toggle {
+    &::after {
+      vertical-align: unset !important;
     }
   }
 }

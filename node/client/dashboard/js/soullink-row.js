@@ -1,13 +1,15 @@
 import ws from './websocket';
 import config from 'config.json';
 
+import ManagerRow from './manager-row';
+import { LinkedRow, GraveyardRow, UnlinkedRow } from './row-types';
+
 import LinkDropdown from '../templates/link-dropdown.ejs';
 import PokemonDropdownOption from '../templates/pokemon-dropdown-option.ejs';
 import PokemonCell from '../templates/pokemon-cell.ejs';
 import TooltipTemplate from '../templates/tooltip-template.ejs';
 
 import { useReviveButton } from './graveyard';
-import { LinkedRow, GraveyardRow, UnlinkedRow } from './row-types';
 import PokedexDropdown from './pokedex-dropdown';
 import Pokedex from 'pokedex';
 import Icons from '../../pokemon-icons';
@@ -36,23 +38,19 @@ function createManualLinkedPokemon(pokemon) {
     return lp;
 }
 
-class SoulLinkRow {
+class SoulLinkRow extends ManagerRow {
     constructor(msg) {
-        this.setErrorState = this.setErrorState.bind(this);
-        this.clearErrorState = this.clearErrorState.bind(this);
-        this.onMessage = this.handleMessage.bind(this);
+        super(msg);
+
+        if (!SOULLINK_ENABLED) {
+            throw new Error('Attempt to create a SoulLink row when SoulLink is disabled');
+        }
+
         this._addUnlinkedPokemonOption = this._addUnlinkedPokemonOption.bind(this);
         this._updateUnlinkedPokemonOption = this._updateUnlinkedPokemonOption.bind(this);
         this._removeUnlinkedPokemonOption = this._removeUnlinkedPokemonOption.bind(this);
 
-        let pokemon = msg.pokemon;
-
-        pokemon.static = pokemon.staticId > 0 ? 'static' : '';
-        pokemon.icon = Icons.getIcon(pokemon);
-
-        this.pokemon = pokemon;
-        this.pid = pokemon.pid;
-
+        let pokemon = this.pokemon;
         this.linkedPokemon = pokemon.link || null;
 
         if (MANUAL_LINKING) {
@@ -63,35 +61,34 @@ class SoulLinkRow {
     }
 
     addRow() {
-        this.removeRow();
-
         if (!MANUAL_LINKING && this.linkedPokemon) {
             this.linkedPokemon.icon = Icons.getIcon(this.linkedPokemon);
         }
-        
+
+        let $row, $container;
         if (this.pokemon.dead || this.pokemon.isVoid) {
-            this.addGraveyardRow();
+            $row = this.createGraveyardRow();
+            $container = $graveyard;
         } else if (this.linkedPokemon) {
-            this.addLinkedRow();
+            $row = this.createLinkedRow();
+            $container = $linked;
         } else {
-            this.addUnlinkedRow();
+            $row = this.createUnlinkedRow();
+            $container = $unlinked;
         }
 
-        this.defaultRowClasses = this.$row.attr('class');
-
-        setTimeout(() => this.$row.addClass('show').find('.traits .icon').tooltip(), 20);
+        super.addRow($container, $row);
     }
 
-    addLinkedRow() {
-        let $row = this.$row = $(LinkedRow(this));
-        $linked.prepend($row);
+    createLinkedRow() {
+        let $row = $(LinkedRow(this));
         $row.find('button.btn-unlink').click(() => {
-            this.sendMessage('unlink');
+            this.sendSoulLinkMessage('unlink');
         });
 
         if (MANUAL_LINKING) {
-            $row.find('div.dropdown').append(PokedexDropdown(this.pokemon, this.linkedPokemon.species));
-            let $select = $row.find('div.dropdown select'),
+            $row.find('div.link-dropdown').append(PokedexDropdown(this.pokemon, this.linkedPokemon.species));
+            let $select = $row.find('div.link-dropdown select'),
                 $updateBtn = $row.find('button.btn-update-link'),
                 $linkDeadBtn = $row.find('button.btn-link-dead');
 
@@ -104,28 +101,30 @@ class SoulLinkRow {
             });
 
             $updateBtn.click(() => {
-                this.sendMessage('update-link', parseInt($select.val()));
+                this.sendSoulLinkMessage('update-link', parseInt($select.val()));
             });
 
             $linkDeadBtn.click(() => {
-                this.sendMessage('kill-pokemon');
+                this.sendSoulLinkMessage('kill-pokemon');
             });
         }
+
+        return $row;
     }
 
-    addUnlinkedRow() {
-        let $row = this.$row = $(UnlinkedRow(this));
+    createUnlinkedRow() {
+        let $row = $(UnlinkedRow(this));
 
         if (MANUAL_LINKING) {
-            $row.find('div.dropdown').append(PokedexDropdown(this.pokemon));            
+            $row.find('div.link-dropdown').append(PokedexDropdown(this.pokemon));            
         } else {
-            $row.find('div.dropdown').append(LinkDropdown({ Icons, Pokedex, unlinkedPartnerPokemon: UnlinkedPartnerPokemon.pokemon }));
+            $row.find('div.link-dropdown').append(LinkDropdown({ Icons, Pokedex, unlinkedPartnerPokemon: UnlinkedPartnerPokemon.pokemon }));
         }
 
         let $linkBtn = $row.find('button.btn-add-link'),
             $voidBtn = $row.find('button.btn-void'),
-            $select = $row.find('div.dropdown select'),
-            $icon = $row.find('div.dropdown img');
+            $select = $row.find('div.link-dropdown select'),
+            $icon = $row.find('div.link-dropdown img');
 
         if (!MANUAL_LINKING) {
             if ($select.children('option').length === 1) {
@@ -149,40 +148,35 @@ class SoulLinkRow {
             UnlinkedPartnerPokemon.on('remove', this._removeUnlinkedPokemonOption);
         }
 
-        $unlinked.prepend($row);
         $linkBtn.click(() => {
             // val with either be the species or the PID depending on whether the linking is manual or automatic
-            this.sendMessage('update-link', parseInt($select.val()));
+            this.sendSoulLinkMessage('update-link', parseInt($select.val()));
         });
 
         $voidBtn.click(() => {
-            this.sendMessage('void-pokemon');
+            this.sendSoulLinkMessage('void-pokemon');
         });
+
+        return $row;
     }
 
-    addGraveyardRow() {
-        let $row = this.$row = $(GraveyardRow(Object.assign({ useReviveButton }, this))),
+    createGraveyardRow() {
+        let $row = $(GraveyardRow(Object.assign({ useReviveButton }, this))),
             $reviveBtn = $row.find('button.btn-revive');
-
-        $graveyard.prepend($row);
             
         $reviveBtn.click(() => {
-            this.sendMessage('revive-pokemon');
+            this.sendSoulLinkMessage('revive-pokemon');
         });
+
+        return $row;
     }
 
     removeRow() {
-        if (this.$row) {
-            let $oldRow = this.$row.attr('id', '').removeClass('show');
-            this.$row = null;
-            
-            if (!MANUAL_LINKING && $oldRow.closest('tbody').is('.unlinked-pokemon')) {
-                UnlinkedPartnerPokemon.removeListener('add', this._addUnlinkedPokemonOption);
-                UnlinkedPartnerPokemon.removeListener('update', this._updateUnlinkedPokemonOption);
-                UnlinkedPartnerPokemon.removeListener('remove', this._removeUnlinkedPokemonOption);
-            }
-
-            setTimeout(() => $oldRow.remove(), 500);
+        let $oldRow = super.removeRow();
+        if (!MANUAL_LINKING && $oldRow && $oldRow.closest('tbody').is('.unlinked-pokemon')) {
+            UnlinkedPartnerPokemon.removeListener('add', this._addUnlinkedPokemonOption);
+            UnlinkedPartnerPokemon.removeListener('update', this._updateUnlinkedPokemonOption);
+            UnlinkedPartnerPokemon.removeListener('remove', this._removeUnlinkedPokemonOption);
         }
     }
 
@@ -212,7 +206,7 @@ class SoulLinkRow {
                     this.linkedPokemon = createManualLinkedPokemon(this.pokemon);
                     this.addRow();
                 } else if (this.linkedPokemon.species !== link) {
-                    this.$row.find('td.linked-pokemon > div.dropdown select').val(link).change();
+                    this.$row.find('td.linked-pokemon > div.link-dropdown select').val(link).change();
                     this.linkedPokemon.species = link;
                 }
             } else {
@@ -235,13 +229,9 @@ class SoulLinkRow {
     }
 
     handleMessage(msg) {
-        let pid = parseInt(msg.pid);
-        if (!pid || pid !== this.pid) {
-            console.error(`Row ${this.pid} received mismatched message type '${msg.messageType}' from soullink-manager for pid ${pid}`);
+        if (super.handleMessage(msg)) {
             return;
         }
-
-        this.clearErrorState();
 
         switch (msg.messageType) {
             case 'update-link': 
@@ -274,73 +264,38 @@ class SoulLinkRow {
 
                 break;
 
-            case 'error':
-                this.setErrorState(msg.errorMessage);
-                break;
-
             default:
                 console.error(`Received unknown message type from server: ${msg.messageType}`);
                 return;
         }
     }
 
-    sendMessage(messageType, ...args) {
-        this.$row.removeClass('bg-danger text-white').addClass(this.defaultRowClasses).find('button, select').disable();
-        this.reenableTimeout = setTimeout(() => this.setErrorState(`There was no response from the server.`), 5000);
+    sendSoulLinkMessage(messageType, ...args) {
         let msg = {
             messageType,
-            pid: parseInt(this.pid)
         };
 
         switch (messageType) {
             case 'update-link':
                 msg.link = args[0];
-                ws.send(JSON.stringify(msg));
                 break;
 
             case 'kill-pokemon':
             case 'unlink':
             case 'revive-pokemon':
             case 'void-pokemon':
-                ws.send(JSON.stringify(msg));
                 break;
 
             default:
                 this.setErrorState(`Unknown message type: ${messageType}`);
-                break;
-        }
-    }
-
-    setErrorState(message) {
-        this.$row.removeClass(this.defaultRowClasses);
-        this.$row.addClass('bg-danger text-white').find('button, select').enable().filter('select').change();
-        if (message) {
-            console.error(message);
-            this.$row.tooltip({
-                title: message,
-                container: 'body',
-                template: TooltipTemplate({ variant: 'danger' }),
-            });
-        } else {
-            this.$row.tooltip('dispose');
+                return;
         }
 
-        clearTimeout(this.reenableTimeout);
-    }
-
-    clearErrorState() {
-        this.$row.removeClass('bg-danger text-white').addClass(this.defaultRowClasses)
-            .tooltip('dispose').find('button, select').enable().filter('select').change();
-        clearTimeout(this.reenableTimeout);
-    }
-
-    dispose() {
-        this.removeRow();
-        ws.removeListener('message', this.handleMessage);
+        super.sendMessage(msg);
     }
 
     _addUnlinkedPokemonOption(ulp) {
-        this.$row.find('.dropdown select')
+        this.$row.find('.link-dropdown select')
             .not(`:has(option[value="${ulp.pid}"])`)
             .prepend(PokemonDropdownOption({ Icons, Pokedex, pokemon: ulp }))
             .change()
@@ -350,14 +305,14 @@ class SoulLinkRow {
     }
 
     _updateUnlinkedPokemonOption(ulp)  {
-        this.$row.find(`.dropdown select option[value="${ulp.pid}"]`)
+        this.$row.find(`.link-dropdown select option[value="${ulp.pid}"]`)
             .attr('data-img', Icons[Pokedex.FileNames[ulp.species]][ulp.isShiny ? 'shiny' : 'regular'])
             .text(`${ulp.speciesName}${ulp.nickname ? ' / ' + ulp.nickname : ''}`)
             .change();
     }
 
     _removeUnlinkedPokemonOption(pid) {
-        let $select = this.$row.find('.dropdown select').find(`option[value="${pid}"]`).remove().end();
+        let $select = this.$row.find('.link-dropdown select').find(`option[value="${pid}"]`).remove().end();
         if ($select.children('option').length === 1) {
             $select.val(-1).addClass('no-links');
         }

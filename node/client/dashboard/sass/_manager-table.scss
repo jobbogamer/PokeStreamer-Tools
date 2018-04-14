@@ -10,6 +10,7 @@
       > td > div {
         height: 2.5em;
         opacity: 1;
+        white-space: nowrap;
 
         &.text-void {
           margin-left: 40px;
@@ -37,7 +38,7 @@
         }
 
         &.width-fixed {
-          width: 180px;
+          width: 160px;
         }
       }
       

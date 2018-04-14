@@ -12,6 +12,25 @@ $(document).on('show.bs.modal', '.modal', function (e) {
     });
 });
 
+// allow dropdowns in 'overflow: hidden' containers to have visible menus
+$('body').on('show.bs.dropdown', '.dropdown', function () {
+    let $dd = $(this),
+        $ddm = $dd.find('.dropdown-menu');
+    $('body').append($ddm.css({
+        position: 'absolute',
+        left: $ddm.offset().left,
+        top: $ddm.offset().top
+    }));
+
+    $dd.one('hidden.bs.dropdown', function () {
+        $dd.append($ddm.detach().css({
+            position: false,
+            left: false,
+            top: false
+        }));
+    });
+});
+
 export default function () {
     setInterval(() => $('#graveyardheader').text((_, t) => getGraveyardName(t)), 5 * 60 * 1000);
 

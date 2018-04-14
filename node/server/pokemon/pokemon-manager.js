@@ -37,6 +37,10 @@ class PokemonManager {
                 await SoulLink.addPokemon(pokemon);
             }
 
+            if (Nuzlocke.knownStaticPokemon.has(pid)) {
+                pokemon.staticId = Nuzlocke.knownStaticPokemon.get(pid);
+            }
+
             if (SoulLink.autoLinking) {
                 let soulLinkMatch = this._findSoulLinkMatch(pokemon, knownSLPokemon);
                 if (soulLinkMatch) {
@@ -47,6 +51,10 @@ class PokemonManager {
         } else {
             pokemon.previouslyKnown = knownPokemon[pid];
             pokemon.linkPid = SoulLink.Links.get(pid);
+
+            if ((pokemon.staticId === -2 || pokemon.staticId === 9999) && pokemon.previouslyKnown.staticId !== pokemon.staticId) {
+                Nuzlocke.setStaticPokemon(pid, pokemon.staticId);
+            }
             
             // prevent memory bloat
             delete pokemon.previouslyKnown.previouslyKnown;
@@ -157,7 +165,7 @@ class PokemonManager {
     }
 
     _findSoulLinkMatch(newPokemon, setToSearch) {
-        if (newPokemon.isShiny && !newPokemon.staticId) {
+        if (newPokemon.isShiny && newPokemon.staticId < 0) {
             return null;
         }
 
@@ -166,7 +174,12 @@ class PokemonManager {
         }
 
         let predicate;
-        if (newPokemon.staticId) {
+        if (newPokemon.staticId > 0) {
+            if (newPokemon.staticId === 9999) {
+                // don't link pokemon that are manually marked static
+                return null;
+            }
+
             predicate = p => p.staticId === newPokemon.staticId;
         } else {
             predicate = p => !p.staticId && p.locationMet === newPokemon.locationMet;

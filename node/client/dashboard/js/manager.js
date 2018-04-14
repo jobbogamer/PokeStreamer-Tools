@@ -5,28 +5,18 @@ import './discord-connection-monitor';
 import newGameModal from './new-game-modal';
 import ws from './websocket';
 import SoulLinkRow from './soullink-row';
-
-// let doAutoLink = JSON.parse(Cookies.get('autolink') || true);
-// if (doAutoLink === undefined) {
-//     doAutoLink = true;
-// }
-
-// if (!MANUAL_LINKING) {
-//     let $autolink = $('input#autoLink');
-//     $autolink.prop('checked', doAutoLink);
-//     $autolink.on('change', function () {
-//         Cookies.set('autolink', this.checked);
-//     });
-// }
+import NuzlockeRow from './nuzlocke-row';
 
 const $refreshBtn = $('.btn-refresh');
 $refreshBtn.click(() => {
     $refreshBtn.addClass('spinning').disable();
+    pokemonFromRefresh = new Set();
     ws.send(JSON.stringify({ messageType: 'refresh' }));
 });
 
 let knownPokemon = {},
-    initialRefreshTimeout;
+    initialRefreshTimeout,
+    pokemonFromRefresh = new Set();
 
 // There's a race condition I can't find where sometimes (especially if you refresh the page too quickly or on the first
 // load), the pokemon aren't being received when the ws is first opened.  This will automatically refresh in case this
@@ -48,23 +38,31 @@ ws.on('message', e => {
         pid, row;
     switch (msg.messageType) {
         case 'add-pokemon':
-            if (!knownPokemon[msg.pokemon.pid]) {
-                knownPokemon[msg.pokemon.pid] = new SoulLinkRow(msg);
-            } else if (msg.isRefresh) {
-                knownPokemon[msg.pokemon.pid].updateLink({ 
-                    species: msg.pokemon.spcies, 
-                    linkedSpecies: msg.pokemon.linkedSpecies 
-                });
+            pid = msg.pokemon.pid;
+            if (!knownPokemon[pid]) {
+                if (SOULLINK_ENABLED) {
+                    knownPokemon[pid] = new SoulLinkRow(msg);
+                } else {
+                    knownPokemon[pid] = new NuzlockeRow(msg);
+                }
+            }
+
+            if (msg.isRefresh) {
+                pokemonFromRefresh.add(msg.pokemon.pid);
             }
             break;
 
         case 'refresh-done':
             clearTimeout(initialRefreshTimeout);
+            Object.keys(knownPokemon).filter(p => !pokemonFromRefresh.has(parseInt(p))).forEach(p => {
+                knownPokemon[p].removeRow();
+                delete knownPokemon[p];
+            });
             $refreshBtn.enable().removeClass('spinning');
             break;
 
         case 'new-game':
-            Object.values(knownPokemon).forEach(row => row.dispose());
+            Object.values(knownPokemon).forEach(row => row.removeRow());
             knownPokemon = {};
             break;
 
@@ -85,6 +83,8 @@ ws.on('message', e => {
             row.handleMessage(msg);
             break;
             
+        case 'update-pokemon':
+        case 'set-static-pokemon':
         case 'kill-pokemon':
         case 'revive-pokemon':
         case 'void-pokemon':

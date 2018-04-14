@@ -4,7 +4,6 @@ import path from 'path';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-// import TidyHtmlWebpackPlugin from 'tidy-html-webpack-plugin';
 import compileConfig from './common/configCompiler';
 import './common/extensions';
 
@@ -149,7 +148,8 @@ function genConfig(env, options) {
             API_BASE_URL: `'api.${host}/api'`,
 
             NUZLOCKE_ENABLED: config.nuzlocke.enabled,
-            
+
+            SOULLINK_ENABLED: config.nuzlocke.enabled && config.soulLink.enabled,
             LINKING_METHOD: `'${config.soulLink.linking.method}'`,
             MANUAL_LINKING: config.soulLink.linking.method === 'manual',
         }),
@@ -174,9 +174,6 @@ function genConfig(env, options) {
             inject: 'body',
             cache: true
         }),
-        // new TidyHtmlWebpackPlugin({
-        //     tabSize: 4,
-        // }),
     ]);
     
     if (isDev || isHot) {

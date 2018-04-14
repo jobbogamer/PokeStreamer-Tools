@@ -9,6 +9,7 @@ const {
 const DefaultNuzlockeObject = {
     knownDeaths: new Set(),
     knownVoids: new Set(),
+    knownStatic: new Map(), // used primarily for when a pokemon is manually set to static or not
 };
 
 const NuzlockeFileManager = {
@@ -56,6 +57,7 @@ const NuzlockeFileManager = {
             let nuzlockeObject = JSON.parse(contents);
             nuzlockeObject.knownDeaths = new Set(nuzlockeObject.knownDeaths);
             nuzlockeObject.knownVoids = new Set(nuzlockeObject.knownVoids);
+            nuzlockeObject.knownStatic = Map.from(nuzlockeObject.knownStatic);
             return nuzlockeObject;
         } catch (e) {
             if (contents) {

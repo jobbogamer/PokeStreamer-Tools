@@ -11,5 +11,6 @@ Map.from = function (obj) {
         return new Map(obj);
     }
 
-    return new Map(Object.entries(obj));
+    const intRegex = /^\d+$/;
+    return new Map(Object.entries(obj).map(([k, v]) => intRegex.test(k) ? [parseInt(k), v] : [k, v]));
 };

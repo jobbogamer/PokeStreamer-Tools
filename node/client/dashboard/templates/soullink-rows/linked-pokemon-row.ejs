@@ -1,15 +1,17 @@
 <tr id="<%- pokemon.pid %>">
     <td class="pokemon">
-        <%= require('./pokemon-cell.ejs')({ pokemon: pokemon }) %>
+        <%= require('../pokemon-cell.ejs')({ pokemon }) %>
     </td>
-    <td class="location"><div><%- pokemon.locationMetName %></div></td>
-    <%= require('./traits-cell.ejs')({ pokemon }) %>
+    <td class="location">
+        <div><%- pokemon.locationMetName %></div>
+    </td>
+    <%= require('../traits-cell.ejs')({ pokemon }) %>
     <td class="linked-pokemon">
         <% if (MANUAL_LINKING) { %>
-            <div class="dropdown">
+            <div class="link-dropdown">
             </div>
         <% } else { %>
-            <%= require('./pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
+            <%= require('../pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
         <% } %>
     </td>
     <% if (MANUAL_LINKING) { %>
