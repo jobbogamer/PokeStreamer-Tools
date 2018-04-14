@@ -282,7 +282,7 @@ If you already have defined server roles, when you create the channel, there is 
 
 </div>
 
-##### Make the channel private -- <span style="color: red">do not skip this step</span>
+##### Make the channel private
 
 1.  Open up the channel's settings by clicking the Edit Channel ⚙ icon next to its name
 2.  Click the Permissions tab
