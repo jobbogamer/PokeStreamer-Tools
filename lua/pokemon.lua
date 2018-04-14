@@ -72,28 +72,43 @@ local _defaultPokemonValues = {
     friendship_egg_steps = -1
 }
 
+--indexed by generation
 local _propertiesToSend = {
-    pid = { name = "pid", transform = unsign },
-    otid = "otid",
-    otsid = "otsid",
-    platinum_location_met = "locationMet",
-    platinum_egg_location_met = "eggLocationMet",
-    is_shiny = "isShiny",
-    is_female = "isFemale",
-    is_egg = "isEgg",
-    species = "species",
-    alternate_form = "alternateForm",
-    alternate_form_id = "alternateFormId",
-    nickname = "nickname",
-    level = "level",
-    living = { name = "dead", transform = function (living) return not living end },
-    level_met = "levelMet",
-    encounter_type = "encounterType",
-    markings = "markings",
-    is_gift = "gift",
-    friendship_egg_steps = { 
-        name = "eggCycles", 
-        transform = function (egg_cycles, pkmn) return pkmn.is_egg and egg_cycles or nil end 
+    [3] = {
+        pid = "pid",
+        location_met = "locationMet",
+        is_shiny = "isShiny",
+        is_female = "isFemale",
+        is_egg = "isEgg",
+        species = "species",
+        nickname = "nickname",
+        level = "level",
+        living = { name = "dead", transform = function (living) return not living end },
+        level_met = "levelMet"
+    },
+    [4] = {
+        pid = { name = "pid", transform = unsign },
+        otid = "otid",
+        otsid = "otsid",
+        platinum_location_met = "locationMet",
+        platinum_egg_location_met = "eggLocationMet",
+        is_shiny = "isShiny",
+        is_female = "isFemale",
+        is_egg = "isEgg",
+        species = "species",
+        alternate_form = "alternateForm",
+        alternate_form_id = "alternateFormId",
+        nickname = "nickname",
+        level = "level",
+        living = { name = "dead", transform = function (living) return not living end },
+        level_met = "levelMet",
+        encounter_type = "encounterType",
+        markings = "markings",
+        is_gift = "gift",
+        friendship_egg_steps = { 
+            name = "eggCycles", 
+            transform = function (egg_cycles, pkmn) return pkmn.is_egg and egg_cycles or nil end 
+        }
     }
 }
 
@@ -192,7 +207,6 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
         pkmn.living = pkmn.current_hp > 0
     end
 
-    pkmn.gen = nil
     return Pokemon(pkmn)
 end
 
@@ -207,7 +221,9 @@ function Pokemon:__call(init)
 end
 
 function Pokemon.__eq(left, right)
-    for k, v in pairs(_propertiesToSend) do
+    if left.is_empty then return right.is_empty end
+    
+    for k, v in pairs(_propertiesToSend[left.gen]) do
         if type(v) == "table" then
             local tmpL, tmpR = left[k], right[k]
 
@@ -245,13 +261,13 @@ function Pokemon:clone()
     return object_assign({}, self)
 end
 
-function Pokemon:toJsonSerializableTable()
+function Pokemon:toJsonSerializableTable(generation)
     if self.is_empty then
         return json.null
     end
 
     local jsonTable = {}
-    for k, v in pairs(_propertiesToSend) do
+    for k, v in pairs(_propertiesToSend[self.gen]) do
         if type(v) == "table" then
             local tmpV = self[k]
 

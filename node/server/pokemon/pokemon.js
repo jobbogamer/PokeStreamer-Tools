@@ -30,7 +30,8 @@ class Pokemon {
             this.level = '';
         }
         
-        if (this.staticId === undefined) {
+        // TODO enable other generations
+        if (this.staticId === undefined && this.generation === 4) {
             this.staticId = getStaticEncounterId(this);
         }
     }
@@ -40,7 +41,14 @@ class Pokemon {
             return this.eggLocationMet.hgss[this.locationMet];
         }
 
-        return this.locationMet ? PokemonLocations.hgss[this.locationMet] : '';
+        let locations;
+        if (this.generation === 4) {
+            locations = 'hgss';
+        } else if (this.generation === 3) {
+            locations = 'rsefrlg';
+        }
+            
+        return this.locationMet ? PokemonLocations[locations][this.locationMet] : '';
     }
     
     get speciesName() {

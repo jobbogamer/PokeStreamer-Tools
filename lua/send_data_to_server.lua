@@ -41,8 +41,8 @@ function get_game_version(gen, game, subgame)
         end
         
         game = game % 3
-        return game == 0 and (subgame == 1 and "fr" or "lg")
-            or game == 1 and (subgame == 1 and "r" or "s")
+        return game == 0 and (subgame == 0 and "fr" or "lg")
+            or game == 1 and (subgame == 0 and "r" or "s")
             or "e"
     elseif gen == 4 then
         if game > 3 then
@@ -103,7 +103,7 @@ function send_slots(slots_info, generation, game, subgame)
 
     local tmp_info = {}
     for i, v in ipairs(slots_info) do
-        tmp_info[#tmp_info + 1] = get_slot_data(v)
+        tmp_info[#tmp_info + 1] = get_slot_data(v, generation)
     end
 
     if #tmp_info <= 20 then
@@ -131,7 +131,7 @@ function send_slots(slots_info, generation, game, subgame)
     return true
 end
 
-function get_slot_data(info)
+function get_slot_data(info, generation)
     local box_id = info.box_id
     local slot_id = info.slot_id
     local pokemon = info.pokemon
@@ -143,7 +143,7 @@ function get_slot_data(info)
             box = box_id,
             slot = slot_id,
             changeId = change_id,
-            pokemon = pokemon:toJsonSerializableTable()
+            pokemon = pokemon:toJsonSerializableTable(generation)
         }
     else
         local change_id = change_ids[slot_id]
@@ -151,7 +151,7 @@ function get_slot_data(info)
         return {
             slot = slot_id,
             changeId = change_id,
-            pokemon = pokemon:toJsonSerializableTable()
+            pokemon = pokemon:toJsonSerializableTable(generation)
         }
     end
 end

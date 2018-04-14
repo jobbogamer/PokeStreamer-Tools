@@ -18,6 +18,7 @@ local game=3
 local subgame=0
 local startvalue=0x83ED --insert the first value of RNG
 
+local gen = 3
 -- These are all the possible key names: [keys]
 -- backspace, tab, enter, shift, control, alt, pause, capslock, escape,
 -- space, pageup, pagedown, end, home, left, up, right, down, insert, delete,
@@ -215,6 +216,11 @@ function fn()
                 
                 personality=mdword(start)
                 trainerid=mdword(start+4)
+                otid = mword(start+4)
+                otsid = mword(start+6)
+
+                is_shiny = bxr(otid, otsid, getbits(personality, 0, 16), getbits(personality, 16, 16)) < 8
+
                 magicword=bxr(personality, trainerid)
                 
                 i=personality%24
@@ -284,6 +290,7 @@ function fn()
                 spdiv=getbits(ivs,15,5)
                 spatkiv=getbits(ivs,20,5)
                 spdefiv=getbits(ivs,25,5)
+                is_egg=getbits(ivs,30,1)
                 
                 hpev=getbits(evs1, 0, 8)
                 atkev=getbits(evs1, 8, 8)
@@ -323,8 +330,13 @@ function fn()
                 level=mbyte(start+84)
                 
                 if "none" ~= speciesname then
-                    party_member = {}
-                    party_member["id"] = speciesname
+                    party_member = {
+                        gen = 3
+                    }
+                    party_member["pid"] = personality
+                    party_member["species"] = species
+                    party_member["location_met"] = location_met
+                    party_member["level_met"] = level_met
                     --party_member["item"] = holditem
                     party_member["item"] = "none"
                     --party_member["ability"] = abilities[ability + 1] 
@@ -348,10 +360,14 @@ function fn()
                 local last_state = last_party[slot]
                 
                 local current_state = Pokemon{
+                    gen = 3,
+                    pid = personality,
                     species = species ~= 0 and pokedex_ids[speciesname] or -1,
                     nickname = nickname,
                     level = level,
-                    female = false, --is_female, -- TODO
+                    is_female = false, -- TODO
+                    is_egg = is_egg,
+                    is_shiny = is_shiny,
                     living = current_hp ~= nil and current_hp > 0,
                     location_met = location_met,
                     level_met = level_met
@@ -373,7 +389,13 @@ function fn()
                         current_state.species = -1
                     end
                     
-                    slot_changes[#slot_changes + 1] = { slot_id = slot, pokemon = current_state }
+                    local pokemon
+                    if current_state.pid ~= 0 then
+                        pokemon = current_state
+                    else
+                        pokemon = Pokemon()
+                    end
+                    slot_changes[#slot_changes + 1] = { slot_id = slot, pokemon = pokemon }
                     last_party[slot] = current_state
                 end
                 

@@ -97,7 +97,7 @@ ws.on('message', e => {
 
             row = knownPokemon[pid];
             if (!row) {
-                console.error(`Received update for pid ${pid} that has no associated row.`);
+                console.error(`Received ${msg.messageType} message for pid ${pid} that has no associated row.`);
                 return;
             }
 

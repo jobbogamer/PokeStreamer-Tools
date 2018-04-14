@@ -33,11 +33,11 @@ class PokemonManager {
             pokemon.previouslyKnown = false;
             knownPokemon[pid] = pokemon;
 
-            if (!SoulLink.Links.get(pid)) {
+            if (SoulLink.enabled &&!SoulLink.Links.get(pid)) {
                 await SoulLink.addPokemon(pokemon);
             }
 
-            if (Nuzlocke.knownStaticPokemon.has(pid)) {
+            if (Nuzlocke.enabled && Nuzlocke.knownStaticPokemon.has(pid)) {
                 pokemon.staticId = Nuzlocke.knownStaticPokemon.get(pid);
             }
 
@@ -61,25 +61,28 @@ class PokemonManager {
         }
 
         knownPokemon[pid] = pokemon;
-        pokemon.isVoid = Nuzlocke.knownVoidPokemon.has(pid);
 
-        if (Nuzlocke.knownDeadPokemon.has(pid)) {
-            // shouldn't happen, but the script can be finicky and we don't want the Nuzlocke sounds playing
-            // multiple times for the same pokemon
-            pokemon.dead = true;
-        }
+        if (Nuzlocke.enabled) {
+            pokemon.isVoid = Nuzlocke.knownVoidPokemon.has(pid);
 
-        if (SoulLink.autoLinking && pokemon.previouslyKnown) {
-            // do this before calling Nuzlocke.addDeadPokemon() because when it emits an added dead pokemon, somewhere
-            // it manages to set pokemon.prevouslyKnown.dead = true
-            if (JSON.stringify(pokemon.previouslyKnown.discordJSON) !== JSON.stringify(pokemon.discordJSON)) {
-                SoulLink.sendPokemon(pid);
+            if (Nuzlocke.knownDeadPokemon.has(pid)) {
+                // shouldn't happen, but the script can be finicky and we don't want the Nuzlocke sounds playing
+                // multiple times for the same pokemon
+                pokemon.dead = true;
             }
-        }
 
-        if (pokemon.dead) {
-            pokemon.sendKill = !Nuzlocke.knownDeadPokemon.has(pid) && !Nuzlocke.knownVoidPokemon.has(pid);
-            Nuzlocke.addDeadPokemon(pid);
+            if (SoulLink.autoLinking && pokemon.previouslyKnown) {
+                // do this before calling Nuzlocke.addDeadPokemon() because when it emits an added dead pokemon, somewhere
+                // it manages to set pokemon.prevouslyKnown.dead = true
+                if (JSON.stringify(pokemon.previouslyKnown.discordJSON) !== JSON.stringify(pokemon.discordJSON)) {
+                    SoulLink.sendPokemon(pid);
+                }
+            }
+
+            if (pokemon.dead) {
+                pokemon.sendKill = !Nuzlocke.knownDeadPokemon.has(pid) && !Nuzlocke.knownVoidPokemon.has(pid);
+                Nuzlocke.addDeadPokemon(pid);
+            }
         }
 
         return pokemon;
