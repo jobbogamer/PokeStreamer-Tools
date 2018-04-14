@@ -1,0 +1,77 @@
+.slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: $totalSlotWidth;
+  height: $totalSlotHeight;
+  position: relative;
+  margin: 0;
+
+  padding: max((- map-get($imageWrapperShifts, "topTop")), (- map-get($imageWrapperShifts, "bottomTop")))
+           max(map-get($imageWrapperShifts, "topLeft"), map-get($imageWrapperShifts, "bottomLeft"))
+           max(map-get($imageWrapperShifts, "topTop"), map-get($imageWrapperShifts, "bottomTop"))
+           max((- map-get($imageWrapperShifts, "topLeft")), (- map-get($imageWrapperShifts, "bottomLeft")));
+}
+
+.img-row {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+.top {
+  height: $topElementHeight;
+  @extend %topElement !optional;
+}
+
+.bottom {
+  height: $bottomElementHeight;
+  @extend %bottomElement !optional;
+}
+
+// .text-wrapper {
+//   transform-origin: left;
+//   overflow: visible;
+//   position: relative;
+
+//   // .left &, .right & {
+//   //   // height: $imageSideLength;
+//   // }
+// }
+
+.side-wrapper {
+  height: $imageSideLength;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: space-around;
+
+  &.left {
+    width: $leftElementWidth;
+    @extend %leftElement !optional;
+
+    > .text-wrapper > div {
+      transform: translate(-50%, 0) rotate(-90deg) translate(0, $leftElementWidth / 2);
+      // position: absolute;
+      width: $imageSideLength;
+    }
+  }
+
+  &.right {
+    width: $rightElementWidth;
+    @extend %rightElement !optional;
+
+    > .text-wrapper > div {
+      transform: translate(-50%, 0) rotate(90deg) translate(0, -$rightElementWidth / 2);
+      // position: absolute;
+      width: $imageSideLength;
+    }
+  }
+}
+
+.dead.slot {
+  filter: grayscale(100%);
+}

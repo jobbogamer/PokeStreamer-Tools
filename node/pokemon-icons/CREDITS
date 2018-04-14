@@ -1,0 +1,6 @@
+These icon files were copied from https://github.com/msikma/pokesprite.  I tried to figure out an effective means of
+checking in a reference to the git repository, so that I wouldn't have to make copies of 2000+ files, but I couldn't.  
+So, per https://stackoverflow.com/a/30386041/3120446, I ran
+
+    git remote add -f -t master --no-tags pokesprite git@github.com:msikma/pokesprite.git
+    git read-tree --prefix=node/resources/icons -u pokesprite/master:icons/pokemon

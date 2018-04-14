@@ -1,0 +1,24 @@
+.nuzlocke .dead {
+  .nickname:not(:empty)::before {
+    content: $ripPrefix
+  }
+
+  @if $applyDeathSpin {
+    .death-wrapper > img {
+      animation-duration: 10s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-name: nuzlockedeathspin;
+    }
+  }
+}
+
+@keyframes nuzlockedeathspin {
+  from {
+      transform: rotate(0);
+  }
+
+  to {
+      transform: rotate(-360deg);
+  }
+}

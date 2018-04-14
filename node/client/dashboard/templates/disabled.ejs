@@ -1,0 +1,63 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js" 
+    integrity="sha256-dwhppIrxD8qC6lNulndZgtIm4XBU9zoMd9OUoXzIDAE=" crossorigin="anonymous"></script>
+<% path = require('path') %>
+<%
+    let primaryConfigFile = 'config.json';
+    if (config.configOverride) {
+        if (config.configOverride instanceof String) {
+            primaryConfigFile = config.configOverride;
+        } else if (config.configOverride.length) {
+            primaryConfigFile = config.configOverride[0];
+        }
+    }
+%>
+<div class="error bg-danger">
+    <div class="d-flex flex-column">
+        <p class="text-light">
+            <b class="text-white">Nuzlocke</b> is not enabled in config.  Set the following in 
+            <code class="bg-light p-1 mx-1 text-dark rounded"><%- path.resolve(primaryConfigFile) %></code>:
+        </p>
+        <div id="nuzlockeMd" class="rounded mb-3"></div>
+        <p class="text-light">
+            If you are running a <b class="text-white">SoulLink</b> challenge, instead set the following:
+        </p>
+        <div id="soulLinkMd" class="rounded mb-3"></div>
+        <p class="text-light">
+            After updating the config, be sure to <b class="text-white">build</b> and restart the server.
+        </p>
+    </div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+    function makeMdAndHighlight(id, content) {
+        let $md = $(id),
+            converter = new showdown.Converter(),
+            html = converter.makeHtml(content);
+        $md.html(html);
+        hljs.highlightBlock($md.children()[0]);
+    }
+
+    window.onload = () => {
+        makeMdAndHighlight('#nuzlockeMd', `
+\`\`\`json
+{
+    "nuzlocke": {
+        "enabled": true
+    }
+}
+\`\`\``);
+
+        makeMdAndHighlight('#soulLinkMd', `
+\`\`\`json
+{
+    "nuzlocke": {
+        "enabled": true
+    },
+    "soulLink": {
+        "enabled": true
+    }
+}
+\`\`\``);
+    }
+</script>

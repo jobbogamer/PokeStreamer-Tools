@@ -1,14 +1,18 @@
 import path from 'path';
 import { spawn } from 'child_process';
-// import findFreePort from 'find-free-port';
-import { NodeRoot } from './constants';
+import { Paths } from './constants';
+import cleanupProcess from './cleanup-process';
+
+const { NodeRoot } = Paths;
 
 function spawnWebpack(debugPort) {
     console.log('Spinning up webpack-dev-server...');
     let webpack = spawn('node', 
         [
-            debugPort ? `--inspect=${debugPort}` : '',
-            path.resolve(__dirname, '../node_modules/webpack-dev-server/bin/webpack-dev-server.js'),
+            `--inspect=50000`,
+            `"${path.join(__dirname, '../node_modules/webpack-dev-server/bin/webpack-dev-server.js')}"`,
+            '--mode', 'development',
+            '--hot',
         ],
         { 
             shell: true,
@@ -24,17 +28,16 @@ function spawnWebpack(debugPort) {
         console.error(`Webpack exited with error code ${code}.  Closing server.`);
         process.exit(code);
     });
+
+    cleanupProcess(() => {
+        if (!webpack.killed) {
+            console.info("Killing webpack.");
+            webpack.kill();
+        }
+    });
     
     console.info(`Webpack running on process ${webpack.pid}`);
     return webpack;
 }
 
-export default function () {
-    if (process.argv.includes('-w') || process.argv.includes('--debug-webpack')) {
-        // const findFreePort = require('find-free-port');
-        // findFreePort().then(port => spawnWebpack(port));
-        return Promise.resolve().then(() => spawnWebpack(50000));
-    } else {
-        return spawnWebpack();
-    }
-}
+export default spawnWebpack;

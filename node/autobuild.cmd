@@ -12,14 +12,14 @@ IF NOT EXIST "node_modules" (
 ) ELSE (
     CALL .\node_modules\.bin\webpack --version > NUL
     IF %errorlevel% NEQ 0 (
-        ECHO Webpack is not installed.  Installing.
+        ECHO [33mWebpack is not installed.[0m  Installing.
         SET install=true
     )
 )
 IF "%install%"=="true" ( 
     CALL npm --version > NUL
     IF %errorlevel% NEQ 0 (
-        ECHO NPM is not installed.  Install node from https://nodejs.org/en/download.
+        ECHO [31mNPM is not installed.[0m  Install node from https://nodejs.org/en/download.
         CHOICE /n /m "Open in browser? [Y] or [N]"
         IF errorlevel 2 ( EXIT /B 1 )
         IF errorlevel 1 ( explorer.exe https://nodejs.org/en/download )
@@ -28,7 +28,7 @@ IF "%install%"=="true" (
 
     npm install --save
     IF %errorlevel% NEQ 0 (
-        ECHO Installation failed.  May the force be with you in your troubleshooting!
+        ECHO [31mInstallation failed.[0m  May the force be with you in your troubleshooting!
         EXIT /B 1
     )
 )
@@ -37,6 +37,7 @@ REM Run webpack to build app
 ECHO Building and starting server...
 npm run debug
 IF %errorlevel% NEQ 0 (
-    ECHO Build failed.  Run %~f0 --install if you have not already.  Otherwise, may the force be with you in your troubleshooting!
+    ECHO [31mBuild failed.[0m
+    ECHO Run [32mnpm --install[0m if you have not already.  Otherwise, may the force be with you in your troubleshooting!
     EXIT /B 1
 )

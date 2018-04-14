@@ -1,8 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import EventEmitter from 'events';
+
 import compileConfig from '../common/configCompiler';
-import { NodeRoot } from './constants';
+import CleanupProcess from './cleanup-process';
+import { Paths } from './constants';
+import Log from './console';
+
+const NodeRoot = Paths.NodeRoot;
 
 class ConfigWatcher extends EventEmitter {
     constructor(config) {
@@ -10,7 +15,7 @@ class ConfigWatcher extends EventEmitter {
 
         let self = this;
         let createWatcher = file => 
-            fs.watch(path.resolve(NodeRoot, file), function(e, fn) { self.emit(e, fn); }.bind(this));
+            fs.watch(path.resolve(NodeRoot, file), function (e, fn) { self.emit(e, fn); }.bind(this));
 
         let watchers = this.watchers = [];
         watchers.push(createWatcher('config.json'));
@@ -32,11 +37,14 @@ class ConfigWatcher extends EventEmitter {
         }
 
         console.log(`Watching ${watchers.length} config file(s).`);
+        CleanupProcess(this.close);
     }
 
     close() {
-        for (let watcher of this.watchers) {
-            watcher.close();
+        if (this.watchers) {
+            for (let watcher of this.watchers) {
+                watcher.close();
+            }
         }
     }
 }
@@ -82,11 +90,28 @@ class Config extends EventEmitter {
         }
 
         this.configWatcher = new ConfigWatcher(next);
-        this.emit('update', { prev: prev, next: this._current });
-    }
+        this.configWatcher.on('change', this._readConfig.bind(this));
 
-    get Current() { return Object.assign({}, this._current); }
+        let ll = this._current.logLevel = Log.parseLevel(this._current.logLevel);
+        Log.setLevel(ll);
+        if (ll <= 2) {
+            Log.useDatePrefix();
+        } else {
+            Log.clearPrefix();
+        }
+
+        this.emit('update', prev, this._current );
+    }
 }
 
-const config = new Config();
-export default config;
+const configProxy = new Proxy(new Config(), {
+    get: function(config, prop) {
+        if (Object.getOwnPropertyNames(config._current).indexOf(prop) !== -1) {
+            return JSON.parse(JSON.stringify(config._current[prop]));
+        } else {
+            return config[prop];
+        }
+    }
+});
+
+export default configProxy;

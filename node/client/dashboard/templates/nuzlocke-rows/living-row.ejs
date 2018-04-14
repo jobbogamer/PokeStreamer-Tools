@@ -1,0 +1,10 @@
+<tr id="<%- pokemon.pid %>">
+    <td class="pokemon">
+        <%= require('../pokemon-cell.ejs')({ pokemon }) %>
+    </td>
+    <td class="location">
+        <div><%- pokemon.locationMetName %></div>
+    </td>
+    <%= require('../traits-cell.ejs')({ pokemon }) %>
+    <td class="width-fixed"></td>
+</tr>

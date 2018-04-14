@@ -3,7 +3,7 @@ SETLOCAL EnableDelayedExpansion
 
 CALL node --version > NUL
 IF %errorlevel% NEQ 0 (
-    ECHO Node is not installed.  Get it and install it from https://nodejs.org/en/download.
+    ECHO [31mNPM is not installed.[0m  Install node from https://nodejs.org/en/download.
     CHOICE /n /m "Open in browser? [Y] or [N]"
     IF errorlevel 2 ( EXIT /B 1 )
     IF errorlevel 1 ( explorer.exe https://nodejs.org/en/download )
@@ -21,7 +21,7 @@ FOR /F "tokens=1-3 delims=v. USEBACKQ" %%F IN (`node --version`) DO (
 )
 
 IF "%warn%" NEQ "" (
-    ECHO WARNING:  It appears that node version 8.9.4 or higher is not installed.
+    ECHO [33mWARNING:[0m  It appears that node version 8.9.4 or higher is not installed.
     ECHO Current version: %warn%
 )
 

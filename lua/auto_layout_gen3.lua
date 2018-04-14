@@ -1,5 +1,6 @@
 -- Based on the gen 3 Lua script by FractalFusion
 -- Modified by EverOddish for automatic image updates
+-- Modified by dfoverdx for using a NodeJS server for automatic image updates
 
 --for different game versions
 --1: Ruby/Sapphire U
@@ -17,6 +18,7 @@ local game=3
 local subgame=0
 local startvalue=0x83ED --insert the first value of RNG
 
+local gen = 3
 -- These are all the possible key names: [keys]
 -- backspace, tab, enter, shift, control, alt, pause, capslock, escape,
 -- space, pageup, pagedown, end, home, left, up, right, down, insert, delete,
@@ -27,6 +29,9 @@ local startvalue=0x83ED --insert the first value of RNG
 -- Key names must be in quotes.
 -- Key names are case sensitive.
 local key={"9", "8", "7"}
+
+-- NOTE: if pokemon genders are not being correctly determined, search this file for "local baseStats" and follow the 
+--       directions in the comment there.
 
 -- It is not necessary to change anything beyond this point.
 
@@ -49,12 +54,12 @@ dofile "send_data_to_server.lua"
 
 reset_server()
 
-dofile "pokemon.lua"
+local Pokemon = require("pokemon")
 
 local new_party = ""
 
 local last_check = 0
-local last_party = { Slot:new(), Slot:new(), Slot:new(), Slot:new(), Slot:new(), Slot:new() }
+local last_party = { Pokemon(), Pokemon(), Pokemon(), Pokemon(), Pokemon(), Pokemon() }
 local print_ivs = 0
 
 local gamename={"Ruby/Sapphire U", "Emerald U", "FireRed/LeafGreen U", "Ruby/Sapphire J", "Emerald J", "FireRed/LeafGreen J (1360)"}
@@ -68,19 +73,25 @@ local rng2  ={0x00000000, 0x00000000, 0x020386D0, 0x00000000, 0x00000000, 0x0203
 
 -- IMPORTANT: These values may be wrong.  I pulled them from 
 --            https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_base_stats_data_structure_in_Generation_III but
---            found that at least the US FireRed version had the wrong value, so I manually searched for the correct 
---            address, but I don't know about the rest of the versions, and am uninspired to search for the ROMs and 
---            correct them. FR(U) is correct.  If gender of Pokemon is not being calculated properly, run 
+--            found that at least the US FireRed version had the wrong value.  I manually searched for the correct 
+--            address, but I don't know about the rest of the versions, and am uninspired to search for the ROMs to 
+--            correct them. FR(U) is correct.  If the gender of Pokemon is not being calculated properly, run 
 --            find_bulbasaur_gen3.lua after loading the ROM and update these values manually.
+--
+--            If you do this and want to help out future streamers, send me the value you discovered and the version
+--            of the game you are running in the dxdt#pokemon-streamer-tools Discord channel 
+--            (https://discord.gg/FKDntWR), and I will add it to the github repo
+--
+-- baseStats={Ruby U, Emerald U, FireRed U, Ruby J, Emerald J, FireRed J}
 local baseStats={0x081FEC34, 0x083203E8, 0x08254810, 0x081FEC34, 0x082F0D70, 0x082111A8}
 if subgame == 1 then
-    -- ruby to sapphire
-    baseStats[1] = 0x081FEBC4
-    baseStats[4] = 0x081FEBC4
+    -- Ruby to Sapphire
+    baseStats[1] = 0x081FEBC4 -- Saphire U
+    baseStats[4] = 0x081FEBC4 -- Saphire J
     
-    -- firered to leafgreen
-    baseStats[3] = 0x0825477C
-    baseStats[6] = 0x08211184
+    -- FireRed to LeafGreen
+    baseStats[3] = 0x0825477C -- LeafGreen U
+    baseStats[6] = 0x08211184 -- LeafGreen J
 end
 
 --HP, Atk, Def, Spd, SpAtk, SpDef
@@ -185,6 +196,8 @@ function fn()
     current_time = os.time()
     if current_time - last_check > 1 then
         
+        local slot_changes = {}
+
         -- now for display
         if status==1 or status==2 then --status 1 or 2
             
@@ -203,6 +216,11 @@ function fn()
                 
                 personality=mdword(start)
                 trainerid=mdword(start+4)
+                otid = mword(start+4)
+                otsid = mword(start+6)
+
+                is_shiny = bxr(otid, otsid, getbits(personality, 0, 16), getbits(personality, 16, 16)) < 8
+
                 magicword=bxr(personality, trainerid)
                 
                 i=personality%24
@@ -272,6 +290,7 @@ function fn()
                 spdiv=getbits(ivs,15,5)
                 spatkiv=getbits(ivs,20,5)
                 spdefiv=getbits(ivs,25,5)
+                is_egg=getbits(ivs,30,1)
                 
                 hpev=getbits(evs1, 0, 8)
                 atkev=getbits(evs1, 8, 8)
@@ -311,8 +330,13 @@ function fn()
                 level=mbyte(start+84)
                 
                 if "none" ~= speciesname then
-                    party_member = {}
-                    party_member["id"] = speciesname
+                    party_member = {
+                        gen = 3
+                    }
+                    party_member["pid"] = personality
+                    party_member["species"] = species
+                    party_member["location_met"] = location_met
+                    party_member["level_met"] = level_met
                     --party_member["item"] = holditem
                     party_member["item"] = "none"
                     --party_member["ability"] = abilities[ability + 1] 
@@ -335,17 +359,21 @@ function fn()
                 
                 local last_state = last_party[slot]
                 
-                local current_state = Slot:new({
+                local current_state = Pokemon{
+                    gen = 3,
+                    pid = personality,
                     species = species ~= 0 and pokedex_ids[speciesname] or -1,
                     nickname = nickname,
                     level = level,
-                    female = false, --is_female, -- TODO
+                    is_female = false, -- TODO
+                    is_egg = is_egg,
+                    is_shiny = is_shiny,
                     living = current_hp ~= nil and current_hp > 0,
                     location_met = location_met,
                     level_met = level_met
-                })
+                }
                 
-                local change = not current_state:equals(last_state)
+                local change = current_state ~= last_state
                 
                 if change then
                     print("Slot " .. slot .. " -> " .. tostring(current_state))
@@ -361,7 +389,13 @@ function fn()
                         current_state.species = -1
                     end
                     
-                    send_slot_info(slot, current_state)
+                    local pokemon
+                    if current_state.pid ~= 0 then
+                        pokemon = current_state
+                    else
+                        pokemon = Pokemon()
+                    end
+                    slot_changes[#slot_changes + 1] = { slot_id = slot, pokemon = pokemon }
                     last_party[slot] = current_state
                 end
                 
@@ -377,6 +411,10 @@ function fn()
                 --print("slot " .. slot .. " " .. speciesname)
             end -- for loop slots
             
+            if #slot_changes > 0 then
+                send_slots(slot_changes, gen, game, subgame)
+            end
+
             last_check = current_time
             if print_ivs == 1 then
                 print("")

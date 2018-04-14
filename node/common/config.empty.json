@@ -1,0 +1,84 @@
+// This simply has all the required fields set to empty so that if one is not specified in a config file, the code 
+// still compiles.  You should not change this.  If you do, I will find you, and I will kill you.
+// 
+// And then I will force you to run
+//
+//   /node/setup/revertemptyconfigfile.cmd
+//
+{
+    "usingRandomizer": false,
+    "configOverride": [],
+    "pokemonImagesPath": "",
+    "emptySlotImagePath": "",
+    "server": {
+        "port": 8081,
+        "host": "stream.pokemon-soul.link",
+        "devServerPort": 8082,
+    },
+    "layout": {
+        "allInOne": true,
+        "topElements": [],
+        "bottomElements": [],
+        "leftElements": [],
+        "rightElements": [],
+        "imageOverlayElements": [],
+        "soulLinkOverlayElements": [],
+    },
+    "nuzlocke": {
+        "enabled": false,
+        "applyDeathSpin": false,
+        "deathSound": {
+            "enabled": false,
+            "filePath": ""
+        },
+        "ripPrefix": null,
+        "deathMessage1": null,
+        "deathMessage2": null,
+        "deathMessage3": null
+    },
+    "soulLink": {
+        "enabled": false,
+        "deathSound": {
+            "enabled": false,
+            "filePath": null
+        },
+        "linking": {
+            "method": null,
+            "discord": {
+                "botToken": null,
+                "partnerBotTag": null,
+                "channel": null,
+            }
+        }
+    },
+    "style": {
+        "imageSideLength": 0,
+        "leftElementWidth": 0,
+        "rightElementWidth": 0,
+        "topElementHeight": 0,
+        "bottomElementHeight": 0,
+        "%leftElement": {},
+        "%rightElement": {},
+        "%topElement": {},
+        "%bottomElement": {},
+        "showWhenEmpty": [],
+        "%body": {},
+        "%baseText": {},
+        "%levelText": {},
+        "levelPrefix": "",
+        "%speciesText": {},
+        "%nicknameText": {},
+        "%deathMessageText": {},
+        "%deathMessage1Text": {},
+        "%deathMessage2Text": {},
+        "%deathMessage3Text": {},
+        "%imageWrapper": {},
+        "soulLinkOrientation": null,
+        "soulLinkSwap": false,
+        "imageWrapperShifts": {},
+        "%soulLinkedWrapper": {},
+        "imageShift": 0,
+        "%invalidPokemon": {}
+    },
+    "logLevel": null
+}

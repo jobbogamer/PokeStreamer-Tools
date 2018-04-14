@@ -1,66 +1,60 @@
 import json5 from 'json5';
 import path from 'path';
 import fs from 'fs';
-import { NodeRoot } from '../server/constants';
+import mergeDeep from './mergeDeep';
+import { Paths } from '../server/constants';
+
+const NodeRoot = Paths.NodeRoot;
+
+let dependencies = new Set();
 
 function parse(file) {
     if (!fs.existsSync(file)) {
         throw new Error(`Config file '${file}' not found.  Check that the path is right in config.json.`);
     }
 
+    dependencies.add(file);
     return json5.parse(fs.readFileSync(file));
 }
 
-export default function compileConfig(initialConfig) {
-    initialConfig = initialConfig || parse(path.resolve(NodeRoot, 'config.json'));
+function addMissingKeys(config) {
+    return mergeDeep(parse(path.resolve(__dirname, 'config.empty.json')), config);
+}
 
-    if (!initialConfig.advancedConfig) {
+function compileConfig(config) {
+    config = config || parse(path.resolve(NodeRoot, 'config.json'));
+
+    if (!config.advancedConfig) {
         console.warn(`config.json is missing "advancedConfig" setting.  If things are broken, this is a likely cause.`);
-    } else if (!fs.existsSync(initialConfig.advancedConfig)) {
-        throw new Error(`Advanced config file '${initialConfig.advancedConfig}' does not exist.`);
+    } else if (!fs.existsSync(config.advancedConfig)) {
+        throw new Error(`Advanced config file '${config.advancedConfig}' does not exist.`);
     } else {
-        let ac = parse(initialConfig.advancedConfig);
-        initialConfig = mergeDeep(ac, initialConfig);
+        let ac = parse(config.advancedConfig);
+        config = mergeDeep(ac, config);
     }
 
-    if (!initialConfig.configOverride) {
-        return initialConfig;
+    if (!config.configOverride) {
+        return config;
     }
     
-    let co = initialConfig.configOverride;
+    let co = config.configOverride;
     switch (co.constructor) {
         case String:
-            return mergeDeep(initialConfig, parse(co));
+            return mergeDeep(config, parse(co));
         
         case Array:
-            let configs = co.map(f => parse(f));
-            return configs.reduce((prev, next) => mergeDeep(next, prev), initialConfig);
+            return co.map(f => parse(f)).reduce(mergeDeep, config);
         
         default:
             throw new Error(`Invalid value for configOverride in config.json.  Must be an array or a string.  Found ${co}.`);
     }
 }
 
-// helper methods from https://stackoverflow.com/a/37164538/3120446
-function isObject(item) {
-    return item && typeof item === 'object' && !Array.isArray(item);
+function compile(config)  {
+    return addMissingKeys(compileConfig(config));
 }
 
-function mergeDeep(target, source) {
-    let output = Object.assign({}, target);
-    if (isObject(target) && isObject(source)) {
-        Object.keys(source).forEach(key => {
-            if (isObject(source[key])) {
-                if (!(key in target)) {
-                    Object.assign(output, { [key]: source[key] });
-                } else {
-                    output[key] = mergeDeep(target[key], source[key]);
-                }
-            } else {
-                Object.assign(output, { [key]: source[key] });
-            }
-        });
-    }
-
-    return output;
-}
+export {
+    compile as default,
+    dependencies
+};

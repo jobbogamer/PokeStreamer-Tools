@@ -1,0 +1,15 @@
+<span id="err"></span>
+
+<% if (!config.layout.allInOne) { %>
+    <div id="slotBtns"></div>
+    <%= require('./slot.ejs')() %>
+<% } else { %>
+    <% for (let i = 1; i <= NUM_SLOTS; i++) { %>
+        <%= require('./slot.ejs')({ slot: i }) %>
+    <% } %>
+<% } %>
+
+<% if (config.nuzlocke.enabled && config.soulLink.enabled && 
+        config.style.soulLinkOrientation !== 'custom') { %>
+    <%= require('./soulLinkSvg.ejs')() %>
+<% } %>
