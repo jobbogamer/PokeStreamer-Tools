@@ -3,6 +3,7 @@ import Pokemon from '../pokemon/pokemon';
 import Slot from '../slot/slot';
 import SoulLink from '../soullink/soullink';
 import Nuzlocke from '../nuzlocke/nuzlocke';
+import { isStaticEncounterSupported } from './static-encounters';
 
 const emptySlots = new Array(6).fill(null).map((_, i) => Slot.empty(i));
 
@@ -41,7 +42,7 @@ class PokemonManager {
                 pokemon.staticId = Nuzlocke.knownStaticPokemon.get(pid);
             }
 
-            if (SoulLink.autoLinking) {
+            if (SoulLink.autoLinking && isStaticEncounterSupported(pokemon.generation, pokemon.gameVersion)) {
                 let soulLinkMatch = this._findSoulLinkMatch(pokemon, knownSLPokemon);
                 if (soulLinkMatch) {
                     this.setPokemonLink(pid, soulLinkMatch.pid);
@@ -83,6 +84,8 @@ class PokemonManager {
                 pokemon.sendKill = !Nuzlocke.knownDeadPokemon.has(pid) && !Nuzlocke.knownVoidPokemon.has(pid);
                 Nuzlocke.addDeadPokemon(pid);
             }
+        } else {
+            pokemon.sendKill = pokemon.dead && !pokemon.previouslyKnown.dead;
         }
 
         return pokemon;

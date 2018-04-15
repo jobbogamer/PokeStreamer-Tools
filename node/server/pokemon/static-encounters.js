@@ -5,18 +5,18 @@ let data = {};
 function getEncounters(generation, game) {
     switch (generation) {
         case 4:
-        switch (game) {
-            case "hg":
-            case "ss":
-                if (!data[game]) {
-                    data[game] = require('./hg-ss-static-encounters.json')[game];
-                }
+            switch (game) {
+                case "hg":
+                case "ss":
+                    if (!data[game]) {
+                        data[game] = require('./hg-ss-static-encounters.json')[game];
+                    }
 
-                return data[game];
-            
-            default:
-                throw new Error("Currently only HeartGold and SoulSilver versions are supported.");
-        }
+                    return data[game];
+                
+                default:
+                    throw new Error("Currently only HeartGold and SoulSilver versions are supported.");
+            }
         
         default:
             throw new Error("Currently only gen 4 versions (HG/SS) are supported.");
@@ -66,4 +66,15 @@ function getStaticEncounterId(pokemon) {
     return -1;
 }
 
-export default getStaticEncounterId;
+const supported = {
+    [4]: new Set(['hg', 'ss'])
+};
+
+function isStaticEncounterSupported(gen, gameVersion) {
+    return gen in supported && supported[gen].has(gameVersion);
+}
+
+export {
+    getStaticEncounterId,
+    isStaticEncounterSupported
+};

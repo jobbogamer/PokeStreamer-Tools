@@ -7,7 +7,7 @@ import PokemonImages from './pokemon-images';
 import PM from './pokemon-manager';
 import SoulLink from '../soullink/soullink';
 import Config from '../config';
-import getStaticEncounterId from './static-encounters';
+import { getStaticEncounterId, isStaticEncounterSupported } from './static-encounters';
 
 function getMaxPokemonId(generation) {
     return generation <= 3 ? 386 : 649; // values pulled from wikipedia
@@ -31,24 +31,21 @@ class Pokemon {
         }
         
         // TODO enable other generations
-        if (this.staticId === undefined && this.generation === 4) {
+        if (this.staticId === undefined && isStaticEncounterSupported(this.generation, this.gameVersion)) {
             this.staticId = getStaticEncounterId(this);
         }
     }
     
     get locationMetName() {
-        if (this.isEgg && this.eggLocationMet && this.eggLocationMet.hgss[this.locationMet]) {
-            return this.eggLocationMet.hgss[this.locationMet];
+        if (this.isEmpty) {
+            return null;
+        }
+        
+        if (this.isEgg && this.eggLocationMet && this.eggLocationMet[this.generation.toString()][this.locationMet]) {
+            return this.eggLocationMet[this.generation.toString()][this.locationMet];
         }
 
-        let locations;
-        if (this.generation === 4) {
-            locations = 'hgss';
-        } else if (this.generation === 3) {
-            locations = 'rsefrlg';
-        }
-            
-        return this.locationMet ? PokemonLocations[locations][this.locationMet] : '';
+        return this.locationMet ? PokemonLocations[this.generation.toString()][this.locationMet] : '';
     }
     
     get speciesName() {
@@ -218,7 +215,6 @@ function getFlags(p) {
         flags += 0x4;
     }
 
-    // is void
     if (p.isVoid) {
         flags += 0x8;
     }
