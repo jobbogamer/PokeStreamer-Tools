@@ -292,6 +292,10 @@
         },
     },
 
+    "server": {
+        "useLessSecureAPI": false
+    },
+
     // Many of the less-commonly-changed settings have been moved into ./config.advanced.json for the sake of
     // simplicity.  Values in the advanced config take lowest priority.  Feel free to change those values however you
     // like, but don't change the value of "advancedConfig", here, unless you know what you are doing.
