@@ -13,9 +13,9 @@
 --for subgame
 --0: Ruby/FireRed, Emerald
 --1: Sapphire/LeafGreen
-
-local game=3
-local subgame=0
+local gv = require("game_version")
+local game = gv[1]
+local subgame= gv[2]
 local startvalue=0x83ED --insert the first value of RNG
 
 local gen = 3

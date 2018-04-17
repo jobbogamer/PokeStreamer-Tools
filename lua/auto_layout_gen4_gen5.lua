@@ -1,17 +1,11 @@
--- local mdbg = require("mobdebug")
--- mdbg.start()
 -- Based on the Pokemon gen 4 lua script by MKDasher
 -- Modified by EverOddish for automatic image updates
 -- Modified by dfoverdx for using a NodeJS server for automatic image updates and SoulLink
 -----------
--- 1 = Diamond/Pearl, 2 = HeartGold/SoulSilver, 3 = Platinum, 4 = Black, 5 = White, 6 = Black 2, 7 = White 2
-local game = 6
--- local game = 2
 
--- 1 = Diamond, HeartGold, Platinum, Black, white, Black 2, White 2
--- 2 = Pearl, SoulSilver
-local subgame = 1
--- local subgame = 2
+local gv = require("game_version")
+local game = gv[3]
+local subgame = gv[4]
 
 -- FEATURE CURRENTLY DOESN'T WORK
 -- Set this to true if you and a partner are doing a SoulLink run (this will additionally access information in Bill's 
