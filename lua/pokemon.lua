@@ -109,6 +109,30 @@ local _propertiesToSend = {
             name = "eggCycles", 
             transform = function (egg_cycles, pkmn) return pkmn.is_egg and egg_cycles or nil end 
         }
+    },
+    [5] = {
+        pid = { name = "pid", transform = unsign },
+        otid = "otid",
+        otsid = "otsid",
+        platinum_location_met = "locationMet",
+        platinum_egg_location_met = "eggLocationMet",
+        is_shiny = "isShiny",
+        is_female = "isFemale",
+        is_egg = "isEgg",
+        species = "species",
+        alternate_form = "alternateForm",
+        alternate_form_id = "alternateFormId",
+        nickname = "nickname",
+        level = "level",
+        living = { name = "dead", transform = function (living) return not living end },
+        level_met = "levelMet",
+        encounter_type = "encounterType",
+        markings = "markings",
+        is_gift = "gift",
+        friendship_egg_steps = { 
+            name = "eggCycles", 
+            transform = function (egg_cycles, pkmn) return pkmn.is_egg and egg_cycles or nil end 
+        }
     }
 }
 
@@ -134,10 +158,16 @@ function Pokemon.get_death_codes(pid)
     return gettop(prng), frozen_code
 end
 
-local function get_pokemon_level(species, xp)
-    local exp_levels = experiece_to_reach_level[experience_gain_by_species[species]]
+function Pokemon.get_pokemon_level(pkmn)
+    local exp_gain = experience_gain_by_species[pkmn.species]
+    if exp_gain == nil then
+        return pkmn.level
+    end
+
+    local exp = pkmn.exp
+    local exp_levels = experiece_to_reach_level[exp_gain]
     local level = 1
-    while level < 100 and xp >= exp_levels[level] do 
+    while level < 100 and exp >= exp_levels[level] do 
         level = level + 1 
     end
     return level - 1
@@ -175,12 +205,19 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     end
 
     pkmn.death_code = death_code
-    local level = get_pokemon_level(pkmn.species, pkmn.exp)
+    local level = Pokemon.get_pokemon_level(pkmn)
     pkmn.level = level
 
     if in_box then
         pkmn.current_hp = pkmn.max_hp
         pkmn.living = true
+
+        if pkmn.level == nil then
+            -- should only get here if the pokemon's exp_gain value is not known
+            -- this should just hide the level in the display... hopefully it doesn't assume this is an egg
+            -- currently too tired to test this
+            pkmn.level = 0
+        end
     else 
         for _, fn in ipairs(battle_stats_memory_map) do
             local attr
@@ -193,10 +230,15 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
             end
         end
 
-        if pkmn.level > 100 or pkmn.level > level + 5 or pkmn.level < level then
+        if level ~= nil and pkmn.level ~= nil and (pkmn.level > 100 or pkmn.level > level + 5 or pkmn.level < level) then
             -- correct the level in case it's wrong in memory (or because it's in a box)
             -- assume a level can be 5 higher than it was when it entered battle
             pkmn.level = level
+        elseif pkmn.level == nil then
+            -- really should never get here but just in case...
+            -- this should just hide the level in the display... hopefully it doesn't assume this is an egg
+            -- currently too tired to test this
+            pkmn.level = 0
         end
 
         -- best effort to determine that this battle data is not accurate

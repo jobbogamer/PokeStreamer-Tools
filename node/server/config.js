@@ -44,6 +44,7 @@ class ConfigWatcher extends EventEmitter {
         if (this.watchers) {
             for (let watcher of this.watchers) {
                 watcher.close();
+                watcher.removeAllListeners();
             }
         }
     }
@@ -87,6 +88,8 @@ class Config extends EventEmitter {
 
         if (this.configWatcher) {
             this.configWatcher.close();
+            this.configWatcher.removeAllListeners();
+            delete this.configWatcher;
         }
 
         this.configWatcher = new ConfigWatcher(next);

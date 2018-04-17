@@ -224,8 +224,9 @@ function genConfig(env, options) {
             copySounds(soulLink.deathSound.filePath);
         }
         
-        return webpackConfig;
     }
+    
+    return webpackConfig;
 }
 
 export default genConfig;
