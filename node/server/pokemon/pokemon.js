@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import path from 'path';
 
 import VA from '../validate-argument';
 import Pokedex from '../../common/pokedex';
@@ -7,6 +8,7 @@ import PokemonImages from './pokemon-images';
 import PM from './pokemon-manager';
 import SoulLink from '../soullink/soullink';
 import Config from '../config';
+import { Paths } from '../constants';
 import { getStaticEncounterId, isStaticEncounterSupported } from './static-encounters';
 
 function getMaxPokemonId(generation) {
@@ -53,7 +55,16 @@ class Pokemon {
     }
     
     get img() {
-        return PokemonImages.get(this.species || -1).getImage(this.isFemale, this.isShiny, this.alternateForm, this.isEgg);
+        try {
+            return PokemonImages.get(this.species || -1).getImage(this.isFemale, this.isShiny, this.alternateForm, this.isEgg);
+        } catch (err) {
+            if (/Cannot read property \'[^']+\' of undefined/.test(err.message)) {
+                console.error(`Did not find image for ${this.speciesName} in ${path.resolve(Paths.NodeRoot, Config.pokemonImagesPath)}.  Make sure there is an image named ${this.species}.png (or another valid image extension) in the pokemon images root.`);
+                return null;
+            } else {
+                throw err;
+            }
+        }
     }
     
     get link() {

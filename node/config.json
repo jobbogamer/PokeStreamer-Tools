@@ -1,8 +1,5 @@
 // NOTE: Unless otherwise specified, all paths are absolute or relative to /node/
 {
-    // If you are using a randomized ROM, set this to true
-    "usingRandomizer": false,
-
     // If you want override the settings in this file, specify a file or an array of files whose values will take
     // precedence.  Files at the beginning of the list have higher priority than those later.
     //
@@ -12,6 +9,9 @@
     "configOverride": [ 
         // "./config.custom.json",
     ],
+    
+    // If you are using a randomized ROM, set this to true
+    "usingRandomizer": false,
 
     // Path to the image used when a slot is empty.
     // Set to null if you don't want an image
@@ -25,8 +25,8 @@
         element will have a line for the nickname followed by a line for the species.
         
         NOTE: The death messages *replace* the other elements listed (aside from other death messages).
-        NOTE: Currently SoulLink, and thus, sl-* values, are not available for gen3.
-        NOTE: Currently nickname and sl-nickname are not available for gen4/gen5.
+        NOTE: Currently SoulLink, and thus, sl-* values, are not officially supported.  I honestly don't know whether
+              it would work or not.
         
         Available elements are:
         • nickname

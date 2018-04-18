@@ -17,7 +17,8 @@
         pokemonImagesPath/shiny/female
         pokemonImagesPath/forms/...
     
-    NOTE: Giratina's and Arceus' alternate forms aren't available by default.  If you want to use them:
+    NOTE: Giratina's, Arceus', and Spiky-Eared Pichu's alternate forms aren't available by default.  If you want to use
+        them:
         Run setupPokemonImages.cmd 
         
         OR:
