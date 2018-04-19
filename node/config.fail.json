@@ -3,7 +3,7 @@
     example.
 */
 {
-    "isRandomized": true,
+    "usingRandomizer": true,
     
     // Path to the image used when a slot is empty relative to /node/ directory.
     "emptySlotImagePath": null,

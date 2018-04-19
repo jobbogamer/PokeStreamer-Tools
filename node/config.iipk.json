@@ -2,7 +2,7 @@
     This is the config generated specifically for iIPK to use during his SoulLink run.  It may be a useful example.
 */
 {
-    "isRandomized": true,    
+    "usingRandomizer": true,    
 
     // Path to the image used when a slot is empty relative to /node/ directory.
     "emptySlotImagePath": null,
