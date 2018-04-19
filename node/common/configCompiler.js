@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import mergeDeep from './mergeDeep';
 import { Paths } from '../server/constants';
+import { EmptyOrMissingConfigError } from './error';
 
 const NodeRoot = Paths.NodeRoot;
 
@@ -10,11 +11,25 @@ let dependencies = new Set();
 
 function parse(file) {
     if (!fs.existsSync(file)) {
-        throw new Error(`Config file '${file}' not found.  Check that the path is right in config.json.`);
+        throw new EmptyOrMissingConfigError(file, false);
     }
 
     dependencies.add(file);
-    return json5.parse(fs.readFileSync(file));
+    let text = fs.readFileSync(file).toString();
+    if (!text.length) {
+        throw new EmptyOrMissingConfigError(file, true);
+    }
+
+    try {
+        return json5.parse(text);
+    } catch (error) {
+        let errorMessage = `Invalid config: ${file}`;
+        if (text.search(/^[<=>]/g) !== -1) {
+            errorMessage += `\nIt appears that there was a merge conflict when you last updated, and you haven't resolved the conflict.  Search for lines beginning with '<', '=', or '>'.`;
+        }
+
+        throw new Error(errorMessage);
+    }
 }
 
 function addMissingKeys(config) {

@@ -10,6 +10,15 @@ class TimeoutError extends Error {
     }
 }
 
+class EmptyOrMissingConfigError extends Error {
+    constructor(filename = 'config.json', exists) {
+        super(exists ? `Config file ${filename} is empty.` : `Config file ${filename} does not exist.`);
+        Error.captureStackTrace(this, EmptyOrMissingConfigError);
+        this.exists = !!exists;
+    }
+}
+
 export {
-    TimeoutError
+    TimeoutError,
+    EmptyOrMissingConfigError
 };

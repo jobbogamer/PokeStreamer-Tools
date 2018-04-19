@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import EventEmitter from 'events';
+import json5 from 'json5';
 
+import { EmptyOrMissingConfigError } from '../common/error';
 import compileConfig from '../common/configCompiler';
 import CleanupProcess from './cleanup-process';
 import { Paths } from './constants';
@@ -54,7 +56,9 @@ class Config extends EventEmitter {
     constructor() {
         super();
 
+        this._isInitializing = true;
         this._readConfig();
+        this._isInitializing = false;
         this._configMissingTimeout = null;
     }
 
@@ -66,12 +70,23 @@ class Config extends EventEmitter {
         {
             next = compileConfig();
         } catch (e) {
-            // an error is thrown if config.json is empty, which happens immediately after saving the file
-            // set a timeout to make sure the config file becomes available and has not merely been deleted or renamed
-            this._configMissingTimeout = setTimeout(() => { 
-                throw new Error(`Config file '${filename}' is not found.`); 
-            }, 500);
-            return;
+            if (!this._isInitializing) {
+                if (e instanceof EmptyOrMissingConfigError) {
+                    // an error is thrown if config.json is empty, which happens immediately after saving the file
+                    // set a timeout to make sure the config file becomes available and has not merely been deleted or renamed
+                    this._configMissingTimeout = setTimeout(() => { 
+                        throw e; 
+                    }, 500);
+
+                    return;
+                } else if (this._current) {
+                    console.error(e.message);
+                    console.log('Fix the error, save, and the config will be automatically reloaded.');
+                    return;
+                }
+            }
+
+            throw e;
         }
 
         // sloppy but it doesn't really matter for our purposes if we load too many times
@@ -109,6 +124,11 @@ class Config extends EventEmitter {
 
 const configProxy = new Proxy(new Config(), {
     get: function(config, prop) {
+        if (!config._current) {
+            console.error('Config has not been loaded.  Search the server output for a possible reason.');
+            return;
+        }
+
         if (Object.getOwnPropertyNames(config._current).indexOf(prop) !== -1) {
             return JSON.parse(JSON.stringify(config._current[prop]));
         } else {
