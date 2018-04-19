@@ -24,6 +24,14 @@ class Pokemon {
         }
         
         Object.assign(this, data);
+
+        if (this.nickname) {
+            let firstInvalidCharacter = this.nickname.search(/[\\\{]/);
+            if (firstInvalidCharacter !== -1) {
+                this.nickname = this.nickname.substring(0, firstInvalidCharacter);
+            }
+        }
+        
         if (this.dead === undefined) {
             this.dead = !this.living;
         }
