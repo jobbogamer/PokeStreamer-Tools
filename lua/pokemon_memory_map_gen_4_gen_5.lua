@@ -182,7 +182,7 @@ function get_string(gen, words, word_idx, word_len)
         else
             -- hopefully never happens
             -- even though lua only supports 3-character octects, write as a 4-char javascript character
-            str = str .. string.format("\\{%04d}", c) 
+            str = str .. string.format("\\u{%04x}", c)
         end
     end
 

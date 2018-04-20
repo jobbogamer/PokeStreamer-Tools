@@ -26,7 +26,16 @@ class Pokemon {
         Object.assign(this, data);
 
         if (this.nickname) {
-            let firstInvalidCharacter = this.nickname.search(/[\\\{]/);
+            this.nickname = this.nickname.replace(/\\u\{(\d+)\}/g, (_, n) => {
+                let c = parseInt(n, 16);
+                if (c > 0xFFFF) {
+                    c = 0;
+                }
+                
+                return String.fromCharCode(c);
+            });
+
+            let firstInvalidCharacter = this.nickname.search('\u{0000}');
             if (firstInvalidCharacter !== -1) {
                 this.nickname = this.nickname.substring(0, firstInvalidCharacter);
             }
