@@ -25,7 +25,7 @@ export default class Slot {
             this.$soulLinkLevel = $slot.find('.sl-level');
             this.$soulLinkSpecies = $slot.find('.sl-species');
             this.$soulLinkNickname = $slot.find('.sl-nickname');
-            this.$allText.add('.sl-level, .sl-species, .sl-nickname');
+            this.$allText = this.$allText.add('.sl-level, .sl-species, .sl-nickname');
         }
         
         this.$images = $slot.find('img');
