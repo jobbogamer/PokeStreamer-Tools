@@ -7,9 +7,10 @@ export default class Slot {
     constructor(slot, $slot) {
         this.slot = slot;
         this.lastValue = null;
-        this.$slot = $(`.slot.slot-${slot}`);
+        this.$slot = $slot;
         this.changeId = -2;
         this.$img = $slot.find('.main > img');
+        this.$wrapper = this.$img.closest('.img-wrapper');
         this.$level = $slot.find('.level');
         this.$species = $slot.find('.species');
         this.$nickname = $slot.find('.nickname');
@@ -17,15 +18,16 @@ export default class Slot {
         this.$deathMessage2 = $slot.find('.deathMessage2');
         this.$deathMessage3 = $slot.find('.deathMessage3');
         this.$deathMessages = $slot.find('.deathMessage1, .deathMessage2, .deathMessage3');
-        this.$allText = $slot.find('.level, .species, .nickname, .deathMessage1, .deathMessage2, .deathMessage3');
+        this.$pkmnText = $slot.find('.level, .species, .nickname, .deathMessage1, .deathMessage2, .deathMessage3');
         
         if (config.soulLink.enabled) {
             this.slChangeId = -2;
             this.$soulLinkImg = $slot.find('.soul-linked > img');
+            this.$soulLinkWrapper = this.$soulLinkImg.closest('.img-wrapper');
             this.$soulLinkLevel = $slot.find('.sl-level');
             this.$soulLinkSpecies = $slot.find('.sl-species');
             this.$soulLinkNickname = $slot.find('.sl-nickname');
-            this.$allText = this.$allText.add('.sl-level, .sl-species, .sl-nickname');
+            this.$slText = $slot.find('.sl-level, .sl-species, .sl-nickname');
         }
         
         this.$images = $slot.find('img');
@@ -63,6 +65,7 @@ export default class Slot {
             lastValue,
             $slot,
             $img,
+            $wrapper,
             $level,
             $species,
             $nickname,
@@ -70,19 +73,22 @@ export default class Slot {
             $deathMessage2,
             $deathMessage3,
             $deathMessages,
-            $allText,
+            $pkmnText,
             $soulLinkImg,
+            $soulLinkWrapper,
             $images,
             $soulLinkLevel,
             $soulLinkSpecies,
             $soulLinkNickname,
+            $slText,
         } = this;
+
+        let $allText = $pkmnText.add($slText);
         
         if (val === 'reset') {
             this.changeId = -2;
             this.lastValue = null;
-            $allText.resetText();
-            $allText.find('.scaled').children().unwrap('.scaled');
+            $allText.add($slText).resetText().find('.scaled').children().unwrap('.scaled');
             $nickname.removeClass('no-nickname');
             $images.removeAttr('src');
             $slot.removeClass('dead');
@@ -118,10 +124,10 @@ export default class Slot {
             return;
         }
         
-        $allText.resetText();
-        $allText.find('.scaled').children().unwrap('.scaled');
+        $pkmnText.resetText().find('.scaled').children().unwrap('.scaled');
         
         if (!val.pokemon) {
+            $slText.resetText().find('.scaled').children().unwrap('.scaled');
             $slot.removeClass('dead');
             $images.removeAttr('src');
             this.lastValue = val;
@@ -146,6 +152,8 @@ export default class Slot {
         } else {
             $slot.removeClass('dead');
         }
+
+        Slot.setCritical($wrapper, pkmn.isCritical);
         
         if (Nuzlocke.enabled) {
             if (pkmn.dead) {
@@ -181,10 +189,12 @@ export default class Slot {
                 $soulLinkLevel.text(link.level);
                 $soulLinkNickname.text(link.nickname || pkmn.speciesName);
                 $soulLinkSpecies.text(link.speciesName);
+
+                Slot.setCritical($soulLinkWrapper, link.isCritical);
             }
         }
         
-        $allText.parent().scaleToFit();
+        $pkmnText.parent().scaleToFit();
         
         this.lastValue = val;
     }
@@ -209,6 +219,16 @@ export default class Slot {
         let $dm = this[`$deathMessage${i}`];
         $dm.parent().children('.level, .species, .nickname').text('');
         $dm.text(msg);        
+    }
+
+    static setCritical($wrapper, isCritical) {
+        let $critical = $wrapper.children('.critical');
+        if (isCritical && !$critical.length) {
+            $critical = $('<div>').addClass('critical');
+            $wrapper.prepend($critical);
+        } else if (!isCritical && $critical.length) {
+            $critical.remove();
+        }
     }
 }
 

@@ -10,6 +10,7 @@ import SoulLink from '../soullink/soullink';
 import Config from '../config';
 import { Paths } from '../constants';
 import { getStaticEncounterId, isStaticEncounterSupported } from './static-encounters';
+import getLevel from './experience';
 
 function getMaxPokemonId(generation) {
     return generation <= 3 ? 386 : 649; // values pulled from wikipedia
@@ -17,7 +18,7 @@ function getMaxPokemonId(generation) {
 
 class Pokemon {
     constructor(data) {
-        if (data === undefined || data === null) {
+        if (!hasValue(data)) {
             Object.assign(this, emptyPokemonData);
             this.isEmpty = true;
             return;
@@ -31,7 +32,7 @@ class Pokemon {
                 if (c > 0xFFFF) {
                     c = 0;
                 }
-                
+
                 return String.fromCharCode(c);
             });
 
@@ -47,7 +48,16 @@ class Pokemon {
         
         if (this.isEgg) {
             this.level = '';
+        } else {
+            this.level = getLevel(this);
         }
+
+        let {
+            currentHp,
+            maxHp
+        } = this;
+        
+        this.isCritical = currentHp && maxHp && currentHp / maxHp <= 1 / 4;
         
         // TODO enable other generations
         if (this.staticId === undefined && isStaticEncounterSupported(this.generation, this.gameVersion)) {
@@ -56,7 +66,7 @@ class Pokemon {
     }
     
     get locationMetName() {
-        if (this.isEmpty) {
+        if (this.isEmpty || this.locationMet === -1) {
             return null;
         }
         
@@ -95,9 +105,10 @@ class Pokemon {
                     isShiny: this.isShiny,
                     isEgg: this.linkPid === 0,
                     isEmpty: false,
+                    isCritical: this.isCritical,
                 });
             } else {
-                linked = PM.knownSLPokemon[this.linkPid];
+                linked = PM.knownSLPokemon[this.linkPid].clone();
                 if (!linked) {
                     return null;
                 }
@@ -165,6 +176,7 @@ class Pokemon {
                 'link',
                 'isVoid',
                 'emptyLinkImage',
+                'isCritical',
             ]);
     }
 
@@ -251,6 +263,11 @@ function getFlags(p) {
         flags += 0x10;
     }
 
+    // critical hp
+    if (p.criticalHp) {
+        flags += 0x20;
+    }
+
     return flags;
 }
 
@@ -261,6 +278,7 @@ function parseFlags(flags) {
         dead: !!(flags & 0x4),
         isVoid: !!(flags & 0x8),
         isShiny: !!(flags & 0x10),
+        criticalHp: !!(flags & 0x20),
     };
 }
 

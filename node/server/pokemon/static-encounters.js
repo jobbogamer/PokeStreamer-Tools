@@ -34,7 +34,7 @@ function getStaticEncounterId(pokemon) {
         Gender: pokemon.isFemale ? 1 : 0,
     };
     
-    if (!Config.usingRandomizer) {
+    if (!Config.randomizer.enabled) {
         criteria.species = pokemon.species;
     }
     

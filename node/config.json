@@ -10,8 +10,13 @@
         // "./config.custom.json",
     ],
     
-    // If you are using a randomized ROM, set this to true
-    "usingRandomizer": false,
+    "randomizer": {
+        // If you are using a randomized ROM, set this to true
+        "enabled": false,
+
+        // If you set experience growth to non-vanilla, set this to true
+        "normalizedExp": false,
+    },
 
     // Path to the image used when a slot is empty.
     // Set to null if you don't want an image
@@ -105,12 +110,12 @@
         
         // currently unused -- at the moment, the SoulLink system doesn't distinguish between you killing a pokémon and
         // your partner killing theirs
-        "deathSound": {
-            "enabled": true,
+        // "deathSound": {
+        //     "enabled": true,
             
             // if enabled but not specified, defaults to nuzlocke.deathSound.filePath
             // "filePath": "you-lose-good-day-sir.mp3"
-        },
+        // },
 
         "linking": {
             // Valid values:
@@ -207,6 +212,8 @@
             // to see against the browser's default white background.
             "background": "transparent",
         },
+
+        "displayCriticalHpEffect": true,
         
         // Default text styles.  These can be overridden below.
         // The default settings are what failstream (twitch.tv/failstream) uses, as I'm writing this tool for him.

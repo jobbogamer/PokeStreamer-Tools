@@ -15,19 +15,12 @@ class Slot {
         this.pokemon = VA.hasValue(pokemon, 'pokemon');
     }
 
-    get soulLinkPokemon() {
-        if (this._soulLinkPokemon) {
-            return this._soulLinkPokemon;
-        }
-    }
-
     toJSON() {
         return {
             // box: this.box,
             slot: this.slot,
             // changeId: this.changeId,
             pokemon: this.pokemon,
-            slPokemon: this.soulLinkPokemon,
         };
     }
 

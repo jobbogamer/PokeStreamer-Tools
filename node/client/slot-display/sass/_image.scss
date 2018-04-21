@@ -19,6 +19,21 @@ $imageScale: scale(strip-unit($imageSideLength) / min(strip-unit($imageWrapperWi
     display: flex;
     position: absolute;
   }
+
+  @if $displayCriticalHpEffect {
+    .slot:not(.dead) & .critical {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: none;
+      background: radial-gradient(closest-side, red, transparent);
+      animation-name: critical;
+      animation-direction: normal;
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-out;
+    }
+  }
   
   img {
     display: block;
@@ -32,5 +47,15 @@ $imageScale: scale(strip-unit($imageSideLength) / min(strip-unit($imageWrapperWi
     &:not([src]) {
       visibility: hidden;
     }
+  }
+}
+
+@keyframes critical {
+  0% {
+    opacity: .9;
+  }
+
+  85% {
+    opacity: 0;
   }
 }

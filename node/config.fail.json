@@ -3,8 +3,14 @@
     example.
 */
 {
-    "usingRandomizer": true,
-    
+    "randomizer": {
+        // If you are using a randomized ROM, set this to true
+        "enabled": true,
+
+        // If you set experience growth to non-vanilla, set this to true
+        "normalizedExp": true,
+    },
+
     // Path to the image used when a slot is empty relative to /node/ directory.
     "emptySlotImagePath": null,
 
@@ -170,11 +176,14 @@
         
         "%levelText": {
             // "width": "$rightElementWidth !important",
+            "width": "unset !important",
+            "text-align": "right",
 			"font-family": "Balthazar, sans-serif",
-            "font-size": "56px",
+            "font-size": "50px",
 			"-webkit-text-fill-color": "cyan",
 			"-webkit-text-stroke-width": "2px",
-			"-webkit-text-stroke-color": "black",
+            "-webkit-text-stroke-color": "black",
+            "opacity": ".7",
 			
             // By default, texts on the left and right of the image are rotated.  Setting transform to "unset" prevents
             // this.

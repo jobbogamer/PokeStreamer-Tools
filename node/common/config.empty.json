@@ -6,9 +6,12 @@
 //   /node/setup/revertemptyconfigfile.cmd
 //
 {
-    "usingRandomizer": false,
     "configOverride": [],
     "pokemonImagesPath": "",
+    "randomizer": {
+        "enabled": false,
+        "normalizedExp": false,
+    },
     "emptySlotImagePath": "",
     "server": {
         "port": 8081,
@@ -63,6 +66,7 @@
         "%bottomElement": {},
         "showWhenEmpty": [],
         "%body": {},
+        "displayCriticalHpEffect": false,
         "%baseText": {},
         "%levelText": {},
         "levelPrefix": "",

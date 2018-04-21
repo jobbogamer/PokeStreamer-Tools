@@ -276,7 +276,8 @@ function fn()
                 --is_female=get_is_female(species, personality % 256)
                 
                 holditem=getbits(growth1,16,16)
-                
+
+                experience = growth2
                 pokerus=getbits(misc1,0,8)
                 
                 ivs=misc2
@@ -342,6 +343,7 @@ function fn()
                     --party_member["ability"] = abilities[ability + 1] 
                     party_member["ability"] = "--"
                     party_member["nature"] = naturename[nature+1]
+                    party_member["experience"] = experience
                     party_member["level"] = level
                     party_member["hiddenpower"] = typeorder[hidpowtype+1]
                     party_member["ivs"] = hpiv .. "/" .. atkiv .. "/" .. defiv .. "/" .. spatkiv .. "/" .. spdefiv .. "/" .. spdiv
@@ -356,6 +358,7 @@ function fn()
                 end
                 
                 current_hp=mword(start+86)
+                max_hp=mword(start+88)
                 
                 local last_state = last_party[slot]
                 
@@ -364,11 +367,14 @@ function fn()
                     pid = personality,
                     species = species ~= 0 and pokedex_ids[speciesname] or -1,
                     nickname = nickname,
+                    exp = experience,
                     level = level,
                     is_female = false, -- TODO
                     is_egg = is_egg,
                     is_shiny = is_shiny,
                     living = current_hp ~= nil and current_hp > 0,
+                    current_hp = current_hp,
+                    max_hp = max_hp,
                     location_met = location_met,
                     level_met = level_met
                 }
