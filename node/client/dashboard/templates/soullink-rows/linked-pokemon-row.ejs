@@ -10,6 +10,8 @@
         <% if (MANUAL_LINKING) { %>
             <div class="link-dropdown">
             </div>
+        <% } else if (linkedPokemon.isEmpty) { %>
+            <%= require('../pending-pokemon-cell.ejs')() %>
         <% } else { %>
             <%= require('../pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
         <% } %>

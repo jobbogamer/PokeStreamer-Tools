@@ -216,6 +216,15 @@ DiscordClient.on('connection-status-change', (status, partnerStatus) => {
 SoulLink.on('update', links => {
     let slMessages = [];
     for (let [pid, link] of Array.from(links.entries())) {
+        if (!PM.knownPokemon[pid]) {
+            // happens when our partner knows about one of our pokemon that we do not
+            // register an empty pokemon so that when we do learn of ours, it gets sent out to the proper clients
+            let empty = new Pokemon();
+            empty.pid = pid;
+            PM.registerPokemon(empty);
+            continue;
+        }
+
         if (!PM.knownPokemon[pid].previouslyKnown) {
             slMessages.push({
                 messageType: 'add-pokemon',

@@ -88,7 +88,7 @@ export default class Slot {
         if (val === 'reset') {
             this.changeId = -2;
             this.lastValue = null;
-            $allText.add($slText).resetText().find('.scaled').children().unwrap('.scaled');
+            $allText.add($slText).resetText();
             $nickname.removeClass('no-nickname');
             $images.removeAttr('src');
             $slot.removeClass('dead');
@@ -124,10 +124,10 @@ export default class Slot {
             return;
         }
         
-        $pkmnText.resetText().find('.scaled').children().unwrap('.scaled');
+        $pkmnText.resetText();
         
         if (!val.pokemon) {
-            $slText.resetText().find('.scaled').children().unwrap('.scaled');
+            $slText.resetText();
             $slot.removeClass('dead');
             $images.removeAttr('src');
             this.lastValue = val;
@@ -173,13 +173,14 @@ export default class Slot {
         }
         
         if (Soullink.enabled) {
-            if (!pkmn.link) {
+            if (!pkmn.link || pkmn.link.isEmpty) {
                 if (pkmn.emptyLinkImage) {
                     $soulLinkImg.attr('src', pkmn.emptyLinkImage);
                 } else {
                     $soulLinkImg.removeAttr('src');
                 }
                 
+                $slText.resetText();
                 $img.closest('.img-wrapper').addClass('invalid');
             } else {
                 let link = pkmn.link;

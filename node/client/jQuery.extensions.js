@@ -1,5 +1,5 @@
 $.fn.resetText = function () {
-    return this.text('').css('font-size', '');
+    return this.text('').css('font-size', '').find('.scaled').children().unwrap('.scaled');
 };
 
 $.fn.enable = function () {

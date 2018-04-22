@@ -61,7 +61,7 @@ class SoulLinkRow extends ManagerRow {
     }
 
     addRow() {
-        if (!MANUAL_LINKING && this.linkedPokemon) {
+        if (!MANUAL_LINKING && this.linkedPokemon && !this.linkedPokemon.isEmpty) {
             this.linkedPokemon.icon = Icons.getIcon(this.linkedPokemon);
         }
 

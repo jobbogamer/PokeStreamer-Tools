@@ -23,6 +23,7 @@ class DiscordClient extends EventEmitter {
         this._channelId = null;
         this._partnerBot = null;
         this._messageQueue = [];
+        this._messageBatchInterval = 0;
         this._reconnectionTimeout = 0;
 
         Config.on('update', this._handleConfigChange.bind(this));
@@ -111,6 +112,7 @@ class DiscordClient extends EventEmitter {
             console.log('Discord client is closing.');
             await this._client.destroy();
             this._client = null;
+            clearInterval(this._messageBatchInterval);
         }
     }
 
@@ -159,14 +161,28 @@ class DiscordClient extends EventEmitter {
         return this._partnerBot.presence.status;
     }
 
-    async waitForMessage(messageType, ttl = 2000) {
+    async waitForMessage(messageType, ttl = 3000) {
         return new Promise((resolve, reject) => {
             this.matchOnce(messageType, msg => msg.messageType === messageType, resolve, ttl, 
                 () => reject(new TimeoutError({ msg: `Waiting for message timed out after ${ttl / 1000} seconds`, ttl })));
         });
     }
 
-    async send(msg) {
+    send(msg) {
+        this._messageQueue.push(msg);
+    }
+
+    async _sendBatch() {
+        if (!this._messageQueue.length) {
+            return;
+        }
+
+        let msg = this._messageQueue;
+
+        // empty the queue so that new messages may be added while we wait for a response from the client that our 
+        // message was sent
+        // if the send fails, reinsert the failed message queue in front of the new messages
+        this._messageQueue = [];
         if (this._partnerBot && this.partnerConnectionStatus === 'online') {
             try {
                 let msgStr = JSON.stringify(msg);
@@ -174,35 +190,15 @@ class DiscordClient extends EventEmitter {
                     return await this._channel.send(msgStr);
                 } else {
                     let msgFile = new Message.MessageFile(msgStr);
-                    return await this._channel.send(msgFile, {
+                    let result = await this._channel.send(msgFile, {
                         files: [msgFile.attachment]
                     });
                 }
             } catch (err) {
                 console.error(`Failed to send message via Discord client:\n${err}`);
+                this._messageQueue = msg.concat(this._messageQueue);
             }
-        }
-
-        if (msg !== this._messageQueue) {
-            this._messageQueue.push(msg);
-
-            if (this._messageQueue.length === 1) {
-                let fn = async status => {
-                    if (status === 'open') {
-                        try {
-                            await this.send(this._messageQueue);
-                        } catch (err) {
-                            return;
-                        }
-
-                        this._messageQueue = [];
-                        this.removeListener('connection-status-changed', fn);
-                    }
-                };
-                
-                this.on('connection-status-changed', fn);
-            }
-
+        } else {
             console.debug(`Partner's bot is offline.  Added message to queue.`);
         }
     }
@@ -258,6 +254,7 @@ class DiscordClient extends EventEmitter {
         c.on('ready', () => {
             console.debug(`Discord client connected as '${c.user.tag}', client id: ${c.user.id}.`);
             this.emit('connection-status-change', 'open', this.partnerConnectionStatus);
+            this._messageBatchInterval = setInterval(this._sendBatch.bind(this), 1000);
         });
 
         c.on('message', this._handleMessage.bind(this));
@@ -266,9 +263,11 @@ class DiscordClient extends EventEmitter {
             console.warn('Discord client lost connection.  Reconnecting...');
             this.emit('connection-status-change', 'reconnecting');
             clearTimeout(this._reconnectionTimeout);
+            clearInterval(this._messageBatchInterval);
             this._reconnectionTimeout = setTimeout(() => {
                 if (this.connectionStatus === 'open') {
                     this.emit('connection-status-change', 'open', this.partnerConnectionStatus);
+                    this._messageBatchInterval = setInterval(this._sendBatch.bind(this), 1000);
                 }
             }, 5600); // use the time value used in Discord.JS's WebSocketConnection.reconnect() + 100ms
         });

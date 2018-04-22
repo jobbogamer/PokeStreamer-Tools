@@ -112,7 +112,7 @@ class DataDump extends SoulLinkMessage {
         links = links || [];
 
         this.pokemon = knownPokemon;
-        this.links = links.filter(l => l[1] !== null).map(([k, v]) => [parseInt(k), parseInt(v)]);
+        this.links = links.filter(l => l[0] !== null && l[1] !== null).map(([k, v]) => [parseInt(k), parseInt(v)]);
         let hasPokemon = Object.values(knownPokemon).length > 0;
 
         Object.assign(this, {

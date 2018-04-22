@@ -286,7 +286,7 @@ class SoulLink extends EventEmitter {
         }
 
         // TODO validate data
-        this._links = Map.from(Object.entries(next._links).map(([k, v]) => [parseInt(k), parseInt(v)]));
+        this._links = Map.from(Object.entries(next._links).map(([k, v]) => [parseInt(k), v === null ? null : parseInt(v)]));
         this._unlinkedPartnerPokemon = new Set(next._unlinkedPartnerPokemon);
     }
 
@@ -296,6 +296,12 @@ class SoulLink extends EventEmitter {
             _links: this._links,
             _unlinkedPartnerPokemon: this._unlinkedPartnerPokemon
         };
+
+        for (let [p, l] of this._links) {
+            if (!p) {
+                console.error(`Attempted to add a null or NaN link...`);
+            }
+        }
 
         fs.writeFileSync(SoulLinkFile, JSON.stringify(fileData, null, 2));
     }

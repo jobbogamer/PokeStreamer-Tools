@@ -107,11 +107,16 @@ class Pokemon {
                     isEmpty: false,
                     isCritical: this.isCritical,
                 });
-            } else {
+            } else if (PM.knownSLPokemon[this.linkPid]) {
                 linked = PM.knownSLPokemon[this.linkPid].clone();
-                if (!linked) {
-                    return null;
-                }
+            } else {
+                // send an empty pokemon to indicate that there is a link, but we don't know what it is yet
+                linked = new Pokemon();
+                linked.pid = this.linkPid;
+            }
+            
+            if (!linked) {
+                return null;
             }
             
             delete linked.linkPid; // make sure we don't produce an infinite loop
@@ -177,6 +182,7 @@ class Pokemon {
                 'isVoid',
                 'emptyLinkImage',
                 'isCritical',
+                'isEmpty',
             ]);
     }
 
