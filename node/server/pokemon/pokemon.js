@@ -36,7 +36,7 @@ class Pokemon {
                 return String.fromCharCode(c);
             });
 
-            let firstInvalidCharacter = this.nickname.search('\u{0000}');
+            let firstInvalidCharacter = this.nickname.search(/\\u(\{0000\}|\{ffff\})/i);
             if (firstInvalidCharacter !== -1) {
                 this.nickname = this.nickname.substring(0, firstInvalidCharacter);
             }
