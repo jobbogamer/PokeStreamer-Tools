@@ -1,4 +1,8 @@
-<span style="color: red; font-weight: bold">This README is *wildly* out of date!  Go to http://pokemon-soul.link for up-to-date documentation.</span>
+<div style="color: red; font-weight: bold;">
+
+This README is *wildly* out of date!  Go to http://pokemon-soul.link for up-to-date documentation.
+
+</div>
 
 # PokeStreamer-Tools
 
