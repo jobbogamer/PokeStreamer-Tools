@@ -51,7 +51,7 @@ function get_game_version(gen, game, subgame)
         end
 
         return game == 1 and (subgame == 1 and "d" or "p")
-            or game == 2 and (subgame == 1 and "g" or "ss")
+            or game == 2 and (subgame == 1 and "hg" or "ss")
             or "pt"
     else -- gen 5
         if game < 4 or game > 7 then
