@@ -42,7 +42,7 @@ export default function getLevel(pokemon) {
 
     let level = 0,
         threshold;
-    if (Config.randomzier.enabled && Config.randomizer.normalizedExp) {
+    if (Config.randomizer.enabled && Config.randomizer.normalizedExp) {
         threshold = legendaryPokemon.has(pokemon.species) ? xpLevelThresholds.slow : xpLevelThresholds.mediumFast;
     } else {
         threshold = getThresholds(pokemon.species);
