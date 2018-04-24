@@ -270,7 +270,7 @@ function getFlags(p) {
     }
 
     // critical hp
-    if (p.criticalHp) {
+    if (p.isCritical) {
         flags += 0x20;
     }
 
@@ -284,7 +284,7 @@ function parseFlags(flags) {
         dead: !!(flags & 0x4),
         isVoid: !!(flags & 0x8),
         isShiny: !!(flags & 0x10),
-        criticalHp: !!(flags & 0x20),
+        isCritical: !!(flags & 0x20),
     };
 }
 
