@@ -15,6 +15,14 @@ const xpGainBySpecies = [
     null, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 4, 4, 0, 0, 4, 4, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 5, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 5, 5, 4, 0, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 4, 4, 4, 4, 0, 5, 5, 0, 4, 4, 4, 4, 0, 0, 3, 3, 3, 3, 4, 4, 0, 3, 3, 3, 3, 4, 3, 3, 0, 0, 0, 0, 0, 3, 0, 4, 0, 0, 0, 0, 0, 0, 3, 0, 4, 4, 0, 0, 3, 5, 3, 0, 0, 0, 0, 5, 5, 4, 0, 0, 4, 5, 5, 5, 5, 0, 0, 0, 0, 5, 4, 0, 0, 0, 0, 0, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 5, 5, 5, 0, 0, 2, 2, 5, 5, 5, 1, 1, 1, 3, 3, 3, 2, 2, 4, 0, 4, 4, 3, 4, 5, 5, 5, 0, 0, 5, 5, 0, 0, 1, 2, 3, 2, 2, 5, 5, 2, 2, 0, 0, 0, 4, 4, 4, 3, 3, 3, 3, 3, 1, 1, 1, 2, 4, 4, 0, 0, 2, 2, 0, 0, 1, 1, 1, 1, 1, 1, 0, 3, 4, 4, 4, 4, 5, 4, 3, 0, 0, 0, 3, 3, 3, 1, 1, 1, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 3, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 0, 0, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 4, 2, 2, 0, 0, 4, 3, 4, 4, 4, 0, 0, 0, 0, 0, 0, 4, 3, 0, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 0, 0, 5, 1, 1, 5, 5, 5, 3, 0, 0, 5, 0, 0, 0, 4, 0, 0, 0, 3, 5, 0, 5, 0, 4, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 0, 0, 5, 3, 0, 0, 0, 0, 0
 ];
 
+// pulled from https://github.com/Dabomstew/universal-pokemon-randomizer/blob/c16ce0ad253c4cebbfc25ac0e566d4f13d81b283/src/com/dabomstew/pkrandom/pokemon/Pokemon.java#L211
+// used for when xp is standardized by the randomizer -- legendary pokemon grow at a slow rate, other at mediumFast
+const legendaryPokemon = new Set([
+    144, 145, 146, 150, 151, 243, 244, 245, 249, 250,
+    251, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386, 479, 480, 481, 482, 483, 484, 485, 486, 487, 488,
+    489, 490, 491, 492, 493, 494, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649
+]);
+
 function getThresholds(species) {
     let gain = xpGainBySpecies[species],
         thresholdId = xpLevelThresholdIds[gain];
@@ -27,14 +35,19 @@ export default function getLevel(pokemon) {
         return '';
     }
 
-    if (Config.randomizer.enabled && Config.randomizer.normalizedExp || 
-        !hasValue(pokemon.exp) || 
+    if (!hasValue(pokemon.exp) || 
         !pokemon.species || pokemon.species > xpGainBySpecies.length) {
         return hasValue(pokemon.level) && pokemon.level <= 100 ? pokemon.level : '';
     }
 
     let level = 0,
+        threshold;
+    if (Config.randomzier.enabled && Config.randomizer.normalizedExp) {
+        threshold = legendaryPokemon.has(pokemon.species) ? xpLevelThresholds.slow : xpLevelThresholds.mediumFast;
+    } else {
         threshold = getThresholds(pokemon.species);
+    }
+
     while (pokemon.exp >= threshold[level]) {
         level++;
     }
