@@ -177,7 +177,7 @@ class PokemonManager {
     
     get slots() {
         // TODO clone so that callers can't change things
-        return slots; // simpleDeepClone(slots).map(s => s === null ? null : new Slot(s.slot, new Pokemon(s.pokemon)));
+        return slots;
     }
     
     _findSoulLinkMatch(newPokemon, setToSearch) {
@@ -198,7 +198,7 @@ class PokemonManager {
             
             predicate = p => p.staticId === newPokemon.staticId;
         } else {
-            predicate = p => !p.staticId && p.locationMet === newPokemon.locationMet;
+            predicate = p => !(hasValue(p.staticId) && p.staticId > 0) && p.locationMet === newPokemon.locationMet;
         }
         
         let matches = Object.values(setToSearch).filter(p => !p.linkPid && !p.isShiny && !p.isVoid && predicate(p));

@@ -90,6 +90,7 @@ export default class Slot {
             this.lastValue = null;
             $allText.add($slText).resetText();
             $nickname.removeClass('no-nickname');
+            Slot.setCritical($wrapper.add($soulLinkWrapper), false);
             $images.removeAttr('src');
             $slot.removeClass('dead');
             return;
@@ -100,6 +101,7 @@ export default class Slot {
         if (val.pokemon && val.pokemon.isVoid) {
             if (this.lastValue && this.lastValue.pokemon) {
                 $slot.addClass('void');
+                Slot.setCritical($wrapper.add($soulLinkWrapper), false);
                 $img.wrap('<div class="void-wrapper">');
                 setTimeout(() => {
                     this.lastValue = null;
@@ -130,6 +132,7 @@ export default class Slot {
             $slText.resetText();
             $slot.removeClass('dead');
             $images.removeAttr('src');
+            Slot.setCritical($wrapper.add($soulLinkWrapper), false);
             this.lastValue = val;
             return;
         }

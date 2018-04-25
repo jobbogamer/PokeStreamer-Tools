@@ -161,7 +161,7 @@ async function update(req, res, next) {
             } else {
                 pkmn = await PM.registerPokemon(pkmn);
 
-                let s = PM.setSlot(slot, new Slot(slot, pkmn, box));
+                let s = PM.setSlot(slot, new Slot(slot, pkmn.pid, box));
                 slotsToSend.push(s);
             }
         }
@@ -193,7 +193,7 @@ async function update(req, res, next) {
         } else if (s.pokemon.previouslyKnown.species !== s.pokemon.species) {
             return {
                 messageType: 'update-link',
-                pid: s.pokemon.pid,
+                pid: s.pid,
                 pokemon: s.pokemon
             };
         } else if (s.pokemon.sendKill) {
@@ -274,16 +274,17 @@ SoulLink.on('update', links => {
     });
 });
 
-Nuzlocke.on('revivedPokemon', pid => {
+Nuzlocke.on('revivedPokemon', async pid => {
     let pokemon = PM.knownPokemon[pid];
     pokemon.dead = false;
     pokemon.isVoid = false;
-    PM.registerPokemon(pokemon);
+    await PM.registerPokemon(pokemon);
     if (SoulLink.autoLinking && pokemon.linkPid) {
         let link = PM.knownSLPokemon[pokemon.linkPid];
         link.dead = false;
         link.isVoid = false;
         PM.registerPartnerPokemon(link);
+        // note: don't need to send pokemon via SoulLink as it happens in PM.registerPokemon()
     }
 
     sendSLMessages({
@@ -291,29 +292,33 @@ Nuzlocke.on('revivedPokemon', pid => {
         pid
     });
     
-    sendSlots(PM.slots.filter(s => s && s.pokemon && s.pokemon.pid === pid));
+    sendSlots(PM.slots.filter(s => s && s.pid === pid));
 });
 
-Nuzlocke.on('addedVoidPokemon', pid => {
+Nuzlocke.on('addedVoidPokemon', async pid => {
+    let pokemon = PM.knownPokemon[pid];
+    await PM.registerPokemon(pokemon);
     sendSLMessages({
         messageType: 'void-pokemon',
         pid
     });
 
-    let slot = PM.slots.filter(s => s && s.pokemon && s.pokemon.pid === pid);
+    let slot = PM.slots.filter(s => s && s.pid === pid);
     if (slot.length) {
         slot[0].pokemon.isVoid = true;
         sendSlots(slot);
     }
 });
 
-Nuzlocke.on('addedDeadPokemon', pid => {
+Nuzlocke.on('addedDeadPokemon', async pid => {
+    let pokemon = PM.knownPokemon[pid];
+    await PM.registerPokemon(pokemon);
     sendSLMessages({
         messageType: 'kill-pokemon',
         pid
     });
 
-    let slot = PM.slots.filter(s => s && s.pokemon && s.pokemon.pid === pid);
+    let slot = PM.slots.filter(s => s && s.pid === pid);
     if (slot.length) {
         slot[0].pokemon.dead = true;
         sendSlots(slot);
@@ -365,18 +370,15 @@ function getDashboard(ws, req) {
 
                 case 'revive-pokemon':
                     Nuzlocke.revivePokemon(msg.pid);
-                    SoulLink.sendPokemon(msg.pid);
                     break;
 
                 case 'void-pokemon':
                     Nuzlocke.addVoidPokemon(msg.pid);
-                    SoulLink.sendPokemon(msg.pid);
                     break;
 
                 case 'kill-pokemon':
                     // called by SoulLink manager when a link's pokemon is dead
                     Nuzlocke.addDeadPokemon(msg.pid);
-                    SoulLink.sendPokemon(msg.pid);
                     break;
 
                 case 'refresh':
