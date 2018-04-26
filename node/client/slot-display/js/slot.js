@@ -185,6 +185,7 @@ export default class Slot {
                 
                 $slText.resetText();
                 $img.closest('.img-wrapper').addClass('invalid');
+                Slot.setCritical($soulLinkWrapper, false);
             } else {
                 let link = pkmn.link;
                 $soulLinkImg.attr('src', link.img);

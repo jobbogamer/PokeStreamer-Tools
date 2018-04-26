@@ -58,7 +58,9 @@ class Pokemon {
             maxHp
         } = this;
         
-        this.isCritical = currentHp && maxHp && currentHp / maxHp <= 1 / 4;
+        if (currentHp && maxHp) {
+            this.isCritical = currentHp / maxHp <= 1 / 4;
+        }
         
         // TODO enable other generations
         if (this.staticId === undefined && isStaticEncounterSupported(this.generation, this.gameVersion)) {

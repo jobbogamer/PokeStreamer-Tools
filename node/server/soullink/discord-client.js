@@ -326,8 +326,11 @@ class DiscordClient extends EventEmitter {
             console.warn(`Partner bot is a Discord user rather than a Discord bot.`);
         }
 
-        this._client.removeListener('presenceUpdate', this._updateBot);
-        this._client.on('presenceUpdate', this._updateBot);
+        if (this._client) {
+            // happens when we enable soullink in config without restarting server
+            this._client.removeListener('presenceUpdate', this._updateBot);
+            this._client.on('presenceUpdate', this._updateBot);
+        }
 
         if (bot.presence.status === 'online') {
             console.info(`Partner bot is online.`);
