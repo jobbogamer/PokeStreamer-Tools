@@ -7,7 +7,6 @@
         [ "es2015", { "modules" : "commonjs" } ]
     ],
     "plugins": [
-        "babel-plugin-rewire",
         [
             "transform-runtime",
             {
