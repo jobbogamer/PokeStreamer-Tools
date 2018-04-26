@@ -152,6 +152,10 @@ $vShift: $imageShift / $imageWrapperRatio;
   }
 }
 
+#soulLinkClipTop, #soulLinkClipBottom {
+  transform: scale(strip-unit($imageWrapperWidth) / 100, strip-unit($imageWrapperHeight) / 100);
+}
+
 @if $soulLinkEnabled {
   #soulLinkClipTop {
     transform: scale(strip-unit($imageWrapperWidth) / 100, strip-unit($imageWrapperHeight) / 100);
