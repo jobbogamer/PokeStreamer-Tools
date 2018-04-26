@@ -227,12 +227,10 @@ export default class Slot {
     }
 
     static setCritical($wrapper, isCritical) {
-        let $critical = $wrapper.children('.critical');
-        if (isCritical && !$critical.length) {
-            $critical = $('<div>').addClass('critical');
-            $wrapper.prepend($critical);
-        } else if (!isCritical && $critical.length) {
-            $critical.remove();
+        if (isCritical) {
+            $wrapper.addClass('critical');
+        } else {
+            $wrapper.removeClass('critical');
         }
     }
 }

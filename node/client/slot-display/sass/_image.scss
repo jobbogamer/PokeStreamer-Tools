@@ -21,17 +21,22 @@ $imageScale: scale(strip-unit($imageSideLength) / min(strip-unit($imageWrapperWi
   }
 
   @if $displayCriticalHpEffect {
-    .slot:not(.dead) & .critical {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transition: none;
-      background: radial-gradient(closest-side, red, transparent);
-      animation-name: critical;
-      animation-direction: normal;
-      animation-duration: 1.5s;
-      animation-iteration-count: infinite;
-      animation-timing-function: ease-out;
+    .slot:not(.dead) & {
+      > .critical {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      &.critical > .critical {
+        transition: none;
+        background: radial-gradient(closest-side, red, transparent);
+        animation-name: critical;
+        animation-direction: normal;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-out;
+      }
     }
   }
   

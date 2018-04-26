@@ -1,23 +1,23 @@
-<% let widthScale = parseInt(config.style.imageWrapperWidth || config.style.imageSideLength) / 100,
-    heightScale = parseInt(config.style.imageWrapperHeight || config.style.imageSideLength) / 100; %>
+<% let width = parseInt(config.style.imageWrapperWidth || config.style.imageSideLength),
+    height = parseInt(config.style.imageWrapperHeight || config.style.imageSideLength); %>
 <svg width="0" height="0">
     <defs>
         <clipPath id="soulLinkClipTop">
             <% switch (config.style.soulLinkOrientation) {
                    case 'vertical': %>
-                    <rect x="0" y="0" width="50" height="100" />
+                    <rect x="0" y="0" width="<%- width / 2 %>" height="<%- height %>" />
                     <% break; %>
 
                 <% case 'horizontal': %>
-                    <rect x="0" y="0" width="100" height="50" />
+                    <rect x="0" y="0" width="<%- width %>" height="<%- height / 2 %>" />
                     <% break; %>
 
                 <% case 'diagonal-forward': %>
-                    <polygon points="0,100 0,0 100,0" />
+                    <polygon points="0,<%- height %> 0,0 <%- width %>,0" />
                     <% break; %>
 
                 <% case 'diagonal-backward': %>
-                    <polygon points="0,0 100,0 100,100" />
+                    <polygon points="0,0 <%- width %>,0 <%- width %>,<%- height %>" />
                     <% break; %>
 
                 <% case 'custom': %>
@@ -29,19 +29,19 @@
         <clipPath id="soulLinkClipBottom">
             <% switch (config.style.soulLinkOrientation) {
                    case 'vertical': %>
-                    <rect x="50" y="0" width="50" height="100" />
+                    <rect x="<%- width / 2 %>" y="0" width="<%- width / 2 %>" height="<%- height %>" />
                     <% break; %>
 
                 <% case 'horizontal': %>
-                    <rect x="0" y="50" width="100" height="50" />
+                    <rect x="0" y="<%- height / 2 %>" width="<%- width %>" height="<%- height %>" />
                     <% break; %>
 
                 <% case 'diagonal-forward': %>
-                    <polygon points="0,100 100,100 100,0" />
+                    <polygon points="0,<%- height %> <%- width %>,<%- height %> <%- width %>,0" />
                     <% break; %>
 
                 <% case 'diagonal-backward': %>
-                    <polygon points="0,0 0,100 100,100" />
+                    <polygon points="0,0 0,<%- height %> <%- width %>,<%- height %>" />
                     <% break; %>
 
                 <% case 'custom': %>

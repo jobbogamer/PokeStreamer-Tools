@@ -1,5 +1,6 @@
 <% let overlayElements = type === 'soul-linked' ? config.layout.soulLinkOverlayElements : config.layout.imageOverlayElements; %>
 <div class="img-wrapper <%- type %>">
+    <div class="critical"></div>
     <img />
     <div class="img-overlay">
         <% for (let element of overlayElements) { %>
