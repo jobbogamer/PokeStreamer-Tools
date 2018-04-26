@@ -24,6 +24,14 @@ const legendaryPokemon = new Set([
 ]);
 
 function getThresholds(species) {
+    if (Config.randomizer.enabled && Config.randomizer.normalizedExp) {
+        if (legendaryPokemon.has(species)) {
+            return xpLevelThresholds['slow'];
+        } else {
+            return xpLevelThresholds['mediumFast'];
+        }
+    }
+
     let gain = xpGainBySpecies[species],
         thresholdId = xpLevelThresholdIds[gain];
 
@@ -35,18 +43,13 @@ export default function getLevel(pokemon) {
         return '';
     }
 
-    if (!hasValue(pokemon.exp) || 
+    if (!hasValue(pokemon.exp) || pokemon.exp < 0 ||
         !pokemon.species || pokemon.species > xpGainBySpecies.length) {
         return hasValue(pokemon.level) && pokemon.level <= 100 ? pokemon.level : '';
     }
 
     let level = 0,
-        threshold;
-    if (Config.randomizer.enabled && Config.randomizer.normalizedExp) {
-        threshold = legendaryPokemon.has(pokemon.species) ? xpLevelThresholds.slow : xpLevelThresholds.mediumFast;
-    } else {
         threshold = getThresholds(pokemon.species);
-    }
 
     while (pokemon.exp >= threshold[level]) {
         level++;

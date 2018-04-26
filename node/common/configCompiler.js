@@ -58,7 +58,7 @@ function compileConfig(config) {
             return mergeDeep(config, parse(co));
         
         case Array:
-            return co.map(f => parse(f)).reduce(mergeDeep, config);
+            return co.map(f => parse(f)).reverse().reduce(mergeDeep, config);
         
         default:
             throw new Error(`Invalid value for configOverride in config.json.  Must be an array or a string.  Found ${co}.`);

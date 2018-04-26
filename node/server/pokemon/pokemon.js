@@ -11,6 +11,7 @@ import Config from '../config';
 import { Paths } from '../constants';
 import { getStaticEncounterId, isStaticEncounterSupported } from './static-encounters';
 import getLevel from './experience';
+import { getFlagsValue, parseFlags } from './pokemon-flags';
 
 function getMaxPokemonId(generation) {
     return generation <= 3 ? 386 : 649; // values pulled from wikipedia
@@ -105,7 +106,7 @@ class Pokemon {
                     isShiny: this.isShiny,
                     isEgg: this.linkPid === 0,
                     isEmpty: false,
-                    isCritical: this.isCritical,
+                    isCritical: false,
                 });
             } else if (PM.knownSLPokemon[this.linkPid]) {
                 linked = PM.knownSLPokemon[this.linkPid].clone();
@@ -138,7 +139,7 @@ class Pokemon {
             return null;
         }
 
-        let flags = getFlags(this);
+        let flags = getFlagsValue(this);
         return {
             g: this.generation,
             v: this.gameVersion,
@@ -243,49 +244,5 @@ const emptyPokemonData = {
 
 const EmptyPokemon = new Pokemon();
 Pokemon.empty = EmptyPokemon;
-
-// TODO: refactor this into something much cleaner
-//       preferably make this and parseFlags automatically updated when the other is updated
-function getFlags(p) {
-    let flags = p.f || 0;
-
-    if (p.isFemale) {
-        flags += 0x1;
-    }
-
-    if (p.isEgg) {
-        flags += 0x2;
-    }
-
-    if (p.dead) {
-        flags += 0x4;
-    }
-
-    if (p.isVoid) {
-        flags += 0x8;
-    }
-
-    if (p.isShiny) {
-        flags += 0x10;
-    }
-
-    // critical hp
-    if (p.isCritical) {
-        flags += 0x20;
-    }
-
-    return flags;
-}
-
-function parseFlags(flags) {
-    return {
-        isFemale: !!(flags & 0x1),
-        isEgg: !!(flags & 0x2),
-        dead: !!(flags & 0x4),
-        isVoid: !!(flags & 0x8),
-        isShiny: !!(flags & 0x10),
-        isCritical: !!(flags & 0x20),
-    };
-}
 
 export default Pokemon;
