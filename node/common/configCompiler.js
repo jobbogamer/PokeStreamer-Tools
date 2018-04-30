@@ -23,12 +23,14 @@ function parse(file) {
     try {
         return json5.parse(text);
     } catch (error) {
-        let errorMessage = `Invalid config: ${file}`;
-        if (text.search(/^[<=>]/g) !== -1) {
+        let errorMessage = `${'Invalid config'.red}: ${file.white}`;
+        if (text.search(/^[<=>]/gm) !== -1) {
             errorMessage += `\nIt appears that there was a merge conflict when you last updated, and you haven't resolved the conflict.  Search for lines beginning with '<', '=', or '>'.`;
         }
 
-        throw new Error(errorMessage);
+        error.message = `${errorMessage}\n${error.message}`;
+
+        throw error;
     }
 }
 
