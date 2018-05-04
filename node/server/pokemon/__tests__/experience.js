@@ -9,14 +9,14 @@ const __get__ = require('../experience').__get__,
     getThresholds = __get__('getThresholds'),
     xpLevelThresholdIds = __get__('xpLevelThresholdIds');
 
-const legendaryPokemon = 150, // Mewtwo
+const legendaryPokemon = 150,   // Mewtwo
     nonlegendaryPokemon = {
-        mediumFast: 10, // Caterpie
-        erratic: 350, // Milotic
-        fluctuating: 426, // Drifblim
-        mediumSlow: 1, // Bulbasaur
-        fast: 113, // Chansey
-        slow: 143, // Snorlax
+        mediumFast: 10,         // Caterpie
+        erratic: 350,           // Milotic
+        fluctuating: 426,       // Drifblim
+        mediumSlow: 1,          // Bulbasaur
+        fast: 113,              // Chansey
+        slow: 143,              // Snorlax
     };
 
 describe('standardized experience', () => {
@@ -35,8 +35,8 @@ describe('standardized experience', () => {
     });
 
     it('makes nonlegendary pokemon use mediumFast experience gain', () => {
-        for (let [_, pokemon] of Object.entries(nonlegendaryPokemon)) {
-            expect(getThresholds(pokemon)).toEqual(expect.arrayContaining(xpLevelThresholds.mediumFast));
+        for (let species of Object.values(nonlegendaryPokemon)) {
+            expect(getThresholds(species)).toEqual(expect.arrayContaining(xpLevelThresholds.mediumFast));
         }
     })
 });
@@ -107,7 +107,7 @@ describe('getLevel()', () => {
     });
 
     it('never returns higher than 100', () => {
-        for (let [_, species] of Object.entries(nonlegendaryPokemon)) {
+        for (let species of Object.values(nonlegendaryPokemon)) {
             let pokemon = { species };
             pokemon.exp = 2000000;
             expect(getLevel(pokemon)).toBe(100);
@@ -115,7 +115,7 @@ describe('getLevel()', () => {
     });
 
     it('never returns lower than 1', () => {
-        for (let [_, species] of Object.entries(nonlegendaryPokemon)) {
+        for (let species of Object.values(nonlegendaryPokemon)) {
             let pokemon = { species };
             pokemon.exp = 0;
             expect(getLevel(pokemon)).toBe(1);
@@ -123,7 +123,7 @@ describe('getLevel()', () => {
     });
 
     it('returns \'\' when is egg, has negative experience, or undefined experience', () => {
-        for (let [_, species] of Object.entries(nonlegendaryPokemon)) {
+        for (let species of Object.values(nonlegendaryPokemon)) {
             let pokemon = { species };
             expect(getLevel(pokemon)).toBe('');
 

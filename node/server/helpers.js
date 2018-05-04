@@ -12,4 +12,19 @@ function getLocaleString(request) {
     }
 }
 
-export { getLocaleString };
+function bindFunctionProps(self, ...props) {
+    if (!props.length) {
+        props = Object.getOwnPropertyNames(self);
+    }
+
+    for (let prop of props) {
+        if (self[prop] instanceof Function) {
+            self[prop] = self[prop].bind(self);
+        }
+    }
+}
+
+export { 
+    getLocaleString,
+    bindFunctionProps
+};
