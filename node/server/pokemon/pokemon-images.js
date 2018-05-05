@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import EventEmitter from 'events';
 import Config from '../config';
 import { Image, Paths } from '../constants';
+import PokemonImage from './pokemon-image';
 
 const {
     ImageRegex, 
@@ -18,10 +18,8 @@ const basicImageDirs = {
     shinyFemale: 'shiny/female'
 };
 
-class PokemonImages extends EventEmitter {
+class PokemonImages {
     constructor() {
-        super();
-
         this._images = {};
         this._gettingFormImages = false;
 
@@ -126,7 +124,7 @@ class PokemonImages extends EventEmitter {
                 }
 
                 if (!this._images[id]) {
-                    this._images[id] = new PokemonImage();
+                    this._images[id] = makeImageProxy();
                 }
                 
                 if (!alternateForm) {
@@ -179,34 +177,22 @@ class PokemonImages extends EventEmitter {
     }
 }
 
-class PokemonImage {
-    constructor() {
-        this.base = null;
-        this.female = null;
-        this.shiny = null;
-        this.shinyFemale = null;
-        this.forms = {};
-    }
-    
-    getImage(female, shiny, form, egg) {
-        if (egg) {
-            return pokemonImages.get(0).base;
-        }
+function makeImageProxy() {
+    return new Proxy(new PokemonImage(), {
+        get: function(img, prop) {
+            if (prop === 'getImage') {
+                return (female, shiny, form, egg) => {
+                    if (egg) {
+                        return pokemonImages.get(0).base;
+                    }
 
-        if (form && this.forms[form]) {
-            return this.forms[form].getImage(female, shiny) || this.base;
+                    return img.getImage(female, shiny, form, egg);
+                }
+            }
+
+            return img[prop];
         }
-        
-        if (female && shiny) {
-            return this.shinyFemale || this.shiny || this.female || this.base;
-        } else if (female) {
-            return this.female || this.base;
-        } else if (shiny) {
-            return this.shiny || this.base;
-        } else {
-            return this.base;
-        }
-    }
+    });
 }
 
 const pokemonImages = new PokemonImages();

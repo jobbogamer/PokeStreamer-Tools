@@ -12,6 +12,7 @@ import { Paths } from '../constants';
 import { getStaticEncounterId, isStaticEncounterSupported } from './static-encounters';
 import getLevel from './experience';
 import { getFlagsValue, parseFlags } from './pokemon-flags';
+import calcStat from './pokemon-stats';
 
 function getMaxPokemonId(generation) {
     return generation <= 3 ? 386 : 649; // values pulled from wikipedia
@@ -55,11 +56,27 @@ class Pokemon {
 
         let {
             currentHp,
-            maxHp
+            maxHp,
+            evs,
+            ivs
         } = this;
+
+        if (evs && ivs) {
+            // We have to do this calculation here rather than in Lua because we have to calculate the level here in
+            // case normalized XP gain is enabled.
+            // Since EVs don't have an effect until after the pokemon levels, EVs gained since the last level might 
+            // cause HP to increase a little and maxHp won't match the calculated maxHp, so we'll allow it a range.
+            // Failing due to this range is possible, but an extreme corner case, and when it does fail, the only thing
+            // that will break is correctly reporting isCritical: it will default to false.
+            let minEV = Object.assign({}, this, { evs: { hp: 0 } });
+
+            if (maxHp > calcStat(this, 'maxHp') || maxHp < calcStat(minEV, 'maxHp')) {
+                maxHp = null;
+            }
+        }
         
         if (currentHp && maxHp) {
-            this.isCritical = currentHp / maxHp <= 1 / 4;
+            this.isCritical = currentHp / maxHp <= 1 / 4;            
         }
         
         // TODO enable other generations
@@ -242,6 +259,8 @@ const emptyPokemonData = {
     locationMet: -1,
     alternateForm: '',
     staticId: -1,
+    evs: null,
+    ivs: null
 };
 
 const EmptyPokemon = new Pokemon();

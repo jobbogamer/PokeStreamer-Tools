@@ -2,6 +2,8 @@ local decrypt = require("pokemon_decrypt_gen_4_gen_5")
 local pokemon_memory_map, battle_stats_memory_map = unpack(require("pokemon_memory_map_gen_4_gen_5"))
 local json = require("dkjson")
 
+local gv = require("game_version")
+
 local lshift, rshift, xor, band, bor = bit.lshift, bit.rshift, bit.bxor, bit.band, bit.bor
 local function get_bits(a, b, d) return rshift(a, b) % lshift(1, d) end
 local function get_byte(word, idx) return get_bits(word, (idx - 1) * 8, 8) end
@@ -69,7 +71,9 @@ local _defaultPokemonValues = {
     is_empty = true,
     is_egg = false,
     valid = true,
-    friendship_egg_steps = -1
+    friendship_egg_steps = -1,
+    evs = nil,
+    ivs = nil
 }
 
 --indexed by generation
@@ -115,6 +119,8 @@ local _propertiesToSend = {
         },
         current_hp = "currentHp",
         max_hp = "maxHp",
+        evs = "evs",
+        ivs = "ivs"
     },
     [5] = {
         pid = { name = "pid", transform = unsign },
@@ -145,6 +151,13 @@ local _propertiesToSend = {
     }
 }
 
+if gv[3] == 1 then
+    table.remove(_propertiesToSend, "platinum_location_met")
+    table.remove(_propertiesToSend, "platinum_egg_location_met")
+    _propertiesToSend["diamond_pearl_location_met"] = "locationMet"
+    _propertiesToSend["diamond_pearl_egg_location_met"] = "eggLocationMet"
+end
+
 function Pokemon.get_words_string(words, format)
     format = format or "%04x"
     local hex = ""
@@ -166,21 +179,6 @@ function Pokemon.get_death_codes(pid)
     prng = mult32(prng,0x41C64E6D) + 0x6073    
     return gettop(prng), frozen_code
 end
-
--- function Pokemon.get_pokemon_level(pkmn)
---     local exp_gain = experience_gain_by_species[pkmn.species]
---     if exp_gain == nil then
---         return pkmn.level
---     end
-
---     local exp = pkmn.exp
---     local exp_levels = experiece_to_reach_level[exp_gain]
---     local level = 1
---     while level < 100 and exp >= exp_levels[level] do 
---         level = level + 1 
---     end
---     return level - 1
--- end
 
 function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     local pkmn = { gen = gen }
@@ -214,20 +212,7 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
     end
 
     pkmn.death_code = death_code
-    -- local level = Pokemon.get_pokemon_level(pkmn)
-    -- pkmn.level = level
 
-    -- if in_box then
-    --     pkmn.current_hp = pkmn.max_hp
-    --     pkmn.living = true
-
-    --     if pkmn.level == nil then
-    --         -- should only get here if the pokemon's exp_gain value is not known
-    --         -- this should just hide the level in the display... hopefully it doesn't assume this is an egg
-    --         -- currently too tired to test this
-    --         pkmn.level = 0
-    --     end
-    -- else 
     for _, fn in ipairs(battle_stats_memory_map) do
         local attr
         attr, fn = unpack(fn)
@@ -239,24 +224,13 @@ function Pokemon.parse_gen4_gen5(encrypted_words, in_box, gen)
         end
     end
 
-    if level ~= nil and pkmn.level ~= nil and (pkmn.level > 100 or pkmn.level > level + 5 or pkmn.level < level) then
-        -- correct the level in case it's wrong in memory (or because it's in a box)
-        -- assume a level can be 5 higher than it was when it entered battle
-        pkmn.level = level
-    elseif pkmn.level == nil then
-        -- really should never get here but just in case...
-        -- this should just hide the level in the display... hopefully it doesn't assume this is an egg
-        -- currently too tired to test this
-        pkmn.level = 0
-    end
-
     -- best effort to determine that this battle data is not accurate
-    if pkmn.current_hp > pkmn.max_hp then
+    -- Blissey has the highest HP base stat, and at level 100, has a maximum max_hp of 714
+    if pkmn.level > 100 or pkmn.max_hp > 714 or pkmn.current_hp > 714 or pkmn.current_hp > pkmn.max_hp then
         return nil
     end
 
     pkmn.living = pkmn.current_hp > 0
-    -- end
 
     return Pokemon(pkmn)
 end
@@ -287,7 +261,14 @@ function Pokemon.__eq(left, right)
                 return false
             end
         else
-            if left[k] ~= right[k] then
+            -- assumes only 1-dimensional tables
+            if (type(left[k]) == "table") then
+                for i, val in pairs(left[k]) do
+                    if right[k][i] ~= val then
+                        return false
+                    end
+                end
+            elseif left[k] ~= right[k] then
                 -- print(string.format("%s: %s -> %s", k, tostring(left[k]), tostring(right[k])))
                 return false
             end

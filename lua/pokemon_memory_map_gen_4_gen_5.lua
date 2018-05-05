@@ -16,52 +16,9 @@ local function concat_words(words, start, len)
     return val
 end
 
-local function concat_bytes(words, word_idx, byte_idx, byte_len)
-    -- get the bytes of the full words we're getting
-    -- little endian hell... do things backwards
-    local word_len = rshift(byte_len, 2) -- divide by 2
-    local val = 0
-
-    if byte_id == 2 then
-        word_idx = word_idx + 1
-    end
-
-    -- since byte_idx is 1-indexed and byte_len is 0-indexed, check for even values to determine whether or not we need
-    -- to add the last byte
-    if (byte_idx + byte_len) % 2 == 0 then
-        val = get_byte(words[word_idx + word_len], 1)
-    end
-    
-    -- if byte_idx == 2 then
-    --     val = get_byte(words[word_idx], 2)
-    --     word_idx = word_idx + 1
-    -- end
-
-    for i = word_len, 1, -1 do -- word_idx, word_idx + math.floor(byte_len / 2) do
-        val = bor(lsw(val), words[word_idx + i - 1])
-    end
-
-    if byte_idx == 2 then
-        val = bor(lshift(val, 8), words[word_idx - 1], 2)
-    end
-    -- -- since byte_idx is 1-indexed and byte_len is 0-indexed, check for even values to determine whether or not we need
-    -- -- to add the last byte
-    -- if (byte_idx + byte_len) % 2 == 0 then
-    --     val = bor(lshift(val, 8), get_byte(words[word_idx + math.floor(byte_len / 2) + 1], 1))
-    -- end
-
-    return val
-end
-
 local function gcw(word_idx, word_len) -- get concat_words
     return function(words, pkmn_data)
         return concat_words(words, word_idx, word_len)
-    end
-end
-
-local function gcb(word_idx, byte_idx, byte_len)
-    return function(words, pkmn_data)
-        return concat_bytes(words, word_idx, byte_idx, byte_len)
     end
 end
 
@@ -131,13 +88,24 @@ end
 
 local function get_ivs(word_idx)
     return function(words, pkmn_data)
-        local iv_bytes = concat_bytes(words, word_idx, 1, 4)
+        local iv_bytes = concat_words(words, word_idx, 2)
         local ivs = { "hp", "atk", "def", "spd", "spatk", "spdef" }
         local iv_vals = {}
         for i, iv in ipairs(ivs) do
-            iv_vals[iv] = get_bits(iv_bytes, i - 1, 5)
+            iv_vals[iv] = get_bits(iv_bytes, (i - 1) * 5, 5)
         end
         return iv_vals
+    end
+end
+
+local function get_evs(word_idx)
+    return function(words, pkmn_data)
+        local evs = { "hp", "atk", "def", "spd", "spatk", "spdef" }
+        local ev_vals = {}
+        for i, ev in ipairs(evs) do
+            ev_vals[ev] = get_byte(words[word_idx + math.floor((i - 1) / 2)], (i - 1) % 2 + 1)
+        end
+        return ev_vals
     end
 end
 
@@ -237,12 +205,7 @@ local pokemon_memory_map = {
     { "ability", ggbyte(11, 2) },               -- 0x15
     { "markings", ggbyte(12, 1) },              -- 0x16
     { "language_of_origin", ggbyte(12, 2) },    -- 0x17
-    { "hp_ev", ggbyte(13, 1) },
-    { "atk_ev", ggbyte(13, 2) },
-    { "def_ev", ggbyte(14, 1) },
-    { "spd_ev", ggbyte(14, 2) },
-    { "spatk_ev", ggbyte(15, 1) },
-    { "spdef_ev", ggbyte(15, 2) },
+    { "evs", get_evs(13) },
     { "cool", ggbyte(16, 1) },
     { "beauty", ggbyte(16, 2) },
     { "cute", ggbyte(17, 1) },
@@ -256,7 +219,7 @@ local pokemon_memory_map = {
     { "moves", gwt(21, 4) },                            -- 0x28 - 0x2F
     { "move_pp", gbt(25, 2) },                          -- 0x30 - 0x33
     { "move_pp_ups", gbt(27, 2) },                      -- 0x34 - 0x37
-    { "ivs", get_ivs(28) },                             -- 0x38 - 0x3B
+    { "ivs", get_ivs(29) },                             -- 0x38 - 0x3B
     { "is_egg", ggbool(30, 14) },                       -- 0x3B
     { "is_nicknamed", ggbool(30, 15) },                 -- 0x3B
     -- Hoenn Ribbon set words 31 - 32                   -- 0x3C - 0x3F
