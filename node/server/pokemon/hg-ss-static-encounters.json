@@ -3020,11 +3020,10 @@
             "Level": null,
             "LevelMin": null,
             "LevelMax": null,
-            "EggLocation": 128,
+            "EggLocation": 2013,
             "Gender": -1,
             "Form": 0,
-            "Location": null,
-            "Gift": true
+            "Location": null
         },
         {
             "EncounterId": 9,
