@@ -1,17 +1,16 @@
-import { nuzlocke } from 'config.json';
+import { death } from 'config.json';
 import DeathSounds from './death-sounds';
 
 class Nuzlocke extends DeathSounds {
     constructor() {
-        super(nuzlocke.deathSound.filePath);
+        super(death.sound.filePath, death.sound.volume);
 
-        this.enabled = nuzlocke.enabled;
-        this._deathSoundsEnabled = this.enabled && nuzlocke.deathSound.enabled;
+        this.enabled = death.sound.enabled;
         
         this.deathMessages = [
-            nuzlocke.deathMessage1,
-            nuzlocke.deathMessage2,
-            nuzlocke.deathMessage3
+            death.deathMessage1,
+            death.deathMessage2,
+            death.deathMessage3
         ];
     }
 }

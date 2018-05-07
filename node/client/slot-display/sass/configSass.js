@@ -3,11 +3,11 @@ import compileConfig, {dependencies} from '../../../common/configCompiler';
 let config = compileConfig(),
     sass = {
         allInOne: config.layout.allInOne,
-        nuzlockeEnabled: config.nuzlocke.enabled,
-        applyDeathSpin: config.nuzlocke && config.nuzlocke.applyDeathSpin,
-        ripPrefix: config.nuzlocke && config.nuzlocke.ripPrefix || '',
+        nuzlockeEnabled: config.death.nuzlocke,
+        applyDeathSpin: config.death.applyDeathSpin,
+        ripPrefix: config.death.ripPrefix || '',
 
-        soulLinkEnabled: config.nuzlocke.enabled && config.soulLink.enabled,
+        soulLinkEnabled: config.death.nuzlocke && config.soulLink.enabled,
     };
 
 for (let key of Object.keys(config.style)) {

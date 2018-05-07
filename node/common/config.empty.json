@@ -27,12 +27,13 @@
         "imageOverlayElements": [],
         "soulLinkOverlayElements": [],
     },
-    "nuzlocke": {
-        "enabled": false,
+    "death": {
+        "nuzlocke": false,
         "applyDeathSpin": false,
-        "deathSound": {
+        "sound": {
             "enabled": false,
-            "filePath": ""
+            "filePath": "",
+            "volume": 1
         },
         "ripPrefix": null,
         "deathMessage1": null,

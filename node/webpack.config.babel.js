@@ -147,9 +147,9 @@ function genConfig(env, options) {
             ALL_IN_ONE: config.layout.allInOne,
             API_BASE_URL: `'api.${host}/api'`,
 
-            NUZLOCKE_ENABLED: config.nuzlocke.enabled,
+            NUZLOCKE_ENABLED: config.death.nuzlocke,
 
-            SOULLINK_ENABLED: config.nuzlocke.enabled && config.soulLink.enabled,
+            SOULLINK_ENABLED: config.death.nuzlocke && config.soulLink.enabled,
             LINKING_METHOD: `'${config.soulLink.linking.method}'`,
             MANUAL_LINKING: config.soulLink.linking.method === 'manual',
         }),
@@ -187,9 +187,9 @@ function genConfig(env, options) {
         ]);
     }
     
-    let nuzlocke = config.nuzlocke,
+    let death = config.death,
     soulLink = config.soulLink;
-    if (nuzlocke.deathSound && nuzlocke.deathSound.enabled) {
+    if (death.sound && death.sound.enabled) {
         const getSoundPath = function (soundFileName) {
             let p = path.resolve(__dirname, 'resources', soundFileName);
             if (fs.existsSync(p)) {
@@ -218,12 +218,11 @@ function genConfig(env, options) {
             }
         };
         
-        copySounds(nuzlocke.deathSound.filePath);
+        copySounds(death.sound.filePath);
         
         if (soulLink.deathSound && soulLink.deathSound.enabled && soulLink.deathSound.filePath) {
             copySounds(soulLink.deathSound.filePath);
         }
-        
     }
     
     return webpackConfig;

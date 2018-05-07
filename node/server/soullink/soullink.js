@@ -47,11 +47,11 @@ class SoulLink extends EventEmitter {
     }
 
     get enabled() {
-        if (Config.soulLink.enabled && !Config.nuzlocke.enabled) {
+        if (Config.soulLink.enabled && !Config.death.nuzlocke) {
             console.warn(`In config, SoulLink is enabled but Nuzlocke isn't.  You're about to have a bad time.`);
         }
 
-        return Config.nuzlocke.enabled && Config.soulLink.enabled;
+        return Config.death.nuzlocke && Config.soulLink.enabled;
     }
 
     get linkingMethod() {
@@ -308,8 +308,8 @@ class SoulLink extends EventEmitter {
 
     // TODO: make this much cleaner... so many if statements
     _handleConfigChange(p, n) {
-        if (p.nuzlocke.enabled !== n.nuzlocke.enabled) {
-            if (!n.nuzlocke.enabled && n.soulLink.enabled) {
+        if (p.death.nuzlocke !== n.death.nuzlocke) {
+            if (!n.death.nuzlocke && n.soulLink.enabled) {
                 console.error(`Nuzlocke is now disabled and SoulLink is enabled.  You're about to have a bad time.`);
             }
         }

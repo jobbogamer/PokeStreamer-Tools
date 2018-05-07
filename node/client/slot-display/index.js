@@ -1,4 +1,5 @@
 import './sass/index.scss';
+import '../../common/extensions';
 import config from 'config.json';
 import Nuzlocke from './js/nuzlocke';
 import SoulLink from './js/soulLink';

@@ -1,4 +1,4 @@
-.nuzlocke .dead {
+.dead {
   .nickname:not(:empty)::before {
     content: $ripPrefix
   }
@@ -8,12 +8,12 @@
       animation-duration: 10s;
       animation-timing-function: linear;
       animation-iteration-count: infinite;
-      animation-name: nuzlockedeathspin;
+      animation-name: deathspin;
     }
   }
 }
 
-@keyframes nuzlockedeathspin {
+@keyframes deathspin {
   from {
       transform: rotate(0);
   }

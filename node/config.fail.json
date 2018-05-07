@@ -47,10 +47,10 @@
         ],
     },
 
-    "nuzlocke": {
-        "enabled": true,
+    "death": {
+        "nuzlocke": true,
 
-        "deathSound": {
+        "sound": {
             "filePath": [
                 "bad_afflicted_depressed.flac",
                 "bad_crit_02.flac",

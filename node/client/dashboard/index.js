@@ -1,7 +1,7 @@
 import '../jQuery.extensions';
 import config from 'config.json';
 
-if (config.nuzlocke.enabled) {
+if (config.death.nuzlocke) {
     require('./sass/index.scss');
     require('./js/manager');
 } else {

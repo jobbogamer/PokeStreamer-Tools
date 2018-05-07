@@ -64,17 +64,23 @@
     },
     
     /*
-    If you are doing a Nuzlocke challenge, these options add some silly effects when one of your Pokemon dies.
+    Apply some silly effects when a pokémon faints or dies.
     */
-    "nuzlocke": {
-        "enabled": true,
+    "death": {
+        // If you are doing a Nuzlocke challenge, setting this to true will prevent a dead pokémon's display from being
+        // revived when you revive it.  (You can still revive it manually via the Dashboard.)
+        "nuzlocke": true,
         
         // Make the pokemon spin slowly.
         "applyDeathSpin": true,
         
         // Play a depressing sound when a Pokemon dies.
-        "deathSound": {
+        "sound": {
             "enabled": true,
+
+            // A value between 0 and 1 to make death sounds quieter (by default, they're usually pretty loud).
+            // e.g. if you want it to be 50% volume, the value should be .5
+            "volume": 1,
 
             // Path or paths to sound(s), absolute or relative to /node/resources.  May be a string or an array of 
             // strings.  If multiple paths are specified, a random sound is chosen upon each death.  Valid filetypes
@@ -113,7 +119,7 @@
         // "deathSound": {
         //     "enabled": true,
             
-            // if enabled but not specified, defaults to nuzlocke.deathSound.filePath
+            // if enabled but not specified, defaults to death.sound.filePath
             // "filePath": "you-lose-good-day-sir.mp3"
         // },
 

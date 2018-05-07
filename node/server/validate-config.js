@@ -33,9 +33,9 @@ class Assertion {
 
 const Validations = {
     soulLink: {
-        genSupported: new Assertion(c => !c.nuzlocke.enabled || !c.nuzlocke.soulLink.enabled || c.generation === 4,
+        genSupported: new Assertion(c => !c.death.nuzlocke || !c.soulLink.enabled || c.generation === 4,
             `Currently only gen IV games are supported with Soul Link.  Found ${c.generation}.`, ERROR),
-        nuzlockeDisabled: new Assertion(c => !c.soulLink.enabled || c.nuzlocke.enabled,
+        nuzlockeDisabled: new Assertion(c => !c.soulLink.enabled || c.death.nuzlocke,
             `SoulLink was enabled but Nuzlocke was disabled.  Ignoring Soul Link.`),
         soulLinkSoundWithManualLinking: 
             new Assertion(c => !c.soulLink.enabled || c.soulLink.linking.method !== 'manual' || !c.soulLink.deathSound.enabled,

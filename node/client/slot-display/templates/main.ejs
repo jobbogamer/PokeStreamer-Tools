@@ -1,6 +1,6 @@
 <span id="err"></span>
 
-<% if (!config.layout.allInOne) { %>
+<% if (!ALL_IN_ONE) { %>
     <div id="slotBtns"></div>
     <%= require('./slot.ejs')() %>
 <% } else { %>
@@ -9,7 +9,6 @@
     <% } %>
 <% } %>
 
-<% if (config.nuzlocke.enabled && config.soulLink.enabled && 
-        config.style.soulLinkOrientation !== 'custom') { %>
+<% if (SOULLINK_ENABLED && config.style.soulLinkOrientation !== 'custom') { %>
     <%= require('./soulLinkSvg.ejs')() %>
 <% } %>

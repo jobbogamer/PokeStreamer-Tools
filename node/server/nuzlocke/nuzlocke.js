@@ -19,7 +19,7 @@ class Nuzlocke extends EventEmitter {
     }
 
     get enabled() {
-        return Config.nuzlocke.enabled;
+        return Config.death.nuzlocke;
     }
 
     // used for when starting a new game from the SoulLink Manager

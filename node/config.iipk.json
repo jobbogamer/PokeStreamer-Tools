@@ -47,8 +47,8 @@
         ],
     },
     
-    "nuzlocke": {
-        "enabled": true,
+    "death": {
+        "nuzlocke": true,
     },
 
     "soulLink": {
@@ -70,7 +70,7 @@
     "style": {
         // set this value to a color (e.g. "red") in order to see how it lines up with your streaming background
         // set it to "transparent" to hide that color
-        "imageWrapperBackgroundForSettingUpLayout": "transparent",
+        "imageWrapperBackgroundForSettingUpLayout": "rgba(0,0,0,.3)",
 
         // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
         // image source.
@@ -232,5 +232,5 @@
         "useLessSecureAPI": true
     },
 
-    "logLevel": "info",    
+    "logLevel": "info",
 }
