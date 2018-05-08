@@ -44,10 +44,10 @@ describe('pokemon-stats with standardized experience', () => {
         let pkmnData = Object.assign({}, aggron);
         expect(new Pokemon(pkmnData).isCritical).toBe(false);
         
-        pkmnData.currentHp = Math.floor(159 / 4) + 1;
+        pkmnData.currentHp = Math.ceil(159 / 5);
         expect(new Pokemon(pkmnData).isCritical).toBe(false);
 
-        pkmnData.currentHp = Math.floor(159 / 4);
+        pkmnData.currentHp = Math.floor(159 / 5);
         expect(new Pokemon(pkmnData).isCritical).toBe(true);
     });
 
@@ -55,10 +55,10 @@ describe('pokemon-stats with standardized experience', () => {
         let pkmnData = Object.assign({}, dialga);
         expect(new Pokemon(pkmnData).isCritical).toBe(false);
         
-        pkmnData.currentHp = Math.floor(55 / 4) + 1;
+        pkmnData.currentHp = 55 / 5;
         expect(new Pokemon(pkmnData).isCritical).toBe(false);
 
-        pkmnData.currentHp = Math.floor(55 / 4);
+        pkmnData.currentHp = 55 / 5 - 1;
         expect(new Pokemon(pkmnData).isCritical).toBe(true);
     });
 });
@@ -78,10 +78,10 @@ describe('pokemon-stats with vanilla experience', () => {
         let pkmnData = Object.assign({}, aggron, { exp: 175760 });
         expect(new Pokemon(pkmnData).isCritical).toBe(false);
         
-        pkmnData.currentHp = Math.floor(159 / 4) + 1;
+        pkmnData.currentHp = Math.ceil(159 / 5);
         expect(new Pokemon(pkmnData).isCritical).toBe(false);
 
-        pkmnData.currentHp = Math.floor(159 / 4);
+        pkmnData.currentHp = Math.floor(159 / 5);
         expect(new Pokemon(pkmnData).isCritical).toBe(true);
     });
 
@@ -89,10 +89,10 @@ describe('pokemon-stats with vanilla experience', () => {
         let pkmnData = Object.assign({}, dialga);
         expect(new Pokemon(pkmnData).isCritical).toBe(false);
         
-        pkmnData.currentHp = Math.floor(55 / 4) + 1;
+        pkmnData.currentHp = 55 / 5;
         expect(new Pokemon(pkmnData).isCritical).toBe(false);
 
-        pkmnData.currentHp = Math.floor(55 / 4);
+        pkmnData.currentHp = 55 / 5 - 1;
         expect(new Pokemon(pkmnData).isCritical).toBe(true);
     });
 });
