@@ -5,6 +5,7 @@ const flagProps = [
     'isVoid',
     'isShiny',
     'isCritical',
+    'isFullyTrained',
 ];
 
 export function getFlagsValue(pokemon) {

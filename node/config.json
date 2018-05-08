@@ -219,7 +219,11 @@
             "background": "transparent",
         },
 
+        // displays a pulsing red aura when the pokemon is below 1/4 HP
         "displayCriticalHpEffect": true,
+
+        // displays a yellow aura when the pokemon is maxed on EVs
+        "displayFullyTrainedEffect": true,
         
         // Default text styles.  These can be overridden below.
         // The default settings are what failstream (twitch.tv/failstream) uses, as I'm writing this tool for him.

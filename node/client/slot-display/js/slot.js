@@ -90,7 +90,7 @@ export default class Slot {
             this.lastValue = null;
             $allText.add($slText).resetText();
             $nickname.removeClass('no-nickname');
-            Slot.setCritical($wrapper.add($soulLinkWrapper), false);
+            Slot.clearAuras($wrapper.add($soulLinkWrapper));
             $images.removeAttr('src');
             $slot.removeClass('dead');
             return;
@@ -101,7 +101,7 @@ export default class Slot {
         if (val.pokemon && val.pokemon.isVoid) {
             if (this.lastValue && this.lastValue.pokemon) {
                 $slot.addClass('void');
-                Slot.setCritical($wrapper.add($soulLinkWrapper), false);
+                Slot.clearAuras($wrapper.add($soulLinkWrapper));
                 $img.wrap('<div class="void-wrapper">');
                 setTimeout(() => {
                     this.lastValue = null;
@@ -132,7 +132,7 @@ export default class Slot {
             $slText.resetText();
             $slot.removeClass('dead');
             $images.removeAttr('src');
-            Slot.setCritical($wrapper.add($soulLinkWrapper), false);
+            Slot.clearAuras($wrapper.add($soulLinkWrapper));
             this.lastValue = val;
             return;
         }
@@ -156,7 +156,8 @@ export default class Slot {
             $slot.removeClass('dead');
         }
 
-        Slot.setCritical($wrapper, pkmn.isCritical);
+        Slot.setAura($wrapper, 'critical', pkmn.isCritical);
+        Slot.setAura($wrapper, 'fully-trained', pkmn.isFullyTrained);
         
         if (Nuzlocke.enabled) {
             if (pkmn.dead) {
@@ -185,7 +186,7 @@ export default class Slot {
                 
                 $slText.resetText();
                 $img.closest('.img-wrapper').addClass('invalid');
-                Slot.setCritical($soulLinkWrapper, false);
+                Slot.clearAuras($soulLinkWrapper);
             } else {
                 let link = pkmn.link;
                 $soulLinkImg.attr('src', link.img);
@@ -195,7 +196,8 @@ export default class Slot {
                 $soulLinkNickname.text(link.nickname || pkmn.speciesName);
                 $soulLinkSpecies.text(link.speciesName);
 
-                Slot.setCritical($soulLinkWrapper, link.isCritical);
+                Slot.setAura($soulLinkWrapper, 'critical', link.isCritical);
+                Slot.setAura($soulLinkWrapper, 'fully-trained', link.isFullyTrained);
             }
         }
         
@@ -226,12 +228,16 @@ export default class Slot {
         $dm.text(msg);        
     }
 
-    static setCritical($wrapper, isCritical) {
-        if (isCritical) {
-            $wrapper.addClass('critical');
+    static setAura($wrapper, auraName, val) {
+        if (val) {
+            $wrapper.addClass(auraName);
         } else {
-            $wrapper.removeClass('critical');
+            $wrapper.removeClass(auraName);
         }
+    }
+
+    static clearAuras($wrapper) {
+        $wrapper.removeClass('critical fully-trained');
     }
 }
 

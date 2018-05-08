@@ -73,6 +73,12 @@ class Pokemon {
             if (maxHp > calcStat(this, 'maxHp') || maxHp < calcStat(minEV, 'maxHp')) {
                 maxHp = null;
             }
+
+            if (!evs instanceof Object) {
+                console.error(`Received and EVs value that wasn't an object`);
+            } else {
+                this.isFullyTrained = Object.values(evs).reduce((p, n) => p + n, 0) === 510;
+            }
         }
         
         if (currentHp && maxHp) {
@@ -126,6 +132,7 @@ class Pokemon {
                     isEgg: this.linkPid === 0,
                     isEmpty: false,
                     isCritical: false,
+                    isFullyTrained: false,
                 });
             } else if (PM.knownSLPokemon[this.linkPid]) {
                 linked = PM.knownSLPokemon[this.linkPid].clone();
@@ -203,6 +210,7 @@ class Pokemon {
                 'emptyLinkImage',
                 'isCritical',
                 'isEmpty',
+                'isFullyTrained',
             ]);
     }
 
