@@ -82,7 +82,7 @@ class Pokemon {
         }
         
         if (currentHp && maxHp) {
-            this.isCritical = currentHp / maxHp <= 1 / 4;            
+            this.isCritical = currentHp / maxHp <= 1 / 5;            
         }
         
         // TODO enable other generations
