@@ -25,10 +25,10 @@ function createManualLinkedPokemon(pokemon) {
     }
 
     let lp = null;
-    if (Number.isInteger(pokemon.linkedSpecies) && pokemon.linkedSpecies > -1) {
+    if (Number.isInteger(pokemon.link.species) && pokemon.link.species > -1) {
         lp = {
-            species: pokemon.linkedSpecies,
-            speciesName: Pokedex[pokemon.linkedSpecies],
+            species: pokemon.link.species,
+            speciesName: Pokedex[pokemon.link.species],
             isShiny: pokemon.isShiny
         };
 
@@ -52,10 +52,6 @@ class SoulLinkRow extends ManagerRow {
 
         let pokemon = this.pokemon;
         this.linkedPokemon = pokemon.link || null;
-
-        if (MANUAL_LINKING) {
-            this.linkedPokemon = createManualLinkedPokemon(pokemon);
-        }
 
         this.addRow();
     }
@@ -195,14 +191,13 @@ class SoulLinkRow extends ManagerRow {
 
         if (link !== undefined) {
             if (MANUAL_LINKING) {
-                // link is a species
-                this.pokemon.linkedSpecies = link;
                 if (this.linkedPokemon && link === null) {
                     let oldLink = this.linkedPokemon.species;
                     this.linkedPokemon = null;
                     this.addRow();
                     this.$row.find('select').val(oldLink).change();
                 } else if (!this.linkedPokemon) {
+                    this.pokemon.link = { species: link };
                     this.linkedPokemon = createManualLinkedPokemon(this.pokemon);
                     this.addRow();
                 } else if (this.linkedPokemon.species !== link) {

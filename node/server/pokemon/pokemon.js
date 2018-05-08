@@ -103,7 +103,7 @@ class Pokemon {
     
     get img() {
         try {
-            return PokemonImages.get(this.species || -1).getImage(this.isFemale, this.isShiny, this.alternateForm, this.isEgg);
+            return PokemonImages.get(hasValue(this.species) ? this.species : -1).getImage(this.isFemale, this.isShiny, this.alternateForm, this.isEgg);
         } catch (err) {
             if (/Cannot read property \'[^']+\' of undefined/.test(err.message)) {
                 console.error(`Did not find image for ${this.speciesName} in ${path.resolve(Paths.NodeRoot, Config.pokemonImagesPath)}.  Make sure there is an image named ${this.species}.png (or another valid image extension) in the pokemon images root.`);
