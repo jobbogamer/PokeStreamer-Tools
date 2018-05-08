@@ -39,7 +39,7 @@ describe('parseFlags()', () => {
         let pokemon = parseFlags(0);
         expect(Object.getOwnPropertyNames(pokemon).length).toBe(flagProps.length);
         for (let [i, prop] of flagProps.entries()) {
-            expect(pokemon[prop]).toBe(false);
+            expect(pokemon[prop]).toBeFalsy();
         }
     });
     

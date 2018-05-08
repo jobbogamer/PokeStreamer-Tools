@@ -27,7 +27,7 @@ const
         exp: 3736
     };
 
-const aggronIvs = { atk: 23, def: 20, spatk: 19, spdef: 16, hp: 29, spd: 30 }
+const aggronIvs = { atk: 23, def: 20, spatk: 19, spdef: 16, hp: 29, spd: 30 };
 
 describe('pokemon-stats with standardized experience', () => {
     beforeEach(() => {
@@ -42,24 +42,24 @@ describe('pokemon-stats with standardized experience', () => {
 
     it('correctly calculates isCritical for Aggron when passed maxHp is accurate', () => {
         let pkmnData = Object.assign({}, aggron);
-        expect(new Pokemon(pkmnData).isCritical).toBe(false);
+        expect(new Pokemon(pkmnData).isCritical).toBeFalsy();
         
         pkmnData.currentHp = Math.ceil(159 / 5);
-        expect(new Pokemon(pkmnData).isCritical).toBe(false);
+        expect(new Pokemon(pkmnData).isCritical).toBeFalsy();
 
         pkmnData.currentHp = Math.floor(159 / 5);
-        expect(new Pokemon(pkmnData).isCritical).toBe(true);
+        expect(new Pokemon(pkmnData).isCritical).toBeTruthy();
     });
 
     it('correctly calculates isCritical for Dialga when passed maxHp is accurate', () => {
         let pkmnData = Object.assign({}, dialga);
-        expect(new Pokemon(pkmnData).isCritical).toBe(false);
+        expect(new Pokemon(pkmnData).isCritical).toBeFalsy();
         
         pkmnData.currentHp = 55 / 5;
-        expect(new Pokemon(pkmnData).isCritical).toBe(false);
+        expect(new Pokemon(pkmnData).isCritical).toBeFalsy();
 
         pkmnData.currentHp = 55 / 5 - 1;
-        expect(new Pokemon(pkmnData).isCritical).toBe(true);
+        expect(new Pokemon(pkmnData).isCritical).toBeTruthy();
     });
 });
 
@@ -76,23 +76,23 @@ describe('pokemon-stats with vanilla experience', () => {
 
     it('correctly calculates isCritical for Aggron when passed maxHp is accurate', () => {
         let pkmnData = Object.assign({}, aggron, { exp: 175760 });
-        expect(new Pokemon(pkmnData).isCritical).toBe(false);
+        expect(new Pokemon(pkmnData).isCritical).toBeFalsy();
         
         pkmnData.currentHp = Math.ceil(159 / 5);
-        expect(new Pokemon(pkmnData).isCritical).toBe(false);
+        expect(new Pokemon(pkmnData).isCritical).toBeFalsy();
 
         pkmnData.currentHp = Math.floor(159 / 5);
-        expect(new Pokemon(pkmnData).isCritical).toBe(true);
+        expect(new Pokemon(pkmnData).isCritical).toBeTruthy();
     });
 
     it('correctly calculates isCritical for Dialga when passed maxHp is accurate', () => {
         let pkmnData = Object.assign({}, dialga);
-        expect(new Pokemon(pkmnData).isCritical).toBe(false);
+        expect(new Pokemon(pkmnData).isCritical).toBeFalsy();
         
         pkmnData.currentHp = 55 / 5;
-        expect(new Pokemon(pkmnData).isCritical).toBe(false);
+        expect(new Pokemon(pkmnData).isCritical).toBeFalsy();
 
         pkmnData.currentHp = 55 / 5 - 1;
-        expect(new Pokemon(pkmnData).isCritical).toBe(true);
+        expect(new Pokemon(pkmnData).isCritical).toBeTruthy();
     });
 });
