@@ -1,0 +1,32 @@
+@import "vs2015.min";
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body.nuzlocke-disabled {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding-bottom: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.error {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#nuzlockeMd, #soulLinkMd {
+  overflow-y: auto;
+  // @extend .rounded;
+  
+  > pre {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+}

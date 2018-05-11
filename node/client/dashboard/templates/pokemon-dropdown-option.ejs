@@ -1,0 +1,5 @@
+<% let iconSrc = Icons[Pokedex.FileNames[pokemon.species]][pokemon.isShiny ? 'shiny' : 'regular']; %>
+<option value="<%- pokemon.pid %>" data-img="<%- iconSrc %>">
+    <%- pokemon.speciesName %>
+    <%- pokemon.nickname ? ' / ' + pokemon.nickname : '' %>
+</option>

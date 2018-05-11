@@ -1,0 +1,72 @@
+$imageWrapperWidth: $imageSideLength !default;
+$imageWrapperHeight: $imageSideLength !default;
+$imgWidth: min($imageSideLength, $imageWrapperWidth);
+$imgHeight: min($imageSideLength, $imageWrapperHeight);
+$imageScale: scale(strip-unit($imageSideLength) / min(strip-unit($imageWrapperWidth), strip-unit($imageWrapperHeight)));
+
+.img-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0;
+  
+  &:not(.soul-linked) {
+    @extend %imageWrapper !optional;  
+  }
+  
+  .img-overlay {
+    display: flex;
+    position: absolute;
+  }
+
+  .slot:not(.dead) & {
+    > .aura {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    @if $displayCriticalHpEffect {
+      &.critical > .aura {
+        transition: none;
+        background: radial-gradient(closest-side, red, transparent);
+        animation-name: critical;
+        animation-direction: normal;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-out;
+      }
+    }
+
+    @if $displayFullyTrainedEffect {
+      &.fully-trained:not(.critical) > .aura {
+        background: radial-gradient(closest-side, yellow, transparent);
+      }
+    }
+  }
+  
+  img {
+    display: block;
+    width: $imgWidth;
+    max-width: $imgWidth;
+    height: $imgHeight;
+    max-height: $imgHeight;
+    margin: 0;
+    transform: $imageScale;
+    
+    &:not([src]) {
+      visibility: hidden;
+    }
+  }
+}
+
+@keyframes critical {
+  0% {
+    opacity: .9;
+  }
+
+  85% {
+    opacity: 0;
+  }
+}

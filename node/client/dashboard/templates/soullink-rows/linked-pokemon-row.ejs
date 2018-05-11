@@ -1,0 +1,48 @@
+<tr id="<%- pokemon.pid %>">
+    <td class="pokemon">
+        <%= require('../pokemon-cell.ejs')({ pokemon }) %>
+    </td>
+    <td class="location">
+        <div><%- pokemon.locationMetName %></div>
+    </td>
+    <%= require('../traits-cell.ejs')({ pokemon }) %>
+    <td class="linked-pokemon">
+        <% if (MANUAL_LINKING) { %>
+            <div class="link-dropdown">
+            </div>
+        <% } else if (linkedPokemon.isEmpty) { %>
+            <%= require('../pending-pokemon-cell.ejs')() %>
+        <% } else { %>
+            <%= require('../pokemon-cell.ejs')({ pokemon: linkedPokemon }) %>
+        <% } %>
+    </td>
+    <% if (MANUAL_LINKING) { %>
+        <td class="width-fixed">
+            <div class="btn-group">
+                <button type="button" disabled data-pid="<%- pokemon.pid %>" class="btn-update-link btn btn-primary btn-sm">
+                    Update
+                </button>
+                <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-outline-secondary btn-sm">
+                    Unlink
+                </button>
+            </div>
+        <td class="width-fixed">
+            <div>
+                <button type="button" data-pid="<%- pokemon.pid %>" class="btn-link-dead btn btn-sm btn-outline-dead">
+                    Link Died
+                </buttn>
+            </div>
+        </td>
+    <% } else { %>
+        <td class="width-fixed"></td>
+        <td class="width-fixed">
+            <div>
+                <button type="button" data-pid="<%- pokemon.pid %>" class="btn-unlink btn btn-outline-secondary btn-sm">
+                    Unlink
+                </button>
+            </div>
+        </td>
+    <% } %>
+    </td>
+    
+</tr>

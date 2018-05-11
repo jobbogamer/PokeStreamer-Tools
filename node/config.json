@@ -1,0 +1,323 @@
+// NOTE: Unless otherwise specified, all paths are absolute or relative to /node/
+{
+    // If you want override the settings in this file, specify a file or an array of files whose values will take
+    // precedence.  Files at the beginning of the list have higher priority than those later.
+    //
+    // Objects within the config files are merged, but arrays are simply overwritten.
+    //
+    // NOTE: this value is ignored in the override files themselves.  No infinite loops for you!
+    "configOverride": [ 
+        // "./config.custom.json",
+    ],
+    
+    "randomizer": {
+        // If you are using a randomized ROM, set this to true
+        "enabled": false,
+
+        // If you set experience growth to non-vanilla, set this to true
+        "normalizedExp": false,
+    },
+
+    // Path to the image used when a slot is empty.
+    // Set to null if you don't want an image
+    "emptySlotImagePath": "../pokemon-images/pokeball.png",
+    
+    "layout": { 
+        /*  
+        Where to place the various elements relative to the pokemon image.
+        All elements are optional.  The order in which they appear in the array are the order they are stacked in the
+        page element.  For example, if you have "nickname" and "species" in the "bottomElements" list, the bottom 
+        element will have a line for the nickname followed by a line for the species.
+        
+        NOTE: The death messages *replace* the other elements listed (aside from other death messages).
+        NOTE: Currently SoulLink, and thus, sl-* values, are not officially supported.  I honestly don't know whether
+              it would work or not.
+        
+        Available elements are:
+        • nickname
+        • species
+        • level
+        • deathMessage1 (see nuzlocke options below)
+        • deathMessage2
+        • deathMessage3
+        
+        Available SoulLink elements are:
+        • sl-nickname
+        • sl-species
+        • sl-level
+        */
+        "topElements": [],
+        "bottomElements": [ 
+            "nickname" 
+        ],
+        "leftElements": [ 
+            "species", 
+            "deathMessage1" 
+        ],
+        "rightElements": [ 
+            "level", 
+            "deathMessage2"
+        ],
+        "imageOverlayElements": [
+            // "level"
+        ],
+    },
+    
+    /*
+    Apply some silly effects when a pokémon faints or dies.
+    */
+    "death": {
+        // If you are doing a Nuzlocke challenge, setting this to true will prevent a dead pokémon's display from being
+        // revived when you revive it.  (You can still revive it manually via the Dashboard.)
+        "nuzlocke": true,
+        
+        // Make the pokemon spin slowly.
+        "applyDeathSpin": true,
+        
+        // Play a depressing sound when a Pokemon dies.
+        "sound": {
+            "enabled": true,
+
+            // A value between 0 and 1 to make death sounds quieter (by default, they're usually pretty loud).
+            // e.g. if you want it to be 50% volume, the value should be .5
+            "volume": 1,
+
+            // Path or paths to sound(s), absolute or relative to /node/resources.  May be a string or an array of 
+            // strings.  If multiple paths are specified, a random sound is chosen upon each death.  Valid filetypes
+            // are anything a browser can play.  (mp3, flac, etc)
+            "filePath": "the-price-is-right-losing-horn.mp3"
+        },
+        
+        // Places some content before the nickname element.  This should include a space after it and needs to be 
+        // wrapped in single-quotes (as the value is being placed in a CSS file).
+        //
+        // NOTE: Currently broken... may or may not work... if you set the font size to less than the height of its 
+        // container and such that 11 characters (for nickname/pokemon name) + the prefix is always less wide than the 
+        // width of its container, it should be fine.
+        //
+        // "ripPrefix": "'RIP '",
+        
+        // These messages are displayed, replacing the text in whichever element they appear, when a Pokemon dies.
+        // NOTE: currently these are not supported in Soul Link mode
+        "deathMessage1": "You died too young",
+        "deathMessage2": "We hardly knew you",
+        "deathMessage3": null,
+    },
+
+    /*
+        If you are doing a Soul Link run with someone who is also using this software, enable it here.
+        Your partner is not required to actually use the Pokémon display page to pair with you.  They must only be 
+        running the server with Nuzlocke/SoulLink settings set.
+
+        Note: For SoulLink to be enabled, Nuzlocke must also be enabled.
+    */
+    "soulLink": {
+        "enabled": false,
+        
+        // currently unused -- at the moment, the SoulLink system doesn't distinguish between you killing a pokémon and
+        // your partner killing theirs
+        // "deathSound": {
+        //     "enabled": true,
+            
+            // if enabled but not specified, defaults to death.sound.filePath
+            // "filePath": "you-lose-good-day-sir.mp3"
+        // },
+
+        "linking": {
+            // Valid values:
+            // •  manual: manually soul-link pokemon using the page at stream.pokemon-soul.link/links
+            // •  discord: have a bot use Discord to communicate with your partner in order to handle soul-linking
+            //             automatically
+            "method": "manual",
+            
+            // Discord settings are ignored if "method" is set to "manual" (that is, you should not delete this section)
+            //
+            // If "method" is set to "discord", you MUST change these values.
+            // 
+            // For information on how to set up a bot, see the SoulLink section of the README: 
+            //   http://pokemon-soul.link/#soullink
+            "discord": {
+                // The Discord auth token of your Bot that will send and receive SoulLink information
+                "botToken": "...",
+
+                // The tag of your partner's bot.  This is its username + # + the four-digit disambiguator code.
+                //
+                // Example:
+                //   "partnerBotTag": "my-pokemon-soullink-bot#1234"
+                "partnerBotTag": "my-pokemon-soullink-bot#1234",
+
+                // Discord server and private channel used solely for transfering SoulLink data back and forth
+                //
+                // Example:
+                //   "channel: "your-discord-server#your-private-channel"
+                //
+                // NOTE: 
+                // You MUST invite both your bot and your partner's bot to this channel.  (Obviously.)
+                // Make sure that both your bot and your partner's bot have the "Attach Files" permission.
+                //                
+                // You should NOT invite anyone else.  I can't think of a way someone could maliciously use this
+                // script to do harmful things to your computer, but I'm not a security expert, and I didn't build
+                // this server script to have any layers of security.
+                "channel": "your-discord-server#your-private-channel",
+            },
+        }
+    },
+    
+    /*
+    These are the CSS styles applied to the various elements of the page.  They are imported into /node/client/sass/,
+    so if you want more granular control, edit the values there.
+    
+    The script used to convert these settings to styles is pretty powerful and allows you to create your own custom 
+    variables.  See the Styling section of the README for more information.
+        http://pokemon-soul.link#styling
+    */
+    "style": {
+        // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
+        // image source.
+        "imageSideLength": "128px",
+
+        // Optional sizes if you want the image wrapper to be a different size than the image
+        // "imageWrapperWidth": "220px",
+        // "imageWrapperHeight": "204px",
+
+        // if you want to override the size of a slot, you can here... your milage may vary
+        // "totalSlotHeight": undefined,
+        // "totalSlotWidth": "230px",
+        
+        // Text will be centered both horizontally and vertically (by default) within each element.
+        "leftElementWidth": "50px",
+        "rightElementWidth": "50px",
+        "topElementHeight": "0",
+        "bottomElementHeight": "30px",
+
+        "%leftElement": {
+            // don't set width here... set it above
+        },
+
+        "%rightElement": {
+            // don't set width here... set it above
+        },
+
+        "%topElement": {
+            // don't set height here... set it above
+        },
+
+        "%bottomElement": {
+            // don't set height here... set it above
+        },
+
+        // list of elements to show even when they have no value
+        // for example, can be useful if you want to display an empty nameplate even if there is no pokemon in the slot
+        "showWhenEmpty": [
+            // "nickname"
+        ],
+        
+        "%body": {
+            // You almost certainly want this to be "transparent" so that it is rendered cleanly in your scene, but it 
+            // may be useful to change it when setting things up so that you can more easily see text if your text hard 
+            // to see against the browser's default white background.
+            "background": "transparent",
+        },
+
+        // displays a pulsing red aura when the pokemon is below 1/4 HP
+        "displayCriticalHpEffect": true,
+
+        // displays a yellow aura when the pokemon is maxed on EVs
+        "displayFullyTrainedEffect": true,
+        
+        // Default text styles.  These can be overridden below.
+        // The default settings are what failstream (twitch.tv/failstream) uses, as I'm writing this tool for him.
+        // They produce yellow-orange text outlined in fading-transparent white.  When placed on top of a blue 
+        // background it is reminiscient of the official Pokemon logo.
+        "%baseText": {
+            "font-size": "24px",
+            "font-family": "Arial, sans-serif",
+            "background": "-webkit-linear-gradient(#ff8c00, #ffd700)",
+            "background-clip": "text",
+            "-webkit-background-clip": "text",
+            "-webkit-text-fill-color": "transparent",
+            "text-shadow": "0 0 8px white",
+            "text-align": "center"
+        },
+        
+        "%levelText": {
+            "font-size": "36px",
+            
+            // By default, texts on the left and right of the image are rotated.  Setting transform to "unset" prevents
+            // this.
+            "transform": "unset !important",
+            "width": "50px !important",
+        },
+        
+        // This should include a space after it and needs to be wrapped in single-quotes (as the value is being placed 
+        // in a CSS file).
+        // "levelPrefix": "'Lvl '",
+        
+        "%speciesText": {},
+        "%nicknameText": {},
+        
+        // these styles are applied to both death messages, and can be overridden below
+        "%deathMessageText": {
+            // "font-size": "20px",
+        },
+        
+        "%deathMessage1Text": {},
+        "%deathMessage2Text": {},
+        "%deathMessage3Text": {},
+        
+        // styles to apply to the div that contains the pokemon image (not applied to the soulLink image wrapper -- use
+        // %soulLinkWrapper to define those styles)
+        "%imageWrapper": {},
+        
+        // Soul Link styles
+        
+        // How to display soul-linked slots on the webpage
+        // Options are:
+        // • diagonal-foward: a division from bottom-left to top-right
+        // • diagonal-backward: a division from top-left to bottom-right
+        // • horizontal: a horizontal division with pokemon above and below
+        // • veritical: a vertical division with pokemon to the left and right
+        // • thumbnail: your pokemon is displayed normally, and its soul-linked pokemon is overlayed in the bottom right
+        //              corner
+        // • custom: no style is applied; you must provide your own styles by editing /node/client/sass/* files
+        //
+        // NOTE: Your pokemon will always be on the top (or the left in the vertical case) unless you set 
+        //       soulLinkSwap below
+        "soulLinkOrientation": "diagonal-forward",
+        
+        // set this to true if you want your pokemon to be on bottom (or on the right side in the vertical case)
+        "soulLinkSwap": false,
+        
+        // these values determine how large the gap between the images is
+        // NOTE: these values are unaffected by the soulLinkSwap value
+        "imageWrapperShifts": {
+            "topTop": "-8px",
+            "topLeft": "-2px",
+            "bottomTop": "8px",
+            "bottomLeft": "2px",
+        },
+        
+        // styles for the SoulLinked image wrapper
+        "%soulLinkedWrapper": {},
+
+        // how far to shift the image away from the divide so that you can see more than half of the pokemon
+        "imageShift": "10%",
+
+        // the style to give your pokemon when a suitable counterpart has not been found
+        "%invalidPokemon": {
+            "filter": "brightness(50%)",
+        },
+    },
+
+    "server": {
+        // There's a bug in XSplit's browser code such that it doesn't send the right headers when performing API calls.
+        // Set this value to true if the browser isn't getting updated when you run the Lua script.  Assuming you're 
+        // running the server locally and your computer is not publicly facing, this "security" issue isn't a problem.
+        "useLessSecureAPI": false
+    },
+
+    // Many of the less-commonly-changed settings have been moved into ./config.advanced.json for the sake of
+    // simplicity.  Values in the advanced config take lowest priority.  Feel free to change those values however you
+    // like, but don't change the value of "advancedConfig", here, unless you know what you are doing.
+    "advancedConfig": "./config.advanced.json"
+}

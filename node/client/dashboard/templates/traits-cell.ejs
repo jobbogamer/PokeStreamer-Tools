@@ -1,0 +1,23 @@
+<% let pokemonIcons = require('../../pokemon-icons').default %>
+<td class="traits text-nowrap <%- pokemon.isShiny ? 'shiny' : '' %> <%- pokemon.static %>">
+    <div><!-- wrapper div used for making the row slide in -->
+        <div class="dropdown my-auto" data-boundary="viewport">
+            <div class="btn btn-sm btn-traits pl-1 py-0 btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img class="icon shiny-icon" data-toggle="tooltip" data-placement="top" title="Shiny pokémon" src="<%- pokemonIcons['ponyta']['shiny'] %>" />
+                <img class="icon static-icon" data-toggle="tooltip" data-placement="top" title="Static encounter" src="<%- pokemonIcons['snorlax']['regular'] %>" />
+                <!-- TODO maybe... <img class="icon static-maybe-icon" data-toggle="tooltip" data-placement="top" title="Possible static encounter" src="<%- pokemonIcons['sudowoodo']['regular'] %>" />-->
+                <img class="icon boring-icon" data-toggle="tooltip" data-placement="top" title="Regular catch" src="<%- pokemonIcons['farfetchd']['regular'] %>" />
+            </div>
+            <div class="dropdown-menu">
+                <button class="dropdown-item item-boring">
+                    <img class="icon boring-icon" src="<%- pokemonIcons['farfetchd']['regular'] %>" />
+                    Regular catch
+                </button>
+                <button class="dropdown-item item-static">
+                    <img class="icon static-icon" title="Static encounter" src="<%- pokemonIcons['snorlax']['regular'] %>" />
+                    Static Encounter
+                </button>
+            </div>
+        </div>
+    </div>
+</td>

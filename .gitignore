@@ -1,1 +1,14 @@
-*.swp
+/pokemon-images/**/
+!/pokemon-images/pokeball.png
+node_modules
+node/public/**
+node/gameData/**
+.vscode
+*.code-workspace
+.eslint*
+node/hot/
+/lua/lua*5*.dll
+/lua/lua*5*.exe
+/lua/mobdebug.lua
+/node/resources/*.flac
+/node/testConfigs/**

@@ -1,0 +1,274 @@
+/*
+    This is the config generated specifically for Failstream to use during his SoulLink run.  It may be a useful 
+    example.
+*/
+{
+    "randomizer": {
+        // If you are using a randomized ROM, set this to true
+        "enabled": true,
+
+        // If you set experience growth to non-vanilla, set this to true
+        "normalizedExp": true,
+    },
+
+    // Path to the image used when a slot is empty relative to /node/ directory.
+    "emptySlotImagePath": null,
+
+    "layout": {         
+        /*  
+        Where to place the various elements relative to the pokemon image.
+        All elements are optional.  The order in which they appear in the array are the order they are stacked in the
+        page element.  For example, if you have "nickname" and "species" in the "bottomElements" list, the bottom 
+        element will have a line for the nickname followed by a line for the species.
+        
+        NOTE: The death messages *replace* the other elements listed (aside from other death messages).
+        NOTE: Currently SoulLink, and thus, sl-* values, are not available for gen3.
+        
+        Available elements are:
+        • nickname
+        • species
+        • level
+        • deathMessage1 (see nuzlocke options below)
+        • deathMessage2
+        • deathMessage3
+        
+        Available SoulLink elements are:
+        • sl-nickname
+        • sl-species
+        • sl-level
+        */
+        "topElements": [],
+        "bottomElements": [ "nickname" ],
+        "leftElements": [],
+        "rightElements": [],
+        "imageOverlayElements": ["level"],
+        "soulLinkOverlayElements": [
+            "sl-level"
+        ],
+    },
+
+    "death": {
+        "nuzlocke": true,
+
+        "sound": {
+            "filePath": [
+                "bad_afflicted_depressed.flac",
+                "bad_crit_02.flac",
+                "bad_death_04_alt.flac",
+                "bad_deathsdoor_05.flac",
+                "bad_questfail_04.flac",
+                "bad_afflicted_fearful.flac",
+                "bad_crit_03.flac",
+                "bad_death_05.flac",
+                "bad_questfail_01.flac",
+                "bad_questfail_05.flac",
+                "bad_crit_01.flac",
+                "bad_death_04.flac",
+                "bad_deathsdoor_04.flac",
+                "bad_questfail_02.flac"
+            ]
+        }
+    },
+
+    "soulLink": {
+        "enabled": true,
+        "linking": {
+            "method": "discord"
+        }
+    },
+    
+    /*
+    These are the CSS styles applied to the various elements of the page.  They are imported into /node/client/sass/,
+    so if you want more granular control, edit the values there.
+    
+    NOTE: If you want to use reference a value defined in the style section in another value, add a $ in front of it.
+    Any values not prefixed with a $, %, @, or . are added as SASS variables and may be used in any later-defined
+    values.  That is, you can define whatever new variables you'd like, though the ones already listed are required.
+    See https://sass-lang.com/ for more information on SASS variables and what you can do with them.
+    */
+    "style": {
+        // set this value to a color (e.g. "red") in order to see how it lines up with your streaming background
+        // set it to "transparent" to hide that color
+        "imageWrapperBackgroundForSettingUpLayout": "rgba(0,0,0,.3)",
+
+        // The square side-length of the image.  The image will be scaled to this size regardless of the size of the 
+        // image source.
+        "imageSideLength": "200px",
+
+        // Optional sizes if you want the image wrapper to be a different size than the image
+        //
+        // Note to Failstream: these values are required to be set the way they are to make the divide be at the correct
+        //                     angle.
+        "imageWrapperWidth": "222px",
+        "imageWrapperHeight": "205px",
+
+        // if you want to override the size of a slot, you can here... your milage may vary
+        // "totalSlotHeight": undefined,
+        // "totalSlotWidth": "222px",
+        
+        // Text will be centered both horizontally and vertically (by default) within each element.
+        // "leftElementWidth": "50px",
+        // "rightElementWidth": "50px",
+        // "topElementHeight": "0",
+        // "bottomElementHeight": "30px",
+        "leftElementWidth": "0",
+        "rightElementWidth": "0",
+        "topElementHeight": "0",
+        "bottomElementHeight": "20px",
+
+        "%leftElement": {
+            // don't set width here... set it above
+        },
+
+        "%rightElement": {
+            // don't set width here... set it above
+        },
+
+        "%topElement": {
+            // don't set height here... set it above
+        },
+
+        "bottomBg": "silver",
+        
+        "%bottomElement": {
+            // don't set height here... set it above
+            "background": "$bottomBg",
+            "padding": "0 16px",
+            "margin-top": "215px",
+            "font-weight": "bold",
+            "font-variant": "small-caps",
+            "color": "black",
+            "border": "2px solid darken($bottomBg, 20%)",
+            "border-radius": "16px",
+            "-webkit-background-clip": "unset",
+            "background-clip": "unset",
+            "-webkit-text-fill-color": "unset",
+            "text-shadow": "unset",
+            "min-height": "20px", // in order to show empty nameplates
+        },
+
+        "showWhenEmpty": [
+            "nickname",
+        ],
+        
+        "%body": {
+            // You almost certainly want this to be "transparent" so that it is rendered cleanly in your scene, but it 
+            // may be useful to change it when setting things up so that you can more easily see text if your text hard 
+            // to see against the browser's default white background.
+            "background": "transparent",
+            "margin-top": "0",
+        },
+        
+        // Default text styles.  These can be overridden below.
+        // The default settings are what failstream (twitch.tv/failstream) uses, as I'm writing this tool for him.
+        // They produce yellow-orange text outlined in fading-transparent white.  When placed on top of a blue 
+        // background it is reminiscient of the official Pokemon logo.
+        "%baseText": {
+            "font-size": "30px",
+            "font-family": "Arial, sans-serif",
+            "background": null,
+            "background-clip": null,
+            "-webkit-background-clip": null,
+            "-webkit-text-fill-color": null,
+            "text-shadow": "0 0 8px white",
+            "text-align": "center"
+        },
+        
+        "%levelText": {
+            // "width": "$rightElementWidth !important",
+            "width": "unset !important",
+            "text-align": "right",
+			"font-family": "Balthazar, sans-serif",
+            "font-size": "50px",
+			"-webkit-text-fill-color": "cyan",
+			"-webkit-text-stroke-width": "2px",
+            "-webkit-text-stroke-color": "black",
+            "opacity": ".7",
+			
+            // By default, texts on the left and right of the image are rotated.  Setting transform to "unset" prevents
+            // this.
+            // "transform": "unset !important"
+
+            "margin": "-4px 4px",
+        },
+        
+        // This should include a space after it and needs to be wrapped in single-quotes (as the value is being placed 
+        // in a CSS file).
+        "levelPrefix": null,
+        
+        "%speciesText": {},
+
+        "%nicknameText": {
+            "display": "inline-block",
+        },
+
+        "%sl-nicknameText": {
+            "display": "inline-block",
+        },
+        
+        // these styles are applied to both death messages, and can be overridden below
+        "%deathMessageText": {
+            "font-size": "20px",
+        },
+        
+        "%deathMessage1Text": {},
+        "%deathMessage2Text": {},
+        "%deathMessage3Text": {},
+        
+        // styles to apply to the div that contains the pokemon image
+        "%imageWrapper": {
+            "border-radius": "0 6px 0 0",
+            "border": "0 solid transparent",
+
+            "background": "$imageWrapperBackgroundForSettingUpLayout",
+        },
+        
+        // Soul Link styles
+        
+        // How to display soul-linked slots on the webpage
+        // Options are:
+        // • diagonal-foward: a division from bottom-left to top-right
+        // • diagonal-backward: a division from top-left to bottom-right
+        // • horizontal: a horizontal division with pokemon above and below
+        // • veritical: a vertical division with pokemon to the left and right
+        // • thumbnail: your pokemon is displayed normally, and its soul-linked pokemon is overlayed in the bottom right
+        //              corner
+        // • custom: no style is applied; you must provide your own styles by editing /node/client/sass/* files
+        //
+        // NOTE: your pokemon will always be on the top (or the left in the vertical case) unless you set soulLinkSwap
+        //       below
+        "soulLinkOrientation": "diagonal-backward",
+        
+        // set this to true if you want your pokemon to be on bottom (or on the right side in the vertical case)
+        "soulLinkSwap": false,
+
+        // these values determine how large the gap between the images is
+        // you probably want topTop = -bottomTop and topLeft = -bottomLeft to keep things even comparped to the rest of
+        // the slot's elements
+        // NOTE: these values are unaffected by the soulLinkSwap value
+        "imageWrapperShifts": {
+            "topTop": "-5px",
+            "topLeft": "2px",
+            "bottomTop": "5px",
+            "bottomLeft": "-2px",
+        },
+        
+        // styles for the soulLinked image wrapper
+        "%soulLinkedWrapper": {
+            "border-radius": "0 0 0 6px",
+            "border": "0 solid transparent",
+
+            "background": "$imageWrapperBackgroundForSettingUpLayout",
+        },
+
+        // how far to shift the image away from the divide so that you can see more of the pokemon
+        "imageShift": "12%",
+
+        // the style to give your pokemon when a suitable counterpart has not been found
+        "%invalidPokemonStyle": {
+            "filter": "brightness(50%)",
+        },
+    },
+
+    "logLevel": "info",
+}

@@ -1,0 +1,44 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow:hidden;
+}
+
+body {
+  @extend %body !optional;
+}
+
+@if $allInOne {
+  html, body {
+    min-width: $totalSlotWidth;
+    min-height: $totalSlotHeight;
+  }
+
+  body {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+}
+@else {
+  html, body {
+    width: $totalSlotWidth;
+    height: $totalSlotHeight;
+  }
+
+  #slotBtns {
+    &:empty {
+      display: none;
+    }
+
+    margin: 8px;
+
+    h3 {
+      margin: 0;
+    }
+    
+    a {
+      display: block;
+    }
+  }
+}
